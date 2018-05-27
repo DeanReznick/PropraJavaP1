@@ -39,6 +39,8 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.event.FocusAdapter;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainMenu extends JFrame {
 
@@ -219,6 +221,19 @@ public class MainMenu extends JFrame {
 		String[][] data = new String[1000][11];
 				
 		tblPersonen = new JTable(data, column_headers);
+		tblPersonen.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int colnr  = MainMenu.tblPersonen.getSelectedRow();
+				
+				String personName = MainMenu.tblPersonen.getModel().getValueAt(colnr, 1).toString();
+				String personVorname = MainMenu.tblPersonen.getModel().getValueAt(colnr, 2).toString();
+				String fullName = personVorname + " " + personName;
+				
+				txtSearchOrder.setText(fullName);
+				DataBase.searchOrder(fullName);
+			}
+		});
 		tblPersonen.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
