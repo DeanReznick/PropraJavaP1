@@ -96,6 +96,7 @@ public class GUILogin extends JFrame {
 					if (Authentication.checkCredentials(txt_name.getText(), txt_surname.getText(), txt_password.getText())) {
 						System.out.println("GO!");
 						// Dann hier Programm öffnen. 
+						// Prüfenn ob Person berechrigt ist-Y ROlle = Intern? 
 					}
 					
 					

@@ -144,9 +144,9 @@ public class AddPerson extends JFrame {
 		contentPane.add(txtHaus);
 		txtHaus.setColumns(10);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(96, 278, 86, 20);
-		contentPane.add(comboBox);
+		JComboBox combo_job = new JComboBox();
+		combo_job.setBounds(96, 278, 86, 20);
+		contentPane.add(combo_job);
 		
 		txtOrt = new JTextField();
 		txtOrt.setBounds(96, 184, 86, 20);
@@ -166,6 +166,8 @@ public class AddPerson extends JFrame {
 		txt_Password.setBounds(96, 309, 86, 20);
 		contentPane.add(txt_Password);
 		
+		combo_job.addItem("Kunde");
+		combo_job.addItem("Intern"); 
 		
 		JButton btnHinzufuegen = new JButton("Hinzufuegen");
 		btnHinzufuegen.addActionListener(new ActionListener() {
