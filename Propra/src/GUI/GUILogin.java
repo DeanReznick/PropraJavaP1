@@ -53,8 +53,9 @@ public class GUILogin extends JFrame {
 	 * Create the frame.
 	 */
 	public GUILogin() {
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 250, 300);
+		setBounds(100, 100, 250, 226);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -97,7 +98,7 @@ public class GUILogin extends JFrame {
 				
 			}
 		});
-		btnLogin.setBounds(135, 227, 89, 23);
+		btnLogin.setBounds(10, 161, 89, 23);
 		contentPane.add(btnLogin);
 	}
 }

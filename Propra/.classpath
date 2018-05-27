@@ -8,6 +8,5 @@
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="sqlite-jdbc-3.21.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="C:/Users/timw9/Desktop/Uni/6_Sechstes_Semester/ProPra/Projekt 1/javax.mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/dean-/Desktop/ProPraProject1/Propra/sqlite-jdbc-3.21.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
