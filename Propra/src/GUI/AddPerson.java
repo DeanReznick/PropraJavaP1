@@ -35,6 +35,7 @@ public class AddPerson extends JFrame {
 	public static JTextField txtStr;
 	public static JTextField txtHaus;
 	public static JTextField txtOrt;
+	private JTextField txt_Password;
 
 	/**
 	 * Launch the application.
@@ -57,7 +58,7 @@ public class AddPerson extends JFrame {
 	 */
 	public AddPerson() {
 		
-		setBounds(100, 100, 223, 350);
+		setBounds(100, 100, 325, 416);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -147,6 +148,23 @@ public class AddPerson extends JFrame {
 		comboBox.setBounds(96, 278, 86, 20);
 		contentPane.add(comboBox);
 		
+		txtOrt = new JTextField();
+		txtOrt.setBounds(96, 184, 86, 20);
+		contentPane.add(txtOrt);
+		txtOrt.setColumns(10);
+		
+		JLabel lblOrt = new JLabel("Ort:");
+		lblOrt.setBounds(10, 187, 46, 14);
+		contentPane.add(lblOrt);
+		
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setBounds(10, 315, 58, 14);
+		contentPane.add(lblPassword);
+		
+		txt_Password = new JTextField();
+		txt_Password.setColumns(10);
+		txt_Password.setBounds(96, 309, 86, 20);
+		contentPane.add(txt_Password);
 		
 		
 		JButton btnHinzufuegen = new JButton("Hinzufuegen");
@@ -174,6 +192,8 @@ public class AddPerson extends JFrame {
 				String hausnr = txtHaus.getText();
 				String ort = txtOrt.getText();
 				
+				String password = txt_Password.getText(); 
+				
 				Manager.checkStandard(vorname, name, mail, str, PLZ, ort, land, hausnr, tel);
 				//PersonObjektRAM p = new PersonObjektRAM(0, name, tel ,mail, "lala","lala", "lala", land, str, ort,PLZ, hausnr,vorname);
 				PersonenFertigungsverwaltung.createNewPerson(name, vorname, tel, mail, land, str, ort, hausnr, PLZ);
@@ -192,16 +212,9 @@ public class AddPerson extends JFrame {
 			 
 			}
 		});
-		btnHinzufuegen.setBounds(93, 7, 89, 23);
+		btnHinzufuegen.setBounds(96, 343, 89, 23);
 		contentPane.add(btnHinzufuegen);
 		
-		txtOrt = new JTextField();
-		txtOrt.setBounds(96, 184, 86, 20);
-		contentPane.add(txtOrt);
-		txtOrt.setColumns(10);
 		
-		JLabel lblOrt = new JLabel("Ort:");
-		lblOrt.setBounds(10, 187, 46, 14);
-		contentPane.add(lblOrt);
 	}
 }
