@@ -2,8 +2,8 @@ package Exceptions;
 
 import java.awt.Color;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+//import javax.mail.internet.AddressException;
+//import javax.mail.internet.InternetAddress;
 import javax.swing.JOptionPane;
 
 import Data.DataBase;
@@ -57,7 +57,7 @@ public class Manager {
 		}
 	}
 	
-	public static boolean isValidEmailAddress(String email) {
+	/*public static boolean isValidEmailAddress(String email) {
 		   boolean result = true;
 		   try {
 		      InternetAddress emailAddr = new InternetAddress(email);
@@ -66,7 +66,7 @@ public class Manager {
 		      result = false;
 		   }
 		   return result;
-		}
+		}*/
 	
 	
 	public static boolean personExists(String name, String surname) {
