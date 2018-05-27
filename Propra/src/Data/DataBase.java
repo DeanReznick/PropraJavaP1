@@ -361,7 +361,7 @@ public static void searchOrder(String search) {
 		}
 		String sqlsearch;
 		
-		int id = getIdPersonByNameSurname(firstName, lastName);
+		int id = getIdPersonByNameSurname(lastName, firstName);
 		
 		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status"}, 0) {
 			

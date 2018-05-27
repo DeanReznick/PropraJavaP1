@@ -229,6 +229,7 @@ public class MainMenu extends JFrame {
 				String fullName = personVorname + " " + personName;
 				
 				txtSearchOrder.setText(fullName);
+				DataBase.searchOrder(fullName);
 			}
 		});
 		DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Name", "Vorname", "Telefon", "Email", "Rolle",  "Straﬂe", "Hausnummer", "PLZ", "Ort", "Land"}, 0) {
