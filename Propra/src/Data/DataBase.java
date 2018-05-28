@@ -54,6 +54,28 @@ public class DataBase {
 		
 	}
 	
+	
+	public static String getRolleByOrderId(String id_auftrag) {
+		String rolle = null;
+		Statement stmt = null;
+		try{
+		String sqlRolle = "SELECT Rolle FROM 'Mischtabelle-Person-Auftrag' WHERE ID_Auftrag like'" + id_auftrag + "';";
+		
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlRolle);
+			
+			
+				while(rs.next()) {rolle = rs.getString("Rolle");}
+				stmt.close();
+		}catch ( Exception e ) {
+		      System.err.println( "ID Order not found");
+		      
+		   }
+		
+		return rolle;
+		
+	}
+	
 	public static int getIdPersonByNameSurname(String name, String surname) {
 			
 		//SELECT ID_Person FROM Person WHERE name like 'Kern' and vorname like 'Dean'; 
@@ -363,7 +385,7 @@ public static void searchOrder(String search) {
 		
 		int id = getIdPersonByNameSurname(lastName, firstName);
 		
-		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status"}, 0) {
+		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -406,8 +428,10 @@ public static void searchOrder(String search) {
 			    String f1 = rs.getString("PK");
 			    String g1 = rs.getString("RK");
 			    String h1 = rs.getString("ID_Status");
+			    String j1 = DataBase.getRolleByOrderId(a1);
 			    
-			    model.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
+			    
+			    model.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -552,7 +576,7 @@ public static void searchOrder(String search) {
 
 		getConnection();
 		
-		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status"}, 0) {
+		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -588,8 +612,9 @@ public static void searchOrder(String search) {
 			    String f1 = rs.getString("PK");
 			    String g1 = rs.getString("RK");
 			    String h1 = rs.getString("ID_Status");
+			    String j1 = DataBase.getRolleByOrderId(a1);
 			    
-			    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
+			    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
 			   
 			}
 		} catch (SQLException e) {

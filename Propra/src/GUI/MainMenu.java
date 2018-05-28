@@ -274,10 +274,10 @@ public class MainMenu extends JFrame {
 		scrollPane_1.setBounds(10, 260, 939, 117);
 		panelPerson.add(scrollPane_1);
 			
-		String[] column_headers_auftraege = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status"};
+		String[] column_headers_auftraege = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"};
 		String[][] data_auftraege = new String[1000][11];
 		tblAuftraege = new JTable(data_auftraege, column_headers_auftraege);
-		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status"}, 0) {
+		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -286,6 +286,10 @@ public class MainMenu extends JFrame {
 			};
 		String sqlAuftrag = "SELECT * FROM Auftrag";
 		ResultSet rsAuftrag = stmt.executeQuery(sqlAuftrag);
+		
+		//String r = null;
+		//String sqlRolle = "SELECT Rolle FROM Mischtabelle-Person-Auftrag WHERE ID_Auftrag =" + r + ";";
+		
 		
 		while(rsAuftrag.next())
 		{
@@ -297,9 +301,13 @@ public class MainMenu extends JFrame {
 		    String f1 = rsAuftrag.getString("PK");
 		    String g1 = rsAuftrag.getString("RK");
 		    String h1 = rsAuftrag.getString("ID_Status");
-		   
 		    
-		    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
+		    String j1 = DataBase.getRolleByOrderId(a1);
+		    System.out.println(a1);
+		    System.out.println(j1);
+		  
+		    
+		    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
 		}
 		
 		tblAuftraege.setModel(modelAuftrag);
