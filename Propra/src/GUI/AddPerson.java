@@ -193,12 +193,13 @@ public class AddPerson extends JFrame {
 				String str = txtStr.getText();
 				String hausnr = txtHaus.getText();
 				String ort = txtOrt.getText();
+				String rolle = combo_job.getSelectedItem().toString();
 				
 				String password = txt_Password.getText(); 
 				
 				Manager.checkStandard(vorname, name, mail, str, PLZ, ort, land, hausnr, tel);
 				//PersonObjektRAM p = new PersonObjektRAM(0, name, tel ,mail, "lala","lala", "lala", land, str, ort,PLZ, hausnr,vorname);
-				PersonenFertigungsverwaltung.createNewPerson(name, vorname, tel, mail, land, str, ort, hausnr, PLZ);
+				PersonenFertigungsverwaltung.createNewPerson(name, vorname, tel, mail, land, str, ort, hausnr, PLZ, rolle, password);
 				
 				DataBase.refreshDatabase();
 				dispose();

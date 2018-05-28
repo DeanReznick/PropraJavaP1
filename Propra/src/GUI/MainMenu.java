@@ -374,14 +374,13 @@ public class MainMenu extends JFrame {
 		btnChangeOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				UpdateOrder x = null;
 				try {
-					x = new UpdateOrder();
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				x.setVisible(true);
+					UpdateOrder x = new UpdateOrder();
+					x.setVisible(true);
+					} catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, "Bitte wählen sie eine Person aus.");
+					}
+				
 			}
 		});
 		btnChangeOrder.setBounds(109, 388, 89, 23);

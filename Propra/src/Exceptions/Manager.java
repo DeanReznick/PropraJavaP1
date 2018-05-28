@@ -137,6 +137,8 @@ public class Manager {
 			throw new InvalidArgumentsException("Header " + header + " to short!");
 		}
 		
+		
+		
 		DataBase.getConnection();
 		int id = -1;
 	    id = DataBase.getIdPersonByNameSurname(name, surname);
@@ -165,6 +167,12 @@ public class Manager {
 			
 		
 			throw new InvalidArgumentsException("Please fill in all values.");
+		}
+		
+		if(!UpdateOrder.txtJob.getText().equals("Intern") || !NewOrder.txtJob.getText().equals("Kunde"))
+		{
+			UpdateOrder.txtJob.setBackground(Color.RED);
+			throw new InvalidArgumentsException("Invalid Job");
 		}
 		
 		

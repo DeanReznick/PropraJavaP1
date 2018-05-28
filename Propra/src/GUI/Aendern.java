@@ -173,6 +173,8 @@ public class Aendern extends JFrame {
 		comboBox.setBounds(96, 280, 86, 20);
 		contentPane.add(comboBox);
 		
+		comboBox.addItem("Kunde");
+		comboBox.addItem("Intern"); 
 		
 		
 		JButton btnAendern = new JButton("Aendern");

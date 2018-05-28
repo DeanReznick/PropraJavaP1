@@ -30,6 +30,7 @@ public class UpdateOrder extends JFrame {
 	public static JTextField txtRepository;
 	public static JTextField txtPk;
 	public static JTextField txtRk;
+	public static JTextField txtJob;
 
 	/**
 	 * Launch the application.
@@ -72,6 +73,12 @@ public class UpdateOrder extends JFrame {
 		String repositoryOld = MainMenu.tblAuftraege.getModel().getValueAt(colnr, 4).toString();
 		String pkOld = MainMenu.tblAuftraege.getModel().getValueAt(colnr, 5).toString();
 		String rkOld = MainMenu.tblAuftraege.getModel().getValueAt(colnr, 6).toString();
+		
+		int colnrPers  = MainMenu.tblPersonen.getSelectedRow();
+		String nameOld = MainMenu.tblPersonen.getModel().getValueAt(colnrPers, 1).toString();
+		String surnameOld = MainMenu.tblPersonen.getModel().getValueAt(colnrPers, 2).toString();
+		int idPerson = Integer.parseInt(MainMenu.tblPersonen.getModel().getValueAt(colnrPers, 0).toString());
+		String jobOld = MainMenu.tblPersonen.getModel().getValueAt(colnrPers, 5).toString();
 		
 		
 		
@@ -154,6 +161,7 @@ public class UpdateOrder extends JFrame {
 				String repositoryNew = txtRepository.getText();
 				String pkNew = txtPk.getText();
 				String rkNew = txtRk.getText();
+				String jobNew = txtJob.getText();
 				
 				
 				Manager.checkStandardOrderUpdate(headerNew, afNew, filenameNew, repositoryNew, pkNew, rkNew);
@@ -172,6 +180,12 @@ public class UpdateOrder extends JFrame {
 				}
 				
 				
+				PersonenFertigungsverwaltung.changeJobOrderPerson(idPerson, idOld, jobNew);
+				
+				
+				
+				
+				
 				
 					
 				DataBase.refreshOrder();
@@ -188,6 +202,14 @@ public class UpdateOrder extends JFrame {
 		});
 		btnSave.setBounds(98, 11, 89, 23);
 		contentPane.add(btnSave);
+		
+		txtJob = new JTextField(jobOld);
+		txtJob.setBounds(98, 293, 86, 20);
+		contentPane.add(txtJob);
+		txtJob.setColumns(10);
+		
+		JLabel lblJob = new JLabel("Job:");
+		lblJob.setBounds(10, 296, 46, 14);
+		contentPane.add(lblJob);
 	}
-
 }
