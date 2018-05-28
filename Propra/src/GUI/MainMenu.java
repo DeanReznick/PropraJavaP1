@@ -414,6 +414,18 @@ public class MainMenu extends JFrame {
 		txtSearchOrder.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Status aendern");
+		
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				
+				
+				//AlterStatus x = new AlterStatus(); // -id Order 
+				//x.setVisible(true);  
+		
+			}
+		});
 		btnNewButton.setBounds(345, 388, 108, 23);
 		panelPerson.add(btnNewButton);
 		
