@@ -76,6 +76,27 @@ public class DataBase {
 		
 	}
 	
+	public static String getStatusBeiAuftragId(String id_auftrag) {
+		String status = null;
+		Statement stmt = null;
+		try{
+		String sqlStatus = "SELECT Status FROM Status WHERE ID_Auftrag like'" + id_auftrag + "';";
+		
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlStatus);
+			
+			
+				while(rs.next()) {status = rs.getString("Status");}
+				stmt.close();
+		}catch ( Exception e ) {
+		      System.err.println( "ID Order not found");
+		      
+		   }
+		
+		return status;
+		
+	}
+	
 	public static int getIdPersonByNameSurname(String name, String surname) {
 			
 		//SELECT ID_Person FROM Person WHERE name like 'Kern' and vorname like 'Dean'; 
@@ -427,7 +448,7 @@ public static void searchOrder(String search) {
 			    String e1 = rs.getString("Dateiort");
 			    String f1 = rs.getString("PK");
 			    String g1 = rs.getString("RK");
-			    String h1 = rs.getString("ID_Status");
+			    String h1 = DataBase.getStatusBeiAuftragId(a1);
 			    String j1 = DataBase.getRolleByOrderId(a1);
 			    
 			    
@@ -611,7 +632,7 @@ public static void searchOrder(String search) {
 			    String e1 = rs.getString("Dateiort");
 			    String f1 = rs.getString("PK");
 			    String g1 = rs.getString("RK");
-			    String h1 = rs.getString("ID_Status");
+			    String h1 = DataBase.getStatusBeiAuftragId(a1);
 			    String j1 = DataBase.getRolleByOrderId(a1);
 			    
 			    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});

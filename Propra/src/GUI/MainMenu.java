@@ -300,11 +300,11 @@ public class MainMenu extends JFrame {
 		    String e1 = rsAuftrag.getString("Dateiort");
 		    String f1 = rsAuftrag.getString("PK");
 		    String g1 = rsAuftrag.getString("RK");
-		    String h1 = rsAuftrag.getString("ID_Status");
+		    String h1 = DataBase.getStatusBeiAuftragId(a1);
 		    
 		    String j1 = DataBase.getRolleByOrderId(a1);
-		    System.out.println(a1);
-		    System.out.println(j1);
+		    //System.out.println(a1);
+		   // System.out.println(j1);
 		  
 		    
 		    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
