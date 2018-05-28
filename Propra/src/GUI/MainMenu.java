@@ -331,7 +331,7 @@ public class MainMenu extends JFrame {
 				Aendern x = new Aendern();
 				x.setVisible(true);
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
 				}
 			}
 		});
@@ -367,7 +367,7 @@ public class MainMenu extends JFrame {
 					UpdateOrder x = new UpdateOrder();
 					x.setVisible(true);
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen sie eine Person aus.");
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
 					}
 				
 			}
@@ -386,11 +386,11 @@ public class MainMenu extends JFrame {
 				DeleteOrder x = new DeleteOrder();
 				x.setVisible(true);
 				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
 				}
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen sie eine Zeile aus.");
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
 			}
 			}
 		});
@@ -407,7 +407,7 @@ public class MainMenu extends JFrame {
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				try {
 				int colnr  = tblAuftraege.getSelectedRow();
 
 				Object id_order  =  tblAuftraege.getModel().getValueAt(colnr, 0);
@@ -417,7 +417,9 @@ public class MainMenu extends JFrame {
 				
 				AlterStatus x = new AlterStatus(id.intValue()); // -id Order 
 				x.setVisible(true);  
-		
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				}
 			}
 		});
 		btnNewButton.setBounds(345, 388, 108, 23);
@@ -433,11 +435,11 @@ public class MainMenu extends JFrame {
 				Delete x = new Delete();
 				x.setVisible(true);
 				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
 				}
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen sie eine Zeile aus.");
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
 			}
 				
 			}
