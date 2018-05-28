@@ -242,6 +242,8 @@ public static void changeMail (String name, String surname, String mail) {
 	  
 	  
 	  public static void alterStatus(int id_order, String new_Status) {
+		  
+		DataBase.getConnection();  
 	    
 	    String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime()); // Could be outsourced to its own function. 
 	    String query_status = "INSERT INTO Status (ID_Auftrag, Status, Timestamp) VALUES (" + id_order + ", '" +new_Status +"' , '" + timeStamp +"');";
@@ -249,7 +251,7 @@ public static void changeMail (String name, String surname, String mail) {
 	    int id_status = DataBase.getSpecificID("ID_Status", "SELECT ID_Status FROM Status WHERE timestamp like '" + timeStamp + "';"); 
 	    String query_add_status_to_oder = "UPDATE Auftrag SET ID_status ="  + id_status + " WHERE ID_Auftrag = " + id_order + ";";  
 	    DataBase.executeQuery(query_add_status_to_oder); 
-	  
+	    DataBase.closeConnection();
 	    
 	  }
 	  

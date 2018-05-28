@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 
+import Data.DataBase;
 import Data.PersonenFertigungsverwaltung;
 
 import java.awt.Component;
@@ -41,13 +42,15 @@ public class AlterStatus extends JFrame {
 		txt_Status.setColumns(10);
 		this.id_order = id_order; 
 		
-		JButton btnNewButton = new JButton("New button");
+		JButton btnNewButton = new JButton("\u00C4ndern");
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				
 				PersonenFertigungsverwaltung.alterStatus(id_order, txt_Status.getText());
 				
+				dispose(); 
 				
 				
 				

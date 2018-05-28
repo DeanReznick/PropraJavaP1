@@ -419,10 +419,15 @@ public class MainMenu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
+				int colnr  = tblAuftraege.getSelectedRow();
+
+				Object id_order  =  tblAuftraege.getModel().getValueAt(colnr, 0);
+				
+				Integer id = Integer.valueOf(id_order.toString()); 
 				
 				
-				//AlterStatus x = new AlterStatus(); // -id Order 
-				//x.setVisible(true);  
+				AlterStatus x = new AlterStatus(id.intValue()); // -id Order 
+				x.setVisible(true);  
 		
 			}
 		});
