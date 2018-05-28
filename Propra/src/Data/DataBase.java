@@ -651,7 +651,7 @@ public static void searchOrder(String search) {
 	  
 	  public static String getPassword(String query) {
 	    String password = null; 
-	  Statement stmt = null;
+	    Statement stmt = null;
 	    
 	   try {
 	    

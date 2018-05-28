@@ -16,19 +16,22 @@ import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
+import javax.swing.JPasswordField;
 
 public class GUILogin extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txt_name;
-	private JTextField txt_password;
 	private JTextField txt_surname;
-
+	private int counter_try = 0;
+	private JPasswordField txt_password;
 	/**
 	 * Launch the application.
 	 */
@@ -82,27 +85,42 @@ public class GUILogin extends JFrame {
 		lblPassword.setBounds(10, 106, 214, 14);
 		contentPane.add(lblPassword);
 		
-		txt_password = new JTextField();
+		txt_password = new JPasswordField();
 		txt_password.setBounds(10, 186, 214, 20);
 		contentPane.add(txt_password);
-		txt_password.setColumns(10);
+
 		
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				MainMenu x;
 				try {
+						String name = txt_name.getText(); 
+						String surname = txt_surname.getText(); 
+						String password = txt_password.getText();  
+					 
+						
 					
-					if (Authentication.checkCredentials(txt_name.getText(), txt_surname.getText(), txt_password.getText())) {
-						System.out.println("GO!");
-						// Dann hier Programm öffnen. 
-						// Prüfenn ob Person berechrigt ist-Y ROlle = Intern? 
+					if(Authentication.checkCredentials(name, surname, password)) {
+						x = new MainMenu();
+						x.setVisible(true);
+						dispose();
+					}else {
+						if(++ counter_try < 4) {
+						
+							JOptionPane.showMessageDialog(null, 
+		                              "Eingaben stimmen nicht! Versuch: " + counter_try + " von 3", 
+		                              "Fehler", 
+		                              JOptionPane.WARNING_MESSAGE);
+						}else {
+							setVisible(false); 
+							dispose();
+						}
+		
 					}
+				
 					
 					
-					x = new MainMenu();
-					x.setVisible(true);
-					dispose();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -121,5 +139,11 @@ public class GUILogin extends JFrame {
 		txt_surname.setColumns(10);
 		txt_surname.setBounds(10, 131, 214, 20);
 		contentPane.add(txt_surname);
+		
+		JLabel lblNewLabel = new JLabel("Klein, Anna, 123");
+		lblNewLabel.setBounds(10, 25, 115, 14);
+		contentPane.add(lblNewLabel);
+		
+		
 	}
 }

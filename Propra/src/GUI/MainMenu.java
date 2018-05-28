@@ -413,6 +413,10 @@ public class MainMenu extends JFrame {
 		panelPerson.add(txtSearchOrder);
 		txtSearchOrder.setColumns(10);
 		
+		JButton btnNewButton = new JButton("Status aendern");
+		btnNewButton.setBounds(345, 388, 108, 23);
+		panelPerson.add(btnNewButton);
+		
 		btnLoeschen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DefaultTableModel model = (DefaultTableModel) tblPersonen.getModel();
