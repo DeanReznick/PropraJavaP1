@@ -49,7 +49,7 @@ public class AlterStatus extends JFrame {
 				
 				
 				PersonenFertigungsverwaltung.alterStatus(id_order, txt_Status.getText());
-				
+				DataBase.refreshOrder();
 				dispose(); 
 				
 				
