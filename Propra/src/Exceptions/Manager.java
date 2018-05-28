@@ -169,11 +169,7 @@ public class Manager {
 			throw new InvalidArgumentsException("Please fill in all values.");
 		}
 		
-		if(!UpdateOrder.txtJob.getText().equals("Intern") || !NewOrder.txtJob.getText().equals("Kunde"))
-		{
-			UpdateOrder.txtJob.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Invalid Job");
-		}
+		
 		
 		
 		
