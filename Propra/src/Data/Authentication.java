@@ -38,12 +38,13 @@ public class Authentication {
  
     
     if(sha256(password).equals(DataBase.getPassword(query))){
-
+    	DataBase.closeConnection();
       return true;
     }else {
+    	DataBase.closeConnection();
       return false; 
     }
-    
+   
   }
   
 }

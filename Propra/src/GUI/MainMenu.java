@@ -224,6 +224,7 @@ public class MainMenu extends JFrame {
 		tblPersonen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				DataBase.getConnection();
 				int colnr  = MainMenu.tblPersonen.getSelectedRow();
 				
 				String personName = MainMenu.tblPersonen.getModel().getValueAt(colnr, 1).toString();
@@ -232,19 +233,7 @@ public class MainMenu extends JFrame {
 				
 				txtSearchOrder.setText(fullName);
 				DataBase.searchOrder(fullName);
-			}
-		});
-		tblPersonen.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				int colnr  = MainMenu.tblPersonen.getSelectedRow();
-				
-				String personName = MainMenu.tblPersonen.getModel().getValueAt(colnr, 1).toString();
-				String personVorname = MainMenu.tblPersonen.getModel().getValueAt(colnr, 2).toString();
-				String fullName = personVorname + " " + personName;
-				
-				txtSearchOrder.setText(fullName);
-				DataBase.searchOrder(fullName);
+				DataBase.closeConnection();
 			}
 		});
 		DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Name", "Vorname", "Telefon", "Email", "Rolle",  "Straﬂe", "Hausnummer", "PLZ", "Ort", "Land"}, 0) {
