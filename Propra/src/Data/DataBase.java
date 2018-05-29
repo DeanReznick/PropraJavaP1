@@ -28,6 +28,7 @@ public class DataBase {
 	         System.err.println( e.getClass().getName() + ": " + e.getMessage() ); 
 	      }
 	      System.out.println("Opened database successfully");
+	      System.out.println("gsdg");
 }
 	
 	public static void closeConnection() {
