@@ -15,7 +15,7 @@ public class DataBase {
 	
 	public static ArrayList<PersonObjektRAM> people = new ArrayList<PersonObjektRAM>(); 
 	public static ArrayList<StatusObjektRAM> status_list = new ArrayList<StatusObjektRAM>();  //  Status-objects for a specific Person. Will be overwritten !!
-	
+	public static ArrayList<OffenerAuftragObjektRAM> offeneAuftraege = new ArrayList<OffenerAuftragObjektRAM>();
 	
 	public static void getConnection() {
 		
@@ -722,4 +722,53 @@ public static void searchOrder(String search) {
 	   return password; 
 	   
 	  }
+	  
+	  // Offene Auftraege 
+	  
+	  public static void loadOffeneAuftraegeToRam() {
+		  
+			int id_aenderung; 
+			int id_bauteil; 
+			int id_person; 
+			String name;
+			String vorname;
+			String timestamp; 
+			int aenderung; 
+			int lager;
+			
+	
+			
+			Statement stmt = null;
+		    
+		   try {
+		    
+		     // Getting Data from Database
+		      stmt = c.createStatement();
+		      String query = "SELECT Änderung.*, Person.name, Person.vorname, Bauteil.* FROM Änderung INNER JOIN Person ON Änderung.ID_Person = Person.ID_Person INNER JOIN Bauteil on Änderung.ID_Bauteil = Bauteil.ID_Bauteil;"; 
+		      
+		      ResultSet rs = stmt.executeQuery(query);
+		      
+		      while ( rs.next() ) {
+		    	  id_aenderung = rs.getInt("ID_Änderung"); 
+		    	  id_bauteil = rs.getInt("ID_Bauteil"); 
+		    	  id_person = rs.getInt("ID_Person"); 
+		    	  timestamp = rs.getString("timestamp"); 
+		    	  aenderung = rs.getInt("Änderung"); 
+		    	  name = rs.getString("Name"); 
+		    	  vorname = rs.getString("Vorname"); 
+		    	  lager = rs.getInt("MengeLagernd");
+		    	  
+		    	  OffenerAuftragObjektRAM tmp = new OffenerAuftragObjektRAM(id_aenderung,id_bauteil,id_person,name, vorname,timestamp, aenderung, lager); 
+		    	  offeneAuftraege.add(tmp);
+		      }
+		      
+		      stmt.close();
+		    
+		   } catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   System.out.println("Operation done successfully");
+		  }
+	  
 }
