@@ -54,6 +54,43 @@ public class BauteileAuftragsabwicklung {
 		
 	}
 	
+	public static void moveFromMengeGeplantToMengeBestellt(int id_aenderung) {
+		
+		// TO-DO	
+		
+		
+	}
+	
+	public static void moveFromMengeBestelltToMengeLagernd(int id_aenderung) {
+		
+		// TO-Do
+	}
+	
+	public static void newBauteil(String name, String link, int mengeLagernd, int mengeBestellt, int mengeGeplant, String lagerort) {
+		
+		String query = "INSERT INTO Bauteil (Name, Link, MengeLagernd, MengeBestellt, MengeGeplant, Lagerort) VALUES ('" + name +"','"+ link +"'," + mengeLagernd +"," + mengeBestellt + "," + mengeGeplant + ",'"+ lagerort +");";
+		DataBase.executeQuery(query);
+		
+	}
+	public static void deleteBauteil(int id_bauteil) {
+		
+		String query = "DELETE FROM Bauteil WHERE ID_Bauteil = "+ id_bauteil +";"; 
+		DataBase.executeQuery(query);
+		
+		
+	}
+	public static void changeBauteil(int id_Bauteil, String name, String link, int mengeLagernd, int mengeBestellt, int mengeGeplant, String lagerort) {
+		
+		String query = "UPDATE Bauteil" + 
+				"SET Name = '"+ name +"', link = '"+ link +"', MengeLagernd =" + mengeLagernd + ", MengeBestellt = " + mengeBestellt + ", MengeGeplant = " + mengeGeplant + ", Lagerort ='" + lagerort + "' WHERE ID_Bauteil =" + id_Bauteil +";";
+		DataBase.executeQuery(query);
+		
+	}
+	
+	
+	
+	
+	
 	
 	public static void deleteAuftrag(int id_aenderung) {
 		DataBase.getConnection();
