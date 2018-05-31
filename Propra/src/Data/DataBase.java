@@ -727,6 +727,9 @@ public static void searchOrder(String search) {
 	  
 	  public static void loadOffeneAuftraegeToRam() {
 		  
+		  	offeneAuftraege.removeAll(offeneAuftraege); 
+		  
+		  
 			int id_aenderung; 
 			int id_bauteil; 
 			int id_person; 
@@ -770,5 +773,89 @@ public static void searchOrder(String search) {
 		   }
 		   System.out.println("Operation done successfully");
 		  }
+	  
+	  
+	  public static void loadAuftragID(int id_aenderung) {
+		  
+		  	offeneAuftraege.removeAll(offeneAuftraege); 
+		  
+			int id_bauteil; 
+			int id_person; 
+			String name;
+			String vorname;
+			String timestamp; 
+			int aenderung; 
+			int lager;
+	
+			
+			Statement stmt = null;
+		    
+		   try {
+		    
+		     // Getting Data from Database
+		      stmt = c.createStatement();
+		      String query = "SELECT Änderung.*, Person.name, Person.vorname, Bauteil.* FROM Änderung INNER JOIN Person ON Änderung.ID_Person = Person.ID_Person INNER JOIN Bauteil on Änderung.ID_Bauteil = Bauteil.ID_Bauteil WHERE ID_Änderung like '" + id_aenderung +"';"; 
+		      
+		      ResultSet rs = stmt.executeQuery(query);
+		      
+		      while ( rs.next() ) {
+		    	  id_aenderung = rs.getInt("ID_Änderung"); 
+		    	  id_bauteil = rs.getInt("ID_Bauteil"); 
+		    	  id_person = rs.getInt("ID_Person"); 
+		    	  timestamp = rs.getString("timestamp"); 
+		    	  aenderung = rs.getInt("Änderung"); 
+		    	  name = rs.getString("Name"); 
+		    	  vorname = rs.getString("Vorname"); 
+		    	  lager = rs.getInt("MengeLagernd");
+		    	  
+		    	  OffenerAuftragObjektRAM tmp = new OffenerAuftragObjektRAM(id_aenderung,id_bauteil,id_person,name, vorname,timestamp, aenderung, lager); 
+		    	  offeneAuftraege.add(tmp);
+		      }
+		      
+		      stmt.close();
+		    
+		   } catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   System.out.println("Operation done successfully");
+		  }
+	  
+	  public static void getNameSurname(int id_person) {
+		  	
+		  	people.removeAll(people); 
+		  
+		  	String name;
+			String vorname;
+			
+			Statement stmt = null;
+		    
+		   try {
+		    
+		     // Getting Data from Database
+		      stmt = c.createStatement();
+		      String query = "SELECT * FROM Person WHERE ID_Person = " + id_person + ";"; 
+		      
+		      ResultSet rs = stmt.executeQuery(query);
+		      
+		      while ( rs.next() ) {
+		    	  name = rs.getString("Name"); 
+		    	  vorname = rs.getString("Vorname"); 
+		    	  
+		    	  PersonObjektRAM tmp = new PersonObjektRAM( id_person, name,"","", "", "", "", "", "", "",0, "",vorname); 
+		    	 
+		    	  people.add(tmp);
+		      }
+		      
+		      stmt.close();
+		    
+		   } catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   System.out.println("Operation done successfully");
+		  }
+	  
+	  
 	  
 }

@@ -1,17 +1,13 @@
 package GUI;
 // Test1
 
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import Data.Authentication;
 import Data.DataBase;
-
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import java.awt.GridLayout;
@@ -26,7 +22,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 
 public class GUILogin extends JFrame {
-
+	public static String name_signedIn;
+	public static String vorname_signedIn; 
+		
 	private JPanel contentPane;
 	private JTextField txt_name;
 	private JTextField txt_surname;
@@ -52,8 +50,6 @@ public class GUILogin extends JFrame {
 		
 		 DataBase.loadStatusToRam(21);
 		 DataBase.closeConnection();
-		 
-		 
 	}
 
 	/**
@@ -99,7 +95,8 @@ public class GUILogin extends JFrame {
 						String surname = txt_surname.getText(); 
 						String password = txt_password.getText();  
 					 
-						
+						name_signedIn = name; 
+						vorname_signedIn = surname; 
 					
 					if(Authentication.checkCredentials(name, surname, password)) {
 						x = new MainMenu();
@@ -119,13 +116,10 @@ public class GUILogin extends JFrame {
 		
 					}
 				
-					
-					
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
 			}
 		});
 		btnLogin.setBounds(10, 228, 89, 23);

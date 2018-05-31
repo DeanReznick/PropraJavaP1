@@ -176,13 +176,6 @@ public static void changeMail (String name, String surname, String mail) {
 	      //(2a) ID of the order Get order from the database
 	      //(2b) Get ID of person to be assigned from the database
 	      //(3) Ids in the mixing table
-
-	    
-	    
-	    
-	    
-	    
-	    
 	    
 	    String query = "INSERT INTO Auftrag (Titel, af,  Dateiname, Dateiort, pk, rk) VALUES ( '" + header +"', '"+ af +"', '"+ filename + "','" + repository  + "','"+  pk  + "','" + rk  + "');"; 
 	    DataBase.executeQuery(query); 
@@ -220,6 +213,19 @@ public static void changeMail (String name, String surname, String mail) {
 	    DataBase.executeQuery(query);
 	    
 	  }
+	  
+	  
+	  public static void addJobOrderPerson(int id_person, int id_order, String job) {
+		    
+		    String query = "INSERT INTO 'Mischtabelle-Person-Auftrag' (rolle, ID_Auftrag, ID_Person) VALUES ('" + job + "', " + id_order + "," + id_person +");";  
+ 
+		    DataBase.executeQuery(query);
+		    
+		  }
+		  
+	  
+	  
+	  
 	  
 	  public static void deleteOrder(int id_Order) {
 	    //Procedure: 
