@@ -54,16 +54,59 @@ public class BauteileAuftragsabwicklung {
 		
 	}
 	
-	public static void moveFromMengeGeplantToMengeBestellt(int id_aenderung) {
+	public static void calculateMengeBestellt(int id_bauteil) {
 		
-		// TO-DO	
+		int [] mengen = null; 
 		
+		DataBase.getConnection();
+		mengen = DataBase.getMengenBauteile(id_bauteil); 		
+		DataBase.closeConnection();
+		
+		try {
+			int change = mengen[2] - mengen[0]; 
+			
+			String query = "UPDATE Bauteil" + 
+					"SET MengeBestellt = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
+			
+			DataBase.getConnection();
+			DataBase.executeQuery(query);
+			DataBase.closeConnection();
+			
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+		}
 		
 	}
 	
-	public static void moveFromMengeBestelltToMengeLagernd(int id_aenderung) {
+	public static void calculateMengeLagernd(int id_bauteil) {
 		
-		// TO-Do
+		int [] mengen = null; 
+		
+		DataBase.getConnection();
+		mengen = DataBase.getMengenBauteile(id_bauteil); 		
+		DataBase.closeConnection();
+		
+		try {
+			
+			int change = mengen[0] + mengen[1]; 
+			String query = "UPDATE Bauteil" + 
+					"SET MengeBestellt = 0 WHERE ID_Bauteil =" + id_bauteil +";";
+			DataBase.getConnection();
+			DataBase.executeQuery(query);
+			DataBase.closeConnection();
+			
+			query = "UPDATE Bauteil" + 
+					"SET MengeLagernd = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
+			DataBase.getConnection();
+			DataBase.executeQuery(query);
+			DataBase.closeConnection();
+			
+			
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+		}
+		
+		
 	}
 	
 	public static void newBauteil(String name, String link, int mengeLagernd, int mengeBestellt, int mengeGeplant, String lagerort) {

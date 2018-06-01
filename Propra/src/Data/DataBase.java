@@ -856,6 +856,46 @@ public static void searchOrder(String search) {
 		   System.out.println("Operation done successfully");
 		  }
 	  
+	  ///----
 	  
+	  public static int[] getMengenBauteile (int id_bauteil) {
+		  
+		int mengeLagernd; 
+		int mengeBestellt; 
+		int mengeGeplant; 
+		
+		int [] mengen = new int[3]; 
+		Statement stmt = null;
+	   
+	   try {
+	    
+		   //Query 
+		   String query = "SELECT * FROM Bauteil WHERE ID_Bauteil = " + id_bauteil + ";"; 
+		   
+		   // Getting Data from Database
+	      stmt = c.createStatement();
+	      ResultSet rs = stmt.executeQuery( query );
+	      
+	      while ( rs.next() ) {
+	    	mengeLagernd = rs.getInt("MengeLagernd"); 
+	    	mengeBestellt = rs.getInt("MengeBestellt"); 
+	    	mengeGeplant = rs.getInt("MengeGeplant");
+	    	
+	    	mengen[0] = mengeLagernd; 
+	    	mengen[1] = mengeBestellt; 
+	    	mengen[2] = mengeGeplant; 
+	    	  
+	      }
+	     
+	      stmt.close();
+	    
+	   } catch ( Exception e ) {
+	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	      
+	   }
+	   
+	   System.out.println("Operation done successfully");
+	   return mengen; 
+	}
 	  
 }
