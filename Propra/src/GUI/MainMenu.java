@@ -55,7 +55,7 @@ public class MainMenu extends JFrame {
 	public static JScrollPane scrollPane;
 	private JTextField txtSearchOrder;
 	public static JScrollPane scrollPane_1;
-	private JTable tblOffeneAuftraege;
+	public static JTable tblOffeneAuftraege;
 	
 
 	/**
@@ -469,12 +469,23 @@ public class MainMenu extends JFrame {
 		panelOrders.setLayout(null);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(10, 56, 939, 256);
+		scrollPane_2.setBounds(10, 56, 939, 344);
 		panelOrders.add(scrollPane_2);
 		
 		String[] column_headers_orders = {"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"};
 		String[][] data_orders = new String[1000][7];
 		tblOffeneAuftraege = new JTable(data_orders, column_headers_orders);
+		tblOffeneAuftraege.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+				OrderApprove x = new OrderApprove(); // -id Order 
+				x.setVisible(true);  
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				}	
+			}
+		});
 		DefaultTableModel modelOffeneAuftraege = new DefaultTableModel(new String[]{"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"}, 0) {
 			
 			@Override
@@ -508,22 +519,6 @@ public class MainMenu extends JFrame {
 		
 		
 		scrollPane_2.setViewportView(tblOffeneAuftraege);
-		
-		
-		
-		JButton btnPruefen = new JButton("Pruefen");
-		btnPruefen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				OrderApprove x = new OrderApprove();
-				x.setVisible(true);
-			}
-		});
-		btnPruefen.setBounds(701, 323, 89, 23);
-		panelOrders.add(btnPruefen);
-		
-		JButton btnLoeschen_1 = new JButton("Loeschen");
-		btnLoeschen_1.setBounds(829, 323, 89, 23);
-		panelOrders.add(btnLoeschen_1);
 		//contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panelPerson, btnHinzufuegen, btnLoeschen, txtSuchen, tabbedPane, lblNewLabel, scrollPane, tblPersonen, scrollPane_1, tblAuftraege, lblAuftraege, btnSuchen, btnSearchOrder, btnChangePerson, btnRefresh, btnErstellen, btnChangeOrder, btnDeleteOrder, txtSearchOrder, btnNewButton, panelFinanz, panelBau, panelOrders}));
 		
 		JPanel panelFinanz = new JPanel();

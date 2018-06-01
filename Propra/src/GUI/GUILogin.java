@@ -14,6 +14,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -138,6 +139,6 @@ public class GUILogin extends JFrame {
 		lblNewLabel.setBounds(10, 25, 115, 14);
 		contentPane.add(lblNewLabel);
 		
-		
+		SwingUtilities.getRootPane(btnLogin).setDefaultButton(btnLogin);
 	}
 }

@@ -77,6 +77,28 @@ public class DataBase {
 		
 	}
 	
+	public static String getRolleByPersonId(String id_person) {
+		
+		String rolle = null;
+		Statement stmt = null;
+		try{
+		String sqlRolle = "SELECT Rolle FROM Person WHERE ID_Person like'" + id_person + "';";
+		
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlRolle);
+			
+			
+				while(rs.next()) {rolle = rs.getString("Rolle");}
+				stmt.close();
+		}catch ( Exception e ) {
+		      System.err.println( "ID Order not found");
+		      
+		   }
+		
+		return rolle;
+		
+	}
+	
 	public static String getStatusBeiAuftragId(String id_auftrag) {
 		String status = null;
 		Statement stmt = null;
@@ -897,5 +919,33 @@ public static void searchOrder(String search) {
 	   System.out.println("Operation done successfully");
 	   return mengen; 
 	}
-	  
+	 
+	  public static String getBauteilName (int id_bauteil) {
+		  String name = "";
+		  
+			Statement stmt = null;
+		   
+		   try {
+		    
+			   //Query 
+			   String query = "SELECT Name FROM Bauteil WHERE ID_Bauteil = " + id_bauteil + ";"; 
+			   
+			   // Getting Data from Database
+		      stmt = c.createStatement();
+		      ResultSet rs = stmt.executeQuery( query );
+		      
+		      while ( rs.next() ) {
+		    	name = rs.getString("Name");		    	  
+		      }
+		     
+		      stmt.close();
+		    
+		   } catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   
+		   System.out.println("Operation done successfully");
+		   return name; 
+		}
 }
