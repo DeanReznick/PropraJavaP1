@@ -12,6 +12,7 @@ import javax.swing.table.TableModel;
 
 import Data.Authentication;
 import Data.DataBase;
+import Data.OffenerAuftragObjektRAM;
 import Data.PersonObjektRAM;
 import Data.PersonenFertigungsverwaltung;
 import Data.StatusObjektRAM;
@@ -473,9 +474,42 @@ public class MainMenu extends JFrame {
 		
 		String[] column_headers_orders = {"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"};
 		String[][] data_orders = new String[1000][7];
-		
 		tblOffeneAuftraege = new JTable(data_orders, column_headers_orders);
+		DefaultTableModel modelOffeneAuftraege = new DefaultTableModel(new String[]{"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};	
+			
+			DataBase.loadOffeneAuftraegeToRam();
+			
+			
+			for(OffenerAuftragObjektRAM tmp: DataBase.offeneAuftraege) {
+				
+			int id_aenderung = tmp.getid_aenderung();
+			int id_bauteil = tmp.getId_bauteil();
+			int id_person = tmp.getId_person();
+			String vorname = tmp.getVorname();
+			String name = tmp.getName();
+			String timestamp = tmp.getTimestamp();
+			int aenderung = tmp.getAenderung();
+			
+			
+			 modelOffeneAuftraege.addRow(new Object[]{id_aenderung, id_bauteil, id_person, vorname, name, timestamp, aenderung});
+			
+			
+			
+	
+			}
+			
+			tblOffeneAuftraege.setModel(modelOffeneAuftraege);
+		
+		
 		scrollPane_2.setViewportView(tblOffeneAuftraege);
+		
+		
 		
 		JButton btnPruefen = new JButton("Pruefen");
 		btnPruefen.addActionListener(new ActionListener() {
@@ -491,7 +525,7 @@ public class MainMenu extends JFrame {
 		btnLoeschen_1.setBounds(829, 323, 89, 23);
 		panelOrders.add(btnLoeschen_1);
 		//contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panelPerson, btnHinzufuegen, btnLoeschen, txtSuchen, tabbedPane, lblNewLabel, scrollPane, tblPersonen, scrollPane_1, tblAuftraege, lblAuftraege, btnSuchen, btnSearchOrder, btnChangePerson, btnRefresh, btnErstellen, btnChangeOrder, btnDeleteOrder, txtSearchOrder, btnNewButton, panelFinanz, panelBau, panelOrders}));
-				
+		
 		JPanel panelFinanz = new JPanel();
 		tabbedPane.addTab("Finanzverwaltung", null, panelFinanz, null);
 		
