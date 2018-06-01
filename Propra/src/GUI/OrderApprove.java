@@ -178,11 +178,13 @@ public class OrderApprove extends JFrame {
 		txtDatum.setEditable(false);
 		
 		txtBauteilID = new JTextField(idComponent);
+		txtBauteilID.setEditable(false);
 		txtBauteilID.setBounds(130, 177, 86, 20);
 		contentPane.add(txtBauteilID);
 		txtBauteilID.setColumns(10);
 		
-		txtBauteilName = new JTextField(component);
+		txtBauteilName = new JTextField("<dynamic>");
+		txtBauteilName.setEditable(false);
 		txtBauteilName.setBounds(130, 202, 86, 20);
 		contentPane.add(txtBauteilName);
 		txtBauteilName.setColumns(10);
