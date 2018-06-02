@@ -125,7 +125,7 @@ public class OrderApprove extends JFrame {
 				DataBase.getConnection();
 				
 				BauteileAuftragsabwicklung.process(Integer.parseInt(idAenderung), Integer.parseInt(amount), txtPrice.getText());
-				BauteileAuftragsabwicklung.deleteAuftrag(Integer.parseInt(idAenderung));
+				DataBase.refreshChange();
 				dispose();
 				}
 				catch (Exception ex){

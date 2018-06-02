@@ -526,6 +526,7 @@ public class MainMenu extends JFrame {
 		
 		JPanel panelBau = new JPanel();
 		tabbedPane.addTab("Bauteileverwaltung", null, panelBau, null);
+		panelBau.setLayout(null);
 		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panelPerson, btnHinzufuegen, btnLoeschen, txtSuchen, tabbedPane, lblNewLabel, scrollPane, tblPersonen, scrollPane_1, tblAuftraege, lblAuftraege, btnSuchen, btnSearchOrder, btnChangePerson, btnRefresh, btnErstellen, btnChangeOrder, btnDeleteOrder, txtSearchOrder, btnNewButton, panelFinanz, panelBau, panelOrders}));
 
 		

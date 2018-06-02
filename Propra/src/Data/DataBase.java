@@ -671,6 +671,61 @@ public static void searchOrder(String search) {
 	
 		closeConnection();
 	}
+	
+	public static void refreshChange() {
+
+		getConnection();
+		
+		DefaultTableModel modelOffeneAuftraege = new DefaultTableModel(new String[]{"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		
+		Statement stmt = null;
+		try {
+			stmt = DataBase.c.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		String sql = "SELECT * FROM Änderung";
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			while(rs.next())
+			{
+				int a1 = rs.getInt("ID_Änderung");
+			    int b1 = rs.getInt("ID_Bauteil");
+			    int c1 = rs.getInt("ID_Person");
+			    String d1 = rs.getString("timestamp");
+			    int e1 = rs.getInt("Änderung");
+			    String f1 = rs.getString("Name");
+			    String g1 = rs.getString("Vorname");
+			    int h1 = rs.getInt("MengeLagernd");
+			    
+			    modelOffeneAuftraege.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
+			   
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		MainMenu.tblAuftraege.setModel(modelOffeneAuftraege);
+	
+		closeConnection();
+	}
 	  
 	  
 	public static void loadStatusToRam(int ID_order) {
