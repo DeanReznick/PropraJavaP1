@@ -143,16 +143,15 @@ public class BauteileAuftragsabwicklung {
 		
 	}
 	public static void deleteBauteil(int id_bauteil) {
-		
+		DataBase.getConnection();
 		String query = "DELETE FROM Bauteil WHERE ID_Bauteil = "+ id_bauteil +";"; 
 		DataBase.executeQuery(query);
-		
+		DataBase.closeConnection();
 		
 	}
 	public static void changeBauteil(int id_Bauteil, String name, String link, int mengeLagernd, int mengeBestellt, int mengeGeplant, String lagerort) {
 		
-		String query = "UPDATE Bauteil" + 
-				"SET Name = '"+ name +"', link = '"+ link +"', MengeLagernd =" + mengeLagernd + ", MengeBestellt = " + mengeBestellt + ", MengeGeplant = " + mengeGeplant + ", Lagerort ='" + lagerort + "' WHERE ID_Bauteil =" + id_Bauteil +";";
+		String query = "UPDATE Bauteil SET Name = '"+ name +"', link = '"+ link +"', MengeLagernd =" + mengeLagernd + ", MengeBestellt = " + mengeBestellt + ", MengeGeplant = " + mengeGeplant + ", Lagerort ='" + lagerort + "' WHERE ID_Bauteil =" + id_Bauteil +";";
 		DataBase.executeQuery(query);
 		
 	}

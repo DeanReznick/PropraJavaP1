@@ -144,6 +144,8 @@ public class OrderApprove extends JFrame {
 		btnAblehnen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				BauteileAuftragsabwicklung.deleteAuftrag(Integer.parseInt(idAenderung));
+				DataBase.refreshChange();
+				
 			}
 		});
 		btnAblehnen.setBounds(127, 340, 89, 23);

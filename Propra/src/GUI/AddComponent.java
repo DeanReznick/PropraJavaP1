@@ -94,7 +94,9 @@ public class AddComponent extends JFrame {
 				catch (Exception ex){
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {
+					DataBase.refreshComponent();
 					DataBase.closeConnection();
+					
 				}
 			}
 		});

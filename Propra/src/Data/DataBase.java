@@ -672,6 +672,62 @@ public static void searchOrder(String search) {
 		closeConnection();
 	}
 	
+	
+	
+	public static void refreshComponent() {
+
+		getConnection();
+		
+	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		
+		Statement stmt = null;
+		try {
+			stmt = DataBase.c.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		String sql = "SELECT * FROM Bauteil";
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			while(rs.next())
+			{
+				String a1 = rs.getString("ID_Bauteil");
+			    String b1 = rs.getString("Name");
+			    String c1 = rs.getString("Link");
+			    String d1 = rs.getString("MengeLagernd");
+			    String e1 = rs.getString("MengeBestellt");
+			    String f1 = rs.getString("MengeGeplant");
+			    String g1 = rs.getString("Lagerort");
+			    
+			    modelComponents.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1});
+			   
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		MainMenu.tblComponents.setModel(modelComponents);
+	
+		closeConnection();
+	}
+	
 	public static void refreshChange() {
 
 		getConnection();

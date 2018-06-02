@@ -58,8 +58,10 @@ public class DeleteComponent extends JFrame {
 				DefaultTableModel model = (DefaultTableModel) MainMenu.tblComponents.getModel();
 				//get selected row index
 				int selectedRowIndex = MainMenu.tblComponents.getSelectedRow();
+				System.out.println(selectedRowIndex);
 				String tableClick = MainMenu.tblComponents.getModel().getValueAt(selectedRowIndex, 0).toString();
 				int id = Integer.parseInt(tableClick);
+				System.out.println(id);
 				BauteileAuftragsabwicklung.deleteBauteil(id);
 				
 				model.removeRow(selectedRowIndex);

@@ -612,12 +612,19 @@ public class MainMenu extends JFrame {
 			} else {
 				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
 			}
+				
 			}
 		});
 		btnDeleteComponent.setBounds(121, 377, 101, 23);
 		panelBau.add(btnDeleteComponent);
 		
 		JButton btnAendern = new JButton("Aendern");
+		btnAendern.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				UpdateComponent x = new UpdateComponent(); // -id Order 
+				x.setVisible(true);
+			}
+		});
 		btnAendern.setBounds(232, 377, 101, 23);
 		panelBau.add(btnAendern);
 		
