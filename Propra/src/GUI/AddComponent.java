@@ -56,27 +56,27 @@ public class AddComponent extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblName = new JLabel("Name:");
-		lblName.setBounds(10, 33, 46, 14);
+		lblName.setBounds(10, 33, 86, 14);
 		contentPane.add(lblName);
 		
 		JLabel lblLink = new JLabel("Link:");
-		lblLink.setBounds(10, 58, 46, 14);
+		lblLink.setBounds(10, 58, 86, 14);
 		contentPane.add(lblLink);
 		
 		JLabel lblStock = new JLabel("Lagernd:");
-		lblStock.setBounds(10, 130, 46, 14);
+		lblStock.setBounds(10, 130, 86, 14);
 		contentPane.add(lblStock);
 		
 		JLabel lblOrdered = new JLabel("Bestellt:");
-		lblOrdered.setBounds(10, 155, 46, 14);
+		lblOrdered.setBounds(10, 155, 86, 14);
 		contentPane.add(lblOrdered);
 		
 		JLabel lblBauteilId = new JLabel("Geplant:");
-		lblBauteilId.setBounds(10, 180, 61, 14);
+		lblBauteilId.setBounds(10, 180, 86, 14);
 		contentPane.add(lblBauteilId);
 		
 		JLabel lblBauteil = new JLabel("Lagerort:");
-		lblBauteil.setBounds(10, 205, 46, 14);
+		lblBauteil.setBounds(10, 205, 73, 14);
 		contentPane.add(lblBauteil);
 		
 		JButton btnBestaetigen = new JButton("Bestaetigen");
