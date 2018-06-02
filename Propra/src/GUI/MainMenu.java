@@ -56,6 +56,8 @@ public class MainMenu extends JFrame {
 	private JTextField txtSearchOrder;
 	public static JScrollPane scrollPane_1;
 	public static JTable tblOffeneAuftraege;
+	public static JTable tblComponents;
+	private JTextField textField;
 	
 
 	/**
@@ -527,6 +529,94 @@ public class MainMenu extends JFrame {
 		JPanel panelBau = new JPanel();
 		tabbedPane.addTab("Bauteileverwaltung", null, panelBau, null);
 		panelBau.setLayout(null);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(10, 56, 939, 299);
+		panelBau.add(scrollPane_3);
+		
+		String[] column_headers_component = {"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"};
+		String[][] data_components = new String[1000][7];
+		tblComponents = new JTable(data_orders, column_headers_orders);
+		DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};	
+			
+//			DataBase.loadOffeneAuftraegeToRam();
+//			
+//			
+//			for(OffenerAuftragObjektRAM tmp: DataBase.offeneAuftraege) {
+//				
+//			int id_bauteil = tmp.getid_aenderung();
+//			String name = tmp.getId_bauteil();
+//			String link = tmp.getId_person();
+//			int mengeLagernd = tmp.getVorname();
+//			int mengeBestellt = tmp.getName();
+//			int mengeGeplant = tmp.getTimestamp();
+//			String lagerort = tmp.getAenderung();
+//			
+//			
+//			 modelOffeneAuftraege.addRow(new Object[]{id_bauteil, name, link, mengeLagernd, mengeBestellt, mengeGeplant, lagerort});
+//			
+//			
+//			
+//	
+//			}
+			
+			tblComponents.setModel(modelComponents);
+		
+		
+		scrollPane_3.setViewportView(tblComponents);
+		
+		textField = new JTextField();
+		textField.setBounds(749, 11, 200, 20);
+		panelBau.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblSuchen = new JLabel("Suchen:");
+		lblSuchen.setBounds(693, 14, 46, 14);
+		panelBau.add(lblSuchen);
+		
+		JButton btnAddComponent = new JButton("Hinzufuegen");
+		btnAddComponent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AddComponent x = new AddComponent(); // -id Order 
+				x.setVisible(true);
+			}
+		});
+		btnAddComponent.setBounds(10, 377, 101, 23);
+		panelBau.add(btnAddComponent);
+		
+		JButton btnDeleteComponent = new JButton("Loeschen");
+		btnDeleteComponent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) tblComponents.getModel();
+				//get selected row index
+				int selectedRowIndex = tblComponents.getSelectedRow();
+				if (selectedRowIndex >= 0) {
+				try {
+				DeleteComponent x = new DeleteComponent();
+				x.setVisible(true);
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+			}
+			}
+		});
+		btnDeleteComponent.setBounds(121, 377, 101, 23);
+		panelBau.add(btnDeleteComponent);
+		
+		JButton btnAendern = new JButton("Aendern");
+		btnAendern.setBounds(232, 377, 101, 23);
+		panelBau.add(btnAendern);
+		
+		
 		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panelPerson, btnHinzufuegen, btnLoeschen, txtSuchen, tabbedPane, lblNewLabel, scrollPane, tblPersonen, scrollPane_1, tblAuftraege, lblAuftraege, btnSuchen, btnSearchOrder, btnChangePerson, btnRefresh, btnErstellen, btnChangeOrder, btnDeleteOrder, txtSearchOrder, btnNewButton, panelFinanz, panelBau, panelOrders}));
 
 		

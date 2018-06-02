@@ -12,10 +12,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
 import Data.PersonenFertigungsverwaltung;
 
-public class DeleteOrder extends JFrame {
+public class DeleteComponent extends JFrame {
 
 	private JPanel contentPane;
 
@@ -38,8 +39,8 @@ public class DeleteOrder extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DeleteOrder() {
-		setTitle("Delete order");
+	public DeleteComponent() {
+		setTitle("Delete component");
 		DataBase.getConnection();
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
@@ -47,19 +48,19 @@ public class DeleteOrder extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblDoYouReally = new JLabel("Do you really want to delete this order?");
+		JLabel lblDoYouReally = new JLabel("Do you really want to delete this component?");
 		lblDoYouReally.setBounds(5, 5, 374, 14);
 		contentPane.add(lblDoYouReally);
 		
-		JButton btnDeleteOrder = new JButton("Delete Order");
+		JButton btnDeleteOrder = new JButton("Delete Component");
 		btnDeleteOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model = (DefaultTableModel) MainMenu.tblAuftraege.getModel();
+				DefaultTableModel model = (DefaultTableModel) MainMenu.tblComponents.getModel();
 				//get selected row index
-				int selectedRowIndex = MainMenu.tblAuftraege.getSelectedRow();
-				String tableClick = MainMenu.tblAuftraege.getModel().getValueAt(selectedRowIndex, 0).toString();
+				int selectedRowIndex = MainMenu.tblComponents.getSelectedRow();
+				String tableClick = MainMenu.tblComponents.getModel().getValueAt(selectedRowIndex, 0).toString();
 				int id = Integer.parseInt(tableClick);
-				PersonenFertigungsverwaltung.deleteOrder(id);;
+				BauteileAuftragsabwicklung.deleteBauteil(id);
 				
 				model.removeRow(selectedRowIndex);
 				DataBase.closeConnection();
