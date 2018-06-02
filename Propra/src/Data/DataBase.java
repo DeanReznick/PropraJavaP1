@@ -682,50 +682,39 @@ public static void searchOrder(String search) {
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
-			};
+			};	
+			
+			DataBase.loadOffeneAuftraegeToRam();
+			
+			
+			for(OffenerAuftragObjektRAM tmp: DataBase.offeneAuftraege) {
+				
+			int id_aenderung = tmp.getid_aenderung();
+			int id_bauteil = tmp.getId_bauteil();
+			int id_person = tmp.getId_person();
+			String vorname = tmp.getVorname();
+			String name = tmp.getName();
+			String timestamp = tmp.getTimestamp();
+			int aenderung = tmp.getAenderung();
+			
+			
+			 modelOffeneAuftraege.addRow(new Object[]{id_aenderung, id_bauteil, id_person, vorname, name, timestamp, aenderung});
+			
+			
+			
+	
+			}
+			
+			MainMenu.tblOffeneAuftraege.setModel(modelOffeneAuftraege);
 		
-		Statement stmt = null;
-		try {
-			stmt = DataBase.c.createStatement();
-		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-
-		String sql = "SELECT * FROM Änderung";
-		ResultSet rs = null;
-		try {
-			rs = stmt.executeQuery(sql);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
-		try {
-			while(rs.next())
-			{
-				int a1 = rs.getInt("ID_Änderung");
-			    int b1 = rs.getInt("ID_Bauteil");
-			    int c1 = rs.getInt("ID_Person");
-			    String d1 = rs.getString("timestamp");
-			    int e1 = rs.getInt("Änderung");
-			    String f1 = rs.getString("Name");
-			    String g1 = rs.getString("Vorname");
-			    int h1 = rs.getInt("MengeLagernd");
-			    
-			    modelOffeneAuftraege.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
+			closeConnection();
 			   
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		
-		MainMenu.tblAuftraege.setModel(modelOffeneAuftraege);
-	
-		closeConnection();
-	}
+		
+		
 	  
 	  
 	public static void loadStatusToRam(int ID_order) {

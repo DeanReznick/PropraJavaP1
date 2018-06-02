@@ -125,12 +125,14 @@ public class OrderApprove extends JFrame {
 				DataBase.getConnection();
 				
 				BauteileAuftragsabwicklung.process(Integer.parseInt(idAenderung), Integer.parseInt(amount), txtPrice.getText());
-				DataBase.refreshChange();
+			
 				dispose();
 				}
 				catch (Exception ex){
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {
+					DataBase.refreshChange();
+					DataBase.refreshOrder();
 					DataBase.closeConnection();
 				}
 			}
