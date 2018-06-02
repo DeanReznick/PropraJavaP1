@@ -544,29 +544,34 @@ public class MainMenu extends JFrame {
 					return false;
 				}
 			};	
+			Statement stmtComponents = DataBase.c.createStatement();
+			String sqlComponent = "SELECT * FROM Bauteil";
+			ResultSet rsComponent = stmtComponents.executeQuery(sqlComponent);
 			
-//			DataBase.loadOffeneAuftraegeToRam();
-//			
-//			
-//			for(OffenerAuftragObjektRAM tmp: DataBase.offeneAuftraege) {
-//				
-//			int id_bauteil = tmp.getid_aenderung();
-//			String name = tmp.getId_bauteil();
-//			String link = tmp.getId_person();
-//			int mengeLagernd = tmp.getVorname();
-//			int mengeBestellt = tmp.getName();
-//			int mengeGeplant = tmp.getTimestamp();
-//			String lagerort = tmp.getAenderung();
-//			
-//			
-//			 modelOffeneAuftraege.addRow(new Object[]{id_bauteil, name, link, mengeLagernd, mengeBestellt, mengeGeplant, lagerort});
-//			
-//			
-//			
-//	
-//			}
+			
+			
+			
+			while(rsComponent.next())
+			{
+				String a1 = rsComponent.getString("ID_Bauteil");
+			    String b1 = rsComponent.getString("Name");
+			    String c1 = rsComponent.getString("Link");
+			    String d1 = rsComponent.getString("MengeLagernd");
+			    String e1 = rsComponent.getString("MengeBestellt");
+			    String f1 = rsComponent.getString("MengeGeplant");
+			    String g1 = rsComponent.getString("Lagerort");
+			    
+			    
+			 
+			  
+			    
+			    modelComponents.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1});
+			}
 			
 			tblComponents.setModel(modelComponents);
+			
+			
+			
 		
 		
 		scrollPane_3.setViewportView(tblComponents);
