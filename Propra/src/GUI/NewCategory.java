@@ -63,7 +63,7 @@ public class NewCategory extends JFrame {
 				DataBase.getConnection();
 				String name = txtCategory.getText();
 				BauteileAuftragsabwicklung.createKategorie(name);
-				DataBase.refreshCategory();
+				
 				DataBase.closeConnection();
 				dispose();
 			}

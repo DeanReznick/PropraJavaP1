@@ -222,5 +222,5 @@ public class BauteileAuftragsabwicklung {
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 	}
-	
 }
+	
