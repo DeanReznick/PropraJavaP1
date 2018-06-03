@@ -57,8 +57,8 @@ public class MainMenu extends JFrame {
 	public static JScrollPane scrollPane_1;
 	public static JTable tblOffeneAuftraege;
 	public static JTable tblComponents;
-	private JTextField textField;
-	
+	private JTextField txtSearchComponent;
+	public static JScrollPane scrollPane_3;
 
 	/**
 	 * Launch the application.
@@ -536,7 +536,7 @@ public class MainMenu extends JFrame {
 		
 		String[] column_headers_component = {"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"};
 		String[][] data_components = new String[1000][7];
-		tblComponents = new JTable(data_orders, column_headers_orders);
+		tblComponents = new JTable(data_components, column_headers_component);
 		DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
 			
 			@Override
@@ -576,14 +576,10 @@ public class MainMenu extends JFrame {
 		
 		scrollPane_3.setViewportView(tblComponents);
 		
-		textField = new JTextField();
-		textField.setBounds(749, 11, 200, 20);
-		panelBau.add(textField);
-		textField.setColumns(10);
-		
-		JLabel lblSuchen = new JLabel("Suchen:");
-		lblSuchen.setBounds(693, 14, 46, 14);
-		panelBau.add(lblSuchen);
+		txtSearchComponent = new JTextField();
+		txtSearchComponent.setBounds(749, 11, 200, 20);
+		panelBau.add(txtSearchComponent);
+		txtSearchComponent.setColumns(10);
 		
 		JButton btnAddComponent = new JButton("Hinzufuegen");
 		btnAddComponent.addActionListener(new ActionListener() {
@@ -627,6 +623,15 @@ public class MainMenu extends JFrame {
 		});
 		btnAendern.setBounds(232, 377, 101, 23);
 		panelBau.add(btnAendern);
+		
+		JButton btnSearchComponent = new JButton("Suchen");
+		btnSearchComponent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DataBase.searchComponent(txtSearchComponent.getText());
+			}
+		});
+		btnSearchComponent.setBounds(650, 10, 89, 23);
+		panelBau.add(btnSearchComponent);
 		
 		
 		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panelPerson, btnHinzufuegen, btnLoeschen, txtSuchen, tabbedPane, lblNewLabel, scrollPane, tblPersonen, scrollPane_1, tblAuftraege, lblAuftraege, btnSuchen, btnSearchOrder, btnChangePerson, btnRefresh, btnErstellen, btnChangeOrder, btnDeleteOrder, txtSearchOrder, btnNewButton, panelFinanz, panelBau, panelOrders}));
