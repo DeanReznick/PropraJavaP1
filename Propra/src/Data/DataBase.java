@@ -492,7 +492,7 @@ public static void searchOrder(String search) {
 	
 	getConnection();
 	
-	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
 		
 		@Override
 		public boolean isCellEditable(int row, int column) {
