@@ -792,8 +792,13 @@ public class MainMenu extends JFrame {
 			JButton btnMengenverwaltung = new JButton("Mengenverwaltung");
 			btnMengenverwaltung.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					Mengenverwaltung x= new Mengenverwaltung();
-					x.setVisible(true);
+					try {
+						Mengenverwaltung x= new Mengenverwaltung();
+						x.setVisible(true);
+					} catch (ArrayIndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					}
+					
 				}
 			});
 			btnMengenverwaltung.setBounds(600, 377, 157, 23);
