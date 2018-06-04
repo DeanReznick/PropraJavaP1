@@ -65,19 +65,19 @@ public class AddToCategory extends JFrame {
 		int selectedRowIndex = MainMenu.tblComponents.getSelectedRow();
 		int component_id = Integer.parseInt(MainMenu.tblComponents.getModel().getValueAt(selectedRowIndex, 0).toString());
 				
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 265, 109);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JComboBox comboBox = new JComboBox(categoryName);
-		comboBox.setBounds(10, 100, 129, 20);
+		comboBox.setBounds(10, 36, 129, 20);
 		contentPane.add(comboBox);
 		
 		
 		JLabel lblKategorie = new JLabel("Kategorie:");
-		lblKategorie.setBounds(10, 75, 129, 14);
+		lblKategorie.setBounds(10, 11, 129, 14);
 		contentPane.add(lblKategorie);
 		
 		JButton btnAdd = new JButton("Add");
@@ -96,7 +96,7 @@ public class AddToCategory extends JFrame {
 				dispose();
 			}
 		});
-		btnAdd.setBounds(149, 99, 89, 23);
+		btnAdd.setBounds(149, 35, 89, 23);
 		contentPane.add(btnAdd);
 	}
 }
