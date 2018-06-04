@@ -84,6 +84,17 @@ public class Mengenverwaltung extends JFrame {
 		contentPane.add(lblMenge);
 		
 		JButton btnBestellen = new JButton("Bestellen");
+		btnBestellen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int menge = Integer.parseInt(txtMenge.getText());
+				
+				
+				BauteileAuftragsabwicklung.manualOrderingOfComponents(bauteil_id, menge);
+				DataBase.refreshComponent();
+				
+			}
+		});
 		btnBestellen.setBounds(26, 88, 167, 23);
 		contentPane.add(btnBestellen);
 	}

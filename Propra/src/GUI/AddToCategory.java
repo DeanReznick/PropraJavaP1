@@ -50,32 +50,28 @@ public class AddToCategory extends JFrame {
 		
 		int count = MainMenu.tblCategory.getRowCount();
 		String[] list = new String[count];
+		String[] categoryName = new String[count];
 		
 		
 		
 		for(int row=0; row < MainMenu.tblCategory.getRowCount(); row++) {
-		 String name = MainMenu.tblCategory.getModel().getValueAt(row, 0).toString();
-		 list[row] = name;
+		 String id = MainMenu.tblCategory.getModel().getValueAt(row, 0).toString();
+		 String name = MainMenu.tblCategory.getModel().getValueAt(row, 1).toString();
+		 list[row] = id;
+		 categoryName[row] = name;
 		
 		}
 		
 		int selectedRowIndex = MainMenu.tblComponents.getSelectedRow();
 		int component_id = Integer.parseInt(MainMenu.tblComponents.getModel().getValueAt(selectedRowIndex, 0).toString());
-		
-		
-		
-		      
-		   
-		
-		
-		
+				
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JComboBox comboBox = new JComboBox(list);
+		JComboBox comboBox = new JComboBox(categoryName);
 		comboBox.setBounds(10, 100, 129, 20);
 		contentPane.add(comboBox);
 		
@@ -87,7 +83,15 @@ public class AddToCategory extends JFrame {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int category_id = Integer.parseInt(comboBox.getSelectedItem().toString());
+				String category_name = comboBox.getSelectedItem().toString();
+				int index = -1;
+				for (int i=0;i<categoryName.length;i++) {
+				    if (categoryName[i].equals(category_name)) {
+				        index = i;
+				        break;
+				    }
+				}
+				int category_id = Integer.parseInt(list[index]);
 				BauteileAuftragsabwicklung.addBauteilToKategorie(category_id, component_id);
 				dispose();
 			}
