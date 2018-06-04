@@ -220,5 +220,16 @@ public class BauteileAuftragsabwicklung {
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 	}
+	
+	
+	public static void manualOrderingOfComponents(int id_Bauteil, int quantum_ordering) {
+		
+		int [] mengen = DataBase.getMengenBauteile(id_Bauteil); 
+		quantum_ordering += mengen[1]; 
+		String query = "UPDATE Bauteil SET MengeBestellt = " + quantum_ordering + " WHERE ID_Bauteil =" + id_Bauteil +";";
+		DataBase.executeQuery(query);
+		
+	}
+	
 }
 	
