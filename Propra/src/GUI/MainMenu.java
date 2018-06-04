@@ -618,8 +618,13 @@ public class MainMenu extends JFrame {
 		JButton btnAendern = new JButton("Aendern");
 		btnAendern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				UpdateComponent x = new UpdateComponent(); // -id Order 
-				x.setVisible(true);
+				try {
+					UpdateComponent x = new UpdateComponent(); // -id Order 
+					x.setVisible(true);	
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				}
+				
 			}
 		});
 		btnAendern.setBounds(441, 377, 101, 23);
