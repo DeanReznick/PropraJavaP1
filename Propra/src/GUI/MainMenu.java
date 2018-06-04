@@ -638,7 +638,7 @@ public class MainMenu extends JFrame {
 		String[][] data_category = new String[1000][2];
 		DefaultTableModel modelCategory = new DefaultTableModel(new String[]{"ID", "Name"}, 0) {
 			
-			@Override
+			@Override 
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}

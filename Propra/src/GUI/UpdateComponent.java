@@ -27,7 +27,7 @@ public class UpdateComponent extends JFrame {
 	private JTextField txtStock;
 	private JTextField txtOrdered;
 	private JTextField txtPlanned;
-	private JTextField txtStorage;
+	private JTextField txtStorage; 
 	
 	int colnr  = MainMenu.tblComponents.getSelectedRow();
 	

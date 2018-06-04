@@ -192,7 +192,7 @@ public class BauteileAuftragsabwicklung {
 		DataBase.closeConnection();
 		
 		
-	}
+	} 
 	
 	public static void deleteKategorie(int id_Kategorie) {
 		DataBase.getConnection();
