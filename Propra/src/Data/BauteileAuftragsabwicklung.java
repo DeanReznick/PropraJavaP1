@@ -75,9 +75,9 @@ public class BauteileAuftragsabwicklung {
 		
 		try {
 			int change = mengen[2] - mengen[0]; 
+			System.out.println(change);
 			
-			String query = "UPDATE Bauteil" + 
-					"SET MengeBestellt = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
+			String query = "UPDATE Bauteil SET MengeBestellt = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
 			
 			DataBase.getConnection();
 			DataBase.executeQuery(query);
@@ -100,14 +100,12 @@ public class BauteileAuftragsabwicklung {
 		try {
 			
 			int change = mengen[0] + mengen[1]; 
-			String query = "UPDATE Bauteil" + 
-					"SET MengeBestellt = 0 WHERE ID_Bauteil =" + id_bauteil +";";
+			String query = "UPDATE Bauteil SET MengeBestellt = 0 WHERE ID_Bauteil =" + id_bauteil +";";
 			DataBase.getConnection();
 			DataBase.executeQuery(query);
 			DataBase.closeConnection();
 			
-			query = "UPDATE Bauteil" + 
-					"SET MengeLagernd = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
+			query = "UPDATE Bauteil SET MengeLagernd = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
 			DataBase.getConnection();
 			DataBase.executeQuery(query);
 			DataBase.closeConnection();

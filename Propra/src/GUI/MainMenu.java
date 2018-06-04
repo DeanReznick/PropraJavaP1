@@ -788,6 +788,16 @@ public class MainMenu extends JFrame {
 			});
 			btnShowAll.setBounds(194, 22, 89, 23);
 			panelBau.add(btnShowAll);
+			
+			JButton btnMengenverwaltung = new JButton("Mengenverwaltung");
+			btnMengenverwaltung.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Mengenverwaltung x= new Mengenverwaltung();
+					x.setVisible(true);
+				}
+			});
+			btnMengenverwaltung.setBounds(600, 377, 157, 23);
+			panelBau.add(btnMengenverwaltung);
 		
 		
 		
