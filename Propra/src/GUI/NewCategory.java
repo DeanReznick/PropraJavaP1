@@ -41,7 +41,7 @@ public class NewCategory extends JFrame {
 	 * Create the frame.
 	 */
 	public NewCategory() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		setBounds(100, 100, 173, 344);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -63,7 +63,7 @@ public class NewCategory extends JFrame {
 				DataBase.getConnection();
 				String name = txtCategory.getText();
 				BauteileAuftragsabwicklung.createKategorie(name);
-				
+				DataBase.refreshCategory();
 				DataBase.closeConnection();
 				dispose();
 			}

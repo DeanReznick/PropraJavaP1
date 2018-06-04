@@ -59,6 +59,7 @@ public class MainMenu extends JFrame {
 	public static JTable tblComponents;
 	private JTextField txtSearchComponent;
 	public static JScrollPane scrollPane_3;
+	public static JTable tblCategory;
 
 	/**
 	 * Launch the application.
@@ -531,7 +532,7 @@ public class MainMenu extends JFrame {
 		panelBau.setLayout(null);
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(10, 56, 939, 299);
+		scrollPane_3.setBounds(194, 56, 755, 299);
 		panelBau.add(scrollPane_3);
 		
 		String[] column_headers_component = {"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"};
@@ -588,7 +589,7 @@ public class MainMenu extends JFrame {
 				x.setVisible(true);
 			}
 		});
-		btnAddComponent.setBounds(10, 377, 101, 23);
+		btnAddComponent.setBounds(219, 377, 101, 23);
 		panelBau.add(btnAddComponent);
 		
 		JButton btnDeleteComponent = new JButton("Loeschen");
@@ -611,7 +612,7 @@ public class MainMenu extends JFrame {
 				
 			}
 		});
-		btnDeleteComponent.setBounds(121, 377, 101, 23);
+		btnDeleteComponent.setBounds(330, 377, 101, 23);
 		panelBau.add(btnDeleteComponent);
 		
 		JButton btnAendern = new JButton("Aendern");
@@ -621,7 +622,7 @@ public class MainMenu extends JFrame {
 				x.setVisible(true);
 			}
 		});
-		btnAendern.setBounds(232, 377, 101, 23);
+		btnAendern.setBounds(441, 377, 101, 23);
 		panelBau.add(btnAendern);
 		
 		JButton btnSearchComponent = new JButton("Suchen");
@@ -632,6 +633,163 @@ public class MainMenu extends JFrame {
 		});
 		btnSearchComponent.setBounds(650, 10, 89, 23);
 		panelBau.add(btnSearchComponent);
+		
+		String[] column_headers_category = {"ID", "Name"};
+		String[][] data_category = new String[1000][2];
+		DefaultTableModel modelCategory = new DefaultTableModel(new String[]{"ID", "Name"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+			
+			Statement stmtCategory = DataBase.c.createStatement();
+			String sqlCategory = "SELECT * FROM Kategorie";
+			ResultSet rsCategory = stmtCategory.executeQuery(sqlCategory);
+			
+			
+			
+			
+			while(rsCategory.next())
+			{
+				String a1 = rsCategory.getString("ID_Kategorie");
+			    String b1 = rsCategory.getString("Name");
+			  
+			    
+			    
+			 
+			  
+			    
+			    modelCategory.addRow(new Object[]{a1, b1});
+			}
+			
+			JScrollPane scrollPane_4 = new JScrollPane();
+			scrollPane_4.setBounds(10, 56, 174, 299);
+			panelBau.add(scrollPane_4);
+			
+			tblCategory = new JTable(data_category, column_headers_category);
+			scrollPane_4.setViewportView(tblCategory);
+			tblCategory.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					
+					DataBase.getConnection();
+					int colnr  = MainMenu.tblCategory.getSelectedRow();
+					DefaultTableModel modelComponentsKategorie = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
+						
+						@Override
+						public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};	
+					String id = MainMenu.tblCategory.getModel().getValueAt(colnr, 0).toString();
+					
+					System.out.println(id);
+					
+					Statement stmtCategoryComponents = null;
+					
+						try {
+							
+							stmtCategoryComponents = DataBase.c.createStatement();
+							System.out.println("Statement");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+					
+					String sqlCategoryComponents = "SELECT Bauteil.* FROM Bauteil INNER JOIN 'Mischtabelle-Kategorie-Bauteil' on Bauteil.ID_Bauteil = 'Mischtabelle-Kategorie-Bauteil'.ID_Bauteil where 'Mischtabelle-Kategorie-Bauteil'.ID_Kategorie ="+id+";";
+					
+					ResultSet rsCategoryComponents = null;
+					
+						try {
+							rsCategoryComponents = stmtCategoryComponents.executeQuery(sqlCategoryComponents);
+							System.out.println("Query executed");
+							System.out.println(rsCategoryComponents);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+					
+					
+					
+					
+					
+						try {
+							while(rsCategoryComponents.next())
+							{
+								String a1 = rsCategoryComponents.getString("ID_Bauteil");
+							    String b1 = rsCategoryComponents.getString("Name");
+							    String c1 = rsCategoryComponents.getString("Link");
+							    String d1 = rsCategoryComponents.getString("MengeLagernd");
+							    String e1 = rsCategoryComponents.getString("MengeBestellt");
+							    String f1 = rsCategoryComponents.getString("MengeGeplant");
+							    String g1 = rsCategoryComponents.getString("Lagerort");
+							    
+							    
+							 
+							  
+							    
+							    modelComponentsKategorie.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1});
+							    
+							    System.out.println("While done");
+							    
+							}
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						tblComponents.setModel(modelComponentsKategorie);
+					
+					
+					
+					
+					
+					
+					DataBase.closeConnection();
+				}
+			});
+			
+			tblCategory.setModel(modelCategory);
+			
+			JButton btnNeueKategorie = new JButton("Neue Kategorie");
+			btnNeueKategorie.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					NewCategory x = new NewCategory();
+					x.setVisible(true);
+				}
+			});
+			btnNeueKategorie.setBounds(10, 377, 145, 23);
+			panelBau.add(btnNeueKategorie);
+			
+			JButton btnKategorieverwaltung = new JButton("Kategorieverwaltung");
+			btnKategorieverwaltung.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddToCategory x;
+					
+						x = new AddToCategory();
+						x.setVisible(true);
+					
+					
+				}
+			});
+			btnKategorieverwaltung.setBounds(784, 377, 165, 23);
+			panelBau.add(btnKategorieverwaltung);
+			
+			JButton btnShowAll = new JButton("Show all");
+			btnShowAll.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					txtSearchComponent.setText("");
+					DataBase.refreshComponent();
+					
+				}
+			});
+			btnShowAll.setBounds(194, 22, 89, 23);
+			panelBau.add(btnShowAll);
+		
+		
 		
 		
 		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panelPerson, btnHinzufuegen, btnLoeschen, txtSuchen, tabbedPane, lblNewLabel, scrollPane, tblPersonen, scrollPane_1, tblAuftraege, lblAuftraege, btnSuchen, btnSearchOrder, btnChangePerson, btnRefresh, btnErstellen, btnChangeOrder, btnDeleteOrder, txtSearchOrder, btnNewButton, panelFinanz, panelBau, panelOrders}));

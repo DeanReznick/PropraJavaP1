@@ -77,6 +77,48 @@ public class DataBase {
 		
 	}
 	
+	
+	public static ArrayList<String> getCategoryList() {
+		
+		
+		
+		ArrayList<String> comboList = new ArrayList<String>();
+		
+		String category = null;
+		Statement stmt = null;
+		
+		try {
+		String sql = "SELECT Name FROM Kategorie";
+		
+			
+		
+				stmt = c.createStatement();
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			
+			
+				while(rs.next()) {category = rs.getString("Name");
+				comboList.add(category);}
+				
+				stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				
+				
+				
+				
+				
+		
+		
+		
+		
+		
+		return comboList;
+		
+	}
+	
 	public static String getRolleByPersonId(String id_person) {
 		
 		String rolle = null;
@@ -782,6 +824,62 @@ public static void searchOrder(String search) {
 	
 		closeConnection();
 	}
+	
+	public static void refreshCategory() {
+
+		getConnection();
+		
+		DefaultTableModel modelCategory = new DefaultTableModel(new String[]{"ID", "Kategorie"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};	
+		
+		Statement stmt = null;
+		try {
+			stmt = DataBase.c.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		String sql = "SELECT * FROM Kategorie";
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			while(rs.next())
+			{
+				String a1 = rs.getString("ID_Kategorie");
+			    String b1 = rs.getString("Name");
+			   
+			    
+			    
+			 
+			  
+			    
+			    modelCategory.addRow(new Object[]{a1, b1});
+			}
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		MainMenu.tblCategory.setModel(modelCategory);
+	
+		closeConnection();
+	}
+
 	
 	public static void refreshChange() {
 
