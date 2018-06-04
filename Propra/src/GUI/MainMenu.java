@@ -772,11 +772,14 @@ public class MainMenu extends JFrame {
 			JButton btnKategorieverwaltung = new JButton("Kategorieverwaltung");
 			btnKategorieverwaltung.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					AddToCategory x;
-					
-						x = new AddToCategory();
-						x.setVisible(true);
-					
+					try {
+						AddToCategory x;
+						
+							x = new AddToCategory();
+							x.setVisible(true);	
+					} catch (ArrayIndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					}
 					
 				}
 			});
