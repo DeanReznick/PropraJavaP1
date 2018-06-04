@@ -29,18 +29,18 @@ public class AddToCategory extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AddToCategory frame = new AddToCategory();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					AddToCategory frame = new AddToCategory();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -79,7 +79,7 @@ public class AddToCategory extends JFrame {
 		comboBox.setBounds(10, 100, 129, 20);
 		contentPane.add(comboBox);
 		
-		int category_id = Integer.parseInt(comboBox.getSelectedItem().toString());
+		
 		JLabel lblKategorie = new JLabel("Kategorie:");
 		lblKategorie.setBounds(10, 75, 129, 14);
 		contentPane.add(lblKategorie);
@@ -87,8 +87,9 @@ public class AddToCategory extends JFrame {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				int category_id = Integer.parseInt(comboBox.getSelectedItem().toString());
 				BauteileAuftragsabwicklung.addBauteilToKategorie(category_id, component_id);
+				dispose();
 			}
 		});
 		btnAdd.setBounds(149, 99, 89, 23);
