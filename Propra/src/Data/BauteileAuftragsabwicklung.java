@@ -9,12 +9,12 @@ import GUI.GUILogin;
 
 public class BauteileAuftragsabwicklung {
 
-	
-	public static void main(String[] args) {
+	public static String currentPrice = "leer."; 
+	/*public static void main(String[] args) {
 		
 		newBauteil("CNC", "-", 2, 0, 2, "Gebäude C"); 
 		
-	}
+	}*/
 
 	
 	public static void process(int id_aenderung, int aenderung, String preis ) {
@@ -269,6 +269,47 @@ public class BauteileAuftragsabwicklung {
 		DataBase.closeConnection();
 		
 	}
+	
+public static void addPrice(int id_Bauteil, String price) {
+		
+		
+		// Unbedingt Testen !!! 
+		
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		
+		DataBase.getConnection();
+		String query = "INSERT INTO PreisBauteil  ID_Bauteil, Timestamp, Preis, ID_Person) VALUES (" + id_Bauteil+ " , '" + timeStamp + "','"+ price + "', "+ DataBase.getIdPersonByNameSurname(GUILogin.vorname_signedIn, GUILogin.name_signedIn)+");";
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+		
+	}
+	
+	public static void alterPrice(int id_Bauteil, String price) {
+		
+		// Unbedingt Testen !!! 
+		
+		DataBase.getConnection();
+		
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		String query = "UPDATE PreisBauteil SET Preis = '" + price + "', Timestamp = '"+ timeStamp +"', ID_Person = "+  DataBase.getIdPersonByNameSurname(GUILogin.vorname_signedIn, GUILogin.name_signedIn) +" WHERE ID_Bauteil =" + id_Bauteil +";";
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+		
+	}
+	
+	public static void getLatestPrice (int id_Bauteil) {
+		DataBase.getConnection();
+		int price = DataBase.getSpecificID("Preis", "SELECT Preis, max(ID_Preis)  FROM PreisBauteil WHERE ID_Bauteil = " + id_Bauteil + " ;" ); 
+		DataBase.closeConnection();
+		currentPrice = price + ""; 
+		
+		
+	}
+	
+	
+	
 	
 }
 	
