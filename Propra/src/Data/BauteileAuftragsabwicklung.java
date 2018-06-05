@@ -235,6 +235,12 @@ public class BauteileAuftragsabwicklung {
 		DataBase.closeConnection();
 		
 		
+		DataBase.getConnection();
+		query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Kategorie = 1 AND ID_Bauteil = " + id_Bauteil + ";"; 
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+		
 		
 		
 	}
