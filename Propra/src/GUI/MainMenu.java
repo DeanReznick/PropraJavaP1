@@ -766,7 +766,7 @@ public class MainMenu extends JFrame {
 					x.setVisible(true);
 				}
 			});
-			btnNeueKategorie.setBounds(10, 377, 145, 23);
+			btnNeueKategorie.setBounds(20, 359, 145, 23);
 			panelBau.add(btnNeueKategorie);
 			
 			JButton btnKategorieverwaltung = new JButton("Kategorieverwaltung");
@@ -783,7 +783,7 @@ public class MainMenu extends JFrame {
 					
 				}
 			});
-			btnKategorieverwaltung.setBounds(784, 377, 165, 23);
+			btnKategorieverwaltung.setBounds(792, 388, 157, 23);
 			panelBau.add(btnKategorieverwaltung);
 			
 			JButton btnShowAll = new JButton("Show all");
@@ -809,8 +809,45 @@ public class MainMenu extends JFrame {
 					
 				}
 			});
-			btnMengenverwaltung.setBounds(600, 377, 157, 23);
+			btnMengenverwaltung.setBounds(792, 359, 157, 23);
 			panelBau.add(btnMengenverwaltung);
+			
+			JButton btnLoeschen_1 = new JButton("Loeschen");
+			btnLoeschen_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					DefaultTableModel model = (DefaultTableModel) tblCategory.getModel();
+					//get selected row index
+					int selectedRowIndex = tblCategory.getSelectedRow();
+					if (selectedRowIndex >= 0) {
+					try {
+					DeleteCategory x = new DeleteCategory();
+					x.setVisible(true);
+					}catch (Exception ex) {
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kategorie aus.");
+					}
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kategorie aus.");
+				}
+				}
+			});
+			btnLoeschen_1.setBounds(0, 388, 89, 23);
+			panelBau.add(btnLoeschen_1);
+			
+			JButton btnAendern_1 = new JButton("Aendern");
+			btnAendern_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					try {
+						UpdateCategory x = new UpdateCategory(); // -id Order 
+						x.setVisible(true);	
+					} catch (ArrayIndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					}
+				}
+			});
+			btnAendern_1.setBounds(95, 388, 89, 23);
+			panelBau.add(btnAendern_1);
 		
 		
 		
