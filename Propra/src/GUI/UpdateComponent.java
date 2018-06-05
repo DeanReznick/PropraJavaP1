@@ -117,7 +117,8 @@ public class UpdateComponent extends JFrame {
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {
 					DataBase.refreshComponent();
-					DataBase.closeConnection();
+					DataBase.closeConnection(); 
+					//jfjsdfj
 					
 				}
 			}
