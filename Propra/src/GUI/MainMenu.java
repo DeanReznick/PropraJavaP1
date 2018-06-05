@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import Data.Authentication;
+import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
 import Data.OffenerAuftragObjektRAM;
 import Data.PersonObjektRAM;
@@ -535,10 +536,10 @@ public class MainMenu extends JFrame {
 		scrollPane_3.setBounds(194, 56, 755, 299);
 		panelBau.add(scrollPane_3);
 		
-		String[] column_headers_component = {"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"};
-		String[][] data_components = new String[1000][7];
+		String[] column_headers_component = {"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"};
+		String[][] data_components = new String[1000][8];
 		tblComponents = new JTable(data_components, column_headers_component);
-		DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
+		DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -561,12 +562,15 @@ public class MainMenu extends JFrame {
 			    String e1 = rsComponent.getString("MengeBestellt");
 			    String f1 = rsComponent.getString("MengeGeplant");
 			    String g1 = rsComponent.getString("Lagerort");
+			    int id = Integer.parseInt(a1);
+			    
+			    String h1 =BauteileAuftragsabwicklung.getComponentPrice(id);
 			    
 			    
 			 
 			  
 			    
-			    modelComponents.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1});
+			    modelComponents.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
 			}
 			
 			tblComponents.setModel(modelComponents);
@@ -589,7 +593,7 @@ public class MainMenu extends JFrame {
 				x.setVisible(true);
 			}
 		});
-		btnAddComponent.setBounds(219, 377, 101, 23);
+		btnAddComponent.setBounds(204, 359, 101, 23);
 		panelBau.add(btnAddComponent);
 		
 		JButton btnDeleteComponent = new JButton("Loeschen");
@@ -612,7 +616,7 @@ public class MainMenu extends JFrame {
 				
 			}
 		});
-		btnDeleteComponent.setBounds(330, 377, 101, 23);
+		btnDeleteComponent.setBounds(204, 388, 101, 23);
 		panelBau.add(btnDeleteComponent);
 		
 		JButton btnAendern = new JButton("Aendern");
@@ -627,7 +631,7 @@ public class MainMenu extends JFrame {
 				
 			}
 		});
-		btnAendern.setBounds(441, 377, 101, 23);
+		btnAendern.setBounds(318, 359, 101, 23);
 		panelBau.add(btnAendern);
 		
 		JButton btnSearchComponent = new JButton("Suchen");
@@ -681,7 +685,7 @@ public class MainMenu extends JFrame {
 					
 					DataBase.getConnection();
 					int colnr  = MainMenu.tblCategory.getSelectedRow();
-					DefaultTableModel modelComponentsKategorie = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
+					DefaultTableModel modelComponentsKategorie = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"}, 0) {
 						
 						@Override
 						public boolean isCellEditable(int row, int column) {
@@ -732,12 +736,15 @@ public class MainMenu extends JFrame {
 							    String e1 = rsCategoryComponents.getString("MengeBestellt");
 							    String f1 = rsCategoryComponents.getString("MengeGeplant");
 							    String g1 = rsCategoryComponents.getString("Lagerort");
+							    int id1 = Integer.parseInt(a1);
+							   
+							    String h1 =BauteileAuftragsabwicklung.getComponentPrice(id1);
 							    
 							    
 							 
 							  
 							    
-							    modelComponentsKategorie.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1});
+							    modelComponentsKategorie.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
 							    
 							    System.out.println("While done");
 							    
@@ -848,6 +855,20 @@ public class MainMenu extends JFrame {
 			});
 			btnAendern_1.setBounds(95, 388, 89, 23);
 			panelBau.add(btnAendern_1);
+			
+			JButton btnPreis = new JButton("Preis");
+			btnPreis.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+						AddPrice x = new AddPrice(); // -id Order 
+						x.setVisible(true);	
+					} catch (ArrayIndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					}
+				}
+			});
+			btnPreis.setBounds(315, 388, 104, 23);
+			panelBau.add(btnPreis);
 		
 		
 		

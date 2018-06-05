@@ -1,5 +1,7 @@
 package Data;
 
+import java.beans.Statement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -276,6 +278,36 @@ public class BauteileAuftragsabwicklung {
 		
 	}
 	
+	
+	
+public static String getComponentPrice (int id_Bauteil) {
+		
+
+		String price = "0";
+		
+		
+		
+		String priceSql = null;
+		java.sql.Statement stmt = null;
+		try{
+		priceSql ="SELECT Preis, max(ID_Preis)  FROM PreisBauteil WHERE ID_Bauteil = " + id_Bauteil + " ;" ;
+		
+			stmt = DataBase.c.createStatement();
+			ResultSet rs = stmt.executeQuery(priceSql);
+			
+			
+				while(rs.next()) {price = rs.getString("Preis");}
+				stmt.close();
+		}catch ( Exception e ) {
+		      System.err.println( "ID not found"); 
+		      
+		   }
+		
+		return price;
+		
+		
+	}
+	
 public static void addPrice(int id_Bauteil, String price) {
 		
 		
@@ -284,7 +316,7 @@ public static void addPrice(int id_Bauteil, String price) {
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		
 		DataBase.getConnection();
-		String query = "INSERT INTO PreisBauteil  ID_Bauteil, Timestamp, Preis, ID_Person) VALUES (" + id_Bauteil+ " , '" + timeStamp + "','"+ price + "', "+ DataBase.getIdPersonByNameSurname(GUILogin.vorname_signedIn, GUILogin.name_signedIn)+");";
+		String query = "INSERT INTO PreisBauteil  (ID_Bauteil, Timestamp, Preis, ID_Person) VALUES (" + id_Bauteil+ " , '" + timeStamp + "','"+ price + "', "+ DataBase.getIdPersonByNameSurname(GUILogin.vorname_signedIn, GUILogin.name_signedIn)+");";
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		

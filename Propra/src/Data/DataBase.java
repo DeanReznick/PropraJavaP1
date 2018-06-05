@@ -766,7 +766,7 @@ public static void searchOrder(String search) {
 
 		getConnection();
 		
-	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
+	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -801,8 +801,11 @@ public static void searchOrder(String search) {
 			    String e1 = rs.getString("MengeBestellt");
 			    String f1 = rs.getString("MengeGeplant");
 			    String g1 = rs.getString("Lagerort");
+			    int id = Integer.parseInt(a1);
 			    
-			    modelComponents.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1});
+			    String h1 =BauteileAuftragsabwicklung.getComponentPrice(id);
+			    
+			    modelComponents.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
 			   
 			}
 		} catch (SQLException e) {

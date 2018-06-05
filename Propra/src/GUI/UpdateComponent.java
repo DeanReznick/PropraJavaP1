@@ -37,6 +37,10 @@ public class UpdateComponent extends JFrame {
 	private String oldOrdered = MainMenu.tblComponents.getModel().getValueAt(colnr, 4).toString();
 	private String oldPlanned = MainMenu.tblComponents.getModel().getValueAt(colnr, 5).toString();
 	private String oldStorage = MainMenu.tblComponents.getModel().getValueAt(colnr, 6).toString();
+	private String oldPrice = MainMenu.tblComponents.getModel().getValueAt(colnr, 7).toString();
+	private JTextField txtPrice;
+	
+	
 	
 
 	/**
@@ -105,6 +109,7 @@ public class UpdateComponent extends JFrame {
 				int id = Integer.parseInt(tableClick);
 				System.out.println(id);
 				BauteileAuftragsabwicklung.changeBauteil(id, txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText());
+				BauteileAuftragsabwicklung.alterPrice(id, txtPrice.getText());
 				DataBase.refreshComponent();
 				dispose();
 				}
@@ -124,7 +129,7 @@ public class UpdateComponent extends JFrame {
 		txtLink.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")) {
+				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
 			}
@@ -137,7 +142,7 @@ public class UpdateComponent extends JFrame {
 		txtName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")) {
+				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
 			}
@@ -150,7 +155,7 @@ public class UpdateComponent extends JFrame {
 		txtStock.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")) {
+				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
 			}
@@ -163,7 +168,7 @@ public class UpdateComponent extends JFrame {
 		txtOrdered.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")) {
+				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
 			}
@@ -176,7 +181,7 @@ public class UpdateComponent extends JFrame {
 		txtPlanned.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")) {
+				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
 			}
@@ -189,7 +194,7 @@ public class UpdateComponent extends JFrame {
 		txtStorage.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
-				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")) {
+				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
 			}
@@ -198,8 +203,23 @@ public class UpdateComponent extends JFrame {
 		contentPane.add(txtStorage);
 		txtStorage.setColumns(10);
 		
+		txtPrice = new JTextField(oldPrice);
+		txtPrice.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
+					btnBestaetigen.setEnabled(true);
+				}
+			}
+		});
+		txtPrice.setBounds(130, 230, 86, 20);
+		contentPane.add(txtPrice);
+		txtPrice.setColumns(10);
+		
+		JLabel lblPreis = new JLabel("Preis:");
+		lblPreis.setBounds(10, 233, 46, 14);
+		contentPane.add(lblPreis);
+		
 		DataBase.closeConnection();
 	}
-
-
 }
