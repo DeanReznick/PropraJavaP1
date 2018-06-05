@@ -859,12 +859,20 @@ public class MainMenu extends JFrame {
 			JButton btnPreis = new JButton("Preis");
 			btnPreis.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					DefaultTableModel model = (DefaultTableModel) tblComponents.getModel();
+					//get selected row index
+					int selectedRowIndex = tblComponents.getSelectedRow();
+					if (selectedRowIndex >= 0) {
 					try {
-						AddPrice x = new AddPrice(); // -id Order 
-						x.setVisible(true);	
-					} catch (ArrayIndexOutOfBoundsException ex) {
+					AddPrice x = new AddPrice();
+					x.setVisible(true);
+					}catch (Exception ex) {
 						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
 					}
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				}
 				}
 			});
 			btnPreis.setBounds(315, 388, 104, 23);
