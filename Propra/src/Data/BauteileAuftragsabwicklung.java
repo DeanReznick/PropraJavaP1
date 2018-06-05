@@ -316,7 +316,7 @@ public static void addPrice(int id_Bauteil, String price) {
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		
 		DataBase.getConnection();
-		String query = "INSERT INTO PreisBauteil  (ID_Bauteil, Timestamp, Preis, ID_Person) VALUES (" + id_Bauteil+ " , '" + timeStamp + "','"+ price + "', "+ DataBase.getIdPersonByNameSurname(GUILogin.vorname_signedIn, GUILogin.name_signedIn)+");";
+		String query = "INSERT INTO PreisBauteil  (ID_Bauteil, Timestamp, Preis, ID_Person) VALUES (" + id_Bauteil+ " , '" + timeStamp + "','"+ price + "', "+ DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn)+");";
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		
@@ -330,7 +330,7 @@ public static void addPrice(int id_Bauteil, String price) {
 		DataBase.getConnection();
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "UPDATE PreisBauteil SET Preis = '" + price + "', Timestamp = '"+ timeStamp +"', ID_Person = "+  DataBase.getIdPersonByNameSurname(GUILogin.vorname_signedIn, GUILogin.name_signedIn) +" WHERE ID_Bauteil =" + id_Bauteil +";";
+		String query = "UPDATE PreisBauteil SET Preis = '" + price + "', Timestamp = '"+ timeStamp +"', ID_Person = "+  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) +" WHERE ID_Bauteil =" + id_Bauteil +";";
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		
