@@ -1,7 +1,9 @@
 package Data;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 import GUI.GUILogin;
 
@@ -146,6 +148,13 @@ public class BauteileAuftragsabwicklung {
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		
+		// Bauteil auch aus der Mischtabelle löschen
+		DataBase.getConnection();
+		 query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Bauteil = "+ id_bauteil +";"; 
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+		
 	}
 	public static void changeBauteil(int id_Bauteil, String name, String link, int mengeLagernd, int mengeBestellt, int mengeGeplant, String lagerort) {
 		
@@ -201,6 +210,19 @@ public class BauteileAuftragsabwicklung {
 		query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Kategorie = "+ id_Kategorie +";"; 
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
+		
+		// Alle Bauteile zu default
+		
+		ArrayList<Integer> ids = DataBase.getBauteileIDByKategorie(id_Kategorie); 
+		
+		Iterator<Integer> it = ids.iterator(); 
+		
+		while(it.hasNext()) {
+			addBauteilToKategorie(1, it.next().intValue()); 
+		}
+		
+		
+		
 	}
 	
 	public static void addBauteilToKategorie(int id_Kategorie, int id_Bauteil) {
@@ -212,6 +234,9 @@ public class BauteileAuftragsabwicklung {
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		
+		
+		
+		
 	}
 	
 	public static void deleteBauteilFromKategorie(int id_Bauteil) {
@@ -219,6 +244,19 @@ public class BauteileAuftragsabwicklung {
 		String query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Bauteil = "+ id_Bauteil +";"; 
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
+		
+		// Bauteil wird der default Zugeordnet
+		
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		DataBase.getConnection();
+		query = "INSERT INTO 'Mischtabelle-Kategorie-Bauteil' (ID_Kategorie, ID_Bauteil, Timestamp) VALUES ( 1 , " + id_Bauteil + ",'"+ timeStamp + "');";
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+		
+		
+		
+		
 	}
 	
 	

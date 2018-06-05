@@ -106,15 +106,6 @@ public class DataBase {
 				e.printStackTrace();
 			}
 				
-				
-				
-				
-				
-		
-		
-		
-		
-		
 		return comboList;
 		
 	}
@@ -1201,4 +1192,38 @@ public static void searchOrder(String search) {
 		   System.out.println("Operation done successfully");
 		   return name; 
 		}
+	  
+	  public static ArrayList<Integer> getBauteileIDByKategorie (int id_kategorie) {
+		  
+		  	ArrayList<Integer> ids = new ArrayList<Integer>(); 
+		  
+			Statement stmt = null;
+		   
+		   try {
+		    
+			   //Query 
+			   String query = "SELECT ID_Kategorie FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Kategorie ="+ id_kategorie + ";"; 
+			   
+			   // Getting Data from Database
+		      stmt = c.createStatement();
+		      ResultSet rs = stmt.executeQuery( query );
+		      int id; 
+		      while ( rs.next() ) {
+		    	id = rs.getInt("ID_Kategorie");	
+		    	ids.add(id); 
+		    	
+		      }
+		     
+		      stmt.close();
+		    
+		   } catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   
+		   System.out.println("Operation done successfully");
+		   return ids; 
+		}
+	  
+	  
 }
