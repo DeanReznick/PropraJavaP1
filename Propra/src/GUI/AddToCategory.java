@@ -93,6 +93,7 @@ public class AddToCategory extends JFrame {
 				}
 				int category_id = Integer.parseInt(list[index]);
 				BauteileAuftragsabwicklung.addBauteilToKategorie(category_id, component_id);
+				DataBase.refreshComponentCategory();
 				dispose();
 			}
 		});
