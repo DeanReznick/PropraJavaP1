@@ -87,7 +87,7 @@ public class AddComponent extends JFrame {
 				
 				try{
 				DataBase.getConnection();
-				
+				//Test
 				BauteileAuftragsabwicklung.addPrice((BauteileAuftragsabwicklung.newBauteil(txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText())), txtPrice.getText());
 				DataBase.refreshChange();
 				dispose();
