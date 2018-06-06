@@ -227,34 +227,34 @@ public class BauteileAuftragsabwicklung {
 		
 	}
 	
-	public static void addBauteilToKategorie(int id_Kategorie, int id_Bauteil) {
-		
-		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		
-		DataBase.getConnection();
-		String query = "INSERT INTO 'Mischtabelle-Kategorie-Bauteil' (ID_Kategorie, ID_Bauteil, Timestamp) VALUES (" + id_Kategorie+ " , " + id_Bauteil + ",'"+ timeStamp + "');";
-		DataBase.executeQuery(query);
-		DataBase.closeConnection();
-		
-		
-		DataBase.getConnection();
-		query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Kategorie = 1 AND ID_Bauteil = " + id_Bauteil + ";"; 
-		DataBase.executeQuery(query);
-		DataBase.closeConnection();
-		
-	}
-	
 //	public static void addBauteilToKategorie(int id_Kategorie, int id_Bauteil) {
 //		
 //		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 //		
 //		DataBase.getConnection();
-//		String query = "UPDATE 'Mischtabelle-Kategorie-Bauteil' SET ID_Kategorie = " + id_Kategorie + " AND Timestamp = '" + timeStamp + "' WHERE ID_Bauteil = " + id_Bauteil + ";";
+//		String query = "INSERT INTO 'Mischtabelle-Kategorie-Bauteil' (ID_Kategorie, ID_Bauteil, Timestamp) VALUES (" + id_Kategorie+ " , " + id_Bauteil + ",'"+ timeStamp + "');";
 //		DataBase.executeQuery(query);
+//		DataBase.closeConnection();
 //		
+//		
+//		DataBase.getConnection();
+//		query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Kategorie = 1 AND ID_Bauteil = " + id_Bauteil + ";"; 
+//		DataBase.executeQuery(query);
 //		DataBase.closeConnection();
 //		
 //	}
+	
+	public static void addBauteilToKategorie(int id_Kategorie, int id_Bauteil) {
+		
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		
+		DataBase.getConnection();
+		String query = "UPDATE 'Mischtabelle-Kategorie-Bauteil' SET ID_Kategorie = " + id_Kategorie + ", Timestamp = '" + timeStamp + "' WHERE ID_Bauteil = " + id_Bauteil + ";";
+		DataBase.executeQuery(query);
+		
+		DataBase.closeConnection();
+		
+	}
 	
 	public static void deleteBauteilFromKategorie(int id_Bauteil) {
 		DataBase.getConnection();
