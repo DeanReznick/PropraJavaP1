@@ -17,6 +17,10 @@ public class DataBase {
 	public static ArrayList<StatusObjektRAM> status_list = new ArrayList<StatusObjektRAM>();  //  Status-objects for a specific Person. Will be overwritten !!
 	public static ArrayList<OffenerAuftragObjektRAM> offeneAuftraege = new ArrayList<OffenerAuftragObjektRAM>();
 	
+	public static OrderObjektRAM order = null; 
+	
+	
+	
 	public static void getConnection() {
 		
 		//Verbindungsaufbau zur Datenbank	
@@ -1287,6 +1291,75 @@ public static void searchOrder(String search) {
 		   System.out.println("Operation done successfully");
 		   return ids; 
 		}
+	  //------------
 	  
+	  public static void createOrderObjektRAM (int id_Order) {
+		  
+		  int id_Auftrag; 
+		  String titel; 
+		  String af; 
+		  String rk;
+					  
+		  Statement stmt = null;
+		   
+		   try {
+		    
+			   //Query 
+			   String query = "SELECT * Auftrag WHERE ID_Auftrag ="+ id_Order + ";"; 
+			   
+			   // Getting Data from Database
+		      stmt = c.createStatement();
+		      ResultSet rs = stmt.executeQuery( query );
+		
+		      while ( rs.next() ) {
+		    	id_Auftrag = rs.getInt("ID_Auftrag");	
+		    	titel = rs.getString("Titel"); 
+		    	af = rs.getString("AF"); 
+		    	rk = rs.getString("RK"); 
+		    	
+		    	order = new OrderObjektRAM( id_Auftrag,  titel,  af,  rk); // Testen !
+		    	
+		      }
+		     
+		      stmt.close();
+		    
+		   } catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   
+		   System.out.println("Operation done successfully");
+	    
+	  }
+	  
+ public static String getBeschreibung (int id_Bill) {
+		  
+		  String beschreibung = ""; 
+					  
+		  Statement stmt = null;
+		   
+		   try {
+		    
+			   //Query 
+			   String query = "SELECT * Rechnung WHERE ID_Rechnung ="+ id_Bill + ";"; 
+			   
+			   // Getting Data from Database
+		      stmt = c.createStatement();
+		      ResultSet rs = stmt.executeQuery( query );
+		
+		      while ( rs.next() ) {
+		    	  beschreibung = rs.getString("Beschreibung"); 
+		      }
+		     
+		      stmt.close();
+		    
+		   } catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   
+		   System.out.println("Operation done successfully");
+		   return beschreibung; 
+ 	}
 	  
 }

@@ -261,8 +261,5 @@ public static void changeMail (String name, String surname, String mail) {
 	    
 	  }
 	  
-	  
-	  
-	  
 	    
 	}
