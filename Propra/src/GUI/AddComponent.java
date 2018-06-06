@@ -27,6 +27,7 @@ public class AddComponent extends JFrame {
 	private JTextField txtOrdered;
 	private JTextField txtPlanned;
 	private JTextField txtStorage;
+	private JTextField txtPrice;
 
 	/**
 	 * Launch the application.
@@ -64,19 +65,19 @@ public class AddComponent extends JFrame {
 		contentPane.add(lblLink);
 		
 		JLabel lblStock = new JLabel("Lagernd:");
-		lblStock.setBounds(10, 130, 86, 14);
+		lblStock.setBounds(10, 83, 86, 14);
 		contentPane.add(lblStock);
 		
 		JLabel lblOrdered = new JLabel("Bestellt:");
-		lblOrdered.setBounds(10, 155, 86, 14);
+		lblOrdered.setBounds(10, 108, 86, 14);
 		contentPane.add(lblOrdered);
 		
 		JLabel lblBauteilId = new JLabel("Geplant:");
-		lblBauteilId.setBounds(10, 180, 86, 14);
+		lblBauteilId.setBounds(10, 133, 86, 14);
 		contentPane.add(lblBauteilId);
 		
 		JLabel lblBauteil = new JLabel("Lagerort:");
-		lblBauteil.setBounds(10, 205, 73, 14);
+		lblBauteil.setBounds(10, 158, 73, 14);
 		contentPane.add(lblBauteil);
 		
 		JButton btnBestaetigen = new JButton("Bestaetigen");
@@ -87,7 +88,7 @@ public class AddComponent extends JFrame {
 				try{
 				DataBase.getConnection();
 				
-				BauteileAuftragsabwicklung.newBauteil(txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText());
+				BauteileAuftragsabwicklung.addPrice((BauteileAuftragsabwicklung.newBauteil(txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText())), txtPrice.getText());
 				DataBase.refreshChange();
 				dispose();
 				}
@@ -138,7 +139,7 @@ public class AddComponent extends JFrame {
 				}
 			}
 		});
-		txtStock.setBounds(130, 127, 86, 20);
+		txtStock.setBounds(130, 80, 86, 20);
 		contentPane.add(txtStock);
 		txtStock.setColumns(10);
 		
@@ -151,7 +152,7 @@ public class AddComponent extends JFrame {
 				}
 			}
 		});
-		txtOrdered.setBounds(130, 152, 86, 20);
+		txtOrdered.setBounds(130, 105, 86, 20);
 		contentPane.add(txtOrdered);
 		txtOrdered.setColumns(10);
 		
@@ -164,7 +165,7 @@ public class AddComponent extends JFrame {
 				}
 			}
 		});
-		txtPlanned.setBounds(130, 177, 86, 20);
+		txtPlanned.setBounds(130, 130, 86, 20);
 		contentPane.add(txtPlanned);
 		txtPlanned.setColumns(10);
 		
@@ -177,11 +178,19 @@ public class AddComponent extends JFrame {
 				}
 			}
 		});
-		txtStorage.setBounds(130, 202, 86, 20);
+		txtStorage.setBounds(130, 155, 86, 20);
 		contentPane.add(txtStorage);
 		txtStorage.setColumns(10);
 		
+		JLabel lblPreis = new JLabel("Preis:");
+		lblPreis.setBounds(10, 183, 46, 14);
+		contentPane.add(lblPreis);
+		
+		txtPrice = new JTextField();
+		txtPrice.setBounds(130, 180, 86, 20);
+		contentPane.add(txtPrice);
+		txtPrice.setColumns(10);
+		
 		DataBase.closeConnection();
 	}
-
 }

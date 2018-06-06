@@ -95,7 +95,7 @@ public class UpdateComponent extends JFrame {
 		contentPane.add(lblBauteil);
 		
 		JButton btnBestaetigen = new JButton("Bestaetigen");
-		btnBestaetigen.setEnabled(false);
+		btnBestaetigen.setEnabled(true);
 		btnBestaetigen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -130,6 +130,9 @@ public class UpdateComponent extends JFrame {
 		txtLink.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
+				if (txtLink.getText().equals("") || txtName.getText().equals("") || txtLink.getText().equals("") || txtStock.getText().equals("") || txtOrdered.getText().equals("") || txtPlanned.getText().equals("") || txtStorage.getText().equals("") || txtPrice.getText().equals("")) {
+					btnBestaetigen.setEnabled(false);
+				}
 				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
@@ -143,6 +146,9 @@ public class UpdateComponent extends JFrame {
 		txtName.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
+				if (txtLink.getText().equals("") || txtName.getText().equals("") || txtLink.getText().equals("") || txtStock.getText().equals("") || txtOrdered.getText().equals("") || txtPlanned.getText().equals("") || txtStorage.getText().equals("") || txtPrice.getText().equals("")) {
+					btnBestaetigen.setEnabled(false);
+				}
 				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
@@ -156,6 +162,9 @@ public class UpdateComponent extends JFrame {
 		txtStock.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
+				if (txtLink.getText().equals("") || txtName.getText().equals("") || txtLink.getText().equals("") || txtStock.getText().equals("") || txtOrdered.getText().equals("") || txtPlanned.getText().equals("") || txtStorage.getText().equals("") || txtPrice.getText().equals("")) {
+					btnBestaetigen.setEnabled(false);
+				}
 				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
@@ -169,6 +178,9 @@ public class UpdateComponent extends JFrame {
 		txtOrdered.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
+				if (txtLink.getText().equals("") || txtName.getText().equals("") || txtLink.getText().equals("") || txtStock.getText().equals("") || txtOrdered.getText().equals("") || txtPlanned.getText().equals("") || txtStorage.getText().equals("") || txtPrice.getText().equals("")) {
+					btnBestaetigen.setEnabled(false);
+				}
 				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
@@ -182,6 +194,9 @@ public class UpdateComponent extends JFrame {
 		txtPlanned.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
+				if (txtLink.getText().equals("") || txtName.getText().equals("") || txtLink.getText().equals("") || txtStock.getText().equals("") || txtOrdered.getText().equals("") || txtPlanned.getText().equals("") || txtStorage.getText().equals("") || txtPrice.getText().equals("")) {
+					btnBestaetigen.setEnabled(false);
+				}
 				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
@@ -195,6 +210,9 @@ public class UpdateComponent extends JFrame {
 		txtStorage.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
+				if (txtLink.getText().equals("") || txtName.getText().equals("") || txtLink.getText().equals("") || txtStock.getText().equals("") || txtOrdered.getText().equals("") || txtPlanned.getText().equals("") || txtStorage.getText().equals("") || txtPrice.getText().equals("")) {
+					btnBestaetigen.setEnabled(false);
+				}
 				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}
@@ -208,6 +226,9 @@ public class UpdateComponent extends JFrame {
 		txtPrice.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent arg0) {
+				if (txtLink.getText().equals("") || txtName.getText().equals("") || txtLink.getText().equals("") || txtStock.getText().equals("") || txtOrdered.getText().equals("") || txtPlanned.getText().equals("") || txtStorage.getText().equals("") || txtPrice.getText().equals("")) {
+					btnBestaetigen.setEnabled(false);
+				}
 				if (!txtLink.getText().equals("") && !txtName.getText().equals("") && !txtLink.getText().equals("") && !txtStock.getText().equals("") && !txtOrdered.getText().equals("") && !txtPlanned.getText().equals("") && !txtStorage.getText().equals("")&& !txtPrice.getText().equals("")) {
 					btnBestaetigen.setEnabled(true);
 				}

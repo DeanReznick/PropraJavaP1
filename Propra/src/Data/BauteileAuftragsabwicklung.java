@@ -122,7 +122,7 @@ public class BauteileAuftragsabwicklung {
 		
 	}
 	
-	public static void newBauteil(String name, String link, int mengeLagernd, int mengeBestellt, int mengeGeplant, String lagerort) {
+	public static int newBauteil(String name, String link, int mengeLagernd, int mengeBestellt, int mengeGeplant, String lagerort) {
 		DataBase.getConnection();
 		String query = "INSERT INTO Bauteil (Name, Link, MengeLagernd, MengeBestellt, MengeGeplant, Lagerort) VALUES ('" + name +"','"+ link +"'," + mengeLagernd +"," + mengeBestellt + "," + mengeGeplant + ",'"+ lagerort +"');";
 		DataBase.executeQuery(query);
@@ -141,7 +141,7 @@ public class BauteileAuftragsabwicklung {
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		
-		
+		return id_current;
 		
 	}
 	public static void deleteBauteil(int id_bauteil) {
@@ -242,10 +242,19 @@ public class BauteileAuftragsabwicklung {
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		
-		
-		
-		
 	}
+	
+//	public static void addBauteilToKategorie(int id_Kategorie, int id_Bauteil) {
+//		
+//		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+//		
+//		DataBase.getConnection();
+//		String query = "UPDATE 'Mischtabelle-Kategorie-Bauteil' SET ID_Kategorie = " + id_Kategorie + " AND Timestamp = '" + timeStamp + "' WHERE ID_Bauteil = " + id_Bauteil + ";";
+//		DataBase.executeQuery(query);
+//		
+//		DataBase.closeConnection();
+//		
+//	}
 	
 	public static void deleteBauteilFromKategorie(int id_Bauteil) {
 		DataBase.getConnection();
