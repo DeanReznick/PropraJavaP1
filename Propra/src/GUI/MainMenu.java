@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -61,6 +62,9 @@ public class MainMenu extends JFrame {
 	private JTextField txtSearchComponent;
 	public static JScrollPane scrollPane_3;
 	public static JTable tblCategory;
+	private JButton btnSuchen;
+	private JButton btnSearchOrder;
+	private JButton btnSearchComponent;
 
 	/**
 	 * Launch the application.
@@ -202,11 +206,7 @@ public class MainMenu extends JFrame {
 		txtSuchen.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				DataBase.getConnection();
-				if (txtSuchen.getText().equals("")) {
-					DataBase.getAllPersons();
-				}
-				DataBase.closeConnection();
+				SwingUtilities.getRootPane(btnSuchen).setDefaultButton(btnSuchen);
 			}
 		});
 		txtSuchen.setToolTipText("Suchen...");
@@ -327,11 +327,11 @@ public class MainMenu extends JFrame {
 		lblAuftraege.setBounds(10, 241, 71, 14);
 		panelPerson.add(lblAuftraege);
 		
-		JButton btnSuchen = new JButton("Suchen");
+		btnSuchen = new JButton("Suchen");
 		btnSuchen.setBounds(423, 0, 116, 23);
 		panelPerson.add(btnSuchen);
 		
-		JButton btnSearchOrder = new JButton("Suchen");
+		btnSearchOrder = new JButton("Suchen");
 		btnSearchOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DataBase.searchOrder(txtSearchOrder.getText());
@@ -414,6 +414,12 @@ public class MainMenu extends JFrame {
 		panelPerson.add(btnDeleteOrder);
 		
 		txtSearchOrder = new JTextField();
+		txtSearchOrder.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				SwingUtilities.getRootPane(btnSearchOrder).setDefaultButton(btnSearchOrder);
+			}
+		});
 		txtSearchOrder.setBounds(744, 389, 205, 20);
 		panelPerson.add(txtSearchOrder);
 		txtSearchOrder.setColumns(10);
@@ -582,6 +588,12 @@ public class MainMenu extends JFrame {
 		scrollPane_3.setViewportView(tblComponents);
 		
 		txtSearchComponent = new JTextField();
+		txtSearchComponent.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				SwingUtilities.getRootPane(btnSearchComponent).setDefaultButton(btnSearchComponent);
+			}
+		});
 		txtSearchComponent.setBounds(749, 11, 200, 20);
 		panelBau.add(txtSearchComponent);
 		txtSearchComponent.setColumns(10);
@@ -634,7 +646,7 @@ public class MainMenu extends JFrame {
 		btnAendern.setBounds(318, 359, 101, 23);
 		panelBau.add(btnAendern);
 		
-		JButton btnSearchComponent = new JButton("Suchen");
+		btnSearchComponent = new JButton("Suchen");
 		btnSearchComponent.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DataBase.searchComponent(txtSearchComponent.getText());

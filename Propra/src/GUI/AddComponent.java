@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import Data.BauteileAuftragsabwicklung;
@@ -190,6 +191,8 @@ public class AddComponent extends JFrame {
 		txtPrice.setBounds(130, 180, 86, 20);
 		contentPane.add(txtPrice);
 		txtPrice.setColumns(10);
+		
+		SwingUtilities.getRootPane(btnBestaetigen).setDefaultButton(btnBestaetigen);
 		
 		DataBase.closeConnection();
 	}

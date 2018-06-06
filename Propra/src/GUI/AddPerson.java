@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextPane;
+import javax.swing.SwingUtilities;
 
 public class AddPerson extends JFrame {
 
@@ -220,4 +221,5 @@ public class AddPerson extends JFrame {
 		
 		
 	}
+	
 }
