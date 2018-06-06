@@ -110,13 +110,19 @@ public class UpdateComponent extends JFrame {
 				System.out.println(id);
 				BauteileAuftragsabwicklung.changeBauteil(id, txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText());
 				BauteileAuftragsabwicklung.alterPrice(id, txtPrice.getText());
-				DataBase.refreshComponent();
-				dispose();
+				
+				
+				
 				}
+				
 				catch (Exception ex){
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {
 					DataBase.refreshComponent();
+					int selectedRowIndexCategory = MainMenu.tblCategory.getSelectedRow();
+					if(selectedRowIndexCategory>=0) {DataBase.refreshComponentCategory();}
+					
+					
 					DataBase.closeConnection(); 
 					//jfjsdfj
 					
