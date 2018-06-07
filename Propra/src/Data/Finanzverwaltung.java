@@ -41,6 +41,16 @@ public class Finanzverwaltung {
 		DataBase.getConnection();
 		String query = "DELETE FROM Rechnung WHERE ID_Rechnung = "+ id_Rechnung +";"; 
 		DataBase.executeQuery(query);
+		
+		// Status löschen 
+		int id_Status = DataBase.getSpecificID("ID_Status", "SELECT ID_Status FROM 'Mischtabelle-Rechnung-Status' WHERE ID_Rechnung =" + id_Rechnung +";"); 
+
+		query = "DELETE FROM 'Mischtabelle-Rechnung-Status' WHERE ID_Rechnung = "+ id_Rechnung +";"; 
+		DataBase.executeQuery(query);
+		
+		query = "DELETE FROM 'Status_Rechnung' WHERE ID_Status = "+ id_Status +";"; 
+		DataBase.executeQuery(query);
+		
 		DataBase.closeConnection();
 		
 	}
@@ -54,7 +64,7 @@ public class Finanzverwaltung {
 				"VALUES ('"+ statusBill +"');";
 		DataBase.executeQuery(query);
 		
-		int id_Status = DataBase.getIdPersonByNameSurname("current", "SELECT max(ID_Status) as current FROM 'Status_Rechnung';"); 
+		int id_Status = DataBase.getSpecificID("current", "SELECT max(ID_Status) as current FROM 'Status_Rechnung';"); 
 		
 		query = "INSERT INTO 'Mischtabelle-Rechnung-Status' (ID_Rechnung, ID_Status, Timestamp, Bearbeiter)" + 
 					"VALUES ("+ id_Bill + ", " + id_Status + ", '" + timeStamp + "', " +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) +");"; 
@@ -64,6 +74,10 @@ public class Finanzverwaltung {
 		
 	}
 	
+	
+	
+	
+	
 	public static void addOrderToBill(int id_Order, int id_Bill) {
 		
 		
@@ -71,12 +85,7 @@ public class Finanzverwaltung {
 		// Preis ändern -> Float Real ? 
 		// Mischtabelle
 		
-
-		
-		
-		
-		
-		
+	
 	}
 	
 }
