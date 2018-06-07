@@ -2,6 +2,7 @@ package Data;
 import java.sql.*;
 import java.util.ArrayList;
 
+import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -881,6 +882,59 @@ public static void searchOrder(String search) {
 		MainMenu.tblComponents.setModel(modelComponents);
 	
 		closeConnection();
+	}
+	
+	
+	public static void refreshBill () {
+		String[] headers_bills = {"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung",  "TimeStamp"};
+	String[][] data_bills = new String[1000][9];
+	MainMenu.tblBills = new JTable(data_bills, headers_bills);
+	DefaultTableModel modelBills = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "TimeStamp"}, 0) {
+		
+		@Override
+		public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		
+		Statement stmt = null;
+	String sqlBill = "SELECT * FROM Rechnung";
+	ResultSet rsBill = null;
+	try {
+		rsBill = stmt.executeQuery(sqlBill);
+	} catch (SQLException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	
+
+	
+	try {
+	while(rsBill.next())
+	{
+		String a1 = rsBill.getString("ID_Rechnung");
+	    String b1 = rsBill.getString("Rechnungsname");
+	    String c1 = rsBill.getString("Auftraggeber");
+	   // String d1 = rsBill.getString("Ansprechpartner");
+	   // String e1 = rsBill.getString("Bezahlung_Art");
+	    String f1 = rsBill.getString("Betrag");
+	    String g1 = rsBill.getString("Beschreibung");
+	   // String h1 = rsBill.getString("Bearbeiter");
+	    String j1 = rsBill.getString("TimeStamp");
+	   
+	  
+	    
+	    modelBills.addRow(new Object[]{a1, b1,c1,f1,g1, j1});
+	}
+	
+	
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	MainMenu.tblBills.setModel(modelBills);
+		
 	}
 	
 	public static void refreshCategory() {

@@ -13,6 +13,7 @@ import javax.swing.table.TableModel;
 import Data.Authentication;
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
+import Data.Finanzverwaltung;
 import Data.OffenerAuftragObjektRAM;
 import Data.PersonObjektRAM;
 import Data.PersonenFertigungsverwaltung;
@@ -65,6 +66,13 @@ public class MainMenu extends JFrame {
 	private JButton btnSuchen;
 	private JButton btnSearchOrder;
 	private JButton btnSearchComponent;
+	private JTable table_1;
+	private JTable table_2;
+	private JTable table_3;
+	private JTextField textField;
+	private static JTable tblAuftraegeRechnung;
+	private JTable tblOdersInBill;
+	public static JTable tblBills;
 
 	/**
 	 * Launch the application.
@@ -533,6 +541,381 @@ public class MainMenu extends JFrame {
 		
 		JPanel panelFinanz = new JPanel();
 		tabbedPane.addTab("Finanzverwaltung", null, panelFinanz, null);
+		panelFinanz.setLayout(null);
+		
+		table_1 = new JTable();
+		table_1.setBounds(10, 61, 134, 180);
+		panelFinanz.add(table_1);
+		
+		JLabel lblKassen = new JLabel("Kasse:");
+		lblKassen.setBounds(10, 36, 46, 14);
+		panelFinanz.add(lblKassen);
+		
+		table_2 = new JTable();
+		table_2.setBounds(220, 61, 134, 180);
+		panelFinanz.add(table_2);
+		
+		JLabel lblTopf = new JLabel("Topf:");
+		lblTopf.setBounds(220, 36, 46, 14);
+		panelFinanz.add(lblTopf);
+		
+		table_3 = new JTable();
+		table_3.setBounds(446, 61, 489, 180);
+		panelFinanz.add(table_3);
+		
+		JLabel lblRechnung = new JLabel("Rechnung:");
+		lblRechnung.setBounds(446, 36, 83, 14);
+		panelFinanz.add(lblRechnung);
+		
+		JButton btnNeueKasse = new JButton("Neue Kasse");
+		btnNeueKasse.setBounds(10, 252, 134, 23);
+		panelFinanz.add(btnNeueKasse);
+		
+		JButton btnAendern_2 = new JButton("Aendern");
+		btnAendern_2.setBounds(10, 286, 134, 23);
+		panelFinanz.add(btnAendern_2);
+		
+		JButton btnKasseLoeschen = new JButton("Kasse Loeschen");
+		btnKasseLoeschen.setBounds(10, 320, 134, 23);
+		panelFinanz.add(btnKasseLoeschen);
+		
+		JButton btnTopfErstellen = new JButton("Topf erstellen");
+		btnTopfErstellen.setBounds(220, 252, 134, 23);
+		panelFinanz.add(btnTopfErstellen);
+		
+		JButton btnTopfaendern = new JButton("TopfAendern");
+		btnTopfaendern.setBounds(220, 286, 134, 23);
+		panelFinanz.add(btnTopfaendern);
+		
+		JButton btnTopfLoeschen = new JButton("Topf Loeschen");
+		btnTopfLoeschen.setBounds(220, 320, 134, 23);
+		panelFinanz.add(btnTopfLoeschen);
+		
+		JButton btnRechnungErstellen = new JButton("Rechnung erstellen");
+		btnRechnungErstellen.setBounds(446, 252, 176, 23);
+		panelFinanz.add(btnRechnungErstellen);
+		
+		JButton btnNewButton_1 = new JButton("New button");
+		btnNewButton_1.setBounds(0, 0, 89, 23);
+		panelFinanz.add(btnNewButton_1);
+		
+		JButton btnRechnungLoeschen = new JButton("Rechnung loeschen");
+		btnRechnungLoeschen.setBounds(446, 320, 176, 23);
+		panelFinanz.add(btnRechnungLoeschen);
+		
+		JButton btnRechnungAendern = new JButton("Rechnung Aendern");
+		btnRechnungAendern.setBounds(446, 286, 176, 23);
+		panelFinanz.add(btnRechnungAendern);
+		
+		JButton btnSuchen_1 = new JButton("Suchen");
+		btnSuchen_1.setBounds(685, 32, 89, 23);
+		panelFinanz.add(btnSuchen_1);
+		
+		textField = new JTextField();
+		textField.setBounds(784, 33, 151, 20);
+		panelFinanz.add(textField);
+		textField.setColumns(10);
+		
+		JPanel panelRechnung = new JPanel();
+		tabbedPane.addTab("Rechnung", null, panelRechnung, null);
+		panelRechnung.setLayout(null);
+		
+		JScrollPane scrollPane_5 = new JScrollPane();
+		scrollPane_5.setBounds(10, 42, 411, 304);
+		panelRechnung.add(scrollPane_5);
+		
+		
+	
+	
+		
+		String[] headers_auftraegeR = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"};
+		String[][] auftraegeR = new String[1000][11];
+		tblAuftraegeRechnung = new JTable(auftraegeR,headers_auftraegeR);
+		scrollPane_5.setViewportView(tblAuftraegeRechnung);
+		
+		
+		DefaultTableModel modelAuftragR = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		String sqlAuftragR = "SELECT * FROM Auftrag";
+		ResultSet rsAuftragR = stmt.executeQuery(sqlAuftragR);
+		
+		//String r = null;
+		//String sqlRolle = "SELECT Rolle FROM Mischtabelle-Person-Auftrag WHERE ID_Auftrag =" + r + ";";
+		
+		
+		while(rsAuftragR.next())
+		{
+			String a1 = rsAuftragR.getString("ID_Auftrag");
+		    String b1 = rsAuftragR.getString("Titel");
+		    String c1 = rsAuftragR.getString("AF");
+		    String d1 = rsAuftragR.getString("Dateiname");
+		    String e1 = rsAuftragR.getString("Dateiort");
+		    String f1 = rsAuftragR.getString("PK");
+		    String g1 = rsAuftragR.getString("RK");
+		    String h1 = DataBase.getStatusBeiAuftragId(a1);
+		    
+		    String j1 = DataBase.getRolleByOrderId(a1);
+		    //System.out.println(a1);
+		   // System.out.println(j1);
+		  
+		    
+		    modelAuftragR.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+		}
+		
+		tblAuftraegeRechnung.setModel(modelAuftragR);
+		
+		JButton btnAddToBill = new JButton("Add to bill");
+		btnAddToBill.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int selectedRowIndexBills = MainMenu.tblBills.getSelectedRow();
+				int selectedRowIndexOrders = MainMenu.tblAuftraegeRechnung.getSelectedRow();
+		
+				int id_Bill = Integer.parseInt(MainMenu.tblBills.getModel().getValueAt(selectedRowIndexBills, 0).toString());
+				int id_Order =Integer.parseInt( MainMenu.tblAuftraegeRechnung.getModel().getValueAt(selectedRowIndexOrders, 0).toString());
+				
+				
+				Finanzverwaltung.addOrderToBill(id_Order, id_Bill);
+			}
+		});
+		btnAddToBill.setBounds(10, 363, 178, 23);
+		panelRechnung.add(btnAddToBill);
+		
+		JScrollPane scrollPane_6 = new JScrollPane();
+		scrollPane_6.setBounds(494, 234, 455, 111);
+		panelRechnung.add(scrollPane_6);
+		
+		
+		
+		String[] headersOrdersInBills = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"};
+		String[][] dataOrdersInBills = new String[1000][11];
+		tblOdersInBill = new JTable(dataOrdersInBills, headersOrdersInBills);
+		scrollPane_6.setViewportView(tblOdersInBill);
+		
+		
+		
+		
+		//int selectedRowIndex = MainMenu.tblBills.getSelectedRow();
+	
+		//String tableClick = MainMenu.tblBills.getModel().getValueAt(selectedRowIndex, 0).toString();
+		
+		
+		DefaultTableModel modelOrderBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		//String sqlOrderBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag WHERE 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung like '" + idbill +"';";
+			String sqlOrderBill = "SELECT * FROM Auftrag";
+			ResultSet rsOrderBill = stmt.executeQuery(sqlOrderBill);
+		
+		//String r = null;
+		//String sqlRolle = "SELECT Rolle FROM Mischtabelle-Person-Auftrag WHERE ID_Auftrag =" + r + ";";
+		
+		
+		while(rsOrderBill.next())
+		{
+			String a1 = rsOrderBill.getString("ID_Auftrag");
+		    String b1 = rsOrderBill.getString("Titel");
+		    String c1 = rsOrderBill.getString("AF");
+		    String d1 = rsOrderBill.getString("Dateiname");
+		    String e1 = rsOrderBill.getString("Dateiort");
+		    String f1 = rsOrderBill.getString("PK");
+		    String g1 = rsOrderBill.getString("RK");
+		    String h1 = DataBase.getStatusBeiAuftragId(a1);
+		    
+		    String j1 = DataBase.getRolleByOrderId(a1);
+		    //System.out.println(a1);
+		   // System.out.println(j1);
+		  
+		    
+		    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+		}
+		
+		tblOdersInBill.setModel(modelOrderBill);
+		
+		JButton btnErstellen_1 = new JButton("Erstellen");
+		btnErstellen_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				NewBill x = new NewBill(); // -id Order 
+				x.setVisible(true); 
+			}
+		});
+		btnErstellen_1.setBounds(860, 17, 89, 23);
+		panelRechnung.add(btnErstellen_1);
+		
+		JButton btnAuftragEntfernen = new JButton("Auftrag entfernen");
+		btnAuftragEntfernen.setBounds(688, 363, 162, 23);
+		panelRechnung.add(btnAuftragEntfernen);
+		
+		JLabel lblAuftraege_1 = new JLabel("Auftraege:");
+		lblAuftraege_1.setBounds(10, 17, 150, 14);
+		panelRechnung.add(lblAuftraege_1);
+		
+		JLabel lblOrdersInThis = new JLabel("Orders in this Bill:");
+		lblOrdersInThis.setBounds(494, 209, 183, 14);
+		panelRechnung.add(lblOrdersInThis);
+		
+		JScrollPane scrollPane_7 = new JScrollPane();
+		scrollPane_7.setBounds(494, 43, 455, 151);
+		panelRechnung.add(scrollPane_7);
+		
+		
+		
+		
+		String[] headers_bills = {"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung",  "TimeStamp"};
+		String[][] data_bills = new String[1000][9];
+		tblBills = new JTable(data_bills, headers_bills);
+		DefaultTableModel modelBills = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "TimeStamp"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		String sqlBill = "SELECT * FROM Rechnung";
+		ResultSet rsBill = stmt.executeQuery(sqlBill);
+		
+	
+		
+		
+		while(rsBill.next())
+		{
+			String a1 = rsBill.getString("ID_Rechnung");
+		    String b1 = rsBill.getString("Rechnungsname");
+		    String c1 = rsBill.getString("Auftraggeber");
+		   // String d1 = rsBill.getString("Ansprechpartner");
+		   // String e1 = rsBill.getString("Bezahlung_Art");
+		    String f1 = rsBill.getString("Betrag");
+		    String g1 = rsBill.getString("Beschreibung");
+		   // String h1 = rsBill.getString("Bearbeiter");
+		    String j1 = rsBill.getString("TimeStamp");
+		   
+		  
+		    
+		    modelBills.addRow(new Object[]{a1, b1,c1,f1,g1, j1});
+		}
+		
+		tblBills.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				DataBase.getConnection();
+				int colnr  = MainMenu.tblBills.getSelectedRow();
+				DefaultTableModel modelOrderBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+					
+					@Override
+					public boolean isCellEditable(int row, int column) {
+							return false;
+						}
+					};	
+				String id = MainMenu.tblBills.getModel().getValueAt(colnr, 0).toString();
+				
+				System.out.println(id);
+				
+				Statement stmtOrderBills = null;
+				
+					try {
+						
+						stmtOrderBills = DataBase.c.createStatement();
+						System.out.println("Statement");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				
+				String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' on Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag where 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung ="+id+";";
+				
+				ResultSet rsOrdersBills = null;
+				
+					try {
+						rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
+						System.out.println("Query executed");
+						System.out.println(rsOrdersBills);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				
+				
+				
+				
+				
+					try {
+						while(rsOrdersBills.next())
+						{
+							String a1 = rsOrdersBills.getString("ID_Auftrag");
+						    String b1 = rsOrdersBills.getString("Titel");
+						    String c1 = rsOrdersBills.getString("AF");
+						    String d1 = rsOrdersBills.getString("Dateiname");
+						    String e1 = rsOrdersBills.getString("Dateiort");
+						    String f1 = rsOrdersBills.getString("PK");
+						    String g1 = rsOrdersBills.getString("RK");
+						    String h1 = DataBase.getStatusBeiAuftragId(a1);
+						    
+						    String j1 = DataBase.getRolleByOrderId(a1);
+						    //System.out.println(a1);
+						   // System.out.println(j1);
+						  
+						    
+						    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+						    
+						    
+						 
+						  
+						    
+						    modelOrderBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
+						    
+						    System.out.println("While done");
+						    
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					tblOdersInBill.setModel(modelOrderBill);
+				
+				
+				
+				
+				
+				
+				DataBase.closeConnection();
+			}
+		});
+		
+		tblBills.setModel(modelBills);
+		
+		
+		//bis hier
+		
+		scrollPane_7.setViewportView(tblBills);
+		
+		JLabel lblBills = new JLabel("Bills:");
+		lblBills.setBounds(494, 17, 46, 14);
+		panelRechnung.add(lblBills);
+		
+		JButton btnSpeichern = new JButton("Speichern");
+		btnSpeichern.setBounds(860, 363, 89, 23);
+		panelRechnung.add(btnSpeichern);
+		
+		JButton btnAendern_3 = new JButton("Aendern");
+		btnAendern_3.setBounds(761, 17, 89, 23);
+		panelRechnung.add(btnAendern_3);
+		
+		JButton btnLoeschen_2 = new JButton("Loeschen");
+		btnLoeschen_2.setBounds(662, 17, 89, 23);
+		panelRechnung.add(btnLoeschen_2);
 		
 		JPanel panelBau = new JPanel();
 		tabbedPane.addTab("Bauteileverwaltung", null, panelBau, null);
@@ -765,7 +1148,7 @@ public class MainMenu extends JFrame {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						tblComponents.setModel(modelComponentsKategorie);
+						tblAuftraegeRechnung.setModel(modelComponentsKategorie);
 					
 					
 					
