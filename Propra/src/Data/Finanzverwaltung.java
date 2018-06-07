@@ -87,6 +87,15 @@ public class Finanzverwaltung {
 				"VALUES ("+ id_Bill +", " + id_Order + ");";
 		DataBase.executeQuery(query);
 		
+		
+		query = "SELECT * INTO AuftragBeendet FROM Auftrag WHERE ID_Auftrag = " + id_Order + ";"; 
+		DataBase.executeQuery(query);
+		
+		query = "DELETE FROM Auftrag WHERE ID_Auftrag = "+ id_Order +";"; 
+		DataBase.executeQuery(query);
+		
+		
+		
 		DataBase.closeConnection();
 		
 		
