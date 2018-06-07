@@ -44,18 +44,12 @@ public class Finanzverwaltung {
 		
 		// Status prüfen
 		// Preis ändern -> Float Real ? 
+		// Mischtabelle
+		
+
 		
 		
-		// IDEE: Beschreibung += z.B. "; Bestellung XYZ, Preis XYZ, ...;"
-		DataBase.getConnection();
-		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		DataBase.createOrderObjektRAM(id_Order);
-		String tmp = DataBase.getBeschreibung(id_Bill); 
-		tmp += DataBase.order.toString(); 
 		
-		String query = "UPDATE Rechnung SET Beschreibung ='"  + tmp + "' WHERE ID_Rchnung = " + id_Bill + ", Timestamp = '" + timeStamp + "';";  
-		DataBase.executeQuery(query); 
-		DataBase.closeConnection();
 		
 		
 	}

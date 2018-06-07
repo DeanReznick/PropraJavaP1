@@ -1332,34 +1332,4 @@ public static void searchOrder(String search) {
 	    
 	  }
 	  
- public static String getBeschreibung (int id_Bill) {
-		  
-		  String beschreibung = ""; 
-					  
-		  Statement stmt = null;
-		   
-		   try {
-		    
-			   //Query 
-			   String query = "SELECT * Rechnung WHERE ID_Rechnung ="+ id_Bill + ";"; 
-			   
-			   // Getting Data from Database
-		      stmt = c.createStatement();
-		      ResultSet rs = stmt.executeQuery( query );
-		
-		      while ( rs.next() ) {
-		    	  beschreibung = rs.getString("Beschreibung"); 
-		      }
-		     
-		      stmt.close();
-		    
-		   } catch ( Exception e ) {
-		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-		      
-		   }
-		   
-		   System.out.println("Operation done successfully");
-		   return beschreibung; 
- 	}
-	  
 }
