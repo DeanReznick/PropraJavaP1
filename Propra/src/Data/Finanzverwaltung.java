@@ -15,6 +15,11 @@ public class Finanzverwaltung {
 		String query = "INSERT INTO Rechnung (Rechnungsname, Auftraggeber, Ansprechpartner, Bezahlung_Art, Betrag, Beschreibung, Bearbeiter, TimeStamp)" + 
 				"VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', '" + betrag +"','"  + beschreibung +"', " +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'" + timeStamp +"');";
 		DataBase.executeQuery(query);
+		
+		int id_Bill = DataBase.getIdPersonByNameSurname("current", "SELECT max(ID_Rechnung) as current FROM 'Rechnung';"); 
+		
+		changeStatusBill(id_Bill, "Rechnung wurde erstellt."); 
+				
 		DataBase.closeConnection();
 		
 		// Könnte der Teil hin, dass die Aufträge dann gelöscht werden. 
@@ -39,6 +44,26 @@ public class Finanzverwaltung {
 		DataBase.closeConnection();
 		
 	}
+	
+	
+	public static void changeStatusBill(int id_Bill, String statusBill) {
+		
+		DataBase.getConnection();
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		String query = "INSERT INTO 'Status_Rechnung' (Name)" + 
+				"VALUES ('"+ statusBill +"');";
+		DataBase.executeQuery(query);
+		
+		int id_Status = DataBase.getIdPersonByNameSurname("current", "SELECT max(ID_Status) as current FROM 'Status_Rechnung';"); 
+		
+		query = "INSERT INTO 'Mischtabelle-Rechnung-Status' (ID_Rechnung, ID_Status, Timestamp, Bearbeiter)" + 
+					"VALUES ("+ id_Bill + ", " + id_Status + ", '" + timeStamp + "', " +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) +");"; 
+		
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+	}
+	
 	public static void addOrderToBill(int id_Order, int id_Bill) {
 		
 		
