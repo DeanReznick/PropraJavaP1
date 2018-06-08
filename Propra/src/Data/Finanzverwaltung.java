@@ -113,7 +113,27 @@ public class Finanzverwaltung {
 	
 	
 	public static void deleteOrderFromBill(int id_Order) {
-		// Neue ID !
+		
+		DataBase.getConnection();
+		String query = "DELETE FROM Rechnung WHERE ID_Auftrag = "+ id_Order +";"; 
+		
+		
+		DataBase.executeQuery(query);
+		
+
+		//query = "INSERT INTO AuftragBeendet SELECT ID_Auftrag, Titel, AF, Dateiname, Dateiort, PK, RK FROM  Auftrag WHERE ID_Auftrag = " + id_Order + ";";
+		//DataBase.executeQuery(query);
+		
+		//query = "DELETE FROM Auftrag WHERE ID_Auftrag = "+ id_Order +";"; 
+		//DataBase.executeQuery(query);
+	
+		query = "UPDATE Auftrag SET ID_Rechnung= 0 WHERE ID_Auftrag = " + id_Order + ";";  
+		DataBase.executeQuery(query);
+
+		DataBase.closeConnection();
+		
+		
+		
 		
 	}
 	
