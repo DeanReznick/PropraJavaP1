@@ -808,8 +808,10 @@ public class MainMenu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-				DataBase.getConnection();
+DataBase.getConnection();
+				
 				int colnr  = MainMenu.tblBills.getSelectedRow();
+				
 				DefaultTableModel modelOrderBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
 					
 					@Override
@@ -868,13 +870,13 @@ public class MainMenu extends JFrame {
 						   // System.out.println(j1);
 						  
 						    
-						   modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+						    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
 						    
 						    
 						 
 						  
 						    
-						 //   modelOrderBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
+						    modelOrderBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
 						    
 						    System.out.println("While done");
 						    
@@ -885,12 +887,88 @@ public class MainMenu extends JFrame {
 					}
 					tblOdersInBill.setModel(modelOrderBill);
 				
-				
+					
+					DefaultTableModel modelOrdersForBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+						
+						@Override
+						public boolean isCellEditable(int row, int column) {
+								return false;
+							}
+						};	
+					String auftraggeberID = MainMenu.tblBills.getModel().getValueAt(colnr, 2).toString();
+					
+					System.out.println(auftraggeberID);
+					
+					Statement stmtOrdersForBills = null;
+					
+						try {
+							
+							stmtOrdersForBills = DataBase.c.createStatement();
+							System.out.println("Statement");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+					
+					String sqlOrdersForBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag where 'Mischtabelle-Person-Auftrag'.ID_Person ="+auftraggeberID+";";
+					
+					ResultSet rsOrdersForBills = null;
+					
+						try {
+							rsOrdersForBills = stmtOrdersForBills.executeQuery(sqlOrdersForBill);
+							System.out.println("Query executed");
+							System.out.println(rsOrdersForBills);
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					
+					
+					
+					
+					
+					
+						try {
+							while(rsOrdersForBills.next())
+							{
+								String a1 = rsOrdersForBills.getString("ID_Auftrag");
+							    String b1 = rsOrdersForBills.getString("Titel");
+							    String c1 = rsOrdersForBills.getString("AF");
+							    String d1 = rsOrdersForBills.getString("Dateiname");
+							    String e1 = rsOrdersForBills.getString("Dateiort");
+							    String f1 = rsOrdersForBills.getString("PK");
+							    String g1 = rsOrdersForBills.getString("RK");
+							    String h1 = DataBase.getStatusBeiAuftragId(a1);
+							    
+							    String j1 = DataBase.getRolleByOrderId(a1);
+							    //System.out.println(a1);
+							   // System.out.println(j1);
+							  
+							    
+							    modelOrdersForBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+							    
+							    
+							 
+							  
+							    
+							    modelOrdersForBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
+							    
+							    System.out.println("While done");
+							    
+							}
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						tblAuftraegeRechnung.setModel(modelOrdersForBill);
+					
 				
 				
 				
 				
 				DataBase.closeConnection();
+			
 			}
 		});
 		
