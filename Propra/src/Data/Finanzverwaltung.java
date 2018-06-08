@@ -108,4 +108,10 @@ public class Finanzverwaltung {
 	
 	}
 	
+	
+	public static void deleteOrderFromBill(int id_Order) {
+		// Neue ID !
+		
+	}
+	
 }
