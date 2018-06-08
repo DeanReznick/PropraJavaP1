@@ -35,7 +35,7 @@ public class Finanzverwaltung {
 		
 		DataBase.getConnection();
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "UPDATE Rechnung SET Rechnungsname='"  + rechnungsname + "' , Auftraggeber= "+ id_Auftraggeber + ", Ansprechpartner = " + id_Ansprechpartner + ", Bezahlung_Art='" + artBezahlung + "' Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"' WHERE ID_Rchnung = " + id_Bill + "';";  
+		String query = "UPDATE Rechnung SET Rechnungsname='"  + rechnungsname + "' , Auftraggeber= "+ id_Auftraggeber + ", Ansprechpartner = " + id_Ansprechpartner + ", Bezahlung_Art='" + artBezahlung + "' Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"' WHERE ID_Rechnung = " + id_Bill + "';";  
 		DataBase.executeQuery(query); 
 		DataBase.closeConnection();
 		
@@ -88,20 +88,23 @@ public class Finanzverwaltung {
 		// Mischtabelle (X) 
 		
 		DataBase.getConnection();
+	
+		
+		
 		String query = "INSERT INTO 'Mischtabelle-Rechnung-Auftrag' (ID_Rechnung, ID_Auftrag)" + 
 				"VALUES ("+ id_Bill +", " + id_Order + ");";
 		DataBase.executeQuery(query);
 		
-		//INSERT INTO Destination SELECT * FROM Source;
 
-		query = "INSERT INTO AuftragBeendet SELECT ID_Auftrag, Titel, AF, Dateiname, Dateiort, PK, RK FROM  Auftrag WHERE ID_Auftrag = " + id_Order + ";";
+		//query = "INSERT INTO AuftragBeendet SELECT ID_Auftrag, Titel, AF, Dateiname, Dateiort, PK, RK FROM  Auftrag WHERE ID_Auftrag = " + id_Order + ";";
+		//DataBase.executeQuery(query);
+		
+		//query = "DELETE FROM Auftrag WHERE ID_Auftrag = "+ id_Order +";"; 
+		//DataBase.executeQuery(query);
+	
+		query = "UPDATE Auftrag SET ID_Rechnung="  + id_Bill + " WHERE ID_Auftrag = " + id_Order + "';";  
 		DataBase.executeQuery(query);
-		
-		query = "DELETE FROM Auftrag WHERE ID_Auftrag = "+ id_Order +";"; 
-		DataBase.executeQuery(query);
-		
-		
-		
+
 		DataBase.closeConnection();
 		
 		//. .

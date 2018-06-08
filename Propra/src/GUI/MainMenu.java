@@ -47,6 +47,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.Component;
+import java.awt.Label;
+import java.awt.Font;
 
 public class MainMenu extends JFrame {
 
@@ -1370,6 +1372,11 @@ DataBase.getConnection();
 			});
 			btnPreis.setBounds(315, 388, 104, 23);
 			panelBau.add(btnPreis);
+			
+			Label label = new Label("Kategorien");
+			label.setFont(new Font("Dialog", Font.BOLD, 20));
+			label.setBounds(10, 28, 131, 22);
+			panelBau.add(label);
 		
 		
 		
