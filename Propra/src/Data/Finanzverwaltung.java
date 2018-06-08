@@ -15,7 +15,13 @@ public class Finanzverwaltung {
 		String query = "INSERT INTO Rechnung (Rechnungsname, Auftraggeber, Ansprechpartner, Bezahlung_Art, Betrag, Beschreibung, Bearbeiter, TimeStamp) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', '" + betrag +"','"  + beschreibung +"', " +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'" + timeStamp +"');";
 		DataBase.executeQuery(query);
 		
-		int id_Bill = DataBase.getIdPersonByNameSurname("current", "SELECT max(ID_Rechnung) as current FROM 'Rechnung';"); 
+		
+		
+		int id_Bill = DataBase.getSpecificID("current", "SELECT max(ID_Rechnung) as current FROM 'Rechnung';"); 
+		DataBase.closeConnection();
+		
+		DataBase.getConnection();
+	
 		
 		changeStatusBill(id_Bill, "Rechnung wurde erstellt."); 
 				
@@ -86,8 +92,9 @@ public class Finanzverwaltung {
 				"VALUES ("+ id_Bill +", " + id_Order + ");";
 		DataBase.executeQuery(query);
 		
-		
-		query = "SELECT * INTO AuftragBeendet FROM Auftrag WHERE ID_Auftrag = " + id_Order + ";"; 
+		//INSERT INTO Destination SELECT * FROM Source;
+
+		query = "INSERT INTO AuftragBeendet SELECT ID_Auftrag, Titel, AF, Dateiname, Dateiort, PK, RK FROM  Auftrag WHERE ID_Auftrag = " + id_Order + ";";
 		DataBase.executeQuery(query);
 		
 		query = "DELETE FROM Auftrag WHERE ID_Auftrag = "+ id_Order +";"; 
