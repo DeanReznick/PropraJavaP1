@@ -102,7 +102,7 @@ public class Finanzverwaltung {
 		//query = "DELETE FROM Auftrag WHERE ID_Auftrag = "+ id_Order +";"; 
 		//DataBase.executeQuery(query);
 	
-		query = "UPDATE Auftrag SET ID_Rechnung="  + id_Bill + " WHERE ID_Auftrag = " + id_Order + "';";  
+		query = "UPDATE Auftrag SET ID_Rechnung="  + id_Bill + " WHERE ID_Auftrag = " + id_Order + ";";  
 		DataBase.executeQuery(query);
 
 		DataBase.closeConnection();
