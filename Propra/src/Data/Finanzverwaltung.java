@@ -14,9 +14,7 @@ public class Finanzverwaltung {
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		String query = "INSERT INTO Rechnung (Rechnungsname, Auftraggeber, Ansprechpartner, Bezahlung_Art, Betrag, Beschreibung, Bearbeiter, TimeStamp) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', '" + betrag +"','"  + beschreibung +"', " +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'" + timeStamp +"');";
 		DataBase.executeQuery(query);
-		
-		
-		
+	
 		int id_Bill = DataBase.getSpecificID("current", "SELECT max(ID_Rechnung) as current FROM 'Rechnung';"); 
 		DataBase.closeConnection();
 		
@@ -88,9 +86,7 @@ public class Finanzverwaltung {
 		// Mischtabelle (X) 
 		
 		DataBase.getConnection();
-	
-		
-		
+			
 		String query = "INSERT INTO 'Mischtabelle-Rechnung-Auftrag' (ID_Rechnung, ID_Auftrag)" + 
 				"VALUES ("+ id_Bill +", " + id_Order + ");";
 		DataBase.executeQuery(query);
@@ -132,9 +128,100 @@ public class Finanzverwaltung {
 
 		DataBase.closeConnection();
 		
+	}
+	
+	//____________________________
+	
+	
+	public static void addKasse(String art, String nummer, int soll, int ist) {
 		
+		DataBase.getConnection();
+		String query = "INSERT INTO Kasse (Art, Nummer, Soll, Ist) VALUES ('"+ art +"', '" +  nummer + "', " + soll + ", " + ist + ");";
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
 		
 		
 	}
+	public static void alterKasse(int id_Kasse, String art, String nummer, int soll, int ist) {
+		DataBase.getConnection();
+		String query = "UPDATE Kasse SET Art= '" + art + "', Nummer = '"+ nummer + ", Soll = " + soll +", Ist = " + ist +" WHERE ID_Kasse = " + id_Kasse + ";";  
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+	}
+	public static void deleteKasse(int id_Kasse) {
+		
+		DataBase.getConnection();
+		String query = "DELETE FROM Kasse WHERE ID_Kasse = "+ id_Kasse +";"; 
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+	}
+	public static void addTopf(int id_Kasse, int soll, int ist) {
+		
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		DataBase.getConnection();
+		String query = "INSERT INTO Topf (Soll, Ist) VALUES ("+ soll +", " + ist + ");";
+		DataBase.executeQuery(query);
+		
+		int id_Topf = DataBase.getSpecificID("current", "SELECT max(ID_Topf) as current FROM Topf;"); 
+		
+		// Topf Kasse zuordnen.
+		
+		//Mischtabelle-Kasse-Topf
+		
+		query = "INSERT INTO 'Mischtabelle-Kasse-Topf' (ID_Kasse, ID_Topf, ID_Bearbeiter, Timestamp) VALUES ("+ id_Kasse +", " + id_Topf + ", " + DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn)+ ",'"+ timeStamp +"');";
+		DataBase.executeQuery(query);
+		
+		DataBase.closeConnection();
+		
+	}
+	public static void alterTopf(int id_Topf, int id_Kasse, int soll, int ist) {
+		
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		DataBase.getConnection();
+		String query = "UPDATE Topf SET Soll= " + soll + ", Ist = "+ ist + " WHERE ID_Topf = " + id_Topf + ";";  
+		DataBase.executeQuery(query);
+		query = "DELETE FROM 'Mischtabelle-Kasse-Topf' WHERE ID_Topf = "+ id_Topf +";"; 
+		DataBase.executeQuery(query);
+		query = "INSERT INTO 'Mischtabelle-Kasse-Topf' (ID_Kasse, ID_Topf, ID_Bearbeiter, Timestamp) VALUES ("+ id_Kasse +", " + id_Topf + ", " + DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn)+ ",'"+ timeStamp +"');";
+		
+		DataBase.closeConnection();
+		
+		
+	}
+	public static void deleteTopf(int id_Topf) {
+		
+		// Mischtabelle löschen!
+				
+		DataBase.getConnection();
+		
+		String query = "DELETE FROM Topf WHERE ID_Topf = " + id_Topf + ";";  
+		DataBase.executeQuery(query);
+		query = "DELETE FROM 'Mischtabelle-Kasse-Topf' WHERE ID_Topf = "+ id_Topf +";"; 
+		DataBase.executeQuery(query);
+		
+		DataBase.closeConnection();
+	}
+	public static void addBillToTopf(int id_Bill, int id_Topf) {
+		
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		DataBase.getConnection();
+		String query = "INSERT INTO 'Mischtabelle-Topf-Rechnung' (ID_Topf, ID_Rechnung, ID_Bearbeiter, Timestamp) VALUES (" + id_Topf +", " + id_Bill +", " + DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn)+ ",'"+ timeStamp +"');";
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+	}
+	public static void deleteBillFromTopf(int id_Bill) {
+		
+		DataBase.getConnection();
+		String query = "DELETE FROM 'Mischtabelle-Topf-Rechnung' WHERE ID_Rechnung = " + id_Bill + ";";
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+		
+	}
+	
+	
 	
 }
