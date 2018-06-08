@@ -868,13 +868,13 @@ public class MainMenu extends JFrame {
 						   // System.out.println(j1);
 						  
 						    
-						    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+						   modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
 						    
 						    
 						 
 						  
 						    
-						    modelOrderBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
+						 //   modelOrderBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
 						    
 						    System.out.println("While done");
 						    
@@ -914,6 +914,26 @@ public class MainMenu extends JFrame {
 		panelRechnung.add(btnAendern_3);
 		
 		JButton btnLoeschen_2 = new JButton("Loeschen");
+		btnLoeschen_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				DefaultTableModel model = (DefaultTableModel) tblBills.getModel();
+				//get selected row index
+				int selectedRowIndex = tblBills.getSelectedRow();
+				if (selectedRowIndex >= 0) {
+				try {
+				DeleteBill x = new DeleteBill();
+				x.setVisible(true);
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+			}
+			}
+		});
 		btnLoeschen_2.setBounds(662, 17, 89, 23);
 		panelRechnung.add(btnLoeschen_2);
 		

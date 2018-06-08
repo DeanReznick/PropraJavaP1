@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Data.DataBase;
 import Data.Finanzverwaltung;
 
 import javax.swing.JTextField;
@@ -109,7 +110,7 @@ public class NewBill extends JFrame {
 		JButton btnErstellen = new JButton("Erstellen");
 		btnErstellen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				DataBase.getConnection();
 				String rechnungsname = txtRechnungsName.getText();
 				int id_Auftraggeber = Integer.parseInt(txtAuftragsgeber.getText());
 				int id_Ansprechpartner = Integer.parseInt(txtAnsprechsp.getText());
@@ -118,7 +119,9 @@ public class NewBill extends JFrame {
 				String beschreibung = txtBeschreibung.getText();
 				
 				Finanzverwaltung.addBill(rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
-				
+				DataBase.refreshBill();
+				DataBase.closeConnection();
+				dispose();
 				
 			}
 		});
