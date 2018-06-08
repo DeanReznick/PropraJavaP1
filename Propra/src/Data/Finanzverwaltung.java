@@ -115,7 +115,7 @@ public class Finanzverwaltung {
 	public static void deleteOrderFromBill(int id_Order) {
 		
 		DataBase.getConnection();
-		String query = "DELETE FROM Rechnung WHERE ID_Auftrag = "+ id_Order +";"; 
+		String query = "DELETE FROM 'Mischtabelle-Rechnung-Auftrag' WHERE ID_Auftrag = "+ id_Order +";"; 
 		
 		
 		DataBase.executeQuery(query);
