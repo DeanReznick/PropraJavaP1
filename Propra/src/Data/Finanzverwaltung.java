@@ -144,7 +144,7 @@ public class Finanzverwaltung {
 	}
 	public static void alterKasse(int id_Kasse, String art, String nummer, int soll, int ist) {
 		DataBase.getConnection();
-		String query = "UPDATE Kasse SET Art= '" + art + "', Nummer = '"+ nummer + ", Soll = " + soll +", Ist = " + ist +" WHERE ID_Kasse = " + id_Kasse + ";";  
+		String query = "UPDATE Kasse SET Art= '" + art + "', Nummer = '"+ nummer + "', Soll = " + soll +", Ist = " + ist +" WHERE ID_Kasse = " + id_Kasse + ";";  
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		

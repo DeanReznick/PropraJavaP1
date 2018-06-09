@@ -884,6 +884,59 @@ public static void searchOrder(String search) {
 		closeConnection();
 	}
 	
+	public static void refreshKasse() {
+
+		getConnection();
+		
+		DefaultTableModel modelKasse = new DefaultTableModel(new String[]{"ID_Kasse", "Art", "Nummer", "Soll", "Ist"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+			
+		Statement stmt = null;
+		try {
+			stmt = DataBase.c.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		String sql = "SELECT * FROM Kasse;";
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			while(rs.next())
+			{
+				String a1 = rs.getString("ID_Kasse");
+			    String b1 = rs.getString("Art");
+			    String c1 = rs.getString("Nummer");
+			    String d1 = rs.getString("Soll");
+			    String e1 = rs.getString("Ist");
+			    			    
+			    modelKasse.addRow(new Object[]{a1, b1,c1,d1,e1});
+			   
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		MainMenu.tblKasse.setModel(modelKasse);
+	
+		closeConnection();
+	}
+
+	
 	
 	public static void refreshBill () {
 		getConnection();

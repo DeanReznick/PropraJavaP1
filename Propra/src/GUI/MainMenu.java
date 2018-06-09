@@ -68,13 +68,16 @@ public class MainMenu extends JFrame {
 	private JButton btnSuchen;
 	private JButton btnSearchOrder;
 	private JButton btnSearchComponent;
-	private JTable table_1;
-	private JTable table_2;
-	private JTable table_3;
+	public static JTable tblKasse;
+	public static JTable tblTopf;
+	public static JTable tblRechn;
 	private JTextField textField;
 	private static JTable tblAuftraegeRechnung;
 	private JTable tblOdersInBill;
 	public static JTable tblBills;
+	public static JScrollPane scrollPane_Kasse;
+	public static JScrollPane scrollPane_Topf;
+	public static JScrollPane scrollPane_Rechnung;
 
 	/**
 	 * Launch the application.
@@ -543,41 +546,163 @@ public class MainMenu extends JFrame {
 		
 		JPanel panelFinanz = new JPanel();
 		tabbedPane.addTab("Finanzverwaltung", null, panelFinanz, null);
-		panelFinanz.setLayout(null);
+		panelFinanz.setLayout(null);		
 		
-		table_1 = new JTable();
-		table_1.setBounds(10, 61, 134, 180);
-		panelFinanz.add(table_1);
+		scrollPane_Kasse = new JScrollPane();
+		scrollPane_Kasse.setBounds(10, 61, 134, 180);
+		panelFinanz.add(scrollPane_Kasse);
+			
+		
+		String[] column_headers_kasse = {"ID_Kasse", "Art", "Nummer", "Soll", "Ist"};
+		String[][] data_kasse = new String[1000][11];
+		tblKasse = new JTable(data_kasse, column_headers_kasse);
+		DefaultTableModel modelKasse = new DefaultTableModel(new String[]{"ID_Kasse", "Art", "Nummer", "Soll", "Ist"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		String sqlKasse = "SELECT * FROM Kasse";
+		ResultSet rsKasse = stmt.executeQuery(sqlKasse);
+		
+		while(rsKasse.next())
+		{
+			String a1 = rsKasse.getString("ID_Kasse");
+		    String b1 = rsKasse.getString("Art");
+		    String c1 = rsKasse.getString("Nummer");
+		    String d1 = rsKasse.getString("Soll");
+		    String e1 = rsKasse.getString("Ist");
+		    
+		    modelKasse.addRow(new Object[]{a1, b1,c1,d1,e1});
+		}
+		
+		tblKasse.setModel(modelKasse);
+				
+		scrollPane_Kasse.setViewportView(tblKasse);
 		
 		JLabel lblKassen = new JLabel("Kasse:");
 		lblKassen.setBounds(10, 36, 46, 14);
 		panelFinanz.add(lblKassen);
 		
-		table_2 = new JTable();
-		table_2.setBounds(220, 61, 134, 180);
-		panelFinanz.add(table_2);
+		scrollPane_Topf = new JScrollPane();
+		scrollPane_Topf.setBounds(220, 61, 134, 180);
+		panelFinanz.add(scrollPane_Topf);
+			
+		
+		String[] column_headers_topf = {"ID_Topf", "ID_Kasse", "Soll", "Ist"};
+		String[][] data_topf = new String[1000][11];
+		tblTopf = new JTable(data_topf, column_headers_topf);
+		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "ID_Kasse", "Soll", "Ist"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		String sqlTopf = "SELECT * FROM Topf";
+		ResultSet rsTopf = stmt.executeQuery(sqlTopf);
+		
+		while(rsTopf.next())
+		{
+			String a1 = rsTopf.getString("ID_Topf");
+		    String b1 = rsTopf.getString("ID_Kasse");
+		    String c1 = rsTopf.getString("Soll");
+		    String d1 = rsTopf.getString("Ist");
+		    
+		    modelTopf.addRow(new Object[]{a1, b1,c1,d1});
+		}
+		
+		tblTopf.setModel(modelTopf);
+				
+		scrollPane_Topf.setViewportView(tblTopf);
+		
 		
 		JLabel lblTopf = new JLabel("Topf:");
 		lblTopf.setBounds(220, 36, 46, 14);
 		panelFinanz.add(lblTopf);
 		
-		table_3 = new JTable();
-		table_3.setBounds(446, 61, 489, 180);
-		panelFinanz.add(table_3);
+		scrollPane_Rechnung = new JScrollPane();
+		scrollPane_Rechnung.setBounds(446, 61, 489, 180);
+		panelFinanz.add(scrollPane_Rechnung);
+			
+		
+		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Ansprechpartner", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"};
+		String[][] data_rechnung = new String[1000][11];
+		tblRechn = new JTable(data_rechnung, column_headers_topf);
+		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Ansprechpartner", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		String sqlRechnung = "SELECT * FROM Rechnung";
+		ResultSet rsRechnung = stmt.executeQuery(sqlRechnung);
+		
+		while(rsRechnung.next())
+		{
+			String a1 = rsRechnung.getString("ID_Rechnung");
+		    String b1 = rsRechnung.getString("Rechnungsname");
+		    String c1 = rsRechnung.getString("Auftraggeber");
+//		    String d1 = rsRechnung.getString("Bezahlung_Art");
+		    String e1 = rsRechnung.getString("Betrag");
+		    String f1 = rsRechnung.getString("Beschreibung");
+		    String g1 = rsRechnung.getString("Bearbeiter");
+		    String h1 = rsRechnung.getString("Timestamp");
+		    
+		    modelRechnung.addRow(new Object[]{a1, b1,c1, e1, f1, g1, h1});
+		}
+		
+		tblRechn.setModel(modelRechnung);
+				
+		scrollPane_Rechnung.setViewportView(tblRechn);
+		
 		
 		JLabel lblRechnung = new JLabel("Rechnung:");
 		lblRechnung.setBounds(446, 36, 83, 14);
 		panelFinanz.add(lblRechnung);
 		
 		JButton btnNeueKasse = new JButton("Neue Kasse");
+		btnNeueKasse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				AddKasse x = new AddKasse();
+				x.setVisible(true);
+			}
+		});
 		btnNeueKasse.setBounds(10, 252, 134, 23);
 		panelFinanz.add(btnNeueKasse);
 		
 		JButton btnAendern_2 = new JButton("Aendern");
+		btnAendern_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+				AlterKasse x = new AlterKasse();
+				x.setVisible(true);
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus!");
+				}
+			}
+		});
 		btnAendern_2.setBounds(10, 286, 134, 23);
 		panelFinanz.add(btnAendern_2);
 		
 		JButton btnKasseLoeschen = new JButton("Kasse Loeschen");
+		btnKasseLoeschen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				DefaultTableModel model = (DefaultTableModel) tblKasse.getModel();
+				//get selected row index
+				int selectedRowIndex = tblKasse.getSelectedRow();
+				try {
+				DeleteKasse x = new DeleteKasse();
+				x.setVisible(true);
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
+				}
+			}
+		});
 		btnKasseLoeschen.setBounds(10, 320, 134, 23);
 		panelFinanz.add(btnKasseLoeschen);
 		
@@ -810,168 +935,159 @@ public class MainMenu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				
-DataBase.getConnection();
-				
-				int colnr  = MainMenu.tblBills.getSelectedRow();
-				
-				DefaultTableModel modelOrderBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
-					
-					@Override
-					public boolean isCellEditable(int row, int column) {
-							return false;
-						}
-					};	
-				String id = MainMenu.tblBills.getModel().getValueAt(colnr, 0).toString();
-				
-				System.out.println(id);
-				
-				Statement stmtOrderBills = null;
-				
-					try {
-						
-						stmtOrderBills = DataBase.c.createStatement();
-						System.out.println("Statement");
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
-				
-				String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' on Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag where 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung ="+id+";";
-				
-				ResultSet rsOrdersBills = null;
-				
-					try {
-						rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
-						System.out.println("Query executed");
-						System.out.println(rsOrdersBills);
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
-				
-				
-				
-				
-				
-					try {
-						while(rsOrdersBills.next())
-						{
-							String a1 = rsOrdersBills.getString("ID_Auftrag");
-						    String b1 = rsOrdersBills.getString("Titel");
-						    String c1 = rsOrdersBills.getString("AF");
-						    String d1 = rsOrdersBills.getString("Dateiname");
-						    String e1 = rsOrdersBills.getString("Dateiort");
-						    String f1 = rsOrdersBills.getString("PK");
-						    String g1 = rsOrdersBills.getString("RK");
-						    String h1 = DataBase.getStatusBeiAuftragId(a1);
-						    
-						    String j1 = DataBase.getRolleByOrderId(a1);
-						    //System.out.println(a1);
-						   // System.out.println(j1);
-						  
-						    
-						    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
-						    
-						    
-						 
-						  
-						    
-						    modelOrderBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
-						    
-						    System.out.println("While done");
-						    
-						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					tblOdersInBill.setModel(modelOrderBill);
-				
-					
-					DefaultTableModel modelOrdersForBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
-						
-						@Override
-						public boolean isCellEditable(int row, int column) {
-								return false;
-							}
-						};	
-					String auftraggeberID = MainMenu.tblBills.getModel().getValueAt(colnr, 2).toString();
-					
-					System.out.println(auftraggeberID);
-					
-					Statement stmtOrdersForBills = null;
-					
-						try {
+				DataBase.getConnection();
+								
+								int colnr  = MainMenu.tblBills.getSelectedRow();
+								
+								DefaultTableModel modelOrderBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+									
+									@Override
+									public boolean isCellEditable(int row, int column) {
+											return false;
+										}
+									};	
+								String id = MainMenu.tblBills.getModel().getValueAt(colnr, 0).toString();
+								
+								System.out.println(id);
+								
+								Statement stmtOrderBills = null;
+								
+									try {
+										
+										stmtOrderBills = DataBase.c.createStatement();
+										System.out.println("Statement");
+									} catch (SQLException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								
+								
+								String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' on Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag where 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung ="+id+";";
+								
+								ResultSet rsOrdersBills = null;
+								
+									try {
+										rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
+										System.out.println("Query executed");
+										System.out.println(rsOrdersBills);
+									} catch (SQLException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								
+								
+								
+								
+								
+								
+									try {
+										while(rsOrdersBills.next())
+										{
+											String a1 = rsOrdersBills.getString("ID_Auftrag");
+										    String b1 = rsOrdersBills.getString("Titel");
+										    String c1 = rsOrdersBills.getString("AF");
+										    String d1 = rsOrdersBills.getString("Dateiname");
+										    String e1 = rsOrdersBills.getString("Dateiort");
+										    String f1 = rsOrdersBills.getString("PK");
+										    String g1 = rsOrdersBills.getString("RK");
+										    String h1 = DataBase.getStatusBeiAuftragId(a1);
+										    
+										    String j1 = DataBase.getRolleByOrderId(a1);
+										    //System.out.println(a1);
+										   // System.out.println(j1);
+										  
+										    
+										    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+										    										    
+//										    modelOrderBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
+										    
+										    System.out.println("While done");
+										    
+										}
+									} catch (SQLException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									tblOdersInBill.setModel(modelOrderBill);
+								
+									
+									DefaultTableModel modelOrdersForBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+										
+										@Override
+										public boolean isCellEditable(int row, int column) {
+												return false;
+											}
+										};	
+									String auftraggeberID = MainMenu.tblBills.getModel().getValueAt(colnr, 2).toString();
+									
+									System.out.println(auftraggeberID);
+									
+									Statement stmtOrdersForBills = null;
+									
+										try {
+											
+											stmtOrdersForBills = DataBase.c.createStatement();
+											System.out.println("Statement");
+										} catch (SQLException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									
+									
+									String sqlOrdersForBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag where 'Mischtabelle-Person-Auftrag'.ID_Person ="+auftraggeberID+";";
+									
+									ResultSet rsOrdersForBills = null;
+									
+										try {
+											rsOrdersForBills = stmtOrdersForBills.executeQuery(sqlOrdersForBill);
+											System.out.println("Query executed");
+											System.out.println(rsOrdersForBills);
+										} catch (SQLException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+									
+									
+									
+									
+									
+									
+										try {
+											while(rsOrdersForBills.next())
+											{
+												String a1 = rsOrdersForBills.getString("ID_Auftrag");
+											    String b1 = rsOrdersForBills.getString("Titel");
+											    String c1 = rsOrdersForBills.getString("AF");
+											    String d1 = rsOrdersForBills.getString("Dateiname");
+											    String e1 = rsOrdersForBills.getString("Dateiort");
+											    String f1 = rsOrdersForBills.getString("PK");
+											    String g1 = rsOrdersForBills.getString("RK");
+											    String h1 = DataBase.getStatusBeiAuftragId(a1);
+											    
+											    String j1 = DataBase.getRolleByOrderId(a1);
+											    //System.out.println(a1);
+											   // System.out.println(j1);
+											  
+											    
+											    modelOrdersForBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+											    
+											    
+											    System.out.println("While done");
+											    
+											}
+										} catch (SQLException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
+										tblAuftraegeRechnung.setModel(modelOrdersForBill);
+									
+								
+								
+								
+								
+								DataBase.closeConnection();
 							
-							stmtOrdersForBills = DataBase.c.createStatement();
-							System.out.println("Statement");
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					
-					
-					String sqlOrdersForBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag where 'Mischtabelle-Person-Auftrag'.ID_Person ="+auftraggeberID+";";
-					
-					ResultSet rsOrdersForBills = null;
-					
-						try {
-							rsOrdersForBills = stmtOrdersForBills.executeQuery(sqlOrdersForBill);
-							System.out.println("Query executed");
-							System.out.println(rsOrdersForBills);
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					
-					
-					
-					
-					
-					
-						try {
-							while(rsOrdersForBills.next())
-							{
-								String a1 = rsOrdersForBills.getString("ID_Auftrag");
-							    String b1 = rsOrdersForBills.getString("Titel");
-							    String c1 = rsOrdersForBills.getString("AF");
-							    String d1 = rsOrdersForBills.getString("Dateiname");
-							    String e1 = rsOrdersForBills.getString("Dateiort");
-							    String f1 = rsOrdersForBills.getString("PK");
-							    String g1 = rsOrdersForBills.getString("RK");
-							    String h1 = DataBase.getStatusBeiAuftragId(a1);
-							    
-							    String j1 = DataBase.getRolleByOrderId(a1);
-							    //System.out.println(a1);
-							   // System.out.println(j1);
-							  
-							    
-							    modelOrdersForBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
-							    
-							    
-							 
-							  
-							    
-							    modelOrdersForBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
-							    
-							    System.out.println("While done");
-							    
 							}
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						tblAuftraegeRechnung.setModel(modelOrdersForBill);
-					
-				
-				
-				
-				
-				DataBase.closeConnection();
-			
-			}
 		});
 		
 		tblBills.setModel(modelBills);
