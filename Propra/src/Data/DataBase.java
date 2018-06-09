@@ -581,6 +581,61 @@ public static void searchOrder(String search) {
 	closeConnection();
 }
 	
+	public static void searchBill(String search) {
+		
+		getConnection();
+		
+		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+						
+		Statement stmt = null;
+		try {
+			stmt = DataBase.c.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		String sqlsearch = "SELECT * FROM Rechnung WHERE UPPER(Rechnungsname) like UPPER('%" + search + "%');";
+		
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sqlsearch);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			while(rs.next())
+			{
+				String a1 = rs.getString("ID_Rechnung");
+			    String b1 = rs.getString("Rechnungsname");
+			    String c1 = rs.getString("Auftraggeber");
+			    String d1 = rs.getString("Betrag");
+			    String e1 = rs.getString("Beschreibung");
+			    String f1 = rs.getString("Bearbeiter");
+			    String g1 = rs.getString("Timestamp");
+			    
+			    modelRechnung.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1});
+			   
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		MainMenu.tblRechn.setModel(modelRechnung);
+//		MainMenu.scrollPane_3.setViewportView(MainMenu.tblComponents);
+		
+		closeConnection();
+	}
+	
 	public static void searchTable(String text) {
 		TableModel model = MainMenu.tblPersonen.getModel();
 	final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);

@@ -71,7 +71,7 @@ public class MainMenu extends JFrame {
 	public static JTable tblKasse;
 	public static JTable tblTopf;
 	public static JTable tblRechn;
-	private JTextField textField;
+	private JTextField txtSearchBill;
 	private static JTable tblAuftraegeRechnung;
 	private JTable tblOdersInBill;
 	public static JTable tblBills;
@@ -783,13 +783,18 @@ public class MainMenu extends JFrame {
 		panelFinanz.add(btnDeleteRechnungFromTopf);
 		
 		JButton btnSuchen_1 = new JButton("Suchen");
+		btnSuchen_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DataBase.searchBill(txtSearchBill.getText());
+			}
+		});
 		btnSuchen_1.setBounds(685, 32, 89, 23);
 		panelFinanz.add(btnSuchen_1);
 		
-		textField = new JTextField();
-		textField.setBounds(784, 33, 151, 20);
-		panelFinanz.add(textField);
-		textField.setColumns(10);
+		txtSearchBill = new JTextField();
+		txtSearchBill.setBounds(784, 33, 151, 20);
+		panelFinanz.add(txtSearchBill);
+		txtSearchBill.setColumns(10);
 		
 		JPanel panelRechnung = new JPanel();
 		tabbedPane.addTab("Rechnung", null, panelRechnung, null);
