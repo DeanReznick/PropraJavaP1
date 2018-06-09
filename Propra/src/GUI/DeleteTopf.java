@@ -12,11 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
 import Data.Finanzverwaltung;
 
-public class DeleteKasse extends JFrame {
+public class DeleteTopf extends JFrame {
 
 	private JPanel contentPane;
 
@@ -27,7 +26,7 @@ public class DeleteKasse extends JFrame {
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
 //				try {
-//					DeleteKasse frame = new DeleteKasse();
+//					DeleteTopf frame = new DeleteTopf();
 //					frame.setVisible(true);
 //				} catch (Exception e) {
 //					e.printStackTrace();
@@ -39,8 +38,8 @@ public class DeleteKasse extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public DeleteKasse() {
-		setTitle("Kasse löschen");
+	public DeleteTopf() {
+		setTitle("Topf löschen");
 		DataBase.getConnection();
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
@@ -48,21 +47,21 @@ public class DeleteKasse extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblDoYouReally = new JLabel("Möchten Sie diese Kasse wirklich löschen?");
+		JLabel lblDoYouReally = new JLabel("Möchten Sie diesen Topf wirklich löschen?");
 		lblDoYouReally.setBounds(5, 5, 374, 14);
 		contentPane.add(lblDoYouReally);
 		
-		JButton btnDeleteKasse = new JButton("Kasse löschen");
-		btnDeleteKasse.addActionListener(new ActionListener() {
+		JButton btnDeleteTopf = new JButton("Topf löschen");
+		btnDeleteTopf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model = (DefaultTableModel) MainMenu.tblKasse.getModel();
+				DefaultTableModel model = (DefaultTableModel) MainMenu.tblTopf.getModel();
 				//get selected row index
-				int selectedRowIndex = MainMenu.tblKasse.getSelectedRow();
+				int selectedRowIndex = MainMenu.tblTopf.getSelectedRow();
 				System.out.println(selectedRowIndex);
-				String tableClick = MainMenu.tblKasse.getModel().getValueAt(selectedRowIndex, 0).toString();
+				String tableClick = MainMenu.tblTopf.getModel().getValueAt(selectedRowIndex, 0).toString();
 				int id = Integer.parseInt(tableClick);
 				System.out.println(id);
-				Finanzverwaltung.deleteKasse(id);
+				Finanzverwaltung.deleteTopf(id);
 				
 				model.removeRow(selectedRowIndex);
 				DataBase.refreshKasse();
@@ -70,8 +69,8 @@ public class DeleteKasse extends JFrame {
 				dispose();
 			}
 		});
-		btnDeleteKasse.setBounds(5, 47, 150, 23);
-		contentPane.add(btnDeleteKasse);
+		btnDeleteTopf.setBounds(5, 47, 150, 23);
+		contentPane.add(btnDeleteTopf);
 		
 		JButton btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(new ActionListener() {

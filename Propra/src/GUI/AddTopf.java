@@ -2,28 +2,26 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import Data.DataBase;
 import Data.Finanzverwaltung;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-public class AddKasse extends JFrame {
+public class AddTopf extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtNummer;
 	private JTextField txtSoll;
 	private JTextField txtIst;
+
 
 	/**
 	 * Launch the application.
@@ -32,7 +30,7 @@ public class AddKasse extends JFrame {
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
 //				try {
-//					AddKasse frame = new AddKasse();
+//					AddTopf frame = new AddTopf();
 //					frame.setVisible(true);
 //				} catch (Exception e) {
 //					e.printStackTrace();
@@ -44,64 +42,57 @@ public class AddKasse extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddKasse() {
-		setTitle("Kasse hinzufuegen");
+	public AddTopf() {
+		setTitle("Topf hinzufuegen");
 		setBounds(100, 100, 250, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblArt = new JLabel("Art:");
-		lblArt.setBounds(10, 11, 90, 14);
-		contentPane.add(lblArt);
+		JLabel lblKasse = new JLabel("Kasse:");
+		lblKasse.setBounds(10, 11, 90, 14);
+		contentPane.add(lblKasse);
 		
-		String[] comboBoxValues = {"Barkasse", "Konto", "Kostenstelle"};
+		int count = MainMenu.tblKasse.getRowCount();
+		String[] idList = new String[count];
+				
+		for(int row=0; row < MainMenu.tblKasse.getRowCount(); row++) {
+		 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
+		 idList[row] = id;
+		 		
+		}
 		
-		JComboBox comboBoxArt = new JComboBox(comboBoxValues);
+		JComboBox comboBoxArt = new JComboBox(idList);
 		comboBoxArt.setBounds(124, 8, 100, 20);
 		contentPane.add(comboBoxArt);
 		
-		JLabel lblNummer = new JLabel("Nummer:");
-		lblNummer.setBounds(10, 39, 90, 14);
-		contentPane.add(lblNummer);
-		
-		txtNummer = new JTextField();
-		txtNummer.setBounds(124, 36, 100, 20);
-		contentPane.add(txtNummer);
-		txtNummer.setColumns(10);
-		
 		JLabel lblSoll = new JLabel("Soll:");
-		lblSoll.setBounds(10, 65, 46, 14);
+		lblSoll.setBounds(10, 36, 46, 14);
 		contentPane.add(lblSoll);
 		
 		JLabel lblIst = new JLabel("Ist:");
-		lblIst.setBounds(10, 90, 46, 14);
+		lblIst.setBounds(10, 61, 46, 14);
 		contentPane.add(lblIst);
 		
 		txtSoll = new JTextField();
-		txtSoll.setBounds(124, 62, 100, 20);
+		txtSoll.setBounds(124, 33, 100, 20);
 		contentPane.add(txtSoll);
 		txtSoll.setColumns(10);
 		
 		txtIst = new JTextField();
-		txtIst.setBounds(124, 87, 100, 20);
+		txtIst.setBounds(124, 58, 100, 20);
 		contentPane.add(txtIst);
 		txtIst.setColumns(10);
 		
 		JButton btnHinzufuegen = new JButton("Hinzufuegen");
 		btnHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				try {
-					DataBase.getConnection();
-					Finanzverwaltung.addKasse(comboBoxArt.getSelectedItem().toString(), txtNummer.getText(), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
-					dispose();
-				} catch (NumberFormatException ex) {
-					JOptionPane.showMessageDialog(null, "Nummer, Soll und Ist müssen Zahlen sein!");
-				} finally {
-				DataBase.refreshKasse();
+				DataBase.getConnection();
+				Finanzverwaltung.addTopf(Integer.parseInt(comboBoxArt.getSelectedItem().toString()), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
+				DataBase.refreshTopf();
 				DataBase.closeConnection();
-			}
+				dispose();
 			}
 		});
 		btnHinzufuegen.setBounds(63, 118, 100, 23);

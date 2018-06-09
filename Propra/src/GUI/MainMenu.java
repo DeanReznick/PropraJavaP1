@@ -600,7 +600,7 @@ public class MainMenu extends JFrame {
 					return false;
 				}
 			};
-		String sqlTopf = "SELECT * FROM Topf";
+		String sqlTopf = "SELECT Topf.*, 'Mischtabelle-Kasse-Topf'.ID_Kasse FROM Topf LEFT JOIN 'Mischtabelle-Kasse-Topf' ON Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf;";
 		ResultSet rsTopf = stmt.executeQuery(sqlTopf);
 		
 		while(rsTopf.next())
@@ -610,7 +610,7 @@ public class MainMenu extends JFrame {
 		    String c1 = rsTopf.getString("Soll");
 		    String d1 = rsTopf.getString("Ist");
 		    
-		    modelTopf.addRow(new Object[]{a1, b1,c1,d1});
+		    modelTopf.addRow(new Object[]{a1,b1,c1,d1});
 		}
 		
 		tblTopf.setModel(modelTopf);
@@ -627,10 +627,10 @@ public class MainMenu extends JFrame {
 		panelFinanz.add(scrollPane_Rechnung);
 			
 		
-		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Ansprechpartner", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"};
+		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"};
 		String[][] data_rechnung = new String[1000][11];
 		tblRechn = new JTable(data_rechnung, column_headers_topf);
-		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Ansprechpartner", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
+		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -666,7 +666,7 @@ public class MainMenu extends JFrame {
 		JButton btnNeueKasse = new JButton("Neue Kasse");
 		btnNeueKasse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
+				
 				AddKasse x = new AddKasse();
 				x.setVisible(true);
 			}
@@ -707,32 +707,80 @@ public class MainMenu extends JFrame {
 		panelFinanz.add(btnKasseLoeschen);
 		
 		JButton btnTopfErstellen = new JButton("Topf erstellen");
+		btnTopfErstellen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				AddTopf x = new AddTopf();
+				x.setVisible(true);
+			}
+		});
 		btnTopfErstellen.setBounds(220, 252, 134, 23);
 		panelFinanz.add(btnTopfErstellen);
 		
-		JButton btnTopfaendern = new JButton("TopfAendern");
+		JButton btnTopfaendern = new JButton("Topf Aendern");
+		btnTopfaendern.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					AlterTopf x = new AlterTopf();
+					x.setVisible(true);
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus.");
+				}
+			}
+		});
 		btnTopfaendern.setBounds(220, 286, 134, 23);
 		panelFinanz.add(btnTopfaendern);
 		
 		JButton btnTopfLoeschen = new JButton("Topf Loeschen");
+		btnTopfLoeschen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					DeleteTopf x = new DeleteTopf();
+					x.setVisible(true);
+				}catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus.");
+				}
+			}
+		});
 		btnTopfLoeschen.setBounds(220, 320, 134, 23);
 		panelFinanz.add(btnTopfLoeschen);
 		
-		JButton btnRechnungErstellen = new JButton("Rechnung erstellen");
-		btnRechnungErstellen.setBounds(446, 252, 176, 23);
-		panelFinanz.add(btnRechnungErstellen);
+		JButton btnRechnungZuTopf = new JButton("Rechnung einem Topf hinzuf\u00FCgen");
+		btnRechnungZuTopf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+				int colnrTopf = MainMenu.tblTopf.getSelectedRow();
+				int colnrRechnung = MainMenu.tblRechn.getSelectedRow();
+				String idTopf = MainMenu.tblTopf.getModel().getValueAt(colnrTopf, 0).toString();
+				String idRechnung = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 0).toString();
+				
+				Finanzverwaltung.addBillToTopf(Integer.parseInt(idRechnung), Integer.parseInt(idTopf));
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf und eine Rechnung aus!");
+				}
+			}
+		});
+		btnRechnungZuTopf.setBounds(446, 252, 250, 23);
+		panelFinanz.add(btnRechnungZuTopf);
 		
 		JButton btnNewButton_1 = new JButton("New button");
 		btnNewButton_1.setBounds(0, 0, 89, 23);
 		panelFinanz.add(btnNewButton_1);
 		
-		JButton btnRechnungLoeschen = new JButton("Rechnung loeschen");
-		btnRechnungLoeschen.setBounds(446, 320, 176, 23);
-		panelFinanz.add(btnRechnungLoeschen);
-		
-		JButton btnRechnungAendern = new JButton("Rechnung Aendern");
-		btnRechnungAendern.setBounds(446, 286, 176, 23);
-		panelFinanz.add(btnRechnungAendern);
+		JButton btnDeleteRechnungFromTopf = new JButton("Rechnung von Topf entfernen");
+		btnDeleteRechnungFromTopf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					int colnrRechnung = MainMenu.tblRechn.getSelectedRow();
+					String idRechnung = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 0).toString();
+					
+					Finanzverwaltung.deleteBillFromTopf(Integer.parseInt(idRechnung));
+					} catch (ArrayIndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf und eine Rechnung aus!");
+					}
+			}
+		});
+		btnDeleteRechnungFromTopf.setBounds(446, 286, 250, 23);
+		panelFinanz.add(btnDeleteRechnungFromTopf);
 		
 		JButton btnSuchen_1 = new JButton("Suchen");
 		btnSuchen_1.setBounds(685, 32, 89, 23);

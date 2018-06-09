@@ -936,7 +936,56 @@ public static void searchOrder(String search) {
 		closeConnection();
 	}
 
+	public static void refreshTopf() {
+
+		getConnection();
+		
+		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "ID_Kasse", "Soll", "Ist"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+			
+		Statement stmt = null;
+		try {
+			stmt = DataBase.c.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		String sql = "SELECT Topf.*, 'Mischtabelle-Kasse-Topf'.ID_Kasse FROM Topf LEFT JOIN 'Mischtabelle-Kasse-Topf' ON Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf;";
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			while(rs.next())
+			{
+				String a1 = rs.getString("ID_Topf");
+			    String b1 = rs.getString("ID_Kasse");
+			    String c1 = rs.getString("Soll");
+			    String d1 = rs.getString("Ist");
+			    			    
+			    modelTopf.addRow(new Object[]{a1,b1,c1,d1});
+			   
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		MainMenu.tblTopf.setModel(modelTopf);
 	
+		closeConnection();
+	}
 	
 	public static void refreshBill () {
 		getConnection();

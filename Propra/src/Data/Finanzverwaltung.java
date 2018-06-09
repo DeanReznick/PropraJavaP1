@@ -185,6 +185,7 @@ public class Finanzverwaltung {
 		query = "DELETE FROM 'Mischtabelle-Kasse-Topf' WHERE ID_Topf = "+ id_Topf +";"; 
 		DataBase.executeQuery(query);
 		query = "INSERT INTO 'Mischtabelle-Kasse-Topf' (ID_Kasse, ID_Topf, ID_Bearbeiter, Timestamp) VALUES ("+ id_Kasse +", " + id_Topf + ", " + DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn)+ ",'"+ timeStamp +"');";
+		DataBase.executeQuery(query);
 		
 		DataBase.closeConnection();
 		
