@@ -13,6 +13,7 @@ import javax.swing.table.TableModel;
 import Data.Authentication;
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
+import Data.ExportToPDF;
 import Data.Finanzverwaltung;
 import Data.OffenerAuftragObjektRAM;
 import Data.PersonObjektRAM;
@@ -26,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -46,7 +48,11 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
+
+import com.itextpdf.text.DocumentException;
+
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Label;
 import java.awt.Font;
 
@@ -795,6 +801,72 @@ public class MainMenu extends JFrame {
 		txtSearchBill.setBounds(784, 33, 151, 20);
 		panelFinanz.add(txtSearchBill);
 		txtSearchBill.setColumns(10);
+		
+		JButton btnExportPDF = new JButton("Rechnung als PDF exportieren");
+		btnExportPDF.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DataBase.getConnection();
+				try {
+				//"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"
+				int colnrRechnung = MainMenu.tblRechn.getSelectedRow();
+				int idRechnung = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 0).toString());
+				String rechnungsname = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 1).toString();
+				int idAuftraggeber = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 2).toString());
+				int betrag = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 3).toString());
+				String beschreibung = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 4).toString();
+				int idBearbeiter = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 5).toString());
+				String timestamp = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 6).toString();
+				String[] parts = timestamp.split("_");
+				String day = parts[0];
+				String time = parts[1];
+				
+				if (System.getProperty("os.name").toLowerCase().indexOf("win")<0) {
+		            System.err.println("Sorry, Windows only!");
+		            System.exit(1);
+		        }
+		        File desktopDir = new File(System.getProperty("user.home"), "Desktop");
+		        System.out.println(desktopDir.getPath() + " " + desktopDir.exists());
+				
+		        File theDir = new File(desktopDir.getPath() + "/Rechnungen/");
+
+		        // if the directory does not exist, create it
+		        if (!theDir.exists()) {
+		         System.out.println("creating directory: " + theDir.getName());
+		         boolean result = false;
+
+		         try{
+		             theDir.mkdir();
+		             result = true;
+		         } 
+		         catch(SecurityException se){
+		             //handle it
+		         }        
+		         if(result) {    
+		             System.out.println("DIR created");  
+		         }
+		     	}
+		        
+				String filename = desktopDir.getPath() + "/Rechnungen/Rechnung_" + rechnungsname + "_" + day + ".pdf";
+				try {
+				    Desktop.getDesktop().open(new File(desktopDir.getPath() + "/Rechnungen/"));
+				} catch (IOException e) {
+				    e.printStackTrace();
+				}
+				
+				ExportToPDF.createPdf(filename, idRechnung, rechnungsname, idAuftraggeber, betrag, beschreibung, idBearbeiter, timestamp);
+				
+				} catch (ArrayIndexOutOfBoundsException e) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus!");
+				} catch (DocumentException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				} catch (IOException exception) {
+					JOptionPane.showMessageDialog(null, exception);
+				}
+				DataBase.closeConnection();
+			}
+		});
+		btnExportPDF.setBounds(446, 320, 250, 23);
+		panelFinanz.add(btnExportPDF);
 		
 		JPanel panelRechnung = new JPanel();
 		tabbedPane.addTab("Rechnung", null, panelRechnung, null);
