@@ -768,7 +768,16 @@ public class MainMenu extends JFrame {
 		btnRechnungZuTopf.setBounds(446, 252, 250, 23);
 		panelFinanz.add(btnRechnungZuTopf);
 		
-		JButton btnNewButton_1 = new JButton("New button");
+		JButton btnNewButton_1 = new JButton("Refresh");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				DataBase.refreshBill2();
+				DataBase.refreshKasse();
+				DataBase.refreshTopf();
+			}
+		});
 		btnNewButton_1.setBounds(0, 0, 89, 23);
 		panelFinanz.add(btnNewButton_1);
 		

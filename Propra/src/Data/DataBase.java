@@ -807,6 +807,62 @@ public static void searchOrder(String search) {
 		closeConnection();
 	}
 	
+public static void refreshBill2() {
+		
+		getConnection();
+		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+			
+			
+		String sqlRechnung = "SELECT * FROM Rechnung";
+		
+		ResultSet rsRechnung = null;
+		
+		Statement stmt = null;
+		try {
+			stmt = DataBase.c.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try {
+			rsRechnung = stmt.executeQuery(sqlRechnung);
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		try{
+		while(rsRechnung.next())
+		{
+			String a1 = rsRechnung.getString("ID_Rechnung");
+		    String b1 = rsRechnung.getString("Rechnungsname");
+		    String c1 = rsRechnung.getString("Auftraggeber");
+//		    String d1 = rsRechnung.getString("Bezahlung_Art");
+		    String e1 = rsRechnung.getString("Betrag");
+		    String f1 = rsRechnung.getString("Beschreibung");
+		    String g1 = rsRechnung.getString("Bearbeiter");
+		    String h1 = rsRechnung.getString("Timestamp");
+		    
+		    modelRechnung.addRow(new Object[]{a1, b1,c1, e1, f1, g1, h1});
+		}
+		}
+		
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		MainMenu.tblRechn.setModel(modelRechnung);
+
+		closeConnection();
+		
+	}
+	
 	
 	public static void refreshOrder() {
 

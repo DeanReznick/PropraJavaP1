@@ -61,7 +61,7 @@ public class Aendern extends JFrame {
 		String oldvorname = MainMenu.tblPersonen.getModel().getValueAt(colnr, 2).toString();
 		String oldtel = MainMenu.tblPersonen.getModel().getValueAt(colnr, 3).toString();
 		String oldmail = MainMenu.tblPersonen.getModel().getValueAt(colnr, 4).toString();
-		
+		String oldrolle = MainMenu.tblPersonen.getModel().getValueAt(colnr, 5).toString();
 		String oldstr = MainMenu.tblPersonen.getModel().getValueAt(colnr, 6).toString();
 		String oldhaus = MainMenu.tblPersonen.getModel().getValueAt(colnr, 7).toString();
 		String oldplz = MainMenu.tblPersonen.getModel().getValueAt(colnr, 8).toString();
@@ -195,6 +195,7 @@ public class Aendern extends JFrame {
 				int colOrt = 9;
 				int colLand = 10;
 				
+				int id = Integer.parseInt(MainMenu.tblPersonen.getModel().getValueAt(colnr, 0).toString());
 				
 				String nameOld = MainMenu.tblPersonen.getModel().getValueAt(colnr, colName).toString();
 				String vornameOld = MainMenu.tblPersonen.getModel().getValueAt(colnr, colVorname).toString();
@@ -206,6 +207,7 @@ public class Aendern extends JFrame {
 				String plzOld = MainMenu.tblPersonen.getModel().getValueAt(colnr, colPlz).toString();
 				String ortOld = MainMenu.tblPersonen.getModel().getValueAt(colnr, colOrt).toString();
 				String landOld = MainMenu.tblPersonen.getModel().getValueAt(colnr, colLand).toString();
+				String rolleOld = MainMenu.tblPersonen.getModel().getValueAt(colnr, colRolle).toString();
 				
 				
 				
@@ -220,6 +222,7 @@ public class Aendern extends JFrame {
 				int plzNew = Integer.parseInt(txtPlz.getText());
 				String strNew = txtStr.getText();
 				String ortNew = txtOrt.getText();
+				String rolleNew = comboBox.getSelectedItem().toString();
 				
 				
 				Manager.checkAendernStandard(vornameNew, nameNew, mailNew, strNew, plzNew, ortNew, landNew, hausNew, telNew);
@@ -248,6 +251,10 @@ public class Aendern extends JFrame {
 				{
 					PersonenFertigungsverwaltung.changeMail(vornameOld, nameOld, mailNew);
 				}
+				
+				
+				PersonenFertigungsverwaltung.changeRolle(id, rolleNew);
+				
 				
 				
 				
