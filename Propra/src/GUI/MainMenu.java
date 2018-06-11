@@ -1231,6 +1231,28 @@ public class MainMenu extends JFrame {
 		panelRechnung.add(btnSpeichern);
 		
 		JButton btnAendern_3 = new JButton("Aendern");
+		btnAendern_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				DataBase.getConnection();
+				DefaultTableModel model = (DefaultTableModel) tblBills.getModel();
+				//get selected row index
+				int selectedRowIndex = tblBills.getSelectedRow();
+				if (selectedRowIndex >= 0) {
+				try {
+				UpdateBill x = new UpdateBill();
+				x.setVisible(true);
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
+			}
+				
+				DataBase.closeConnection();
+			}
+		});
 		btnAendern_3.setBounds(761, 17, 89, 23);
 		panelRechnung.add(btnAendern_3);
 		

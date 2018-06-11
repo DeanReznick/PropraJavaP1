@@ -83,6 +83,50 @@ public class DataBase {
 	}
 	
 	
+	public static String getIdAPbyBillId(String id_bill) {
+		String idAp = null;
+		Statement stmt = null;
+		try{
+		String sqlIdAp = "SELECT Ansprechpartner FROM Rechnung WHERE ID_Rechnung like '" + id_bill + "';";
+		
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlIdAp);
+			
+			
+				while(rs.next()) {idAp = rs.getString("Ansprechpartner");}
+				stmt.close();
+		}catch ( Exception e ) {
+		      System.err.println( "ID Bill not found");
+		      
+		   }
+		
+		return idAp;
+		
+	}
+	
+	
+	public static String getBezahlungBill(String id_bill) {
+		String art = null;
+		Statement stmt = null;
+		try{
+		String sqlIdAp = "SELECT Bezahlung_Art FROM Rechnung WHERE ID_Rechnung like '" + id_bill + "';";
+		
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlIdAp);
+			
+			
+				while(rs.next()) {art = rs.getString("Bezahlung_Art");}
+				stmt.close();
+		}catch ( Exception e ) {
+		      System.err.println( "ID Bill not found");
+		      
+		   }
+		
+		return art;
+		
+	}
+	
+	
 	public static ArrayList<String> getCategoryList() {
 		
 		
