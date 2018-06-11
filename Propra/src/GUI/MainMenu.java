@@ -78,8 +78,8 @@ public class MainMenu extends JFrame {
 	public static JTable tblTopf;
 	public static JTable tblRechn;
 	private JTextField txtSearchBill;
-	private static JTable tblAuftraegeRechnung;
-	private JTable tblOdersInBill;
+	public static JTable tblAuftraegeRechnung;
+	public static JTable tblOrdersInBill;
 	public static JTable tblBills;
 	public static JScrollPane scrollPane_Kasse;
 	public static JScrollPane scrollPane_Topf;
@@ -301,10 +301,10 @@ public class MainMenu extends JFrame {
 		scrollPane_1.setBounds(10, 260, 939, 117);
 		panelPerson.add(scrollPane_1);
 			
-		String[] column_headers_auftraege = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"};
+		String[] column_headers_auftraege = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "Status", "Rolle"};
 		String[][] data_auftraege = new String[1000][11];
 		tblAuftraege = new JTable(data_auftraege, column_headers_auftraege);
-		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "Status", "Rolle"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -592,7 +592,7 @@ public class MainMenu extends JFrame {
 		panelFinanz.add(lblKassen);
 		
 		scrollPane_Topf = new JScrollPane();
-		scrollPane_Topf.setBounds(220, 61, 134, 180);
+		scrollPane_Topf.setBounds(154, 61, 282, 180);
 		panelFinanz.add(scrollPane_Topf);
 			
 		
@@ -893,7 +893,7 @@ public class MainMenu extends JFrame {
 					return false;
 				}
 			};
-		String sqlAuftragR = "SELECT * FROM Auftrag";
+		String sqlAuftragR = "SELECT * FROM Auftrag WHERE ID_Rechnung is null;";
 		ResultSet rsAuftragR = stmt.executeQuery(sqlAuftragR);
 		
 		//String r = null;
@@ -933,6 +933,7 @@ public class MainMenu extends JFrame {
 				
 				
 				Finanzverwaltung.addOrderToBill(id_Order, id_Bill);
+				DataBase.refreshOrderBill();
 			}
 		});
 		btnAddToBill.setBounds(10, 363, 178, 23);
@@ -946,8 +947,8 @@ public class MainMenu extends JFrame {
 		
 		String[] headersOrdersInBills = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"};
 		String[][] dataOrdersInBills = new String[1000][11];
-		tblOdersInBill = new JTable(dataOrdersInBills, headersOrdersInBills);
-		scrollPane_6.setViewportView(tblOdersInBill);
+		tblOrdersInBill = new JTable(dataOrdersInBills, headersOrdersInBills);
+		scrollPane_6.setViewportView(tblOrdersInBill);
 		
 		
 		
@@ -991,7 +992,7 @@ public class MainMenu extends JFrame {
 		    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
 		}
 		
-		tblOdersInBill.setModel(modelOrderBill);
+		tblOrdersInBill.setModel(modelOrderBill);
 		
 		JButton btnErstellen_1 = new JButton("Erstellen");
 		btnErstellen_1.addActionListener(new ActionListener() {
@@ -1005,6 +1006,22 @@ public class MainMenu extends JFrame {
 		panelRechnung.add(btnErstellen_1);
 		
 		JButton btnAuftragEntfernen = new JButton("Auftrag entfernen");
+		btnAuftragEntfernen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+				int colnr = tblOrdersInBill.getSelectedRow();
+				int id_Bill = Finanzverwaltung.getIDRechnungByOrder(Integer.parseInt(MainMenu.tblOrdersInBill.getModel().getValueAt(colnr, 0).toString()));
+				Finanzverwaltung.deleteOrderFromBill(id_Bill);
+				
+				DataBase.getConnection();
+				DataBase.refreshOrderBill();
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Auftrag aus.");
+				}finally {
+					DataBase.closeConnection();
+				}
+			}
+		});
 		btnAuftragEntfernen.setBounds(688, 363, 162, 23);
 		panelRechnung.add(btnAuftragEntfernen);
 		
@@ -1133,7 +1150,7 @@ public class MainMenu extends JFrame {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
-									tblOdersInBill.setModel(modelOrderBill);
+									tblOrdersInBill.setModel(modelOrderBill);
 								
 									
 									DefaultTableModel modelOrdersForBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {

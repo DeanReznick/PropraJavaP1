@@ -33,7 +33,9 @@ public class Finanzverwaltung {
 		
 		DataBase.getConnection();
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "UPDATE Rechnung SET Rechnungsname='"  + rechnungsname + "' , Auftraggeber= "+ id_Auftraggeber + ", Ansprechpartner = " + id_Ansprechpartner + ", Bezahlung_Art='" + artBezahlung + "' Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"' WHERE ID_Rechnung = " + id_Bill + "';";  
+		String query = "UPDATE Rechnung SET Rechnungsname='"  + rechnungsname + "' , Auftraggeber= "+ id_Auftraggeber + ", Ansprechpartner = " + id_Ansprechpartner + ", Bezahlung_Art='" + artBezahlung + "', Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"' WHERE ID_Rechnung = " + id_Bill + ";";  
+		System.out.println(query);
+		
 		DataBase.executeQuery(query); 
 		DataBase.closeConnection();
 		
@@ -123,7 +125,7 @@ public class Finanzverwaltung {
 		//query = "DELETE FROM Auftrag WHERE ID_Auftrag = "+ id_Order +";"; 
 		//DataBase.executeQuery(query);
 	
-		query = "UPDATE Auftrag SET ID_Rechnung= 0 WHERE ID_Auftrag = " + id_Order + ";";  
+		query = "UPDATE Auftrag SET ID_Rechnung= null WHERE ID_Auftrag = " + id_Order + ";";  
 		DataBase.executeQuery(query);
 
 		DataBase.closeConnection();
@@ -223,6 +225,14 @@ public class Finanzverwaltung {
 		
 	}
 	
-	
+	public static int getIDRechnungByOrder(int id_Order) {
+		
+		DataBase.getConnection();
+		int id_Bill = DataBase.getSpecificID("ID_Rechnung", "SELECT * FROM 'Mischtabelle-Rechnung-Auftrag' WHERE ID_Auftrag =" + id_Order+";");
+		DataBase.closeConnection();
+		
+		return id_Bill; 
+		
+	}
 	
 }

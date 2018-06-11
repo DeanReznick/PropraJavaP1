@@ -93,6 +93,7 @@ public class NewOrder extends JFrame {
 				
 				PersonenFertigungsverwaltung.createNewOrder(header, af, filename, repository, pk, rk, name, surname, job);
 				DataBase.refreshOrder();
+				DataBase.refreshOrderBill();
 				dispose();
 				}
 				catch (InvalidArgumentsException ex){
