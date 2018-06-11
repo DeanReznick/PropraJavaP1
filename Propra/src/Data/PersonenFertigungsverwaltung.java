@@ -107,13 +107,18 @@ public class PersonenFertigungsverwaltung {
 		String query = "UPDATE Person SET name = '" + surname + "', vorname = '" + name  + "' WHERE name = '"+ surname_old + "' and vorname = '" + name_old +"';";  
 		
 		DataBase.executeQuery(query); 
+			
+	}
+	
+	public static void changeRolle(int id_Person, String rolle) {
+		DataBase.getConnection();
 		
-		
-		
+		String query = "UPDATE Person SET Rolle = '" + rolle + "' WHERE ID_Person = "+ id_Person + ";"; 
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
 		
 		
 	}
-	
 	
 	
 public static void changeName(String name_old, String surname_old, String name, String surname) {
