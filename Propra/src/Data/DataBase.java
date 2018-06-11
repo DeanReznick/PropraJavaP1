@@ -1711,4 +1711,43 @@ public static void searchOrder(String search) {
 	    
 	  }
 	  
+	  //----
+	  
+	  public static String getRolleByIDPerson(int id_Person) {
+		 
+		  String rolle = null;
+					  
+		  Statement stmt = null;
+		   
+		   try {
+		    
+			   //Query 
+			   String query = "SELECT Rolle FROM Person WHERE ID_Person ="+ id_Person + ";"; 
+			   
+			   // Getting Data from Database
+		      stmt = c.createStatement();
+		      ResultSet rs = stmt.executeQuery( query );
+		
+		      while ( rs.next() ) {
+		    	 
+		    	rolle = rs.getString("Rolle"); 
+		    		    	
+		      }
+		     
+		      stmt.close();
+		    
+		   } catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   
+		   System.out.println("Operation done successfully");
+	     
+		  return rolle; 
+	  }
+	  
+	  
+	  
+	  
+	  
 }

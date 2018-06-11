@@ -30,13 +30,13 @@ public class Authentication {
   
   
   public static boolean checkCredentials(String name, String surname, String password) {
-    
-	 DataBase.getConnection(); 
+	DataBase.getConnection(); 
+	
+	if(!(DataBase.getRolleByIDPerson(DataBase.getIdPersonByNameSurname(name, surname)).equals("Intern"))){
+		return false; 
+	}
 	  
     String query ="SELECT Passwort FROM Person WHERE name like '" + name + "' and vorname like '" + surname +"';";
-     
- 
-    
     if(sha256(password).equals(DataBase.getPassword(query))){
     	DataBase.closeConnection();
       return true;
