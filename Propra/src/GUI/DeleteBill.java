@@ -63,6 +63,7 @@ public class DeleteBill extends JFrame {
 				Finanzverwaltung.deleteBill(id);
 				
 				model.removeRow(selectedRowIndex);
+				DataBase.refreshRechn();
 				DataBase.closeConnection();
 				dispose();
 			}

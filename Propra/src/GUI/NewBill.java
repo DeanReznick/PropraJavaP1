@@ -32,18 +32,18 @@ public class NewBill extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					NewBill frame = new NewBill();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					NewBill frame = new NewBill();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
@@ -126,6 +126,7 @@ public class NewBill extends JFrame {
 				
 				Finanzverwaltung.addBill(rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
 				DataBase.refreshBill();
+				DataBase.refreshRechn();
 				DataBase.closeConnection();
 				dispose();
 				

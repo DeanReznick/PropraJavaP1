@@ -189,6 +189,7 @@ public class UpdateOrder extends JFrame {
 				
 					
 				DataBase.refreshOrder();
+				DataBase.refreshOrderBill();
 				DataBase.closeConnection();
 				dispose();
 				}

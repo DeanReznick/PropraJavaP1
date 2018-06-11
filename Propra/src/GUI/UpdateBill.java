@@ -129,6 +129,7 @@ public class UpdateBill extends JFrame {
 				
 				Finanzverwaltung.alterBill(id_Bill_int, rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
 				DataBase.refreshBill();
+				DataBase.refreshRechn();
 				DataBase.closeConnection();
 				dispose();
 				

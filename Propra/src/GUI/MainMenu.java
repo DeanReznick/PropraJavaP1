@@ -258,7 +258,7 @@ public class MainMenu extends JFrame {
 				String personVorname = MainMenu.tblPersonen.getModel().getValueAt(colnr, 2).toString();
 				String fullName = personVorname + " " + personName;
 				
-				txtSearchOrder.setText(fullName);
+//				txtSearchOrder.setText(fullName);
 				DataBase.searchOrder(fullName);
 				DataBase.closeConnection();
 			}
