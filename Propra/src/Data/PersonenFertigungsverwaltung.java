@@ -116,8 +116,7 @@ public class PersonenFertigungsverwaltung {
 		String query = "UPDATE Person SET Rolle = '" + rolle + "' WHERE ID_Person = "+ id_Person + ";"; 
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
-		
-		
+	
 	}
 	
 	
