@@ -943,6 +943,7 @@ public class MainMenu extends JFrame {
 				
 				Finanzverwaltung.addOrderToBill(id_Order, id_Bill);
 				DataBase.refreshOrderBill();
+				DataBase.refreshOrdersInBill();
 			}
 		});
 		btnAddToBill.setBounds(10, 363, 178, 23);
@@ -966,40 +967,42 @@ public class MainMenu extends JFrame {
 	
 		//String tableClick = MainMenu.tblBills.getModel().getValueAt(selectedRowIndex, 0).toString();
 		
-		
 		DefaultTableModel modelOrderBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+			
+			
+			
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
 			};
-		//String sqlOrderBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag WHERE 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung like '" + idbill +"';";
-			String sqlOrderBill = "SELECT * FROM Auftrag";
-			ResultSet rsOrderBill = stmt.executeQuery(sqlOrderBill);
-		
-		//String r = null;
-		//String sqlRolle = "SELECT Rolle FROM Mischtabelle-Person-Auftrag WHERE ID_Auftrag =" + r + ";";
-		
-		
-		while(rsOrderBill.next())
-		{
-			String a1 = rsOrderBill.getString("ID_Auftrag");
-		    String b1 = rsOrderBill.getString("Titel");
-		    String c1 = rsOrderBill.getString("AF");
-		    String d1 = rsOrderBill.getString("Dateiname");
-		    String e1 = rsOrderBill.getString("Dateiort");
-		    String f1 = rsOrderBill.getString("PK");
-		    String g1 = rsOrderBill.getString("RK");
-		    String h1 = DataBase.getStatusBeiAuftragId(a1);
-		    
-		    String j1 = DataBase.getRolleByOrderId(a1);
-		    //System.out.println(a1);
-		   // System.out.println(j1);
-		  
-		    
-		    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
-		}
+//		//String sqlOrderBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag WHERE 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung like '" + idbill +"';";
+//			String sqlOrderBill = "SELECT * FROM Auftrag";";
+//			ResultSet rsOrderBill = stmt.executeQuery(sqlOrderBill);
+//		
+//		//String r = null;
+//		//String sqlRolle = "SELECT Rolle FROM Mischtabelle-Person-Auftrag WHERE ID_Auftrag =" + r + ";";
+//		
+//		
+//		while(rsOrderBill.next())
+//		{
+//			String a1 = rsOrderBill.getString("ID_Auftrag");
+//		    String b1 = rsOrderBill.getString("Titel");
+//		    String c1 = rsOrderBill.getString("AF");
+//		    String d1 = rsOrderBill.getString("Dateiname");
+//		    String e1 = rsOrderBill.getString("Dateiort");
+//		    String f1 = rsOrderBill.getString("PK");
+//		    String g1 = rsOrderBill.getString("RK");
+//		    String h1 = DataBase.getStatusBeiAuftragId(a1);
+//		    
+//		    String j1 = DataBase.getRolleByOrderId(a1);
+//		    //System.out.println(a1);
+//		   // System.out.println(j1);
+//		  
+//		    
+//		    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+//		}
 		
 		tblOrdersInBill.setModel(modelOrderBill);
 		
@@ -1017,13 +1020,17 @@ public class MainMenu extends JFrame {
 		JButton btnAuftragEntfernen = new JButton("Auftrag entfernen");
 		btnAuftragEntfernen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				try {
+					
 				int colnr = tblOrdersInBill.getSelectedRow();
-				int id_Bill = Finanzverwaltung.getIDRechnungByOrder(Integer.parseInt(MainMenu.tblOrdersInBill.getModel().getValueAt(colnr, 0).toString()));
+				int id_Bill = Integer.parseInt(MainMenu.tblOrdersInBill.getModel().getValueAt(colnr, 0).toString());
 				Finanzverwaltung.deleteOrderFromBill(id_Bill);
 				
 				DataBase.getConnection();
 				DataBase.refreshOrderBill();
+				DataBase.refreshOrdersInBill();
+
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Auftrag aus.");
 				}finally {
@@ -1194,7 +1201,7 @@ public class MainMenu extends JFrame {
 											System.out.println("Query executed");
 											System.out.println(rsOrdersForBills);
 										} catch (SQLException e) {
-											// TODO Auto-generated catch block
+										// TODO Auto-generated catch block
 											e.printStackTrace();
 										}
 									

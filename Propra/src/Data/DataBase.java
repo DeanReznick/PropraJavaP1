@@ -977,61 +977,65 @@ public static void refreshBill2() {
 	}
 	
 	public static void refreshOrdersInBill() {
-
 		getConnection();
 		
-		int colnr = MainMenu.tblOrdersInBill.getSelectedRow();
-		int id = Finanzverwaltung.getIDRechnungByOrder(Integer.parseInt(MainMenu.tblOrdersInBill.getModel().getValueAt(colnr, 0).toString()));
-		
-		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+
+		int selectedRowIndexBills = MainMenu.tblBills.getSelectedRow();
+		int id_Rechnung = Integer.parseInt(MainMenu.tblBills.getModel().getValueAt(selectedRowIndexBills, 0).toString());
+		DefaultTableModel modelOrderBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
 			};
-		
-		Statement stmt = null;
-		try {
-			stmt = DataBase.c.createStatement();
-		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-
-		String sql = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' on Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag where 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung ="+id+";";
-		ResultSet rs = null;
-		try {
-			rs = stmt.executeQuery(sql);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			while(rs.next())
-			{
-				String a1 = rs.getString("ID_Auftrag");
-			    String b1 = rs.getString("Titel");
-			    String c1 = rs.getString("AF");
-			    String d1 = rs.getString("Dateiname");
-			    String e1 = rs.getString("Dateiort");
-			    String f1 = rs.getString("PK");
-			    String g1 = rs.getString("RK");
-			    String h1 = DataBase.getStatusBeiAuftragId(a1);
-			    String j1 = DataBase.getRolleByOrderId(a1);
-			    
-			    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
-			   
+			
+			Statement stmt = null;
+			try {
+				stmt = DataBase.c.createStatement();
+			} catch (SQLException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		//String sqlOrderBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag WHERE 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung like '" + idbill +"';";
+			String sqlOrderBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag WHERE 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung =" + id_Rechnung + ";";			ResultSet rsOrderBill = null;
+			try {
+				rsOrderBill = stmt.executeQuery(sqlOrderBill);
+			} catch (SQLException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+		
+		//String r = null;
+		//String sqlRolle = "SELECT Rolle FROM Mischtabelle-Person-Auftrag WHERE ID_Auftrag =" + r + ";";
+		
+		try{
+		while(rsOrderBill.next())
+		{
+			String a1 = rsOrderBill.getString("ID_Auftrag");
+		    String b1 = rsOrderBill.getString("Titel");
+		    String c1 = rsOrderBill.getString("AF");
+		    String d1 = rsOrderBill.getString("Dateiname");
+		    String e1 = rsOrderBill.getString("Dateiort");
+		    String f1 = rsOrderBill.getString("PK");
+		    String g1 = rsOrderBill.getString("RK");
+		    String h1 = DataBase.getStatusBeiAuftragId(a1);
+		    
+		    String j1 = DataBase.getRolleByOrderId(a1);
+		    //System.out.println(a1);
+		   // System.out.println(j1);
+		  
+		    
+		    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
 		}
 		
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 		
-		MainMenu.tblOrdersInBill.setModel(modelAuftrag);
-	
+		MainMenu.tblOrdersInBill.setModel(modelOrderBill);
+		
 		closeConnection();
 	}
 	
