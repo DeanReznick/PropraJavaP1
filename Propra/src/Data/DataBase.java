@@ -1867,6 +1867,46 @@ public static void refreshBill2() {
 	  }
 	  
 	  
+	  //------------------------------
+	  public static String[] getNameVornameByMail(String mail) {
+		  
+		  String [] namen = new String[2]; 
+		  String vorname = ""; 
+		  String name = ""; 
+		  
+		  Statement stmt = null;
+		   
+		   try {
+		    
+			   //Query 
+			   String query = "SELECT * FROM Person WHERE Mail like '"+ mail + "';"; 
+			   
+			   // Getting Data from Database
+		      stmt = c.createStatement();
+		      ResultSet rs = stmt.executeQuery( query );
+		
+		      while ( rs.next() ) {
+		    	 
+		    	vorname = rs.getString("Vorname"); 
+		    	name = rs.getString("Name"); 
+		    	
+		    	namen[0] = vorname; 
+		    	namen[1] = name; 
+		    	
+		      }
+		     
+		      stmt.close();
+		    
+		   } catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   
+		   System.out.println("Operation done successfully");
+	     
+		   return namen; 
+		  
+	  }
 	  
 	  
 	  

@@ -23,14 +23,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+import java.awt.Font;
 
 public class GUILogin extends JFrame {
 	public static String name_signedIn;
 	public static String vorname_signedIn; 
 		
 	private JPanel contentPane;
-	private JTextField txt_name;
-	private JTextField txt_surname;
+	private JTextField txt_mail;
 	private int counter_try = 0;
 	private JPasswordField txt_password;
 	/**
@@ -61,31 +61,23 @@ public class GUILogin extends JFrame {
 	public GUILogin() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 250, 317);
+		setBounds(100, 100, 243, 240);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLabel lblLogin = new JLabel("Login");
-		lblLogin.setBounds(105, 11, 40, 14);
+		lblLogin.setFont(new Font("Sitka Banner", Font.BOLD, 24));
+		lblLogin.setBounds(55, 0, 102, 39);
 		contentPane.add(lblLogin);
 		
-		JLabel lblUsername = new JLabel("Name:");
-		lblUsername.setBounds(10, 50, 214, 14);
-		contentPane.add(lblUsername);
-		
-		txt_name = new JTextField();
-		txt_name.setBounds(10, 75, 214, 20);
-		contentPane.add(txt_name);
-		txt_name.setColumns(10);
-		
-		JLabel lblPassword = new JLabel("Surname:");
-		lblPassword.setBounds(10, 106, 214, 14);
+		JLabel lblPassword = new JLabel("E-Mail:");
+		lblPassword.setBounds(10, 50, 214, 14);
 		contentPane.add(lblPassword);
 		
 		txt_password = new JPasswordField();
-		txt_password.setBounds(10, 186, 214, 20);
+		txt_password.setBounds(10, 130, 214, 20);
 		contentPane.add(txt_password);
 
 		
@@ -94,17 +86,31 @@ public class GUILogin extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				MainMenu x;
 				try {
-						String name = txt_name.getText(); 
-						String surname = txt_surname.getText(); 
+					
+						String mail = txt_mail.getText(); 
 						String password = txt_password.getText();  
 					 
+						DataBase.getConnection();
+						String[] namen = new String[2]; 
+						namen = DataBase.getNameVornameByMail(mail); 
+						DataBase.closeConnection();
+						
+						String vorname = namen[0]; 
+						String name = namen[1]; 
+						
+						
+						System.out.println("Session: " + vorname  + ", " + name);
+												//Aus der Datenbank! 
 						name_signedIn = name; 
-						vorname_signedIn = surname; 
-					
-					if(Authentication.checkCredentials(name, surname, password)) {
+						vorname_signedIn = vorname; 
+						
+						
+						
+						
+					if(Authentication.checkCredentials(name, vorname, password)) {
 						x = new MainMenu();
 						x.setVisible(true);
-						dispose();
+						dispose(); 
 					}else {
 						if(++ counter_try < 4) {
 						
@@ -117,28 +123,30 @@ public class GUILogin extends JFrame {
 							dispose();
 						}
 		
-					}
+					} 
 				
-				} catch (SQLException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-		});
-		btnLogin.setBounds(10, 228, 89, 23);
+		}
+			
+				);
+		btnLogin.setBounds(10, 172, 217, 23);
 		contentPane.add(btnLogin);
 		
 		JLabel label = new JLabel("Password:");
-		label.setBounds(10, 161, 214, 14);
+		label.setBounds(10, 105, 214, 14);
 		contentPane.add(label);
 		
-		txt_surname = new JTextField();
-		txt_surname.setColumns(10);
-		txt_surname.setBounds(10, 131, 214, 20);
-		contentPane.add(txt_surname);
+		txt_mail = new JTextField();
+		txt_mail.setColumns(10);
+		txt_mail.setBounds(10, 75, 214, 20);
+		contentPane.add(txt_mail);
 		
-		JLabel lblNewLabel = new JLabel("Klein, Anna, 123");
-		lblNewLabel.setBounds(10, 25, 115, 14);
+		JLabel lblNewLabel = new JLabel("anna@gmx.de");
+		lblNewLabel.setBounds(55, 50, 115, 14);
 		contentPane.add(lblNewLabel);
 		
 		SwingUtilities.getRootPane(btnLogin).setDefaultButton(btnLogin);
