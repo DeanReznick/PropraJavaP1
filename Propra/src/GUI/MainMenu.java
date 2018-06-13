@@ -563,6 +563,84 @@ public class MainMenu extends JFrame {
 		String[] column_headers_kasse = {"ID_Kasse", "Art", "Nummer", "Soll", "Ist"};
 		String[][] data_kasse = new String[1000][11];
 		tblKasse = new JTable(data_kasse, column_headers_kasse);
+		tblKasse.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				DataBase.getConnection();
+				int colnr  = MainMenu.tblKasse.getSelectedRow();
+				DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "Soll", "Ist"}, 0) {
+					
+					@Override
+					public boolean isCellEditable(int row, int column) {
+							return false;
+						}
+					};
+				String id = MainMenu.tblKasse.getModel().getValueAt(colnr, 0).toString();
+				
+			
+				
+				Statement stmtTopf = null;
+				
+					try {
+						
+						stmtTopf = DataBase.c.createStatement();
+						System.out.println("Statement");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				
+				String sqlTopf = "SELECT Topf.* FROM Topf INNER JOIN 'Mischtabelle-Kasse-Topf' on Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf where 'Mischtabelle-Kasse-Topf'.ID_Kasse ="+id+";";
+				
+				ResultSet rsTopf = null;
+				
+					try {
+						rsTopf = stmtTopf.executeQuery(sqlTopf);
+						System.out.println("Query executed");
+						System.out.println(rsTopf);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				
+				
+				
+				
+				
+					try {
+						while(rsTopf.next())
+						{
+							String a1 = rsTopf.getString("ID_Topf");
+						 
+						    String c1 = rsTopf.getString("Soll");
+						    String d1 = rsTopf.getString("Ist");
+						    
+						    
+						 
+						  
+						    
+						    modelTopf.addRow(new Object[]{a1,c1,d1});
+						    
+						    System.out.println("While done");
+						    
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					tblTopf.setModel(modelTopf);
+				
+				
+				
+				
+				
+				
+				DataBase.closeConnection();
+			}
+		});
 		DefaultTableModel modelKasse = new DefaultTableModel(new String[]{"ID_Kasse", "Art", "Nummer", "Soll", "Ist"}, 0) {
 			
 			@Override
@@ -600,6 +678,81 @@ public class MainMenu extends JFrame {
 		String[] column_headers_topf = {"ID_Topf", "ID_Kasse", "Soll", "Ist"};
 		String[][] data_topf = new String[1000][11];
 		tblTopf = new JTable(data_topf, column_headers_topf);
+		tblTopf.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				DataBase.getConnection();
+				int colnr  = MainMenu.tblTopf.getSelectedRow();
+				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
+					
+					@Override
+					public boolean isCellEditable(int row, int column) {
+							return false;
+						}
+					};
+				String id = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
+				
+			
+				
+				Statement stmtRechnung = null;
+				
+					try {
+						
+						stmtRechnung = DataBase.c.createStatement();
+						System.out.println("Statement");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
+				
+				String sqlRechnung = "SELECT Rechnung.* FROM Rechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on Rechnung.ID_Rechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+";";
+				
+				ResultSet rsRechnung = null;
+				
+					try {
+						rsRechnung = stmtRechnung.executeQuery(sqlRechnung);
+						System.out.println("Query executed");
+						System.out.println(rsRechnung);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
+				
+				
+				
+				
+				
+					try {
+						while(rsRechnung.next())
+						{
+							String a1 = rsRechnung.getString("ID_Rechnung");
+						    String b1 = rsRechnung.getString("Rechnungsname");
+						    String c1 = rsRechnung.getString("Auftraggeber");
+//						    String d1 = rsRechnung.getString("Bezahlung_Art");
+						    String e1 = rsRechnung.getString("Betrag");
+						    String f1 = rsRechnung.getString("Beschreibung");
+						    String g1 = rsRechnung.getString("Bearbeiter");
+						    String h1 = rsRechnung.getString("Timestamp");
+						    
+						    modelRechnung.addRow(new Object[]{a1, b1,c1, e1, f1, g1, h1});
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					tblRechn.setModel(modelRechnung);
+				
+				
+				
+				
+				
+				
+				DataBase.closeConnection();
+			}
+		});
 		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "ID_Kasse", "Soll", "Ist"}, 0) {
 			
 			@Override
@@ -755,14 +908,10 @@ public class MainMenu extends JFrame {
 		btnRechnungZuTopf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-				int colnrTopf = MainMenu.tblTopf.getSelectedRow();
-				int colnrRechnung = MainMenu.tblRechn.getSelectedRow();
-				String idTopf = MainMenu.tblTopf.getModel().getValueAt(colnrTopf, 0).toString();
-				String idRechnung = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 0).toString();
-				
-				Finanzverwaltung.addBillToTopf(Integer.parseInt(idRechnung), Integer.parseInt(idTopf));
+					TopfRechnung x = new TopfRechnung();
+					x.setVisible(true);
 				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf und eine Rechnung aus!");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
 				}
 			}
 		});
