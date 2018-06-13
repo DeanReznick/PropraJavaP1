@@ -54,6 +54,7 @@ import com.itextpdf.text.DocumentException;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Label;
+
 import java.awt.Font;
 
 public class MainMenu extends JFrame {
@@ -1038,7 +1039,7 @@ public class MainMenu extends JFrame {
 				}
 			}
 		});
-		btnAuftragEntfernen.setBounds(688, 363, 162, 23);
+		btnAuftragEntfernen.setBounds(787, 363, 162, 23);
 		panelRechnung.add(btnAuftragEntfernen);
 		
 		JLabel lblAuftraege_1 = new JLabel("Auftraege:");
@@ -1192,7 +1193,7 @@ public class MainMenu extends JFrame {
 										}
 									
 									
-									String sqlOrdersForBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag where 'Mischtabelle-Person-Auftrag'.ID_Person ="+auftraggeberID+";";
+									String sqlOrdersForBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag where Auftrag.ID_Rechnung IS NULL AND 'Mischtabelle-Person-Auftrag'.ID_Person ="+auftraggeberID+";";
 									
 									ResultSet rsOrdersForBills = null;
 									
@@ -1258,10 +1259,6 @@ public class MainMenu extends JFrame {
 		JLabel lblBills = new JLabel("Rechnungen:");
 		lblBills.setBounds(494, 17, 158, 14);
 		panelRechnung.add(lblBills);
-		
-		JButton btnSpeichern = new JButton("Speichern");
-		btnSpeichern.setBounds(860, 363, 89, 23);
-		panelRechnung.add(btnSpeichern);
 		
 		JButton btnAendern_3 = new JButton("Aendern");
 		btnAendern_3.addActionListener(new ActionListener() {
@@ -1544,7 +1541,7 @@ public class MainMenu extends JFrame {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						tblAuftraegeRechnung.setModel(modelComponentsKategorie);
+						tblComponents.setModel(modelComponentsKategorie);
 					
 					
 					

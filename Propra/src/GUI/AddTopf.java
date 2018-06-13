@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -88,11 +89,19 @@ public class AddTopf extends JFrame {
 		JButton btnHinzufuegen = new JButton("Hinzufuegen");
 		btnHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				try{
 				DataBase.getConnection();
 				Finanzverwaltung.addTopf(Integer.parseInt(comboBoxArt.getSelectedItem().toString()), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
-				DataBase.refreshTopf();
-				DataBase.closeConnection();
 				dispose();
+				}catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Soll und Ist müssen Zahlen sein!");
+				} finally {
+					DataBase.refreshTopf();
+					DataBase.closeConnection();
+					
+			}
+				
 			}
 		});
 		btnHinzufuegen.setBounds(63, 118, 100, 23);
