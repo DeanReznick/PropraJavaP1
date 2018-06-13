@@ -53,6 +53,7 @@ public class UpdateOrder extends JFrame {
 	 * @throws SQLException 
 	 */
 	public UpdateOrder() throws SQLException {
+		setTitle("Auftragsdaten \u00E4ndern");
 		Statement stmt = null;
 		DataBase.getConnection();
 		
@@ -82,64 +83,64 @@ public class UpdateOrder extends JFrame {
 		
 		
 		
-		setBounds(100, 100, 229, 396);
+		setBounds(100, 100, 300, 271);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		txtHeader = new JTextField(headerOld);
-		txtHeader.setBounds(98, 45, 86, 20);
+		txtHeader.setBounds(130, 8, 144, 20);
 		contentPane.add(txtHeader);
 		txtHeader.setColumns(10);
 		
 		txtAf = new JTextField(afOld);
-		txtAf.setBounds(98, 76, 86, 20);
+		txtAf.setBounds(130, 33, 144, 20);
 		contentPane.add(txtAf);
 		txtAf.setColumns(10);
 		
 		txtFilename = new JTextField(filenameOld);
-		txtFilename.setBounds(98, 107, 86, 20);
+		txtFilename.setBounds(130, 58, 144, 20);
 		contentPane.add(txtFilename);
 		txtFilename.setColumns(10);
 		
 		txtRepository = new JTextField(repositoryOld);
-		txtRepository.setBounds(98, 138, 86, 20);
+		txtRepository.setBounds(130, 83, 144, 20);
 		contentPane.add(txtRepository);
 		txtRepository.setColumns(10);
 		
 		txtPk = new JTextField(pkOld);
-		txtPk.setBounds(98, 169, 86, 20);
+		txtPk.setBounds(130, 108, 144, 20);
 		contentPane.add(txtPk);
 		txtPk.setColumns(10);
 		
 		txtRk = new JTextField(rkOld);
-		txtRk.setBounds(98, 200, 86, 20);
+		txtRk.setBounds(130, 133, 144, 20);
 		contentPane.add(txtRk);
 		txtRk.setColumns(10);
 		
 		JLabel lblTitel = new JLabel("Titel:");
-		lblTitel.setBounds(10, 48, 46, 14);
+		lblTitel.setBounds(10, 11, 110, 14);
 		contentPane.add(lblTitel);
 		
-		JLabel lblAf = new JLabel("AF:");
-		lblAf.setBounds(10, 79, 46, 14);
+		JLabel lblAf = new JLabel("Art der Fertigung:");
+		lblAf.setBounds(10, 36, 110, 14);
 		contentPane.add(lblAf);
 		
 		JLabel lblDateiname = new JLabel("Dateiname:");
-		lblDateiname.setBounds(10, 110, 78, 14);
+		lblDateiname.setBounds(10, 61, 110, 14);
 		contentPane.add(lblDateiname);
 		
 		JLabel lblDateiort = new JLabel("Dateiort:");
-		lblDateiort.setBounds(10, 141, 78, 14);
+		lblDateiort.setBounds(10, 86, 78, 14);
 		contentPane.add(lblDateiort);
 		
-		JLabel lblPk = new JLabel("PK:");
-		lblPk.setBounds(10, 172, 46, 14);
+		JLabel lblPk = new JLabel("Praktische Kosten:");
+		lblPk.setBounds(10, 111, 110, 14);
 		contentPane.add(lblPk);
 		
-		JLabel lblRk = new JLabel("RK:");
-		lblRk.setBounds(10, 203, 46, 14);
+		JLabel lblRk = new JLabel("Reelle Kosten:");
+		lblRk.setBounds(10, 136, 110, 14);
 		contentPane.add(lblRk);
 		
 		
@@ -147,7 +148,7 @@ public class UpdateOrder extends JFrame {
 		
 		
 		
-		JButton btnSave = new JButton("Save");
+		JButton btnSave = new JButton("Speichern");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DataBase.getConnection();
@@ -201,16 +202,16 @@ public class UpdateOrder extends JFrame {
 				
 			}
 		});
-		btnSave.setBounds(98, 11, 89, 23);
+		btnSave.setBounds(96, 195, 89, 23);
 		contentPane.add(btnSave);
 		
 		txtJob = new JTextField(jobOld);
-		txtJob.setBounds(98, 293, 86, 20);
+		txtJob.setBounds(130, 158, 144, 20);
 		contentPane.add(txtJob);
 		txtJob.setColumns(10);
 		
-		JLabel lblJob = new JLabel("Job:");
-		lblJob.setBounds(10, 296, 46, 14);
+		JLabel lblJob = new JLabel("Rolle:");
+		lblJob.setBounds(10, 161, 110, 14);
 		contentPane.add(lblJob);
 	}
 }

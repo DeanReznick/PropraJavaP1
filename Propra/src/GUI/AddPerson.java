@@ -58,6 +58,7 @@ public class AddPerson extends JFrame {
 	 * Create the frame.
 	 */
 	public AddPerson() {
+		setTitle("Neue Person hinzuf\u00FCgen");
 		
 		setBounds(100, 100, 325, 416);
 		contentPane = new JPanel();
@@ -65,7 +66,7 @@ public class AddPerson extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewPerson = new JLabel("New Person");
+		JLabel lblNewPerson = new JLabel("Neue Person");
 		lblNewPerson.setBounds(10, 11, 78, 14);
 		contentPane.add(lblNewPerson);
 		
@@ -158,7 +159,7 @@ public class AddPerson extends JFrame {
 		lblOrt.setBounds(10, 187, 46, 14);
 		contentPane.add(lblOrt);
 		
-		JLabel lblPassword = new JLabel("Password:");
+		JLabel lblPassword = new JLabel("Passwort:");
 		lblPassword.setBounds(10, 315, 58, 14);
 		contentPane.add(lblPassword);
 		

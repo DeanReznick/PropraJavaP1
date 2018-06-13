@@ -49,7 +49,7 @@ public class NewBill extends JFrame {
 	 * Create the frame.
 	 */
 	public NewBill() {
-		
+		setTitle("Neue Rechnung erstellen");
 		
 		
 		

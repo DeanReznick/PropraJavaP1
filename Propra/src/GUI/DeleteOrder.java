@@ -39,7 +39,7 @@ public class DeleteOrder extends JFrame {
 	 * Create the frame.
 	 */
 	public DeleteOrder() {
-		setTitle("Delete order");
+		setTitle("Auftrag löschen");
 		DataBase.getConnection();
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
@@ -47,11 +47,11 @@ public class DeleteOrder extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblDoYouReally = new JLabel("Do you really want to delete this order?");
+		JLabel lblDoYouReally = new JLabel("Möchten Sie diesen Auftrag wirklich löschen?");
 		lblDoYouReally.setBounds(5, 5, 374, 14);
 		contentPane.add(lblDoYouReally);
 		
-		JButton btnDeleteOrder = new JButton("Delete Order");
+		JButton btnDeleteOrder = new JButton("Auftrag löschen");
 		btnDeleteOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) MainMenu.tblAuftraege.getModel();
@@ -69,7 +69,7 @@ public class DeleteOrder extends JFrame {
 		btnDeleteOrder.setBounds(5, 47, 150, 23);
 		contentPane.add(btnDeleteOrder);
 		
-		JButton btnCancel = new JButton("Cancel");
+		JButton btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

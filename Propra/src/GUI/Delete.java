@@ -40,6 +40,7 @@ public class Delete extends JFrame {
 	 * Create the frame.
 	 */
 	public Delete() {
+		setTitle("Person l\u00F6schen");
 		DataBase.getConnection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 120);
@@ -48,11 +49,15 @@ public class Delete extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblDoYouReally = new JLabel("Do you really want to delete this person?");
+		int selectedRow = MainMenu.tblPersonen.getSelectedRow();
+		String firstName = MainMenu.tblPersonen.getModel().getValueAt(selectedRow, 2).toString();
+		String lastName = MainMenu.tblPersonen.getModel().getValueAt(selectedRow, 1).toString();
+		
+		JLabel lblDoYouReally = new JLabel("Möchten Sie die Person " + firstName + " " + lastName + " wirklich löschen?");
 		lblDoYouReally.setBounds(5, 5, 374, 14);
 		contentPane.add(lblDoYouReally);
 		
-		JButton btnDeletePerson = new JButton("Delete Person");
+		JButton btnDeletePerson = new JButton("Person löschen");
 		btnDeletePerson.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) MainMenu.tblPersonen.getModel();
@@ -70,7 +75,7 @@ public class Delete extends JFrame {
 		btnDeletePerson.setBounds(5, 47, 150, 23);
 		contentPane.add(btnDeletePerson);
 		
-		JButton btnCancel = new JButton("Cancel");
+		JButton btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

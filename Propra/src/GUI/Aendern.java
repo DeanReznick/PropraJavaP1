@@ -52,6 +52,7 @@ public class Aendern extends JFrame {
 	 * Create the frame.
 	 */
 	public Aendern() {
+		setTitle("Personendaten \u00E4ndern");
 		
 		
 	
@@ -71,106 +72,102 @@ public class Aendern extends JFrame {
 		
 		
 		
-		setBounds(100, 100, 223, 350);
+		setBounds(100, 100, 280, 350);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewPerson = new JLabel("New Person");
-		lblNewPerson.setBounds(10, 11, 78, 14);
-		contentPane.add(lblNewPerson);
-		
 		JLabel lblName = new JLabel("Name:");
-		lblName.setBounds(10, 36, 58, 14);
+		lblName.setBounds(10, 11, 58, 14);
 		contentPane.add(lblName);
 		
 		
 		
 		JLabel lblVorname = new JLabel("Vorname:");
-		lblVorname.setBounds(10, 61, 58, 14);
+		lblVorname.setBounds(10, 36, 58, 14);
 		contentPane.add(lblVorname);
 		
 		JLabel lblTelefon = new JLabel("Telefon:");
-		lblTelefon.setBounds(10, 86, 46, 14);
+		lblTelefon.setBounds(10, 61, 46, 14);
 		contentPane.add(lblTelefon);
 		
 		JLabel lblMail = new JLabel("Mail:");
-		lblMail.setBounds(10, 111, 46, 14);
+		lblMail.setBounds(10, 86, 46, 14);
 		contentPane.add(lblMail);
 		
 		JLabel lblLand = new JLabel("Land:");
-		lblLand.setBounds(10, 136, 46, 14);
+		lblLand.setBounds(10, 111, 46, 14);
 		contentPane.add(lblLand);
 		
 		JLabel lblPlz = new JLabel("PLZ:");
-		lblPlz.setBounds(10, 161, 46, 14);
+		lblPlz.setBounds(10, 136, 46, 14);
 		contentPane.add(lblPlz);
 		
 		JLabel lblStr = new JLabel("Str:");
-		lblStr.setBounds(10, 227, 46, 14);
+		lblStr.setBounds(10, 189, 46, 14);
 		contentPane.add(lblStr);
 		
 		JLabel lblHausnr = new JLabel("Hausnr:");
-		lblHausnr.setBounds(10, 252, 46, 14);
+		lblHausnr.setBounds(10, 214, 46, 14);
 		contentPane.add(lblHausnr);
 		
 		JLabel lblRolle = new JLabel("Rolle:");
-		lblRolle.setBounds(10, 283, 46, 14);
+		lblRolle.setBounds(10, 239, 46, 14);
 		contentPane.add(lblRolle);
 		
 		txtName = new JTextField(oldname);
-		txtName.setBounds(96, 33, 86, 20);
+		txtName.setBounds(96, 8, 158, 20);
 		contentPane.add(txtName);
 		txtName.setColumns(10);
 		
 		
 		txtVorname = new JTextField(oldvorname);
-		txtVorname.setBounds(96, 58, 86, 20);
+		txtVorname.setBounds(96, 33, 158, 20);
 		contentPane.add(txtVorname);
 		txtVorname.setColumns(10);
 		
 		txtTel = new JTextField(oldtel);
-		txtTel.setBounds(96, 83, 86, 20);
+		txtTel.setBounds(96, 58, 158, 20);
 		contentPane.add(txtTel);
 		txtTel.setColumns(10);
 		
 		txtMail = new JTextField(oldmail);
-		txtMail.setBounds(96, 108, 86, 20);
+		txtMail.setBounds(96, 83, 158, 20);
 		contentPane.add(txtMail);
 		txtMail.setColumns(10);
 		
 		txtLand = new JTextField(oldland);
-		txtLand.setBounds(96, 133, 86, 20);
+		txtLand.setBounds(96, 108, 158, 20);
 		contentPane.add(txtLand);
 		txtLand.setColumns(10);
 		
 		txtPlz = new JTextField(oldplz);
-		txtPlz.setBounds(96, 158, 86, 20);
+		txtPlz.setBounds(96, 133, 158, 20);
 		contentPane.add(txtPlz);
 		txtPlz.setColumns(10);
 		
 		txtStr = new JTextField(oldstr);
-		txtStr.setBounds(96, 221, 86, 20);
+		txtStr.setBounds(96, 186, 158, 20);
 		contentPane.add(txtStr);
 		txtStr.setColumns(10);
 		
 		txtHaus = new JTextField(oldhaus);
-		txtHaus.setBounds(96, 249, 86, 20);
+		txtHaus.setBounds(96, 211, 158, 20);
 		contentPane.add(txtHaus);
 		txtHaus.setColumns(10);
 		
 		txtOrt = new JTextField(oldort);
-		txtOrt.setBounds(96, 189, 86, 20);
+		txtOrt.setBounds(96, 158, 158, 20);
 		contentPane.add(txtOrt);
 		txtOrt.setColumns(10);
 		
 		JLabel lblOrt = new JLabel("Ort:");
-		lblOrt.setBounds(10, 192, 46, 14);
+		lblOrt.setBounds(10, 161, 46, 14);
 		contentPane.add(lblOrt);
 		
 		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(96, 280, 86, 20);
+		comboBox.setBounds(96, 236, 158, 20);
 		contentPane.add(comboBox);
 		
 		comboBox.addItem("Kunde");
@@ -283,7 +280,7 @@ public class Aendern extends JFrame {
 			 
 			
 		});
-		btnAendern.setBounds(93, 7, 89, 23);
+		btnAendern.setBounds(76, 277, 100, 23);
 		contentPane.add(btnAendern);
 		
 		

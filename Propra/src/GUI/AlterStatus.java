@@ -28,6 +28,7 @@ public class AlterStatus extends JFrame {
 	
 	
 	public AlterStatus(int id_order) {
+		setTitle("Status ändern");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 77);
@@ -42,7 +43,7 @@ public class AlterStatus extends JFrame {
 		txt_Status.setColumns(10);
 		this.id_order = id_order; 
 		
-		JButton btnNewButton = new JButton("\u00C4ndern");
+		JButton btnNewButton = new JButton("Ändern");
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -61,7 +62,7 @@ public class AlterStatus extends JFrame {
 		
 		
 		
-		JLabel lblNewStatus = new JLabel("New Status:");
+		JLabel lblNewStatus = new JLabel("Neuer Status:");
 		lblNewStatus.setBounds(10, 11, 70, 14);
 		contentPane.add(lblNewStatus);
 		setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{txt_Status, btnNewButton}));

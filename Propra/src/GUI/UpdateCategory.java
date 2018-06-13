@@ -45,7 +45,7 @@ public class UpdateCategory extends JFrame {
 	 * Create the frame.
 	 */
 	public UpdateCategory() {
-		
+		setTitle("Kategorie ändern");
 		setBounds(100, 100, 173, 344);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

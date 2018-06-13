@@ -40,7 +40,7 @@ public class DeleteBill extends JFrame {
 	 * Create the frame.
 	 */
 	public DeleteBill() {
-		setTitle("Delete bill");
+		setTitle("Rechnung löschen");
 		DataBase.getConnection();
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
@@ -48,11 +48,11 @@ public class DeleteBill extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblDoYouReally = new JLabel("Do you really want to delete this bill?");
+		JLabel lblDoYouReally = new JLabel("Möchten Sie diese Rechnung wirklich löschen?");
 		lblDoYouReally.setBounds(5, 5, 374, 14);
 		contentPane.add(lblDoYouReally);
 		
-		JButton btnDeleteOrder = new JButton("Delete Bill");
+		JButton btnDeleteOrder = new JButton("Rechnung löschen");
 		btnDeleteOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) MainMenu.tblBills.getModel();
@@ -71,7 +71,7 @@ public class DeleteBill extends JFrame {
 		btnDeleteOrder.setBounds(5, 47, 150, 23);
 		contentPane.add(btnDeleteOrder);
 		
-		JButton btnCancel = new JButton("Cancel");
+		JButton btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

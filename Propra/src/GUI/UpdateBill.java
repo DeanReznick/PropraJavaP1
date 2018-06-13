@@ -39,6 +39,7 @@ public class UpdateBill extends JFrame {
 	 * Create the frame.
 	 */
 	public UpdateBill() {
+		setTitle("Rechnungsdaten ändern");
 		
 		
 		

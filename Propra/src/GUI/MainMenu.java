@@ -366,7 +366,7 @@ public class MainMenu extends JFrame {
 				Aendern x = new Aendern();
 				x.setVisible(true);
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
 				}
 			}
 		});
@@ -930,7 +930,7 @@ public class MainMenu extends JFrame {
 		
 		tblAuftraegeRechnung.setModel(modelAuftragR);
 		
-		JButton btnAddToBill = new JButton("Add to bill");
+		JButton btnAddToBill = new JButton("Auftrag einer Rechnung zuweisen");
 		btnAddToBill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -1045,8 +1045,8 @@ public class MainMenu extends JFrame {
 		lblAuftraege_1.setBounds(10, 17, 150, 14);
 		panelRechnung.add(lblAuftraege_1);
 		
-		JLabel lblOrdersInThis = new JLabel("Orders in this Bill:");
-		lblOrdersInThis.setBounds(494, 209, 183, 14);
+		JLabel lblOrdersInThis = new JLabel("Auftr\u00E4ge in dieser Rechnung:");
+		lblOrdersInThis.setBounds(494, 209, 455, 14);
 		panelRechnung.add(lblOrdersInThis);
 		
 		JScrollPane scrollPane_7 = new JScrollPane();
@@ -1255,8 +1255,8 @@ public class MainMenu extends JFrame {
 		
 		scrollPane_7.setViewportView(tblBills);
 		
-		JLabel lblBills = new JLabel("Bills:");
-		lblBills.setBounds(494, 17, 46, 14);
+		JLabel lblBills = new JLabel("Rechnungen:");
+		lblBills.setBounds(494, 17, 158, 14);
 		panelRechnung.add(lblBills);
 		
 		JButton btnSpeichern = new JButton("Speichern");
@@ -1584,7 +1584,7 @@ public class MainMenu extends JFrame {
 			btnKategorieverwaltung.setBounds(792, 388, 157, 23);
 			panelBau.add(btnKategorieverwaltung);
 			
-			JButton btnShowAll = new JButton("Show all");
+			JButton btnShowAll = new JButton("Alle anzeigen");
 			btnShowAll.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					txtSearchComponent.setText("");
@@ -1592,7 +1592,7 @@ public class MainMenu extends JFrame {
 					
 				}
 			});
-			btnShowAll.setBounds(194, 22, 89, 23);
+			btnShowAll.setBounds(194, 22, 111, 23);
 			panelBau.add(btnShowAll);
 			
 			JButton btnMengenverwaltung = new JButton("Mengenverwaltung");

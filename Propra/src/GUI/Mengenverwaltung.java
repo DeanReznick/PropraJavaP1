@@ -24,23 +24,24 @@ public class Mengenverwaltung extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Mengenverwaltung frame = new Mengenverwaltung();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Mengenverwaltung frame = new Mengenverwaltung();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
 	public Mengenverwaltung() {
+		setTitle("Mengenverwaltung");
 		int colnr  = MainMenu.tblComponents.getSelectedRow();
 		int bauteil_id = Integer.parseInt(MainMenu.tblComponents.getModel().getValueAt(colnr, 0).toString());
 		

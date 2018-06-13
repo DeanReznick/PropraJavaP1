@@ -24,19 +24,19 @@ public class Manager {
 			AddPerson.txtStr.setBackground(Color.RED);
 			AddPerson.txtHaus.setBackground(Color.RED);
 			AddPerson.txtOrt.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Please fill in all values.");
+			throw new InvalidArgumentsException("Bitte füllen Sie alle Felder aus.");
 		}
 		if (name.length() < 2) {
 			AddPerson.txtName.setBackground(Color.RED);
-			throw new InvalidArgumentsException("name " + name + " to short!");
+			throw new InvalidArgumentsException("Name ''" + name + "'' zu kurz!");
 		}
 		if (forename.length() < 2) {
 			AddPerson.txtVorname.setBackground(Color.RED);
-			throw new InvalidArgumentsException("forename " + forename + " to short!");
+			throw new InvalidArgumentsException("Vorname ''" + forename + "'' zu kurz!");
 		}
 		if (street.length() < 3) {
 			AddPerson.txtStr.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Street name to short! Please check your input: " + street);
+			throw new InvalidArgumentsException("Straßenname zu kurz! Bitte überprüfen Sie Ihre Eingabe: ''" + street + "''");
 		}
 //		if (isValidEmailAddress(mail)) {
 //			AddPerson.txtMail.setBackground(Color.RED);
@@ -44,16 +44,16 @@ public class Manager {
 //		}
 		if (plz < 0) {
 			AddPerson.txtPlz.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Please insert a valid PLZ");
+			throw new InvalidArgumentsException("Wählen Sie bitte eine geeignete PLZ.");
 		}
 		if (city.length() < 2) {
 			AddPerson.txtOrt.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Name of the city is too short: " + city);
+			throw new InvalidArgumentsException("Name der Stadt zu kurz: ''" + city + "''");
 		}
 		if (phone.length() == 0 && mail.length() == 0) {
 			AddPerson.txtTel.setBackground(Color.RED);
 			AddPerson.txtMail.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Please fill in a phone number or an email address.");
+			throw new InvalidArgumentsException("Wählen Sie bitte eine gültige Telefonnummer, oder eine gültige E-Mail Adresse.");
 		}
 	}
 	
@@ -87,32 +87,32 @@ public class Manager {
 			Aendern.txtStr.setBackground(Color.RED);
 			Aendern.txtHaus.setBackground(Color.RED);
 			Aendern.txtOrt.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Please fill in all values.");
+			throw new InvalidArgumentsException("Bitte füllen Sie alle Felder aus.");
 		}
 		if (name.length() < 2) {
 			Aendern.txtName.setBackground(Color.RED);
-			throw new InvalidArgumentsException("name " + name + " to short!");
+			throw new InvalidArgumentsException("Name ''" + name + "'' zu kurz!");
 		}
 		if (forename.length() < 2) {
 			Aendern.txtVorname.setBackground(Color.RED);
-			throw new InvalidArgumentsException("forename " + forename + " to short!");
+			throw new InvalidArgumentsException("Vorname ''" + forename + "'' zu kurz!");
 		}
 		if (street.length() < 3) {
 			Aendern.txtStr.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Street name to short! Please check your input: " + street);
+			throw new InvalidArgumentsException("Straßenname zu kurz! Bitte überprüfen Sie Ihre Eingabe: ''" + street + "''");
 		}
 		if (plz < 0) {
 			Aendern.txtPlz.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Please insert a valid PLZ");
+			throw new InvalidArgumentsException("Wählen Sie bitte eine geeignete PLZ.");
 		}
 		if (city.length() < 2) {
 			Aendern.txtOrt.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Name of the city is too short: " + city);
+			throw new InvalidArgumentsException("Name der Stadt zu kurz: ''" + city + "''");
 		}
 		if (phone.length() == 0 && mail.length() == 0) {
 			Aendern.txtTel.setBackground(Color.RED);
 			Aendern.txtMail.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Please fill in a phone number or an email address.");
+			throw new InvalidArgumentsException("Wählen Sie bitte eine gültige Telefonnummer, oder eine gültige E-Mail Adresse.");
 		}
 	}
 	
@@ -130,11 +130,11 @@ public class Manager {
 			NewOrder.txtSurname.setBackground(Color.RED);
 			NewOrder.txtJob.setBackground(Color.RED);
 		
-			throw new InvalidArgumentsException("Please fill in all values.");
+			throw new InvalidArgumentsException("Bitte füllen Sie alle Felder aus.");
 		}
 		if (header.length() < 2) {
 			NewOrder.txtHeader.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Header " + header + " to short!");
+			throw new InvalidArgumentsException("Titel ''" + header + "'' zu kurz!");
 		}
 		
 		
@@ -147,7 +147,7 @@ public class Manager {
 		if(id == -1) {
 			NewOrder.txtName.setBackground(Color.RED);
 			NewOrder.txtSurname.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Person not found!!!");
+			throw new InvalidArgumentsException("Person " + name + " " + surname + " existiert nicht!");
 			
 			
 		}
@@ -166,7 +166,7 @@ public class Manager {
 			UpdateOrder.txtRk.setBackground(Color.RED);
 			
 		
-			throw new InvalidArgumentsException("Please fill in all values.");
+			throw new InvalidArgumentsException("Bitte füllen Sie alle Felder aus.");
 		}
 		
 		

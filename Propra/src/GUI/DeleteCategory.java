@@ -40,7 +40,7 @@ public class DeleteCategory extends JFrame {
 	 * Create the frame.
 	 */
 	public DeleteCategory() {
-		setTitle("Delete Category");
+		setTitle("Kategorie löschen");
 		DataBase.getConnection();
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
@@ -48,7 +48,7 @@ public class DeleteCategory extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblDoYouReally = new JLabel("Do you really want to delete this component?");
+		JLabel lblDoYouReally = new JLabel("Möchten Sie diese Kategorie wirklich löschen?");
 		lblDoYouReally.setBounds(5, 5, 374, 14);
 		contentPane.add(lblDoYouReally);
 		
@@ -72,7 +72,7 @@ public class DeleteCategory extends JFrame {
 		btnDeleteCategory.setBounds(5, 47, 150, 23);
 		contentPane.add(btnDeleteCategory);
 		
-		JButton btnCancel = new JButton("Cancel");
+		JButton btnCancel = new JButton("Abbrechen");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
