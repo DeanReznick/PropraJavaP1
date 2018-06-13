@@ -37,7 +37,7 @@ public class ExportToPDF {
 	//"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"
     public static final String PDF = "/Users/timw9/Desktop/Rechnung.pdf";
 
-    public static void createPdf(String filename, int idRechnung, String rechnungsname, int idAuftraggeber, int betrag, String beschreibung, int idBearbeiter, String timestamp) throws DocumentException, IOException {
+    public static void createPdf(String filename, int idRechnung, String rechnungsname, int idAuftraggeber, String betrag, String beschreibung, int idBearbeiter, String timestamp) throws DocumentException, IOException {
         Document document = new Document();
         PdfWriter writer = PdfWriter.getInstance(document,
                 new FileOutputStream(filename));

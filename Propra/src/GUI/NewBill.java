@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
 import Data.Finanzverwaltung;
 
@@ -15,18 +16,17 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class NewBill extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtRechnungsName;
-	private JTextField txtAuftragsgeber;
-	private JTextField txtAnsprechsp;
 	private JTextField txtZahlungsArt;
 	private JTextField txtBetrag;
 	private JTextField txtBeschreibung;
-
-	
+	private JComboBox comboBoxAuftraggeber;
+	private JComboBox comboBoxAnsprechpartner;
 	
 	
 	/**
@@ -51,6 +51,21 @@ public class NewBill extends JFrame {
 	public NewBill() {
 		setTitle("Neue Rechnung erstellen");
 		
+		int count = MainMenu.tblPersonen.getRowCount();
+		String[] list = new String[count];
+		String[] personName = new String[count];
+		
+		
+		
+		for(int row=0; row < MainMenu.tblPersonen.getRowCount(); row++) {
+		 String id = MainMenu.tblPersonen.getModel().getValueAt(row, 0).toString();
+		 String lastName = MainMenu.tblPersonen.getModel().getValueAt(row, 1).toString();
+		 String firstName = MainMenu.tblPersonen.getModel().getValueAt(row, 2).toString();
+		 String fullName = firstName + " " + lastName;
+		 list[row] = id;
+		 personName[row] = fullName;
+		
+		}
 		
 		
 		setBounds(100, 100, 267, 300);
@@ -64,15 +79,13 @@ public class NewBill extends JFrame {
 		contentPane.add(txtRechnungsName);
 		txtRechnungsName.setColumns(10);
 		
-		txtAuftragsgeber = new JTextField();
-		txtAuftragsgeber.setBounds(124, 72, 86, 20);
-		contentPane.add(txtAuftragsgeber);
-		txtAuftragsgeber.setColumns(10);
+		comboBoxAuftraggeber = new JComboBox(personName);
+		comboBoxAuftraggeber.setBounds(124, 72, 86, 20);
+		contentPane.add(comboBoxAuftraggeber);
 		
-		txtAnsprechsp = new JTextField();
-		txtAnsprechsp.setBounds(124, 103, 86, 20);
-		contentPane.add(txtAnsprechsp);
-		txtAnsprechsp.setColumns(10);
+		comboBoxAnsprechpartner = new JComboBox(personName);
+		comboBoxAnsprechpartner.setBounds(124, 103, 86, 20);
+		contentPane.add(comboBoxAnsprechpartner);
 		
 		txtZahlungsArt = new JTextField();
 		txtZahlungsArt.setBounds(124, 134, 86, 20);
@@ -117,14 +130,34 @@ public class NewBill extends JFrame {
 		btnErstellen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				DataBase.getConnection();
+				
+				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
+				int indexAuftraggeber = -1;
+				for (int i=0;i<personName.length;i++) {
+				    if (personName[i].equals(auftraggeber_name)) {
+				        indexAuftraggeber = i;
+				        break;
+				    }
+				}
+				int auftraggeber_id = Integer.parseInt(list[indexAuftraggeber]);
+				
+				String ansprechpartner_name = comboBoxAnsprechpartner.getSelectedItem().toString();
+				int indexAnsprechpartner = -1;
+				for (int i=0;i<personName.length;i++) {
+				    if (personName[i].equals(ansprechpartner_name)) {
+				        indexAnsprechpartner = i;
+				        break;
+				    }
+				}
+				int ansprechpartner_id = Integer.parseInt(list[indexAnsprechpartner]);
+				
+				
 				String rechnungsname = txtRechnungsName.getText();
-				int id_Auftraggeber = Integer.parseInt(txtAuftragsgeber.getText());
-				int id_Ansprechpartner = Integer.parseInt(txtAnsprechsp.getText());
 				String artBezahlung = txtZahlungsArt.getText();
 				String betrag = txtBetrag.getText();
 				String beschreibung = txtBeschreibung.getText();
 				
-				Finanzverwaltung.addBill(rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
+				Finanzverwaltung.addBill(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung);
 				DataBase.refreshBill();
 				DataBase.refreshRechn();
 				DataBase.closeConnection();
@@ -134,6 +167,7 @@ public class NewBill extends JFrame {
 		});
 		btnErstellen.setBounds(121, 227, 89, 23);
 		contentPane.add(btnErstellen);
+		
+		
 	}
-
 }

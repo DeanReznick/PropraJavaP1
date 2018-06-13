@@ -82,6 +82,32 @@ public class DataBase {
 		
 	}
 	
+	public static String getPersonById(int id_person) {
+		String fullName = null;
+		Statement stmt = null;
+		String firstName = null;
+		String lastName = null;
+		try{
+		String sqlGetPerson = "SELECT Name, Vorname FROM Person WHERE ID_Person =" + id_person + ";";
+		
+			stmt = c.createStatement();
+			ResultSet rs = stmt.executeQuery(sqlGetPerson);
+			
+			
+				while(rs.next()) {
+					firstName = rs.getString("Vorname");
+					lastName = rs.getString("Name");}
+				stmt.close();
+		}catch ( Exception e ) {
+		      System.err.println( "ID Order not found");
+		      
+		   }
+		
+		fullName = firstName + " " + lastName;
+		return fullName;
+		
+	}
+	
 	
 	public static String getIdAPbyBillId(String id_bill) {
 		String idAp = null;

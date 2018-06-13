@@ -971,7 +971,7 @@ public class MainMenu extends JFrame {
 				int idRechnung = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 0).toString());
 				String rechnungsname = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 1).toString();
 				int idAuftraggeber = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 2).toString());
-				int betrag = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 3).toString());
+				String betrag = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 3).toString();
 				String beschreibung = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 4).toString();
 				int idBearbeiter = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 5).toString());
 				String timestamp = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 6).toString();
