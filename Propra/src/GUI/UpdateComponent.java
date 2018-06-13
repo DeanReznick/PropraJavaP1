@@ -111,7 +111,7 @@ public class UpdateComponent extends JFrame {
 				BauteileAuftragsabwicklung.changeBauteil(id, txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText());
 				BauteileAuftragsabwicklung.alterPrice(id, txtPrice.getText());
 				
-				
+				dispose();
 				
 				}
 				
@@ -124,7 +124,8 @@ public class UpdateComponent extends JFrame {
 					
 					
 					DataBase.closeConnection(); 
-					//jfjsdfj
+					
+				
 					
 				}
 			}

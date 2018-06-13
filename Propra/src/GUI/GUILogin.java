@@ -128,7 +128,11 @@ public class GUILogin extends JFrame {
 				
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(null, 
+                            "Fehler bei der Eingabe.", 
+                            "Fehler", 
+                            JOptionPane.WARNING_MESSAGE);
+					//e.printStackTrace();
 				}
 			}
 		}

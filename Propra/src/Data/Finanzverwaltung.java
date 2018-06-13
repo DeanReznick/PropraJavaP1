@@ -155,6 +155,11 @@ public class Finanzverwaltung {
 		
 		DataBase.getConnection();
 		String query = "DELETE FROM Kasse WHERE ID_Kasse = "+ id_Kasse +";"; 
+		
+		// mischtabelle ->
+		// Topf löschen P.2
+		
+		
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		
