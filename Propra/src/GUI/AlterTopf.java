@@ -23,34 +23,19 @@ public class AlterTopf extends JFrame {
 	private JTextField txtIst;
 
 	
-	int colnr = MainMenu.tblTopf.getSelectedRow();
+	/*int colnr = MainMenu.tblTopf.getSelectedRow();
 	
 	private String idTopf = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
 	private String oldIdKasse = MainMenu.tblTopf.getModel().getValueAt(colnr, 1).toString();
 	private String oldSoll = MainMenu.tblTopf.getModel().getValueAt(colnr, 2).toString();
-	private String oldIst = MainMenu.tblTopf.getModel().getValueAt(colnr, 3).toString();
+	private String oldIst = MainMenu.tblTopf.getModel().getValueAt(colnr, 3).toString(); */
 
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					AlterTopf frame = new AlterTopf();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-	/**
-	 * Create the frame.
-	 */
-	public AlterTopf() {
+	
+	public AlterTopf(int colnr, String idTopf, String oldIdKasse, String oldSoll, String oldIst) {
+		
+		
+		
 		setTitle("Topf ändern");
 		setBounds(100, 100, 250, 200);
 		contentPane = new JPanel();
@@ -97,8 +82,12 @@ public class AlterTopf extends JFrame {
 		JButton btnAlter = new JButton("Ändern");
 		btnAlter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				
 				DataBase.getConnection();
-				Finanzverwaltung.alterTopf(Integer.parseInt(idTopf), Integer.parseInt(comboBoxArt.getSelectedItem().toString()), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
+				String idTopf2 = MainMenu.tblTopf.getModel().getValueAt(MainMenu.tblTopf.getSelectedRow(), 0).toString();
+				System.out.println(idTopf2);
+				Finanzverwaltung.alterTopf(Integer.parseInt(idTopf2), Integer.parseInt(comboBoxArt.getSelectedItem().toString()), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
 				DataBase.refreshTopf();
 				DataBase.closeConnection();
 				dispose();
@@ -107,4 +96,7 @@ public class AlterTopf extends JFrame {
 		btnAlter.setBounds(63, 118, 100, 23);
 		contentPane.add(btnAlter);
 	}
+
+
+
 }

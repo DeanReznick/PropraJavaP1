@@ -56,6 +56,9 @@ import java.awt.Desktop;
 import java.awt.Label;
 
 import java.awt.Font;
+import javax.swing.JSeparator;
+import java.awt.Canvas;
+import java.awt.Color;
 
 public class MainMenu extends JFrame {
 
@@ -374,14 +377,14 @@ public class MainMenu extends JFrame {
 		btnChangePerson.setBounds(294, 207, 131, 23);
 		panelPerson.add(btnChangePerson);
 		
-		JButton btnRefresh = new JButton("Refresh");
+		JButton btnRefresh = new JButton("Alle anzeigen");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 					DataBase.refreshDatabase();				
 			}
 		});
 		
-		btnRefresh.setBounds(246, 0, 89, 23);
+		btnRefresh.setBounds(227, 0, 127, 23);
 		panelPerson.add(btnRefresh);
 		
 		JButton btnErstellen = new JButton("Erstellen");
@@ -430,7 +433,7 @@ public class MainMenu extends JFrame {
 			}
 			}
 		});
-		btnDeleteOrder.setBounds(208, 388, 127, 23);
+		btnDeleteOrder.setBounds(208, 388, 146, 23);
 		panelPerson.add(btnDeleteOrder);
 		
 		txtSearchOrder = new JTextField();
@@ -464,8 +467,13 @@ public class MainMenu extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setBounds(345, 388, 108, 23);
+		btnNewButton.setBounds(363, 388, 127, 23);
 		panelPerson.add(btnNewButton);
+		
+		Canvas canvas = new Canvas();
+		canvas.setBackground(Color.DARK_GRAY);
+		canvas.setBounds(0, 236, 959, 1);
+		panelPerson.add(canvas);
 		
 		btnLoeschen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -880,7 +888,30 @@ public class MainMenu extends JFrame {
 		btnTopfaendern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					AlterTopf x = new AlterTopf();
+					//n
+					String oldSoll = null; 
+					String oldIst = null; 
+					String oldIdKasse = null; 
+			
+					
+					int colnr = tblTopf.getSelectedRow();
+					String idTopf = tblTopf.getModel().getValueAt(colnr, 0).toString();
+					
+					if (tblKasse.getSelectedRow() < 0 ) {
+					 oldIdKasse = tblTopf.getModel().getValueAt(colnr, 1).toString();
+					  oldSoll = tblTopf.getModel().getValueAt(colnr, 2).toString();
+					 oldIst = tblTopf.getModel().getValueAt(colnr, 3).toString(); 
+					} else {
+						 oldSoll = tblTopf.getModel().getValueAt(colnr, 1).toString();
+						 oldIst = tblTopf.getModel().getValueAt(colnr, 2).toString();
+						 oldIdKasse = tblKasse.getModel().getValueAt(tblKasse.getSelectedRow(), 0).toString();
+					}
+					
+					
+				
+					
+					//n
+					AlterTopf x = new AlterTopf(colnr, idTopf, oldIdKasse, oldSoll, oldIst);
 					x.setVisible(true);
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus.");
@@ -918,7 +949,7 @@ public class MainMenu extends JFrame {
 		btnRechnungZuTopf.setBounds(446, 252, 250, 23);
 		panelFinanz.add(btnRechnungZuTopf);
 		
-		JButton btnNewButton_1 = new JButton("Refresh");
+		JButton btnNewButton_1 = new JButton("Alle anzeigen");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -928,7 +959,7 @@ public class MainMenu extends JFrame {
 				DataBase.refreshTopf();
 			}
 		});
-		btnNewButton_1.setBounds(0, 0, 89, 23);
+		btnNewButton_1.setBounds(133, 2, 151, 23);
 		panelFinanz.add(btnNewButton_1);
 		
 		JButton btnDeleteRechnungFromTopf = new JButton("Rechnung von Topf entfernen");
@@ -939,6 +970,7 @@ public class MainMenu extends JFrame {
 					String idRechnung = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 0).toString();
 					
 					Finanzverwaltung.deleteBillFromTopf(Integer.parseInt(idRechnung));
+					//DataBase.refreshBill2();
 					} catch (ArrayIndexOutOfBoundsException ex) {
 						JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf und eine Rechnung aus!");
 					}
@@ -1451,7 +1483,7 @@ public class MainMenu extends JFrame {
 				DeleteBill x = new DeleteBill();
 				x.setVisible(true);
 				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus. Bitte alle Auftraege entfernen!");
 				}
 				
 			} else {
