@@ -1,4 +1,5 @@
 package Data;
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -23,11 +24,16 @@ public class DataBase {
 	
 	
 	public static void getConnection() {
+	
 		
+	
+	
+  
 		//Verbindungsaufbau zur Datenbank	
 	      try {
+	    	 File desktopDir = new File(System.getProperty("user.home"), "Desktop");
 	         Class.forName("org.sqlite.JDBC");
-	         c = DriverManager.getConnection("jdbc:sqlite:Projekt1-DB.db");
+	         c = DriverManager.getConnection("jdbc:sqlite:"+ desktopDir.getPath() +"Projekt1-DB.db");
 	         c.setAutoCommit(false);
 	      } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName() + ": " + e.getMessage() ); 

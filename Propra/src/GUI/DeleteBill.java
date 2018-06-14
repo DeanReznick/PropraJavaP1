@@ -42,14 +42,14 @@ public class DeleteBill extends JFrame {
 	public DeleteBill() {
 		setTitle("Rechnung löschen");
 		DataBase.getConnection();
-		setBounds(100, 100, 400, 120);
+		setBounds(100, 100, 503, 120);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblDoYouReally = new JLabel("Möchten Sie diese Rechnung wirklich löschen?");
-		lblDoYouReally.setBounds(5, 5, 374, 14);
+		JLabel lblDoYouReally = new JLabel("Möchten Sie diese Rechnung wirklich löschen? Bitte vorher alle Aufträge entfernen.");
+		lblDoYouReally.setBounds(5, 5, 472, 14);
 		contentPane.add(lblDoYouReally);
 		
 		JButton btnDeleteOrder = new JButton("Rechnung löschen");
@@ -77,7 +77,7 @@ public class DeleteBill extends JFrame {
 				dispose();
 			}
 		});
-		btnCancel.setBounds(229, 47, 150, 23);
+		btnCancel.setBounds(327, 47, 150, 23);
 		contentPane.add(btnCancel);
 	}
 	}

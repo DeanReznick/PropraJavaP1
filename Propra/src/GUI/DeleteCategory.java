@@ -52,7 +52,7 @@ public class DeleteCategory extends JFrame {
 		lblDoYouReally.setBounds(5, 5, 374, 14);
 		contentPane.add(lblDoYouReally);
 		
-		JButton btnDeleteCategory = new JButton("Delete Category");
+		JButton btnDeleteCategory = new JButton("Kategorie löschen");
 		btnDeleteCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel) MainMenu.tblCategory.getModel();
