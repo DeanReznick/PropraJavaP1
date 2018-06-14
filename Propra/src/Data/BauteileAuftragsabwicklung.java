@@ -48,7 +48,7 @@ public class BauteileAuftragsabwicklung {
 			String name =  DataBase.people.get(0).getName(); 
 			
 			System.out.println(DataBase.getIdPersonByNameSurname(name, vorname));
-			PersonenFertigungsverwaltung.createNewOrder("Kauf-Bauteile: (ID) " + tmp.id_bauteil, "Mitnahme Artikel", "-", "-", preis + "", preis + "",  name, vorname, "Kunde");
+			PersonenFertigungsverwaltung.createNewOrder("Kauf-Bauteile: ID: " + tmp.id_bauteil  + ", Menge: " + aenderung, "Mitnahme Artikel", "-", "-", preis + "", preis + "",  name, vorname, "Kunde");
 			
 			//String query =""; 
 			//PersonenFertigungsverwaltung.addJobOrderPerson(DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn), , "Betreuer");
@@ -208,21 +208,28 @@ public class BauteileAuftragsabwicklung {
 		String query = "DELETE FROM Kategorie WHERE ID_Kategorie = "+ id_Kategorie +";"; 
 		DataBase.executeQuery(query);
 		
-		DataBase.getConnection();
-		query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Kategorie = "+ id_Kategorie +";"; 
-		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		// Alle Bauteile zu default
-		
+		DataBase.getConnection();
 		ArrayList<Integer> ids = DataBase.getBauteileIDByKategorie(id_Kategorie); 
+
 		
+		DataBase.closeConnection();
 		Iterator<Integer> it = ids.iterator(); 
 		
 		while(it.hasNext()) {
+			System.out.println("*");
+			DataBase.getConnection();
 			addBauteilToKategorie(1, it.next().intValue()); 
+			DataBase.closeConnection();
 		}
 		
+		DataBase.getConnection();
+		query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Kategorie = "+ id_Kategorie +";"; 
+		DataBase.executeQuery(query);
+		
+		DataBase.closeConnection();
 		
 		
 	}
