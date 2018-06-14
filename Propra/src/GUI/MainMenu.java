@@ -403,7 +403,7 @@ public class MainMenu extends JFrame {
 					UpdateOrder x = new UpdateOrder();
 					x.setVisible(true);
 					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person und einen Auftrag aus.");
 					}
 				
 			}
@@ -422,11 +422,11 @@ public class MainMenu extends JFrame {
 				DeleteOrder x = new DeleteOrder();
 				x.setVisible(true);
 				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Auftrag aus.");
 				}
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Auftrag aus.");
 			}
 			}
 		});
@@ -460,7 +460,7 @@ public class MainMenu extends JFrame {
 				AlterStatus x = new AlterStatus(id.intValue()); // -id Order 
 				x.setVisible(true);  
 				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Auftrag aus.");
 				}
 			}
 		});
@@ -477,11 +477,11 @@ public class MainMenu extends JFrame {
 				Delete x = new Delete();
 				x.setVisible(true);
 				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
 				}
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
 			}
 				
 			}
@@ -512,7 +512,7 @@ public class MainMenu extends JFrame {
 				OrderApprove x = new OrderApprove(); // -id Order 
 				x.setVisible(true);  
 				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine  aus.");
 				}	
 			}
 		});
@@ -1083,7 +1083,7 @@ public class MainMenu extends JFrame {
 		JButton btnAddToBill = new JButton("Auftrag einer Rechnung zuweisen");
 		btnAddToBill.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				try {
 				int selectedRowIndexBills = MainMenu.tblBills.getSelectedRow();
 				int selectedRowIndexOrders = MainMenu.tblAuftraegeRechnung.getSelectedRow();
 		
@@ -1094,6 +1094,9 @@ public class MainMenu extends JFrame {
 				Finanzverwaltung.addOrderToBill(id_Order, id_Bill);
 				DataBase.refreshOrderBill();
 				DataBase.refreshOrdersInBill();
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung und einen Auftrag aus, der noch keiner Rechnung zugeordnet ist.");
+				}
 			}
 		});
 		btnAddToBill.setBounds(10, 363, 178, 23);
@@ -1422,7 +1425,7 @@ public class MainMenu extends JFrame {
 				UpdateBill x = new UpdateBill();
 				x.setVisible(true);
 				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
 				}
 				
 			} else {
@@ -1448,11 +1451,11 @@ public class MainMenu extends JFrame {
 				DeleteBill x = new DeleteBill();
 				x.setVisible(true);
 				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
 				}
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
 			}
 			}
 		});
@@ -1544,11 +1547,11 @@ public class MainMenu extends JFrame {
 				DeleteComponent x = new DeleteComponent();
 				x.setVisible(true);
 				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
 				}
 				
 			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
 			}
 				
 			}
@@ -1563,7 +1566,7 @@ public class MainMenu extends JFrame {
 					UpdateComponent x = new UpdateComponent(); // -id Order 
 					x.setVisible(true);	
 				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
 				}
 				
 			}
@@ -1722,7 +1725,7 @@ public class MainMenu extends JFrame {
 							x = new AddToCategory();
 							x.setVisible(true);	
 					} catch (ArrayIndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Bauteil aus.");
 					}
 					
 				}
@@ -1748,7 +1751,7 @@ public class MainMenu extends JFrame {
 						Mengenverwaltung x= new Mengenverwaltung();
 						x.setVisible(true);
 					} catch (ArrayIndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
 					}
 					
 				}
@@ -1786,7 +1789,7 @@ public class MainMenu extends JFrame {
 						UpdateCategory x = new UpdateCategory(); // -id Order 
 						x.setVisible(true);	
 					} catch (ArrayIndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
 					}
 				}
 			});
@@ -1804,11 +1807,11 @@ public class MainMenu extends JFrame {
 					AddPrice x = new AddPrice();
 					x.setVisible(true);
 					}catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
 					}
 					
 				} else {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Zeile aus.");
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
 				}
 				}
 			});

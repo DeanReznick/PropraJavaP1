@@ -9,9 +9,12 @@ import javax.swing.border.EmptyBorder;
 
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
+import Exceptions.InvalidArgumentsException;
+import Exceptions.Manager;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -19,7 +22,7 @@ import java.awt.event.ActionEvent;
 public class NewCategory extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtCategory;
+	public static JTextField txtCategory;
 
 	/**
 	 * Launch the application.
@@ -60,12 +63,18 @@ public class NewCategory extends JFrame {
 		JButton btnErstellen = new JButton("Erstellen");
 		btnErstellen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				try {
 				DataBase.getConnection();
 				String name = txtCategory.getText();
+				Manager.checkStandardCategory(name);
 				BauteileAuftragsabwicklung.createKategorie(name);
 				DataBase.refreshCategory();
-				DataBase.closeConnection();
 				dispose();
+				} catch (InvalidArgumentsException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				} finally {
+					DataBase.closeConnection();
+				}
 			}
 		});
 		btnErstellen.setBounds(58, 137, 89, 23);

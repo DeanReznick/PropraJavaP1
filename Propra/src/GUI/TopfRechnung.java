@@ -75,7 +75,7 @@ public class TopfRechnung extends JFrame {
 					Finanzverwaltung.addBillToTopf(Integer.parseInt(idRechnung), idTopf);
 					dispose();
 					} catch (ArrayIndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "Fehler");
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
 					}
 			}
 		});

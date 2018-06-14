@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -54,6 +55,7 @@ public class DeleteTopf extends JFrame {
 		JButton btnDeleteTopf = new JButton("Topf löschen");
 		btnDeleteTopf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				DefaultTableModel model = (DefaultTableModel) MainMenu.tblTopf.getModel();
 				//get selected row index
 				int selectedRowIndex = MainMenu.tblTopf.getSelectedRow();
@@ -65,8 +67,14 @@ public class DeleteTopf extends JFrame {
 				
 				model.removeRow(selectedRowIndex);
 				DataBase.refreshKasse();
-				DataBase.closeConnection();
+				
 				dispose();
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus, den Sie löschen möchten.");
+					dispose();
+				} finally {
+					DataBase.closeConnection();
+				}
 			}
 		});
 		btnDeleteTopf.setBounds(5, 47, 150, 23);

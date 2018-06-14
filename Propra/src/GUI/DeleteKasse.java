@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -55,6 +56,7 @@ public class DeleteKasse extends JFrame {
 		JButton btnDeleteKasse = new JButton("Kasse löschen");
 		btnDeleteKasse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
 				DefaultTableModel model = (DefaultTableModel) MainMenu.tblKasse.getModel();
 				//get selected row index
 				int selectedRowIndex = MainMenu.tblKasse.getSelectedRow();
@@ -66,8 +68,13 @@ public class DeleteKasse extends JFrame {
 				
 				model.removeRow(selectedRowIndex);
 				DataBase.refreshKasse();
-				DataBase.closeConnection();
 				dispose();
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Wählen Sie eine Kasse, die Sie löschen möchten.");
+					dispose();
+				} finally {
+				DataBase.closeConnection();
+				}
 			}
 		});
 		btnDeleteKasse.setBounds(5, 47, 150, 23);

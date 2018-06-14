@@ -10,9 +10,12 @@ import javax.swing.border.EmptyBorder;
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
 import Data.Finanzverwaltung;
+import Exceptions.InvalidArgumentsException;
+import Exceptions.Manager;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -21,10 +24,10 @@ import javax.swing.JComboBox;
 public class NewBill extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtRechnungsName;
-	private JTextField txtZahlungsArt;
-	private JTextField txtBetrag;
-	private JTextField txtBeschreibung;
+	public static JTextField txtRechnungsName;
+	public static JTextField txtZahlungsArt;
+	public static JTextField txtBetrag;
+	public static JTextField txtBeschreibung;
 	private JComboBox comboBoxAuftraggeber;
 	private JComboBox comboBoxAnsprechpartner;
 	
@@ -129,6 +132,7 @@ public class NewBill extends JFrame {
 		JButton btnErstellen = new JButton("Erstellen");
 		btnErstellen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				try {
 				DataBase.getConnection();
 				
 				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
@@ -157,12 +161,16 @@ public class NewBill extends JFrame {
 				String betrag = txtBetrag.getText();
 				String beschreibung = txtBeschreibung.getText();
 				
+				Manager.checkStandardBill(rechnungsname, artBezahlung, betrag, beschreibung);
 				Finanzverwaltung.addBill(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung);
 				DataBase.refreshBill();
 				DataBase.refreshRechn();
-				DataBase.closeConnection();
 				dispose();
-				
+				} catch (InvalidArgumentsException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				} finally {
+					DataBase.closeConnection();
+				}
 			}
 		});
 		btnErstellen.setBounds(121, 227, 89, 23);

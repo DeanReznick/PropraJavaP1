@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 import Data.DataBase;
 import GUI.AddPerson;
 import GUI.Aendern;
+import GUI.NewBill;
+import GUI.NewCategory;
 import GUI.NewOrder;
 import GUI.UpdateOrder;
 
@@ -75,6 +77,23 @@ public class Manager {
 		if(id==0) { result = false;}
 		
 		return result;
+	}
+	
+	public static void checkStandardBill(String billName, String payment, String amount, String description) throws InvalidArgumentsException {
+		if (billName.length() == 0 || payment.length() == 0 || amount.length() == 0 || description.length() == 0) {
+			NewBill.txtBeschreibung.setBackground(Color.RED);
+			NewBill.txtBetrag.setBackground(Color.RED);
+			NewBill.txtRechnungsName.setBackground(Color.RED);
+			NewBill.txtZahlungsArt.setBackground(Color.RED);
+			throw new InvalidArgumentsException("Bitte füllen Sie alle Felder aus.");
+		}
+	}
+	
+	public static void checkStandardCategory(String name) throws InvalidArgumentsException {
+		if (name.length() == 0) {
+			NewCategory.txtCategory.setBackground(Color.RED);
+			throw new InvalidArgumentsException("Bitte fügen Sie einen Namen ein.");
+		}
 	}
 	
 	public static void checkAendernStandard(String forename, String name, String mail, String street, int plz, String city, String country, String houseNumber, String phone) throws InvalidArgumentsException
