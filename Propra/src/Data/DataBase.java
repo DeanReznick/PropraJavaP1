@@ -25,10 +25,7 @@ public class DataBase {
 	
 	public static void getConnection() {
 	
-		
-	
-	
-  
+		  
 		//Verbindungsaufbau zur Datenbank	
 	      try {
 	    	 File desktopDir = new File(System.getProperty("user.home"), "Desktop");
