@@ -33,7 +33,7 @@ public class DataBase {
 	      try {
 	    	 File desktopDir = new File(System.getProperty("user.home"), "Desktop");
 	         Class.forName("org.sqlite.JDBC");
-	         c = DriverManager.getConnection("jdbc:sqlite:"+ desktopDir.getPath() +"Projekt1-DB.db");
+	         c = DriverManager.getConnection("jdbc:sqlite:"+ desktopDir.getPath() +"\\Projekt1-DB.db");
 	         c.setAutoCommit(false);
 	      } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName() + ": " + e.getMessage() ); 
