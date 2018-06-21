@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import Data.Authentication;
@@ -16,9 +17,12 @@ import Data.DataBase;
 import Data.ExportToPDF;
 import Data.Finanzverwaltung;
 import Data.OffenerAuftragObjektRAM;
+import Data.OrderObjektRAM;
 import Data.PersonObjektRAM;
 import Data.PersonenFertigungsverwaltung;
 import Data.StatusObjektRAM;
+import Exceptions.InvalidArgumentsException;
+import Exceptions.Manager;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JSplitPane;
@@ -53,9 +57,13 @@ import com.itextpdf.text.DocumentException;
 
 import java.awt.Component;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Label;
-
+import java.awt.Toolkit;
 import java.awt.Font;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+
 import javax.swing.JSeparator;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -88,6 +96,26 @@ public class MainMenu extends JFrame {
 	public static JScrollPane scrollPane_Kasse;
 	public static JScrollPane scrollPane_Topf;
 	public static JScrollPane scrollPane_Rechnung;
+	private JTextField txtDetailNamePerson;
+	private JTextField txtDetailVornamePerson;
+	private JTextField txtDetailTelefonPerson;
+	private JTextField txtDetailMailPerson;
+	private JTextField txtDetailRollePerson;
+	private JTextField txtDetailStrassePerson;
+	private JTextField txtDetailHausnummerPerson;
+	private JTextField txtDetailPlzPerson;
+	private JTextField txtDetailLandPerson;
+	private JTextField txtDetailOrtPerson;
+	private JTextField txtDetailPkOrder;
+	private JTextField txtDetailDateiortOrder;
+	private JTextField txtDetailDateinameOrder;
+	private JTextField txtDetailAfOrder;
+	private JTextField txtDetailTitelOrder;
+	private JTextField txtDetailRkOrder;
+	private JTextField txtDetailStatusOrder;
+	private JTextField txtDetailRolleOrder;
+//	static GraphicsDevice device = GraphicsEnvironment
+//	        .getLocalGraphicsEnvironment().getScreenDevices()[0];
 
 	/**
 	 * Launch the application.
@@ -139,11 +167,15 @@ public class MainMenu extends JFrame {
 	 * Create the frame.
 	 */
 	
-
-
 	public MainMenu() throws SQLException {
 		setTitle("Projekt 1");
 		setResizable(false);
+//		device.setFullScreenWindow(this);
+//		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+//		
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setBounds(100, 100, (int) dim.getWidth(), (int) dim.getHeight());
+		setLocationRelativeTo(null);
 		
 		DataBase.getConnection(); // Muss immer am Anfang ausgef¸hrt werden!
 //	    PersonenFertigungsverwaltung.createNewPerson("Kern", "Dean-Robin", "0271/312", "test@ttest.de", "Deutschland", "HB", "Siegen", "10", 57076, "Member", "Geheim123"); 
@@ -196,33 +228,33 @@ public class MainMenu extends JFrame {
 //	    }
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 500);
+//		setBounds(100, 100, 1920, 1080);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 11, 964, 439);
+		tabbedPane.setBounds(10, 11, 1894, 1029);
 		contentPane.add(tabbedPane);
 		
 		JPanel panelPerson = new JPanel();
 		tabbedPane.addTab("Pers. & Fertigung", null, panelPerson, null);
 		panelPerson.setLayout(null);
 		
-		JButton btnHinzufuegen = new JButton("Hinzufuegen");
+		JButton btnHinzufuegen = new JButton("Neue Person");
 		btnHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				AddPerson x = new AddPerson();
 				x.setVisible(true);
 			}
 		});
-		btnHinzufuegen.setBounds(10, 207, 116, 23);
+		btnHinzufuegen.setBounds(10, 967, 140, 23);
 		panelPerson.add(btnHinzufuegen);
 		
-		JButton btnLoeschen = new JButton("Loeschen");
+		JButton btnLoeschen = new JButton("Person l\u00F6schen");
 		
-		btnLoeschen.setBounds(152, 207, 116, 23);
+		btnLoeschen.setBounds(337, 967, 140, 23);
 		panelPerson.add(btnLoeschen);
 		
 		txtSuchen = new JTextField();
@@ -233,7 +265,7 @@ public class MainMenu extends JFrame {
 			}
 		});
 		txtSuchen.setToolTipText("Suchen...");
-		txtSuchen.setBounds(549, 1, 189, 20);
+		txtSuchen.setBounds(277, 28, 200, 20);
 		panelPerson.add(txtSuchen);
 		txtSuchen.setColumns(10);
 		
@@ -242,13 +274,13 @@ public class MainMenu extends JFrame {
 		panelPerson.add(lblNewLabel);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 24, 939, 172);
+		scrollPane.setBounds(10, 61, 467, 895);
 		panelPerson.add(scrollPane);
 		
 		
 		Connection con = null;
 				
-		String[] column_headers = {"ID", "Name", "Vorname", "Telefon", "Email", "Adresse_ID", "Rolle"};
+		String[] column_headers = {"ID_Person", "Name", "Vorname", "Email"};
 		String[][] data = new String[1000][11];
 				
 		tblPersonen = new JTable(data, column_headers);
@@ -264,10 +296,30 @@ public class MainMenu extends JFrame {
 				
 //				txtSearchOrder.setText(fullName);
 				DataBase.searchOrder(fullName);
+				
+				PersonObjektRAM clicked = new PersonObjektRAM();
+				String mail = MainMenu.tblPersonen.getModel().getValueAt(colnr, 3).toString();
+				
+				for (PersonObjektRAM p : DataBase.people) {
+					if (p.getMail().equals(mail) && p.getName().equals(personName) && p.getVorname().equals(personVorname)) {
+						clicked = p;
+					}
+				}
+				
+				txtDetailNamePerson.setText(clicked.getName());
+				txtDetailVornamePerson.setText(clicked.getVorname());
+				txtDetailTelefonPerson.setText(clicked.getTelefonnummer());
+				txtDetailMailPerson.setText(clicked.getMail());
+				txtDetailRollePerson.setText(clicked.getRolle());
+				txtDetailStrassePerson.setText(clicked.getStraﬂe());
+				txtDetailHausnummerPerson.setText(clicked.getHausnummer());
+				txtDetailPlzPerson.setText(Integer.toString(clicked.getPlz()));
+				txtDetailOrtPerson.setText(clicked.getOrt());
+				txtDetailLandPerson.setText(clicked.getLand());
 				DataBase.closeConnection();
 			}
 		});
-		DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Name", "Vorname", "Telefon", "Email", "Rolle",  "Straﬂe", "Hausnummer", "PLZ", "Ort", "Land"}, 0) {
+		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Person", "Name", "Vorname", "Email"}, 0) {
 		
 		@Override
 		public boolean isCellEditable(int row, int column) {
@@ -282,39 +334,74 @@ public class MainMenu extends JFrame {
 		
 		while(rs.next())
 		{
-			String a = rs.getString("ID_Person");
-		    String b = rs.getString("Name");
-		    String c = rs.getString("Vorname");
-		    String d = rs.getString("Telefonnummer");
-		    String e = rs.getString("Mail");
-		    String f = rs.getString("Rolle");
-		    String g = rs.getString("Straﬂe");
-		    String h = rs.getString("Hausnummer");
-		    String i = rs.getString("PLZ");
-		    String j = rs.getString("Ort");
-		    String k = rs.getString("Land");
+			String idPerson = rs.getString("ID_Person");
+		    String name = rs.getString("Name");
+		    String vorname = rs.getString("Vorname");
+		    String telefonnummer = rs.getString("Telefonnummer");
+		    String mail = rs.getString("Mail");
+		    String rolle = rs.getString("Rolle");
+		    String straﬂe = rs.getString("Straﬂe");
+		    String hausnummer = rs.getString("Hausnummer");
+		    String plz = rs.getString("PLZ");
+		    String ort = rs.getString("Ort");
+		    String land = rs.getString("Land");
+		    String passwort = rs.getString("Passwort");
+		    String timestamp = rs.getString("Timestamp");
 		    
-		    model.addRow(new Object[]{a, b,c,d,e,f,g, h, i, j, k});
+		    PersonObjektRAM person = new PersonObjektRAM( Integer.parseInt(idPerson), name, telefonnummer,  mail, timestamp, rolle,  passwort,  land,  straﬂe,ort, Integer.parseInt(plz), hausnummer,vorname);  
+		    DataBase.people.add(person);
+		    
+		    model.addRow(new Object[]{idPerson, name, vorname, mail});
 		}
 		
 		tblPersonen.setModel(model);
 				
 		scrollPane.setViewportView(tblPersonen);
+		TableColumnModel tcm = MainMenu.tblPersonen.getColumnModel();
+		tcm.removeColumn( tcm.getColumn(0) );
 				
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 260, 939, 117);
+		scrollPane_1.setBounds(960, 61, 460, 895);
 		panelPerson.add(scrollPane_1);
 			
-		String[] column_headers_auftraege = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "Status", "Rolle"};
+		String[] column_headers_auftraege = {"Titel", "Status"};
 		String[][] data_auftraege = new String[1000][11];
 		tblAuftraege = new JTable(data_auftraege, column_headers_auftraege);
-		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "Status", "Rolle"}, 0) {
-			
+		tblAuftraege.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				DataBase.getConnection();
+				int colnr  = MainMenu.tblAuftraege.getSelectedRow();
+				String id = MainMenu.tblAuftraege.getModel().getValueAt(colnr, 0).toString();
+				
+				OrderObjektRAM clicked = new OrderObjektRAM();
+				
+				for (OrderObjektRAM o : DataBase.orders) {
+					if (o.getId_Auftrag() == Integer.parseInt(id)) {
+						clicked = o;
+					}
+				}
+				
+				txtDetailTitelOrder.setText(clicked.getTitel());
+				txtDetailAfOrder.setText(clicked.getAf());
+				txtDetailDateinameOrder.setText(clicked.getDateiname());
+				txtDetailDateiortOrder.setText(clicked.getDateiort());
+				txtDetailPkOrder.setText(clicked.getPk());
+				txtDetailRkOrder.setText(clicked.getRk());
+				txtDetailStatusOrder.setText(DataBase.getStatusBeiAuftragId(id));
+				txtDetailRolleOrder.setText(DataBase.getRolleByOrderId(id));
+
+				DataBase.closeConnection();
+			}
+		});
+		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "Status"}, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
 			};
+			
+			
 		String sqlAuftrag = "SELECT * FROM Auftrag";
 		ResultSet rsAuftrag = stmt.executeQuery(sqlAuftrag);
 		
@@ -324,34 +411,39 @@ public class MainMenu extends JFrame {
 		
 		while(rsAuftrag.next())
 		{
-			String a1 = rsAuftrag.getString("ID_Auftrag");
-		    String b1 = rsAuftrag.getString("Titel");
-		    String c1 = rsAuftrag.getString("AF");
-		    String d1 = rsAuftrag.getString("Dateiname");
-		    String e1 = rsAuftrag.getString("Dateiort");
-		    String f1 = rsAuftrag.getString("PK");
-		    String g1 = rsAuftrag.getString("RK");
-		    String h1 = DataBase.getStatusBeiAuftragId(a1);
+			String idAuftrag = rsAuftrag.getString("ID_Auftrag");
+		    String titel = rsAuftrag.getString("Titel");
+		    String af = rsAuftrag.getString("AF");
+		    String dateiname = rsAuftrag.getString("Dateiname");
+		    String dateiort = rsAuftrag.getString("Dateiort");
+		    String pk = rsAuftrag.getString("PK");
+		    String rk = rsAuftrag.getString("RK");
+		    String status = DataBase.getStatusBeiAuftragId(idAuftrag);
 		    
-		    String j1 = DataBase.getRolleByOrderId(a1);
+		    String rolle = DataBase.getRolleByOrderId(idAuftrag);
 		    //System.out.println(a1);
 		   // System.out.println(j1);
-		  
 		    
-		    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+		    OrderObjektRAM order = new OrderObjektRAM( Integer.parseInt(idAuftrag), titel, af,  dateiname, dateiort, pk,  rk); 
+		    //public OrderObjektRAM(int id_Auftrag, String titel, String af, String dateiname, String dateiort, String pk, String rk) {
+		    DataBase.orders.add(order);
+		    
+		    modelAuftrag.addRow(new Object[]{idAuftrag, titel, status});
 		}
 		
 		tblAuftraege.setModel(modelAuftrag);
+		TableColumnModel tcm2 = tblAuftraege.getColumnModel();
+		tcm.removeColumn( tcm2.getColumn(0) );
 				
 		
 		scrollPane_1.setViewportView(tblAuftraege);
 		
 		JLabel lblAuftraege = new JLabel("Auftraege:");
-		lblAuftraege.setBounds(10, 241, 71, 14);
+		lblAuftraege.setBounds(960, 11, 71, 14);
 		panelPerson.add(lblAuftraege);
 		
 		btnSuchen = new JButton("Suchen");
-		btnSuchen.setBounds(423, 0, 116, 23);
+		btnSuchen.setBounds(147, 27, 120, 23);
 		panelPerson.add(btnSuchen);
 		
 		btnSearchOrder = new JButton("Suchen");
@@ -360,31 +452,119 @@ public class MainMenu extends JFrame {
 				DataBase.searchOrder(txtSearchOrder.getText());
 			}
 		});
-		btnSearchOrder.setBounds(649, 388, 89, 23);
+		btnSearchOrder.setBounds(1090, 27, 120, 23);
 		panelPerson.add(btnSearchOrder);
 		
-		JButton btnChangePerson = new JButton("Aendern");
+		JButton btnChangePerson = new JButton("Speichern");
 		btnChangePerson.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-				Aendern x = new Aendern();
-				x.setVisible(true);
-				} catch (Exception ex) {
+					DataBase.getConnection();
+					int colnr  = MainMenu.tblPersonen.getSelectedRow();
+					
+					String personName = MainMenu.tblPersonen.getModel().getValueAt(colnr, 1).toString();
+					String personVorname = MainMenu.tblPersonen.getModel().getValueAt(colnr, 2).toString();
+					
+					PersonObjektRAM clicked = new PersonObjektRAM();
+					String mail = MainMenu.tblPersonen.getModel().getValueAt(colnr, 3).toString();
+					
+					for (PersonObjektRAM p : DataBase.people) {
+						if (p.getMail().equals(mail) && p.getName().equals(personName) && p.getVorname().equals(personVorname)) {
+							clicked = p;
+						}
+					}
+					String oldName = clicked.getName();
+					String oldVorname = clicked.getVorname();
+					String oldTel = clicked.getTelefonnummer();
+					String oldMail = clicked.getMail();
+					String oldRolle = clicked.getRolle();
+					String oldStr = clicked.getStraﬂe();
+					String oldHaus = clicked.getHausnummer();
+					int oldPlz = clicked.getPlz();
+					String oldOrt = clicked.getOrt();
+					String oldLand = clicked.getLand();
+					
+					
+					String newName = txtDetailNamePerson.getText();
+					String newVorname = txtDetailVornamePerson.getText();
+					String newTel = txtDetailTelefonPerson.getText();
+					String newMail = txtDetailMailPerson.getText();
+					String newRolle = txtDetailRollePerson.getText();
+					String newStr = txtDetailStrassePerson.getText();
+					String newHaus = txtDetailHausnummerPerson.getText();
+					int newPlz = Integer.parseInt(txtDetailPlzPerson.getText());
+					String newOrt = txtDetailOrtPerson.getText();
+					String newLand = txtDetailLandPerson.getText();
+					
+					if(!newName.equals(oldName) || !newVorname.equals(oldVorname)) {
+						
+						PersonenFertigungsverwaltung.changeNameSurname(oldVorname, oldName, newVorname, newName);
+						System.out.println(oldName);
+						System.out.println(newVorname);
+						
+						
+					}
+					
+					
+					if(!newTel.equals(oldTel))
+					{
+						PersonenFertigungsverwaltung.changePhoneNumber(oldVorname, oldName, newTel);
+					}
+					
+					
+					if(!newMail.equals(oldMail))
+					{
+						PersonenFertigungsverwaltung.changeMail(oldVorname, oldName, newMail);
+					}
+					
+					if(!newRolle.equals(oldRolle))
+					{
+					PersonenFertigungsverwaltung.changeRolle(clicked.getID_Person(), newRolle);
+					}
+					
+					
+					
+					if(!newLand.equals(oldLand)
+						|| !newStr.equals(oldStr)
+						|| !newOrt.equals(oldOrt)
+						|| !newHaus.equals(oldHaus)
+						|| newPlz != oldPlz)
+					{
+						PersonenFertigungsverwaltung.changeAddressDataSet(oldVorname, oldName, newLand, newStr, newOrt, newHaus, newPlz);
+					}
+					
+					txtDetailNamePerson.setText("");
+					txtDetailVornamePerson.setText("");
+					txtDetailTelefonPerson.setText("");
+					txtDetailMailPerson.setText("");
+					txtDetailRollePerson.setText("");
+					txtDetailStrassePerson.setText("");
+					txtDetailHausnummerPerson.setText("");
+					txtDetailPlzPerson.setText("");
+					txtDetailOrtPerson.setText("");
+					txtDetailLandPerson.setText("");
+					
+					DataBase.loadPeopleToRAM();
+					DataBase.refreshPersonen();
+					
+				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte w‰hlen Sie eine Person aus.");
+				} finally {
+					DataBase.closeConnection();
 				}
 			}
 		});
-		btnChangePerson.setBounds(294, 207, 131, 23);
+		btnChangePerson.setBounds(677, 346, 120, 23);
 		panelPerson.add(btnChangePerson);
 		
 		JButton btnRefresh = new JButton("Alle anzeigen");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-					DataBase.refreshDatabase();				
+					DataBase.refreshPersonen();				
 			}
 		});
 		
-		btnRefresh.setBounds(227, 0, 127, 23);
+		btnRefresh.setBounds(10, 27, 120, 23);
 		panelPerson.add(btnRefresh);
 		
 		JButton btnErstellen = new JButton("Erstellen");
@@ -395,23 +575,112 @@ public class MainMenu extends JFrame {
 				x.setVisible(true);
 			}
 		});
-		btnErstellen.setBounds(10, 388, 89, 23);
+		btnErstellen.setBounds(960, 967, 140, 23);
 		panelPerson.add(btnErstellen);
 		
-		JButton btnChangeOrder = new JButton("Aendern");
+		JButton btnChangeOrder = new JButton("Speichern");
 		btnChangeOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try{
+//				DataBase.getConnection();
 				
-				try {
-					UpdateOrder x = new UpdateOrder();
-					x.setVisible(true);
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Bitte w‰hlen Sie eine Person und einen Auftrag aus.");
+				int colId = 0;
+				int colTitel = 1;
+				int colAf = 2; 
+				int colDateiname = 3; 
+				int colDateiort = 4; 
+				int colPk= 5;
+				int colRk = 6;
+				int colIdStatus = 7;
+				int colnr  = tblAuftraege.getSelectedRow();
+				
+				/*txtDetailTitelOrder.setText(clicked.getTitel());
+				txtDetailAfOrder.setText(clicked.getAf());
+				txtDetailDateinameOrder.setText(clicked.getDateiname());
+				txtDetailDateiortOrder.setText(clicked.getDateiort());
+				txtDetailPkOrder.setText(clicked.getPk());
+				txtDetailRkOrder.setText(clicked.getRk());
+				txtDetailStatusOrder.setText(DataBase.getStatusBeiAuftragId(id));
+				txtDetailRolleOrder.setText(DataBase.getRolleByOrderId(id));*/
+				
+				OrderObjektRAM clicked = new OrderObjektRAM();
+				String id = MainMenu.tblAuftraege.getModel().getValueAt(colnr, 0).toString();
+				
+				for (OrderObjektRAM o : DataBase.orders) {
+					if (o.getId_Auftrag() == Integer.parseInt(id)) {
+						clicked = o;
 					}
+				}
+				
+				int idOld = Integer.parseInt(id);
+				String headerOld = clicked.getTitel();
+				String afOld = clicked.getAf();
+				String filenameOld = clicked.getDateiname();
+				String repositoryOld = clicked.getDateiort();
+				String pkOld = clicked.getPk();
+				String rkOld = clicked.getRk();
+				String statusOld = DataBase.getStatusBeiAuftragId(id);
+				
+				int colnrPers  = MainMenu.tblPersonen.getSelectedRow();
+				int idPerson = Integer.parseInt(MainMenu.tblPersonen.getModel().getValueAt(colnrPers, 0).toString());
+				String jobOld = DataBase.getRolleByOrderId(id);
+					
+					
+					int idNew = idOld;
+					String headerNew = txtDetailTitelOrder.getText();
+					String afNew = txtDetailAfOrder.getText(); 
+					String filenameNew = txtDetailDateinameOrder.getText();
+					String repositoryNew = txtDetailDateiortOrder.getText();
+					String pkNew = txtDetailPkOrder.getText();
+					String rkNew = txtDetailRkOrder.getText();
+					String jobNew = txtDetailRolleOrder.getText();
+					String statusNew = txtDetailStatusOrder.getText();
+					
+					
+//					Manager.checkStandardOrderUpdate(headerNew, afNew, filenameNew, repositoryNew, pkNew, rkNew);
+					
+					if(!headerNew.equals(headerOld) 
+							||!afNew.equals(afOld) 
+							||!filenameNew.equals(filenameOld)
+							||!repositoryNew.equals(repositoryOld)
+							||!pkNew.equals(pkOld)
+							||!rkNew.equals(rkOld)
+							) {
+						
+						
+						
+						PersonenFertigungsverwaltung.changeDataSetOrder(idNew, headerNew, afNew, filenameNew, repositoryNew, pkNew, rkNew);
+					}
+					
+					
+					PersonenFertigungsverwaltung.changeJobOrderPerson(idPerson, idOld, jobNew);
+
+					Object id_order  =  tblAuftraege.getModel().getValueAt(colnr, 0);
+					
+					Integer idAuftrag = Integer.valueOf(id_order.toString()); 
+					
+
+					
+					PersonenFertigungsverwaltung.alterStatus(idAuftrag, txtDetailStatusOrder.getText());
+					
+					
+						
+					DataBase.refreshOrder();
+					DataBase.refreshOrderBill();
+//					DataBase.closeConnection();
+					
+					
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte w‰hlen Sie eine Person und einen Auftrag aus.");
+				} 
+//				catch (InvalidArgumentsException e) {
+//					
+//				}
+				
 				
 			}
 		});
-		btnChangeOrder.setBounds(109, 388, 89, 23);
+		btnChangeOrder.setBounds(1620, 293, 120, 23);
 		panelPerson.add(btnChangeOrder);
 		
 		JButton btnDeleteOrder = new JButton("Auftrag Loeschen");
@@ -433,7 +702,7 @@ public class MainMenu extends JFrame {
 			}
 			}
 		});
-		btnDeleteOrder.setBounds(208, 388, 146, 23);
+		btnDeleteOrder.setBounds(1280, 967, 140, 23);
 		panelPerson.add(btnDeleteOrder);
 		
 		txtSearchOrder = new JTextField();
@@ -443,11 +712,11 @@ public class MainMenu extends JFrame {
 				SwingUtilities.getRootPane(btnSearchOrder).setDefaultButton(btnSearchOrder);
 			}
 		});
-		txtSearchOrder.setBounds(744, 389, 205, 20);
+		txtSearchOrder.setBounds(1220, 28, 200, 20);
 		panelPerson.add(txtSearchOrder);
 		txtSearchOrder.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Status aendern");
+		JButton btnNewButton = new JButton("?Status aendern?");
 		
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -467,13 +736,189 @@ public class MainMenu extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setBounds(363, 388, 127, 23);
+		btnNewButton.setBounds(1615, 891, 140, 23);
 		panelPerson.add(btnNewButton);
 		
-		Canvas canvas = new Canvas();
-		canvas.setBackground(Color.DARK_GRAY);
-		canvas.setBounds(0, 236, 959, 1);
-		panelPerson.add(canvas);
+		JButton btnShowAllOrders = new JButton("Alle anzeigen");
+		btnShowAllOrders.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+					DataBase.refreshOrder();				
+			}
+		});
+		btnShowAllOrders.setBounds(960, 27, 120, 23);
+		panelPerson.add(btnShowAllOrders);
+		
+		JLabel lblDetailsPerson = new JLabel("Details:");
+		lblDetailsPerson.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblDetailsPerson.setBounds(487, 68, 60, 14);
+		panelPerson.add(lblDetailsPerson);
+		
+		JLabel lblDetailNamePerson = new JLabel("Name:");
+		lblDetailNamePerson.setBounds(487, 93, 140, 14);
+		panelPerson.add(lblDetailNamePerson);
+		
+		JLabel lblDetailVoramePerson = new JLabel("Vorname:");
+		lblDetailVoramePerson.setBounds(487, 118, 140, 14);
+		panelPerson.add(lblDetailVoramePerson);
+		
+		JLabel lblDetailTelefonnummerPerson = new JLabel("Telefonnummer:");
+		lblDetailTelefonnummerPerson.setBounds(487, 143, 140, 14);
+		panelPerson.add(lblDetailTelefonnummerPerson);
+		
+		JLabel lblDetailEmailPerson = new JLabel("Email:");
+		lblDetailEmailPerson.setBounds(487, 168, 140, 14);
+		panelPerson.add(lblDetailEmailPerson);
+		
+		JLabel lblDetailRollePerson = new JLabel("Rolle:");
+		lblDetailRollePerson.setBounds(487, 193, 140, 14);
+		panelPerson.add(lblDetailRollePerson);
+		
+		JLabel lblDetailStrassePerson = new JLabel("Stra\u00DFe:");
+		lblDetailStrassePerson.setBounds(487, 218, 140, 14);
+		panelPerson.add(lblDetailStrassePerson);
+		
+		JLabel lblDetailHausnummerPerson = new JLabel("Hausnummer:");
+		lblDetailHausnummerPerson.setBounds(487, 243, 140, 14);
+		panelPerson.add(lblDetailHausnummerPerson);
+		
+		JLabel lblDetailPlzPerson = new JLabel("PLZ:");
+		lblDetailPlzPerson.setBounds(487, 268, 140, 14);
+		panelPerson.add(lblDetailPlzPerson);
+		
+		JLabel lblDetailLandPerson = new JLabel("Land:");
+		lblDetailLandPerson.setBounds(487, 293, 140, 14);
+		panelPerson.add(lblDetailLandPerson);
+		
+		JLabel lblDetailOrtPerson = new JLabel("Ort:");
+		lblDetailOrtPerson.setBounds(487, 318, 140, 14);
+		panelPerson.add(lblDetailOrtPerson);
+		
+		txtDetailNamePerson = new JTextField();
+		txtDetailNamePerson.setBounds(637, 90, 160, 20);
+		panelPerson.add(txtDetailNamePerson);
+		txtDetailNamePerson.setColumns(10);
+		
+		txtDetailVornamePerson = new JTextField();
+		txtDetailVornamePerson.setBounds(637, 115, 160, 20);
+		panelPerson.add(txtDetailVornamePerson);
+		txtDetailVornamePerson.setColumns(10);
+		
+		txtDetailTelefonPerson = new JTextField();
+		txtDetailTelefonPerson.setBounds(637, 140, 160, 20);
+		panelPerson.add(txtDetailTelefonPerson);
+		txtDetailTelefonPerson.setColumns(10);
+		
+		txtDetailMailPerson = new JTextField();
+		txtDetailMailPerson.setBounds(637, 165, 160, 20);
+		panelPerson.add(txtDetailMailPerson);
+		txtDetailMailPerson.setColumns(10);
+		
+		txtDetailRollePerson = new JTextField();
+		txtDetailRollePerson.setBounds(637, 190, 160, 20);
+		panelPerson.add(txtDetailRollePerson);
+		txtDetailRollePerson.setColumns(10);
+		
+		txtDetailStrassePerson = new JTextField();
+		txtDetailStrassePerson.setBounds(637, 215, 160, 20);
+		panelPerson.add(txtDetailStrassePerson);
+		txtDetailStrassePerson.setColumns(10);
+		
+		txtDetailHausnummerPerson = new JTextField();
+		txtDetailHausnummerPerson.setBounds(637, 240, 160, 20);
+		panelPerson.add(txtDetailHausnummerPerson);
+		txtDetailHausnummerPerson.setColumns(10);
+		
+		txtDetailPlzPerson = new JTextField();
+		txtDetailPlzPerson.setBounds(637, 265, 160, 20);
+		panelPerson.add(txtDetailPlzPerson);
+		txtDetailPlzPerson.setColumns(10);
+		
+		txtDetailLandPerson = new JTextField();
+		txtDetailLandPerson.setBounds(637, 290, 160, 20);
+		panelPerson.add(txtDetailLandPerson);
+		txtDetailLandPerson.setColumns(10);
+		
+		txtDetailOrtPerson = new JTextField();
+		txtDetailOrtPerson.setBounds(637, 315, 160, 20);
+		panelPerson.add(txtDetailOrtPerson);
+		txtDetailOrtPerson.setColumns(10);
+		
+		JLabel label_1 = new JLabel("Details:");
+		label_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		label_1.setBounds(1430, 70, 60, 14);
+		panelPerson.add(label_1);
+		
+		JLabel lblTitel = new JLabel("Titel:");
+		lblTitel.setBounds(1430, 93, 140, 14);
+		panelPerson.add(lblTitel);
+		
+		JLabel lblArtDerFertigung = new JLabel("Art der Fertigung:");
+		lblArtDerFertigung.setBounds(1430, 118, 140, 14);
+		panelPerson.add(lblArtDerFertigung);
+		
+		JLabel lblDateiname = new JLabel("Dateiname:");
+		lblDateiname.setBounds(1430, 143, 140, 14);
+		panelPerson.add(lblDateiname);
+		
+		JLabel lblDateiort = new JLabel("Dateiort:");
+		lblDateiort.setBounds(1430, 168, 140, 14);
+		panelPerson.add(lblDateiort);
+		
+		JLabel lblPrognostizierteKosten = new JLabel("Prognostizierte Kosten:");
+		lblPrognostizierteKosten.setBounds(1430, 193, 140, 14);
+		panelPerson.add(lblPrognostizierteKosten);
+		
+		JLabel lblReelleKosten = new JLabel("Reelle Kosten:");
+		lblReelleKosten.setBounds(1430, 218, 140, 14);
+		panelPerson.add(lblReelleKosten);
+		
+		JLabel lblStatus = new JLabel("Status:");
+		lblStatus.setBounds(1430, 243, 140, 14);
+		panelPerson.add(lblStatus);
+		
+		txtDetailPkOrder = new JTextField();
+		txtDetailPkOrder.setBounds(1580, 190, 160, 20);
+		panelPerson.add(txtDetailPkOrder);
+		txtDetailPkOrder.setColumns(10);
+		
+		txtDetailDateiortOrder = new JTextField();
+		txtDetailDateiortOrder.setBounds(1580, 165, 160, 20);
+		panelPerson.add(txtDetailDateiortOrder);
+		txtDetailDateiortOrder.setColumns(10);
+		
+		txtDetailDateinameOrder = new JTextField();
+		txtDetailDateinameOrder.setBounds(1580, 140, 160, 20);
+		panelPerson.add(txtDetailDateinameOrder);
+		txtDetailDateinameOrder.setColumns(10);
+		
+		txtDetailAfOrder = new JTextField();
+		txtDetailAfOrder.setBounds(1580, 115, 160, 20);
+		panelPerson.add(txtDetailAfOrder);
+		txtDetailAfOrder.setColumns(10);
+		
+		txtDetailTitelOrder = new JTextField();
+		txtDetailTitelOrder.setBounds(1580, 90, 160, 20);
+		panelPerson.add(txtDetailTitelOrder);
+		txtDetailTitelOrder.setColumns(10);
+		
+		txtDetailRkOrder = new JTextField();
+		txtDetailRkOrder.setBounds(1580, 215, 160, 20);
+		panelPerson.add(txtDetailRkOrder);
+		txtDetailRkOrder.setColumns(10);
+		
+		txtDetailStatusOrder = new JTextField();
+		txtDetailStatusOrder.setBounds(1580, 240, 160, 20);
+		panelPerson.add(txtDetailStatusOrder);
+		txtDetailStatusOrder.setColumns(10);
+		
+		JLabel lblRolleDerPerson = new JLabel("Rolle der Person:");
+		lblRolleDerPerson.setBounds(1430, 268, 140, 14);
+		panelPerson.add(lblRolleDerPerson);
+		
+		txtDetailRolleOrder = new JTextField();
+		txtDetailRolleOrder.setBounds(1580, 265, 160, 20);
+		panelPerson.add(txtDetailRolleOrder);
+		txtDetailRolleOrder.setColumns(10);
 		
 		btnLoeschen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -1854,6 +2299,14 @@ public class MainMenu extends JFrame {
 			label.setFont(new Font("Dialog", Font.BOLD, 20));
 			label.setBounds(10, 28, 131, 22);
 			panelBau.add(label);
+			
+			JLabel lblEingeloggtAls = new JLabel("eingeloggt als:");
+			lblEingeloggtAls.setBounds(1500, 11, 140, 14);
+			contentPane.add(lblEingeloggtAls);
+			
+			JButton btnAusloggen = new JButton("ausloggen");
+			btnAusloggen.setBounds(1703, 7, 120, 23);
+			contentPane.add(btnAusloggen);
 		
 		
 		

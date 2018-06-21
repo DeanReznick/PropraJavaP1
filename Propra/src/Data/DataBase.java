@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -16,6 +17,7 @@ public class DataBase {
 	
 	
 	public static ArrayList<PersonObjektRAM> people = new ArrayList<PersonObjektRAM>(); 
+	public static ArrayList<OrderObjektRAM> orders = new ArrayList<OrderObjektRAM>();
 	public static ArrayList<StatusObjektRAM> status_list = new ArrayList<StatusObjektRAM>();  //  Status-objects for a specific Person. Will be overwritten !!
 	public static ArrayList<OffenerAuftragObjektRAM> offeneAuftraege = new ArrayList<OffenerAuftragObjektRAM>();
 	
@@ -291,6 +293,9 @@ public class DataBase {
 	
 	public static void loadPeopleToRAM() {
 		
+		getConnection();
+		
+		people.removeAll(people); 
 
 		int ID_Person; 
 		String name; 
@@ -346,6 +351,59 @@ public class DataBase {
 	      
 	   }
 	   System.out.println("Operation done successfully");
+	   closeConnection();
+		
+	}
+	
+public static void loadOrdersToRAM() {
+		
+	getConnection();
+		orders.removeAll(orders); 
+
+		int idAuftrag; 
+		String titel; 
+		String af; 
+		String dateiname; 
+		String dateiort; 
+		String pk; 
+		String rk; 
+		
+		Statement stmt = null;
+
+	   
+	   try {
+	    
+		   //Query 
+		   String query = "SELECT * FROM Auftrag;"; 
+		   
+		   // Getting Data from Database
+	      stmt = c.createStatement();
+	      ResultSet rs = stmt.executeQuery( query );
+	      
+	      while ( rs.next() ) {
+	    	  idAuftrag = rs.getInt("ID_Auftrag");
+	    	  titel = rs.getString("Titel"); 
+	    	  af = rs.getString("AF"); 
+	    	  dateiname = rs.getString("Dateiname"); 
+	    	  dateiort = rs.getString("Dateiort"); 
+	    	  pk = rs.getString("PK"); 
+	    	  rk = rs.getString("RK"); 
+	    	  
+	    	  OrderObjektRAM order = new OrderObjektRAM( idAuftrag, titel, af,  dateiname, dateiort, pk,  rk); 
+	    	  
+	    	  orders.add(order); 
+	    	  
+	      }
+	     
+	      stmt.close();
+	    
+	   } catch ( Exception e ) {
+	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	      
+	   }
+	   System.out.println("Operation done successfully");
+	   
+	   closeConnection();
 		
 	}
 	
@@ -454,7 +512,7 @@ public class DataBase {
 		}
 		String sqlsearch;
 		
-		DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Name", "Vorname", "Telefon", "Email", "Rolle",  "Straﬂe", "Hausnummer", "PLZ", "Ort", "Land"}, 0) {
+		DefaultTableModel model = new DefaultTableModel(new String[]{"ID-Person", "Name", "Vorname", "Email"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -499,19 +557,12 @@ public class DataBase {
 		try {
 			while(rs.next())
 			{
-				String a = rs.getString("ID_Person");
-			    String b = rs.getString("Name");
-			    String c = rs.getString("Vorname");
-			    String d = rs.getString("Telefonnummer");
-			    String e = rs.getString("Mail");
-			    String f = rs.getString("Rolle");
-			    String g = rs.getString("Straﬂe");
-			    String h = rs.getString("Hausnummer");
-			    String i = rs.getString("PLZ");
-			    String j = rs.getString("Ort");
-			    String k = rs.getString("Land");
+				String id = rs.getString("ID_Person");
+			    String a = rs.getString("Name");
+			    String b = rs.getString("Vorname");
+			    String c = rs.getString("Mail");
 			    
-			    model.addRow(new Object[]{a, b,c,d,e,f,g, h, i, j, k});
+			    model.addRow(new Object[]{id, a, b,c});
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -520,6 +571,8 @@ public class DataBase {
 		
 		MainMenu.tblPersonen.setModel(model);
 		MainMenu.scrollPane.setViewportView(MainMenu.tblPersonen);
+		TableColumnModel tcm = MainMenu.tblPersonen.getColumnModel();
+		tcm.removeColumn( tcm.getColumn(0) );
 		
 		closeConnection();
 	}
@@ -540,7 +593,7 @@ public static void searchOrder(String search) {
 		
 		int id = getIdPersonByNameSurname(lastName, firstName);
 		
-		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "Status"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -575,18 +628,11 @@ public static void searchOrder(String search) {
 		try {
 			while(rs.next())
 			{
-				String a1 = rs.getString("ID_Auftrag");
-			    String b1 = rs.getString("Titel");
-			    String c1 = rs.getString("AF");
-			    String d1 = rs.getString("Dateiname");
-			    String e1 = rs.getString("Dateiort");
-			    String f1 = rs.getString("PK");
-			    String g1 = rs.getString("RK");
-			    String h1 = DataBase.getStatusBeiAuftragId(a1);
-			    String j1 = DataBase.getRolleByOrderId(a1);
+				String idAuftrag = rs.getString("ID_Auftrag");
+			    String a = rs.getString("Titel");
+			    String b = DataBase.getStatusBeiAuftragId(idAuftrag);
 			    
-			    
-			    model.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+			    model.addRow(new Object[]{idAuftrag, a, b});
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -595,6 +641,8 @@ public static void searchOrder(String search) {
 		
 		MainMenu.tblAuftraege.setModel(model);
 		MainMenu.scrollPane_1.setViewportView(MainMenu.tblAuftraege);
+		TableColumnModel tcm = MainMenu.tblAuftraege.getColumnModel();
+		tcm.removeColumn( tcm.getColumn(0) );
 		
 		closeConnection();
 	}
@@ -836,6 +884,66 @@ public static void searchOrder(String search) {
 		closeConnection();
 	}
 	
+	public static void refreshPersonen() {
+
+		getConnection();
+		
+		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Person", "Name", "Vorname", "Email"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		
+		Statement stmt = null;
+		try {
+			stmt = DataBase.c.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+
+		String sql = "SELECT * FROM Person";
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			while(rs.next())
+			{
+				String a = rs.getString("ID_Person");
+			    String b = rs.getString("Name");
+			    String c = rs.getString("Vorname");
+			    String d = rs.getString("Telefonnummer");
+			    String e = rs.getString("Mail");
+			    String f = rs.getString("Rolle");
+			    String g = rs.getString("Straﬂe");
+			    String h = rs.getString("Hausnummer");
+			    String i = rs.getString("PLZ");
+			    String j = rs.getString("Ort");
+			    String k = rs.getString("Land");
+			    
+			    model.addRow(new Object[]{a,b,c,e});
+			   
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		MainMenu.txtSuchen.setText("");
+		
+		MainMenu.tblPersonen.setModel(model);
+		TableColumnModel tcm = MainMenu.tblPersonen.getColumnModel();
+		tcm.removeColumn( tcm.getColumn(0) );
+	
+		closeConnection();
+	}
+	
 public static void refreshBill2() {
 		
 		getConnection();
@@ -897,7 +1005,7 @@ public static void refreshBill2() {
 
 		getConnection();
 		
-		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "Status"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -925,17 +1033,11 @@ public static void refreshBill2() {
 		try {
 			while(rs.next())
 			{
-				String a1 = rs.getString("ID_Auftrag");
-			    String b1 = rs.getString("Titel");
-			    String c1 = rs.getString("AF");
-			    String d1 = rs.getString("Dateiname");
-			    String e1 = rs.getString("Dateiort");
-			    String f1 = rs.getString("PK");
-			    String g1 = rs.getString("RK");
-			    String h1 = DataBase.getStatusBeiAuftragId(a1);
-			    String j1 = DataBase.getRolleByOrderId(a1);
+				String id = rs.getString("ID_Auftrag");
+			    String a = rs.getString("Titel");
+			    String b = DataBase.getStatusBeiAuftragId(id);
 			    
-			    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+			    modelAuftrag.addRow(new Object[]{id, a, b});
 			   
 			}
 		} catch (SQLException e) {
@@ -945,6 +1047,8 @@ public static void refreshBill2() {
 		
 		
 		MainMenu.tblAuftraege.setModel(modelAuftrag);
+		TableColumnModel tcm = MainMenu.tblAuftraege.getColumnModel();
+		tcm.removeColumn( tcm.getColumn(0) );
 	
 		closeConnection();
 	}
@@ -1825,7 +1929,10 @@ public static void refreshBill2() {
 		  
 		  int id_Auftrag; 
 		  String titel; 
-		  String af; 
+		  String af;
+		  String dateiname;
+		  String dateiort;
+		  String pk;
 		  String rk;
 					  
 		  Statement stmt = null;
@@ -1843,9 +1950,12 @@ public static void refreshBill2() {
 		    	id_Auftrag = rs.getInt("ID_Auftrag");	
 		    	titel = rs.getString("Titel"); 
 		    	af = rs.getString("AF"); 
+		    	dateiname = rs.getString("Dateiname");
+		    	dateiort = rs.getString("Dateiort");
+		    	pk = rs.getString("PK");
 		    	rk = rs.getString("RK"); 
 		    	
-		    	order = new OrderObjektRAM( id_Auftrag,  titel,  af,  rk); // Testen !
+		    	order = new OrderObjektRAM( id_Auftrag,  titel,  af, dateiname, dateiort, pk,  rk); // Testen !
 		    	
 		      }
 		     

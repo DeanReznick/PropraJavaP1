@@ -68,6 +68,7 @@ public class Delete extends JFrame {
 				PersonenFertigungsverwaltung.deletePersonById(id);
 				
 				model.removeRow(selectedRowIndex);
+				DataBase.loadPeopleToRAM();
 				DataBase.closeConnection();
 				dispose();
 			}

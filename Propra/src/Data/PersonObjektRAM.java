@@ -111,6 +111,10 @@ public class PersonObjektRAM {
 		Hausnummer = hausnummer;
 		this.vorname = vorname;
 	}
+	
+	public PersonObjektRAM() {
+		
+	}
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

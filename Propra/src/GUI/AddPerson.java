@@ -203,7 +203,7 @@ public class AddPerson extends JFrame {
 				//PersonObjektRAM p = new PersonObjektRAM(0, name, tel ,mail, "lala","lala", "lala", land, str, ort,PLZ, hausnr,vorname);
 				PersonenFertigungsverwaltung.createNewPerson(name, vorname, tel, mail, land, str, ort, hausnr, PLZ, rolle, password);
 				
-				DataBase.refreshDatabase();
+				DataBase.refreshPersonen();
 				dispose();
 				
 				}catch (InvalidArgumentsException ex){
