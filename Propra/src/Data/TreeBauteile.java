@@ -7,27 +7,56 @@ public class TreeBauteile {
 		
 		//addTBauteil("Feder", "/feder", 10, 1, 100, "ORT A", 100); 
 		//alterTBauteil(1,1,"Feder groß", "/feder", 10, 1, 100, "ORT A", 100); 
-		delteTBauteil(1); 
-		
-		
-		
+		//delteTBauteil(1); 
+		addTKat("Kat1"); 
+		addTKat("Kat2"); 
+		addTKat("Kat3"); 
+		//alterTKat(2,2,"KAT A"); 
+		//delteTKat(2); 
 	}
 
-	public static void addTKat() {
+	public static void addTKat(int id_Parent, String name) {
 		
-	}
-		
-	public static void alterTKat() {
 		DataBase.getConnection();
-		// Alle die dran hängen... 
 		
+		String query = "INSERT INTO TKategorie (ID_Parent, Name) VALUES ("+
+						 id_Parent + ", '" + name +"');"; 
 		
+		DataBase.executeQuery(query);
 		DataBase.closeConnection();
+		
+		
 	}
-	public static void delteTKat() {
+		
+	public static void addTKat(String name) {
+		
 		DataBase.getConnection();
 		
+		String query = "INSERT INTO TKategorie (ID_Parent, Name) VALUES ("+
+						 "1, '" + name +"');"; 
 		
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+	}
+		public static void alterTKat(int id_TKat, int id_Parent, String name) {
+		DataBase.getConnection();
+		//prüfen ob es die neue Parent Kat gibt! Dropdown? 
+		String query = "UPDATE TKategorie SET Name = '" + name + "', ID_Parent = "+ id_Parent +" WHERE ID_TKategorie = "+ id_TKat +";";  
+		DataBase.executeQuery(query); 
+		DataBase.closeConnection();
+		
+	}
+	public static void delteTKat(int id_TKat) {
+		DataBase.getConnection();
+		
+		String query = "DELETE FROM TKategorie WHERE ID_TKategorie = " + id_TKat +";"; 
+		DataBase.executeQuery(query);
+		
+		
+		
+		// Alle die dran hängen...
+			
 		DataBase.closeConnection();
 	}
 	
@@ -67,9 +96,8 @@ public class TreeBauteile {
 		
 		String query = "DELETE FROM TBauteil WHERE ID_TBauteil = " + id_TBauteil +";"; 
 		DataBase.executeQuery(query);
-	
-		
 		DataBase.closeConnection();
+		
 	}
 	
 
