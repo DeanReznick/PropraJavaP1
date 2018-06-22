@@ -2,18 +2,17 @@ package Data;
 
 public class TreeBauteile {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		// ID_TKategorie, Name, Link, MengeLagernd, MengeBestellt, MengeGeplant, Lagerort, Preis
 		
 		//addTBauteil("Feder", "/feder", 10, 1, 100, "ORT A", 100); 
 		//alterTBauteil(1,1,"Feder groﬂ", "/feder", 10, 1, 100, "ORT A", 100); 
 		//delteTBauteil(1); 
-		addTKat("Kat1"); 
-		addTKat("Kat2"); 
-		addTKat("Kat3"); 
+		//addTKat("Kat1"); 
+
 		//alterTKat(2,2,"KAT A"); 
-		//delteTKat(2); 
-	}
+		//delteTKat(3); 
+	}*/
 
 	public static void addTKat(int id_Parent, String name) {
 		
@@ -50,7 +49,11 @@ public class TreeBauteile {
 	public static void delteTKat(int id_TKat) {
 		DataBase.getConnection();
 		
-		String query = "DELETE FROM TKategorie WHERE ID_TKategorie = " + id_TKat +";"; 
+		String query = "UPDATE TBauteil SET ID_TKategorie = (Select ID_Parent FROM TKategorie WHERE ID_TKategorie = "+id_TKat +") WHERE ID_TKategorie = "+ id_TKat +";";
+		DataBase.executeQuery(query);
+		
+		
+		 query = "DELETE FROM TKategorie WHERE ID_TKategorie = " + id_TKat +";"; 
 		DataBase.executeQuery(query);
 		
 		//UPDATE TBauteil SET ID_TKategorie = (Select ID_Parent FROM TKategorie WHERE ID_TKategorie = 4) WHERE ID_TKategorie = 4; 
