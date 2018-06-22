@@ -53,7 +53,7 @@ public class TreeBauteile {
 		String query = "DELETE FROM TKategorie WHERE ID_TKategorie = " + id_TKat +";"; 
 		DataBase.executeQuery(query);
 		
-		
+		//UPDATE TBauteil SET ID_TKategorie = (Select ID_Parent FROM TKategorie WHERE ID_TKategorie = 4) WHERE ID_TKategorie = 4; 
 		
 		// Alle die dran hängen...
 			
