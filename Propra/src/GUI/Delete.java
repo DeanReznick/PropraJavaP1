@@ -1,8 +1,5 @@
 package GUI;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -18,6 +15,7 @@ import java.awt.event.ActionEvent;
 
 public class Delete extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**

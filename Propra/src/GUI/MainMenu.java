@@ -1,101 +1,59 @@
 package GUI;
-//Test
-import java.awt.BorderLayout;
+
+import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
 
-import Data.Authentication;
-import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
-import Data.ExportToPDF;
-import Data.Finanzverwaltung;
-import Data.OffenerAuftragObjektRAM;
 import Data.OrderObjektRAM;
 import Data.PersonObjektRAM;
-import Data.PersonenFertigungsverwaltung;
-import Data.StatusObjektRAM;
-import Exceptions.InvalidArgumentsException;
-import Exceptions.Manager;
 
-import javax.swing.JTabbedPane;
-import javax.swing.JSplitPane;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Vector;
-import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import java.awt.GridBagLayout;
 import javax.swing.JLabel;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import java.awt.event.FocusAdapter;
+import javax.swing.JOptionPane;
+
+import java.awt.GridBagConstraints;
+import javax.swing.JTabbedPane;
+import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import org.eclipse.wb.swing.FocusTraversalOnArray;
-
-import com.itextpdf.text.DocumentException;
-
-import java.awt.Component;
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.Label;
-import java.awt.Toolkit;
-import java.awt.Font;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-
-import javax.swing.JSeparator;
-import java.awt.Canvas;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.awt.GridLayout;
+import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import java.awt.Color;
+import javax.swing.JTextField;
+import java.awt.Font;
 
 public class MainMenu extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+
+	public static void main (String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainMenu frame = new MainMenu();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	private JPanel contentPane;
-	public static JTextField txtSuchen;
-	private JTable table;
-	public static JTable tblPersonen;
-	public static JTable tblAuftraege;
-	public static JScrollPane scrollPane;
+	public static JTextField txtSearchPerson;
 	private JTextField txtSearchOrder;
-	public static JScrollPane scrollPane_1;
-	public static JTable tblOffeneAuftraege;
-	public static JTable tblComponents;
-	private JTextField txtSearchComponent;
-	public static JScrollPane scrollPane_3;
-	public static JTable tblCategory;
-	private JButton btnSuchen;
-	private JButton btnSearchOrder;
-	private JButton btnSearchComponent;
-	public static JTable tblKasse;
-	public static JTable tblTopf;
-	public static JTable tblRechn;
-	private JTextField txtSearchBill;
-	public static JTable tblAuftraegeRechnung;
-	public static JTable tblOrdersInBill;
-	public static JTable tblBills;
-	public static JScrollPane scrollPane_Kasse;
-	public static JScrollPane scrollPane_Topf;
-	public static JScrollPane scrollPane_Rechnung;
 	private JTextField txtDetailNamePerson;
 	private JTextField txtDetailVornamePerson;
 	private JTextField txtDetailTelefonPerson;
@@ -114,173 +72,297 @@ public class MainMenu extends JFrame {
 	private JTextField txtDetailRkOrder;
 	private JTextField txtDetailStatusOrder;
 	private JTextField txtDetailRolleOrder;
-//	static GraphicsDevice device = GraphicsEnvironment
-//	        .getLocalGraphicsEnvironment().getScreenDevices()[0];
+	public static JTable tblPersonen;
+	public static JTable tblAuftraege;
+	public static JScrollPane scrollPanePerson;
+	public static JScrollPane scrollPaneOrder;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					MainMenu frame = new MainMenu();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//		
-//		// Get all status by ID_Person
-//	    
-//	    for (StatusObjektRAM s: DataBase.status_list) {
-//	      System.out.println(s.toString());
-//	    }
-//	    
-//	    
-//	    
-//	    // Load specific status by ID_Status
-//	    
-//	    DataBase.loadSpecificStatusToRam(13);
-//	    
-//	    for (StatusObjektRAM s: DataBase.status_list) {
-//	      System.out.println(s.toString());
-//	    }
-//	    
-//	    // People 2 RAM object 
-//	    
-//	    DataBase.loadPeopleToRAM();
-//	    
-//	    
-//	    for (PersonObjektRAM p : DataBase.people) {
-//	      System.out.println(p.toString());
-//	    }
-//	    
-//	    
-//	    
-//	    
-//	  }
-
-	/**
-	 * Create the frame.
-	 */
-	
-	public MainMenu() throws SQLException {
-		setTitle("Projekt 1");
-		setResizable(false);
-//		device.setFullScreenWindow(this);
-//		setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
-//		
-		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-		setBounds(100, 100, (int) dim.getWidth(), (int) dim.getHeight());
-		setLocationRelativeTo(null);
-		
-		DataBase.getConnection(); // Muss immer am Anfang ausgeführt werden!
-//	    PersonenFertigungsverwaltung.createNewPerson("Kern", "Dean-Robin", "0271/312", "test@ttest.de", "Deutschland", "HB", "Siegen", "10", 57076, "Member", "Geheim123"); 
-//	    //PersonenFertigungsverwaltung.deletePerson("Kern", "Dean-Robin"); 
-//	    PersonenFertigungsverwaltung.changeNameSurname("Kern", "Dean", "Hans", "Müller"); 
-//	    PersonenFertigungsverwaltung.changeMail("Kern", "Dean-Robin", "dean-kern@t-online.de"); 
-//	    PersonenFertigungsverwaltung.changePhoneNumber("Kern", "Dean-Robin", "0271/3178279"); 
-//	    PersonenFertigungsverwaltung.changeAddressDataSet("Kern", "Dean-Robin", "Deutschland", "Hermann-Böttger Weg", "Siegen", "10", 57076);
-//	    
-//	    
-//	    
-//	    PersonenFertigungsverwaltung.createNewOrder("Fertigung B", "Standard", "job 33", "C://vbm", "144,-€","65€", "Kern", "Dean-Robin", "Owner");
-//	    PersonenFertigungsverwaltung.changeDataSetOrder(12, "Fertigung A","Spezial", "job 123", "C://Projekt_a/bcd", "100,-€","62€");
-//	    PersonenFertigungsverwaltung.changeJobOrderPerson(DataBase.getIdPersonByNameSurname("Kern", "Dean-Robin"), 6, "SMAL BOSS");
-//	    PersonenFertigungsverwaltung.deleteOrder(11);
-//	    PersonenFertigungsverwaltung.alterStatus(21, "In Bearbeitung. ");
-//	    PersonenFertigungsverwaltung.deleteOrder(20);
-//	    
-//	    
-//	    //Password-stuff
-//	    System.out.println("Password function test: " + Authentication.checkCredentials("Kern", "Dean-Robin", "Geheim123")); 
-//	    System.out.println("Password function test: " + Authentication.checkCredentials("Kern", "Dean-Robin", "Geddd")); 
-//	    
-//	    
-//	    
-//	    // Get all status by ID_Person
-//	    DataBase.loadStatusToRam(21);
-//	    
-//	    for (StatusObjektRAM s: DataBase.status_list) {
-//	      System.out.println(s.toString());
-//	    }
-//	    
-//	    
-//	    
-//	    // Load specific status by ID_Status
-//	    
-//	    DataBase.loadSpecificStatusToRam(13);
-//	    
-//	    for (StatusObjektRAM s: DataBase.status_list) {
-//	      System.out.println(s.toString());
-//	    }
-//	    
-//	    // People 2 RAM object 
-//	    
-//	    DataBase.loadPeopleToRAM();
-//	    
-//	    
-//	    for (PersonObjektRAM p : DataBase.people) {
-//	      System.out.println(p.toString());
-//	    }
-
+	public MainMenu() {
+		DataBase.getConnection();
+		setTitle("eLab");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setBounds(100, 100, 1920, 1080);
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setSize((int) dim.getWidth(), (int) dim.getHeight() - 20);
+		setLocationRelativeTo(null);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[]{20, 1680, 110, 110};
+		gbl_contentPane.rowHeights = new int[]{13, 1054, 13};
+		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 0.0};
+		gbl_contentPane.rowWeights = new double[]{0.0, 1.0};
+		contentPane.setLayout(gbl_contentPane);
+		
+		JLabel lblEingeloggtAls = new JLabel("eingeloggt, als:");
+		GridBagConstraints gbc_lblEingeloggtAls = new GridBagConstraints();
+		gbc_lblEingeloggtAls.insets = new Insets(0, 0, 5, 5);
+		gbc_lblEingeloggtAls.gridx = 2;
+		gbc_lblEingeloggtAls.gridy = 0;
+		contentPane.add(lblEingeloggtAls, gbc_lblEingeloggtAls);
+		
+		JButton btnAusloggen = new JButton("ausloggen");
+		btnAusloggen.setBackground(Color.RED);
+		GridBagConstraints gbc_btnAusloggen = new GridBagConstraints();
+		gbc_btnAusloggen.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAusloggen.gridx = 3;
+		gbc_btnAusloggen.gridy = 0;
+		contentPane.add(btnAusloggen, gbc_btnAusloggen);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(10, 11, 1894, 1029);
-		contentPane.add(tabbedPane);
+		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
+		gbc_tabbedPane.insets = new Insets(0, 0, 5, 5);
+		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
+		gbc_tabbedPane.gridx = 1;
+		gbc_tabbedPane.gridy = 1;
+		contentPane.add(tabbedPane, gbc_tabbedPane);
 		
 		JPanel panelPerson = new JPanel();
-		tabbedPane.addTab("Pers. & Fertigung", null, panelPerson, null);
-		panelPerson.setLayout(null);
+		tabbedPane.addTab("Personen & Fertigungsverwaltung", null, panelPerson, null);
+		GridBagLayout gbl_panelPerson = new GridBagLayout();
+		gbl_panelPerson.columnWidths = new int[]{140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140, 140};
+		gbl_panelPerson.rowHeights = new int[]{0, 10, 30, 60, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 420, 60};
+		gbl_panelPerson.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_panelPerson.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panelPerson.setLayout(gbl_panelPerson);
 		
-		JButton btnHinzufuegen = new JButton("Neue Person");
-		btnHinzufuegen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				AddPerson x = new AddPerson();
-				x.setVisible(true);
-			}
-		});
-		btnHinzufuegen.setBounds(10, 967, 140, 23);
-		panelPerson.add(btnHinzufuegen);
+		JLabel lblPersonen = new JLabel("Personen:");
+		GridBagConstraints gbc_lblPersonen = new GridBagConstraints();
+		gbc_lblPersonen.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPersonen.gridx = 0;
+		gbc_lblPersonen.gridy = 1;
+		panelPerson.add(lblPersonen, gbc_lblPersonen);
 		
-		JButton btnLoeschen = new JButton("Person l\u00F6schen");
+		JLabel lblAuftrge = new JLabel("Auftäge:");
+		GridBagConstraints gbc_lblAuftrge = new GridBagConstraints();
+		gbc_lblAuftrge.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAuftrge.gridx = 6;
+		gbc_lblAuftrge.gridy = 1;
+		panelPerson.add(lblAuftrge, gbc_lblAuftrge);
 		
-		btnLoeschen.setBounds(337, 967, 140, 23);
-		panelPerson.add(btnLoeschen);
+		JButton btnAlleAnzeigen = new JButton("Alle anzeigen");
+		GridBagConstraints gbc_btnAlleAnzeigen = new GridBagConstraints();
+		gbc_btnAlleAnzeigen.anchor = GridBagConstraints.WEST;
+		gbc_btnAlleAnzeigen.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAlleAnzeigen.gridx = 1;
+		gbc_btnAlleAnzeigen.gridy = 2;
+		panelPerson.add(btnAlleAnzeigen, gbc_btnAlleAnzeigen);
 		
-		txtSuchen = new JTextField();
-		txtSuchen.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				SwingUtilities.getRootPane(btnSuchen).setDefaultButton(btnSuchen);
-			}
-		});
-		txtSuchen.setToolTipText("Suchen...");
-		txtSuchen.setBounds(277, 28, 200, 20);
-		panelPerson.add(txtSuchen);
-		txtSuchen.setColumns(10);
+		txtSearchPerson = new JTextField();
+		GridBagConstraints gbc_txtSearchPerson = new GridBagConstraints();
+		gbc_txtSearchPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtSearchPerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtSearchPerson.gridx = 2;
+		gbc_txtSearchPerson.gridy = 2;
+		panelPerson.add(txtSearchPerson, gbc_txtSearchPerson);
+		txtSearchPerson.setColumns(1);
 		
-		JLabel lblNewLabel = new JLabel("Personen:");
-		lblNewLabel.setBounds(10, 11, 71, 14);
-		panelPerson.add(lblNewLabel);
+		txtSearchOrder = new JTextField();
+		GridBagConstraints gbc_txtSearchOrder = new GridBagConstraints();
+		gbc_txtSearchOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_txtSearchOrder.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtSearchOrder.gridx = 8;
+		gbc_txtSearchOrder.gridy = 2;
+		panelPerson.add(txtSearchOrder, gbc_txtSearchOrder);
+		txtSearchOrder.setColumns(1);
 		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 61, 467, 895);
-		panelPerson.add(scrollPane);
+		txtDetailNamePerson = new JTextField();
+		GridBagConstraints gbc_txtDetailNamePerson = new GridBagConstraints();
+		gbc_txtDetailNamePerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailNamePerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailNamePerson.gridx = 5;
+		gbc_txtDetailNamePerson.gridy = 4;
+		panelPerson.add(txtDetailNamePerson, gbc_txtDetailNamePerson);
+		txtDetailNamePerson.setColumns(1);
 		
+		txtDetailVornamePerson = new JTextField();
+		GridBagConstraints gbc_txtDetailVornamePerson = new GridBagConstraints();
+		gbc_txtDetailVornamePerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailVornamePerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailVornamePerson.gridx = 5;
+		gbc_txtDetailVornamePerson.gridy = 5;
+		panelPerson.add(txtDetailVornamePerson, gbc_txtDetailVornamePerson);
+		txtDetailVornamePerson.setColumns(1);
 		
-		Connection con = null;
-				
-		String[] column_headers = {"ID_Person", "Name", "Vorname", "Email"};
+		txtDetailTelefonPerson = new JTextField();
+		GridBagConstraints gbc_txtDetailTelefonPerson = new GridBagConstraints();
+		gbc_txtDetailTelefonPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailTelefonPerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailTelefonPerson.gridx = 5;
+		gbc_txtDetailTelefonPerson.gridy = 6;
+		panelPerson.add(txtDetailTelefonPerson, gbc_txtDetailTelefonPerson);
+		txtDetailTelefonPerson.setColumns(1);
+		
+		txtDetailMailPerson = new JTextField();
+		GridBagConstraints gbc_txtDetailMailPerson = new GridBagConstraints();
+		gbc_txtDetailMailPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailMailPerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailMailPerson.gridx = 5;
+		gbc_txtDetailMailPerson.gridy = 7;
+		panelPerson.add(txtDetailMailPerson, gbc_txtDetailMailPerson);
+		txtDetailMailPerson.setColumns(1);
+		
+		txtDetailRollePerson = new JTextField();
+		GridBagConstraints gbc_txtDetailRollePerson = new GridBagConstraints();
+		gbc_txtDetailRollePerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailRollePerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailRollePerson.gridx = 5;
+		gbc_txtDetailRollePerson.gridy = 8;
+		panelPerson.add(txtDetailRollePerson, gbc_txtDetailRollePerson);
+		txtDetailRollePerson.setColumns(1);
+		
+		txtDetailStrassePerson = new JTextField();
+		GridBagConstraints gbc_txtDetailStrassePerson = new GridBagConstraints();
+		gbc_txtDetailStrassePerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailStrassePerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailStrassePerson.gridx = 5;
+		gbc_txtDetailStrassePerson.gridy = 9;
+		panelPerson.add(txtDetailStrassePerson, gbc_txtDetailStrassePerson);
+		txtDetailStrassePerson.setColumns(1);
+		
+		txtDetailHausnummerPerson = new JTextField();
+		GridBagConstraints gbc_txtDetailHausnummerPerson = new GridBagConstraints();
+		gbc_txtDetailHausnummerPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailHausnummerPerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailHausnummerPerson.gridx = 5;
+		gbc_txtDetailHausnummerPerson.gridy = 10;
+		panelPerson.add(txtDetailHausnummerPerson, gbc_txtDetailHausnummerPerson);
+		txtDetailHausnummerPerson.setColumns(1);
+		
+		txtDetailPlzPerson = new JTextField();
+		GridBagConstraints gbc_txtDetailPlzPerson = new GridBagConstraints();
+		gbc_txtDetailPlzPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailPlzPerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailPlzPerson.gridx = 5;
+		gbc_txtDetailPlzPerson.gridy = 11;
+		panelPerson.add(txtDetailPlzPerson, gbc_txtDetailPlzPerson);
+		txtDetailPlzPerson.setColumns(1);
+		
+		txtDetailOrtPerson = new JTextField();
+		GridBagConstraints gbc_txtDetailOrtPerson = new GridBagConstraints();
+		gbc_txtDetailOrtPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailOrtPerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailOrtPerson.gridx = 5;
+		gbc_txtDetailOrtPerson.gridy = 12;
+		panelPerson.add(txtDetailOrtPerson, gbc_txtDetailOrtPerson);
+		txtDetailOrtPerson.setColumns(1);
+		
+		txtDetailLandPerson = new JTextField();
+		GridBagConstraints gbc_txtDetailLandPerson = new GridBagConstraints();
+		gbc_txtDetailLandPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailLandPerson.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailLandPerson.gridx = 5;
+		gbc_txtDetailLandPerson.gridy = 13;
+		panelPerson.add(txtDetailLandPerson, gbc_txtDetailLandPerson);
+		txtDetailLandPerson.setColumns(1);
+		
+		txtDetailTitelOrder = new JTextField();
+		GridBagConstraints gbc_txtDetailTitelOrder = new GridBagConstraints();
+		gbc_txtDetailTitelOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailTitelOrder.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailTitelOrder.gridx = 11;
+		gbc_txtDetailTitelOrder.gridy = 4;
+		panelPerson.add(txtDetailTitelOrder, gbc_txtDetailTitelOrder);
+		txtDetailTitelOrder.setColumns(1);
+
+		txtDetailAfOrder = new JTextField();
+		GridBagConstraints gbc_txtDetailAfOrder = new GridBagConstraints();
+		gbc_txtDetailAfOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailAfOrder.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailAfOrder.gridx = 11;
+		gbc_txtDetailAfOrder.gridy = 5;
+		panelPerson.add(txtDetailAfOrder, gbc_txtDetailAfOrder);
+		txtDetailAfOrder.setColumns(1);
+		
+		txtDetailDateinameOrder = new JTextField();
+		GridBagConstraints gbc_txtDetailDateinameOrder = new GridBagConstraints();
+		gbc_txtDetailDateinameOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailDateinameOrder.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailDateinameOrder.gridx = 11;
+		gbc_txtDetailDateinameOrder.gridy = 6;
+		panelPerson.add(txtDetailDateinameOrder, gbc_txtDetailDateinameOrder);
+		txtDetailDateinameOrder.setColumns(1);
+		
+		txtDetailDateiortOrder = new JTextField();
+		GridBagConstraints gbc_txtDetailDateiortOrder = new GridBagConstraints();
+		gbc_txtDetailDateiortOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailDateiortOrder.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailDateiortOrder.gridx = 11;
+		gbc_txtDetailDateiortOrder.gridy = 7;
+		panelPerson.add(txtDetailDateiortOrder, gbc_txtDetailDateiortOrder);
+		txtDetailDateiortOrder.setColumns(1);
+		
+		txtDetailPkOrder = new JTextField();
+		GridBagConstraints gbc_txtDetailPkOrder = new GridBagConstraints();
+		gbc_txtDetailPkOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailPkOrder.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailPkOrder.gridx = 11;
+		gbc_txtDetailPkOrder.gridy = 8;
+		panelPerson.add(txtDetailPkOrder, gbc_txtDetailPkOrder);
+		txtDetailPkOrder.setColumns(1);
+		
+		txtDetailRkOrder = new JTextField();
+		GridBagConstraints gbc_txtDetailRkOrder = new GridBagConstraints();
+		gbc_txtDetailRkOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailRkOrder.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailRkOrder.gridx = 11;
+		gbc_txtDetailRkOrder.gridy = 9;
+		panelPerson.add(txtDetailRkOrder, gbc_txtDetailRkOrder);
+		txtDetailRkOrder.setColumns(1);
+		
+		txtDetailStatusOrder = new JTextField();
+		GridBagConstraints gbc_txtDetailStatusOrder = new GridBagConstraints();
+		gbc_txtDetailStatusOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailStatusOrder.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailStatusOrder.gridx = 11;
+		gbc_txtDetailStatusOrder.gridy = 10;
+		panelPerson.add(txtDetailStatusOrder, gbc_txtDetailStatusOrder);
+		txtDetailStatusOrder.setColumns(1);
+		
+		txtDetailRolleOrder = new JTextField();
+		GridBagConstraints gbc_txtDetailRolleOrder = new GridBagConstraints();
+		gbc_txtDetailRolleOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_txtDetailRolleOrder.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtDetailRolleOrder.gridx = 11;
+		gbc_txtDetailRolleOrder.gridy = 11;
+		panelPerson.add(txtDetailRolleOrder, gbc_txtDetailRolleOrder);
+		txtDetailRolleOrder.setColumns(1);
+		
+		JButton btnSearchPerson = new JButton("Suchen");
+		GridBagConstraints gbc_btnSearchPerson = new GridBagConstraints();
+		gbc_btnSearchPerson.anchor = GridBagConstraints.EAST;
+		gbc_btnSearchPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSearchPerson.gridx = 3;
+		gbc_btnSearchPerson.gridy = 2;
+		panelPerson.add(btnSearchPerson, gbc_btnSearchPerson);
+		
+		JButton btnAlleAnzeigen_1 = new JButton("Alle anzeigen");
+		GridBagConstraints gbc_btnAlleAnzeigen_1 = new GridBagConstraints();
+		gbc_btnAlleAnzeigen_1.anchor = GridBagConstraints.WEST;
+		gbc_btnAlleAnzeigen_1.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAlleAnzeigen_1.gridx = 7;
+		gbc_btnAlleAnzeigen_1.gridy = 2;
+		panelPerson.add(btnAlleAnzeigen_1, gbc_btnAlleAnzeigen_1);
+		
+		JButton btnSuchen = new JButton("Suchen");
+		GridBagConstraints gbc_btnSuchen = new GridBagConstraints();
+		gbc_btnSuchen.anchor = GridBagConstraints.EAST;
+		gbc_btnSuchen.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSuchen.gridx = 9;
+		gbc_btnSuchen.gridy = 2;
+		panelPerson.add(btnSuchen, gbc_btnSuchen);
+		
+		scrollPanePerson = new JScrollPane();
+		GridBagConstraints gbc_scrollPanePerson = new GridBagConstraints();
+		gbc_scrollPanePerson.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPanePerson.fill = GridBagConstraints.BOTH;
+		gbc_scrollPanePerson.gridx = 1;
+		gbc_scrollPanePerson.gridy = 3;
+		gbc_scrollPanePerson.gridwidth = 3;
+		gbc_scrollPanePerson.gridheight = 13;
+		panelPerson.add(scrollPanePerson, gbc_scrollPanePerson);
+		
+		String[] column_headers = {"Name", "Vorname", "Email"};
 		String[][] data = new String[1000][11];
 				
 		tblPersonen = new JTable(data, column_headers);
@@ -288,17 +370,16 @@ public class MainMenu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				DataBase.getConnection();
-				int colnr  = MainMenu.tblPersonen.getSelectedRow();
+				int colnr  = tblPersonen.getSelectedRow();
 				
-				String personName = MainMenu.tblPersonen.getModel().getValueAt(colnr, 1).toString();
-				String personVorname = MainMenu.tblPersonen.getModel().getValueAt(colnr, 2).toString();
+				String personName = tblPersonen.getModel().getValueAt(colnr, 1).toString();
+				String personVorname = tblPersonen.getModel().getValueAt(colnr, 2).toString();
 				String fullName = personVorname + " " + personName;
 				
-//				txtSearchOrder.setText(fullName);
 				DataBase.searchOrder(fullName);
 				
 				PersonObjektRAM clicked = new PersonObjektRAM();
-				String mail = MainMenu.tblPersonen.getModel().getValueAt(colnr, 3).toString();
+				String mail = tblPersonen.getModel().getValueAt(colnr, 3).toString();
 				
 				for (PersonObjektRAM p : DataBase.people) {
 					if (p.getMail().equals(mail) && p.getName().equals(personName) && p.getVorname().equals(personVorname)) {
@@ -321,12 +402,15 @@ public class MainMenu extends JFrame {
 		});
 		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Person", "Name", "Vorname", "Email"}, 0) {
 		
+			private static final long serialVersionUID = -5816265151840752378L;
+
 		@Override
 		public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
 		
+		try {
 		Statement stmt = DataBase.c.createStatement();
 
 		String sql = "SELECT * FROM Person";
@@ -353,17 +437,29 @@ public class MainMenu extends JFrame {
 		    
 		    model.addRow(new Object[]{idPerson, name, vorname, mail});
 		}
+		} catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null, "Fehler im Programm!");
+		}
 		
 		tblPersonen.setModel(model);
 				
-		scrollPane.setViewportView(tblPersonen);
-		TableColumnModel tcm = MainMenu.tblPersonen.getColumnModel();
+		scrollPanePerson.setViewportView(tblPersonen);
+		TableColumnModel tcm = tblPersonen.getColumnModel();
 		tcm.removeColumn( tcm.getColumn(0) );
-				
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(960, 61, 460, 895);
-		panelPerson.add(scrollPane_1);
-			
+		
+		scrollPaneOrder = new JScrollPane();
+		GridBagConstraints gbc_scrollPaneOrder = new GridBagConstraints();
+		gbc_scrollPaneOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPaneOrder.fill = GridBagConstraints.BOTH;
+		gbc_scrollPaneOrder.gridx = 7;
+		gbc_scrollPaneOrder.gridy = 3;
+		gbc_scrollPaneOrder.gridwidth = 3;
+		gbc_scrollPaneOrder.gridheight = 13;
+		panelPerson.add(scrollPaneOrder, gbc_scrollPaneOrder);
+		
+		tblAuftraege = new JTable();
+		scrollPaneOrder.setViewportView(tblAuftraege);
+		
 		String[] column_headers_auftraege = {"Titel", "Status"};
 		String[][] data_auftraege = new String[1000][11];
 		tblAuftraege = new JTable(data_auftraege, column_headers_auftraege);
@@ -395,14 +491,20 @@ public class MainMenu extends JFrame {
 			}
 		});
 		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "Status"}, 0) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
 			};
 			
-			
+			try {
 		String sqlAuftrag = "SELECT * FROM Auftrag";
+		Statement stmt = DataBase.c.createStatement();
 		ResultSet rsAuftrag = stmt.executeQuery(sqlAuftrag);
 		
 		//String r = null;
@@ -420,1904 +522,251 @@ public class MainMenu extends JFrame {
 		    String rk = rsAuftrag.getString("RK");
 		    String status = DataBase.getStatusBeiAuftragId(idAuftrag);
 		    
-		    String rolle = DataBase.getRolleByOrderId(idAuftrag);
-		    //System.out.println(a1);
-		   // System.out.println(j1);
+//		    String rolle = DataBase.getRolleByOrderId(idAuftrag);
 		    
 		    OrderObjektRAM order = new OrderObjektRAM( Integer.parseInt(idAuftrag), titel, af,  dateiname, dateiort, pk,  rk); 
-		    //public OrderObjektRAM(int id_Auftrag, String titel, String af, String dateiname, String dateiort, String pk, String rk) {
 		    DataBase.orders.add(order);
 		    
 		    modelAuftrag.addRow(new Object[]{idAuftrag, titel, status});
 		}
+			} catch (SQLException ex) {
+				JOptionPane.showMessageDialog(null, "Fehler im Programm!");
+			}
 		
 		tblAuftraege.setModel(modelAuftrag);
 		TableColumnModel tcm2 = tblAuftraege.getColumnModel();
 		tcm.removeColumn( tcm2.getColumn(0) );
 				
-		
-		scrollPane_1.setViewportView(tblAuftraege);
-		
-		JLabel lblAuftraege = new JLabel("Auftraege:");
-		lblAuftraege.setBounds(960, 11, 71, 14);
-		panelPerson.add(lblAuftraege);
-		
-		btnSuchen = new JButton("Suchen");
-		btnSuchen.setBounds(147, 27, 120, 23);
-		panelPerson.add(btnSuchen);
-		
-		btnSearchOrder = new JButton("Suchen");
-		btnSearchOrder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				DataBase.searchOrder(txtSearchOrder.getText());
-			}
-		});
-		btnSearchOrder.setBounds(1090, 27, 120, 23);
-		panelPerson.add(btnSearchOrder);
-		
-		JButton btnChangePerson = new JButton("Speichern");
-		btnChangePerson.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					DataBase.getConnection();
-					int colnr  = MainMenu.tblPersonen.getSelectedRow();
-					
-					String personName = MainMenu.tblPersonen.getModel().getValueAt(colnr, 1).toString();
-					String personVorname = MainMenu.tblPersonen.getModel().getValueAt(colnr, 2).toString();
-					
-					PersonObjektRAM clicked = new PersonObjektRAM();
-					String mail = MainMenu.tblPersonen.getModel().getValueAt(colnr, 3).toString();
-					
-					for (PersonObjektRAM p : DataBase.people) {
-						if (p.getMail().equals(mail) && p.getName().equals(personName) && p.getVorname().equals(personVorname)) {
-							clicked = p;
-						}
-					}
-					String oldName = clicked.getName();
-					String oldVorname = clicked.getVorname();
-					String oldTel = clicked.getTelefonnummer();
-					String oldMail = clicked.getMail();
-					String oldRolle = clicked.getRolle();
-					String oldStr = clicked.getStraße();
-					String oldHaus = clicked.getHausnummer();
-					int oldPlz = clicked.getPlz();
-					String oldOrt = clicked.getOrt();
-					String oldLand = clicked.getLand();
-					
-					
-					String newName = txtDetailNamePerson.getText();
-					String newVorname = txtDetailVornamePerson.getText();
-					String newTel = txtDetailTelefonPerson.getText();
-					String newMail = txtDetailMailPerson.getText();
-					String newRolle = txtDetailRollePerson.getText();
-					String newStr = txtDetailStrassePerson.getText();
-					String newHaus = txtDetailHausnummerPerson.getText();
-					int newPlz = Integer.parseInt(txtDetailPlzPerson.getText());
-					String newOrt = txtDetailOrtPerson.getText();
-					String newLand = txtDetailLandPerson.getText();
-					
-					if(!newName.equals(oldName) || !newVorname.equals(oldVorname)) {
-						
-						PersonenFertigungsverwaltung.changeNameSurname(oldVorname, oldName, newVorname, newName);
-						System.out.println(oldName);
-						System.out.println(newVorname);
-						
-						
-					}
-					
-					
-					if(!newTel.equals(oldTel))
-					{
-						PersonenFertigungsverwaltung.changePhoneNumber(oldVorname, oldName, newTel);
-					}
-					
-					
-					if(!newMail.equals(oldMail))
-					{
-						PersonenFertigungsverwaltung.changeMail(oldVorname, oldName, newMail);
-					}
-					
-					if(!newRolle.equals(oldRolle))
-					{
-					PersonenFertigungsverwaltung.changeRolle(clicked.getID_Person(), newRolle);
-					}
-					
-					
-					
-					if(!newLand.equals(oldLand)
-						|| !newStr.equals(oldStr)
-						|| !newOrt.equals(oldOrt)
-						|| !newHaus.equals(oldHaus)
-						|| newPlz != oldPlz)
-					{
-						PersonenFertigungsverwaltung.changeAddressDataSet(oldVorname, oldName, newLand, newStr, newOrt, newHaus, newPlz);
-					}
-					
-					txtDetailNamePerson.setText("");
-					txtDetailVornamePerson.setText("");
-					txtDetailTelefonPerson.setText("");
-					txtDetailMailPerson.setText("");
-					txtDetailRollePerson.setText("");
-					txtDetailStrassePerson.setText("");
-					txtDetailHausnummerPerson.setText("");
-					txtDetailPlzPerson.setText("");
-					txtDetailOrtPerson.setText("");
-					txtDetailLandPerson.setText("");
-					
-					DataBase.loadPeopleToRAM();
-					DataBase.refreshPersonen();
-					
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
-				} finally {
-					DataBase.closeConnection();
-				}
-			}
-		});
-		btnChangePerson.setBounds(677, 346, 120, 23);
-		panelPerson.add(btnChangePerson);
-		
-		JButton btnRefresh = new JButton("Alle anzeigen");
-		btnRefresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-					DataBase.refreshPersonen();				
-			}
-		});
-		
-		btnRefresh.setBounds(10, 27, 120, 23);
-		panelPerson.add(btnRefresh);
-		
-		JButton btnErstellen = new JButton("Erstellen");
-		btnErstellen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				NewOrder x = new NewOrder();
-				x.setVisible(true);
-			}
-		});
-		btnErstellen.setBounds(960, 967, 140, 23);
-		panelPerson.add(btnErstellen);
-		
-		JButton btnChangeOrder = new JButton("Speichern");
-		btnChangeOrder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try{
-//				DataBase.getConnection();
-				
-				int colId = 0;
-				int colTitel = 1;
-				int colAf = 2; 
-				int colDateiname = 3; 
-				int colDateiort = 4; 
-				int colPk= 5;
-				int colRk = 6;
-				int colIdStatus = 7;
-				int colnr  = tblAuftraege.getSelectedRow();
-				
-				/*txtDetailTitelOrder.setText(clicked.getTitel());
-				txtDetailAfOrder.setText(clicked.getAf());
-				txtDetailDateinameOrder.setText(clicked.getDateiname());
-				txtDetailDateiortOrder.setText(clicked.getDateiort());
-				txtDetailPkOrder.setText(clicked.getPk());
-				txtDetailRkOrder.setText(clicked.getRk());
-				txtDetailStatusOrder.setText(DataBase.getStatusBeiAuftragId(id));
-				txtDetailRolleOrder.setText(DataBase.getRolleByOrderId(id));*/
-				
-				OrderObjektRAM clicked = new OrderObjektRAM();
-				String id = MainMenu.tblAuftraege.getModel().getValueAt(colnr, 0).toString();
-				
-				for (OrderObjektRAM o : DataBase.orders) {
-					if (o.getId_Auftrag() == Integer.parseInt(id)) {
-						clicked = o;
-					}
-				}
-				
-				int idOld = Integer.parseInt(id);
-				String headerOld = clicked.getTitel();
-				String afOld = clicked.getAf();
-				String filenameOld = clicked.getDateiname();
-				String repositoryOld = clicked.getDateiort();
-				String pkOld = clicked.getPk();
-				String rkOld = clicked.getRk();
-				String statusOld = DataBase.getStatusBeiAuftragId(id);
-				
-				int colnrPers  = MainMenu.tblPersonen.getSelectedRow();
-				int idPerson = Integer.parseInt(MainMenu.tblPersonen.getModel().getValueAt(colnrPers, 0).toString());
-				String jobOld = DataBase.getRolleByOrderId(id);
-					
-					
-					int idNew = idOld;
-					String headerNew = txtDetailTitelOrder.getText();
-					String afNew = txtDetailAfOrder.getText(); 
-					String filenameNew = txtDetailDateinameOrder.getText();
-					String repositoryNew = txtDetailDateiortOrder.getText();
-					String pkNew = txtDetailPkOrder.getText();
-					String rkNew = txtDetailRkOrder.getText();
-					String jobNew = txtDetailRolleOrder.getText();
-					String statusNew = txtDetailStatusOrder.getText();
-					
-					
-//					Manager.checkStandardOrderUpdate(headerNew, afNew, filenameNew, repositoryNew, pkNew, rkNew);
-					
-					if(!headerNew.equals(headerOld) 
-							||!afNew.equals(afOld) 
-							||!filenameNew.equals(filenameOld)
-							||!repositoryNew.equals(repositoryOld)
-							||!pkNew.equals(pkOld)
-							||!rkNew.equals(rkOld)
-							) {
-						
-						
-						
-						PersonenFertigungsverwaltung.changeDataSetOrder(idNew, headerNew, afNew, filenameNew, repositoryNew, pkNew, rkNew);
-					}
-					
-					
-					PersonenFertigungsverwaltung.changeJobOrderPerson(idPerson, idOld, jobNew);
-
-					Object id_order  =  tblAuftraege.getModel().getValueAt(colnr, 0);
-					
-					Integer idAuftrag = Integer.valueOf(id_order.toString()); 
-					
-
-					
-					PersonenFertigungsverwaltung.alterStatus(idAuftrag, txtDetailStatusOrder.getText());
-					
-					
-						
-					DataBase.refreshOrder();
-					DataBase.refreshOrderBill();
-//					DataBase.closeConnection();
-					
-					
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person und einen Auftrag aus.");
-				} 
-//				catch (InvalidArgumentsException e) {
-//					
-//				}
-				
-				
-			}
-		});
-		btnChangeOrder.setBounds(1620, 293, 120, 23);
-		panelPerson.add(btnChangeOrder);
-		
-		JButton btnDeleteOrder = new JButton("Auftrag Loeschen");
-		btnDeleteOrder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model = (DefaultTableModel) tblAuftraege.getModel();
-				//get selected row index
-				int selectedRowIndex = tblAuftraege.getSelectedRow();
-				if (selectedRowIndex >= 0) {
-				try {
-				DeleteOrder x = new DeleteOrder();
-				x.setVisible(true);
-				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Auftrag aus.");
-				}
-				
-			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Auftrag aus.");
-			}
-			}
-		});
-		btnDeleteOrder.setBounds(1280, 967, 140, 23);
-		panelPerson.add(btnDeleteOrder);
-		
-		txtSearchOrder = new JTextField();
-		txtSearchOrder.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent arg0) {
-				SwingUtilities.getRootPane(btnSearchOrder).setDefaultButton(btnSearchOrder);
-			}
-		});
-		txtSearchOrder.setBounds(1220, 28, 200, 20);
-		panelPerson.add(txtSearchOrder);
-		txtSearchOrder.setColumns(10);
-		
-		JButton btnNewButton = new JButton("?Status aendern?");
-		
-		btnNewButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				try {
-				int colnr  = tblAuftraege.getSelectedRow();
-
-				Object id_order  =  tblAuftraege.getModel().getValueAt(colnr, 0);
-				
-				Integer id = Integer.valueOf(id_order.toString()); 
-				
-				
-				AlterStatus x = new AlterStatus(id.intValue()); // -id Order 
-				x.setVisible(true);  
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Auftrag aus.");
-				}
-			}
-		});
-		btnNewButton.setBounds(1615, 891, 140, 23);
-		panelPerson.add(btnNewButton);
-		
-		JButton btnShowAllOrders = new JButton("Alle anzeigen");
-		btnShowAllOrders.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-					DataBase.refreshOrder();				
-			}
-		});
-		btnShowAllOrders.setBounds(960, 27, 120, 23);
-		panelPerson.add(btnShowAllOrders);
+		scrollPaneOrder.setViewportView(tblAuftraege);
 		
 		JLabel lblDetailsPerson = new JLabel("Details:");
 		lblDetailsPerson.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblDetailsPerson.setBounds(487, 68, 60, 14);
-		panelPerson.add(lblDetailsPerson);
+		GridBagConstraints gbc_lblDetailsPerson = new GridBagConstraints();
+		gbc_lblDetailsPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDetailsPerson.gridx = 4;
+		gbc_lblDetailsPerson.gridy = 3;
+		panelPerson.add(lblDetailsPerson, gbc_lblDetailsPerson);
 		
-		JLabel lblDetailNamePerson = new JLabel("Name:");
-		lblDetailNamePerson.setBounds(487, 93, 140, 14);
-		panelPerson.add(lblDetailNamePerson);
+		JLabel lblDetailsOrder = new JLabel("Details:");
+		lblDetailsOrder.setFont(new Font("Tahoma", Font.BOLD, 15));
+		GridBagConstraints gbc_lblDetailsOrder = new GridBagConstraints();
+		gbc_lblDetailsOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDetailsOrder.gridx = 10;
+		gbc_lblDetailsOrder.gridy = 3;
+		panelPerson.add(lblDetailsOrder, gbc_lblDetailsOrder);
 		
-		JLabel lblDetailVoramePerson = new JLabel("Vorname:");
-		lblDetailVoramePerson.setBounds(487, 118, 140, 14);
-		panelPerson.add(lblDetailVoramePerson);
-		
-		JLabel lblDetailTelefonnummerPerson = new JLabel("Telefonnummer:");
-		lblDetailTelefonnummerPerson.setBounds(487, 143, 140, 14);
-		panelPerson.add(lblDetailTelefonnummerPerson);
-		
-		JLabel lblDetailEmailPerson = new JLabel("Email:");
-		lblDetailEmailPerson.setBounds(487, 168, 140, 14);
-		panelPerson.add(lblDetailEmailPerson);
-		
-		JLabel lblDetailRollePerson = new JLabel("Rolle:");
-		lblDetailRollePerson.setBounds(487, 193, 140, 14);
-		panelPerson.add(lblDetailRollePerson);
-		
-		JLabel lblDetailStrassePerson = new JLabel("Stra\u00DFe:");
-		lblDetailStrassePerson.setBounds(487, 218, 140, 14);
-		panelPerson.add(lblDetailStrassePerson);
-		
-		JLabel lblDetailHausnummerPerson = new JLabel("Hausnummer:");
-		lblDetailHausnummerPerson.setBounds(487, 243, 140, 14);
-		panelPerson.add(lblDetailHausnummerPerson);
-		
-		JLabel lblDetailPlzPerson = new JLabel("PLZ:");
-		lblDetailPlzPerson.setBounds(487, 268, 140, 14);
-		panelPerson.add(lblDetailPlzPerson);
-		
-		JLabel lblDetailLandPerson = new JLabel("Land:");
-		lblDetailLandPerson.setBounds(487, 293, 140, 14);
-		panelPerson.add(lblDetailLandPerson);
-		
-		JLabel lblDetailOrtPerson = new JLabel("Ort:");
-		lblDetailOrtPerson.setBounds(487, 318, 140, 14);
-		panelPerson.add(lblDetailOrtPerson);
-		
-		txtDetailNamePerson = new JTextField();
-		txtDetailNamePerson.setBounds(637, 90, 160, 20);
-		panelPerson.add(txtDetailNamePerson);
-		txtDetailNamePerson.setColumns(10);
-		
-		txtDetailVornamePerson = new JTextField();
-		txtDetailVornamePerson.setBounds(637, 115, 160, 20);
-		panelPerson.add(txtDetailVornamePerson);
-		txtDetailVornamePerson.setColumns(10);
-		
-		txtDetailTelefonPerson = new JTextField();
-		txtDetailTelefonPerson.setBounds(637, 140, 160, 20);
-		panelPerson.add(txtDetailTelefonPerson);
-		txtDetailTelefonPerson.setColumns(10);
-		
-		txtDetailMailPerson = new JTextField();
-		txtDetailMailPerson.setBounds(637, 165, 160, 20);
-		panelPerson.add(txtDetailMailPerson);
-		txtDetailMailPerson.setColumns(10);
-		
-		txtDetailRollePerson = new JTextField();
-		txtDetailRollePerson.setBounds(637, 190, 160, 20);
-		panelPerson.add(txtDetailRollePerson);
-		txtDetailRollePerson.setColumns(10);
-		
-		txtDetailStrassePerson = new JTextField();
-		txtDetailStrassePerson.setBounds(637, 215, 160, 20);
-		panelPerson.add(txtDetailStrassePerson);
-		txtDetailStrassePerson.setColumns(10);
-		
-		txtDetailHausnummerPerson = new JTextField();
-		txtDetailHausnummerPerson.setBounds(637, 240, 160, 20);
-		panelPerson.add(txtDetailHausnummerPerson);
-		txtDetailHausnummerPerson.setColumns(10);
-		
-		txtDetailPlzPerson = new JTextField();
-		txtDetailPlzPerson.setBounds(637, 265, 160, 20);
-		panelPerson.add(txtDetailPlzPerson);
-		txtDetailPlzPerson.setColumns(10);
-		
-		txtDetailLandPerson = new JTextField();
-		txtDetailLandPerson.setBounds(637, 290, 160, 20);
-		panelPerson.add(txtDetailLandPerson);
-		txtDetailLandPerson.setColumns(10);
-		
-		txtDetailOrtPerson = new JTextField();
-		txtDetailOrtPerson.setBounds(637, 315, 160, 20);
-		panelPerson.add(txtDetailOrtPerson);
-		txtDetailOrtPerson.setColumns(10);
-		
-		JLabel label_1 = new JLabel("Details:");
-		label_1.setFont(new Font("Tahoma", Font.BOLD, 15));
-		label_1.setBounds(1430, 70, 60, 14);
-		panelPerson.add(label_1);
+		JLabel lblName = new JLabel("Name:");
+		GridBagConstraints gbc_lblName = new GridBagConstraints();
+		gbc_lblName.insets = new Insets(0, 0, 5, 5);
+		gbc_lblName.gridx = 4;
+		gbc_lblName.gridy = 4;
+		panelPerson.add(lblName, gbc_lblName);
 		
 		JLabel lblTitel = new JLabel("Titel:");
-		lblTitel.setBounds(1430, 93, 140, 14);
-		panelPerson.add(lblTitel);
+		GridBagConstraints gbc_lblTitel = new GridBagConstraints();
+		gbc_lblTitel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTitel.gridx = 10;
+		gbc_lblTitel.gridy = 4;
+		panelPerson.add(lblTitel, gbc_lblTitel);
+		
+		JLabel lblVorname = new JLabel("Vorname:");
+		GridBagConstraints gbc_lblVorname = new GridBagConstraints();
+		gbc_lblVorname.insets = new Insets(0, 0, 5, 5);
+		gbc_lblVorname.gridx = 4;
+		gbc_lblVorname.gridy = 5;
+		panelPerson.add(lblVorname, gbc_lblVorname);
 		
 		JLabel lblArtDerFertigung = new JLabel("Art der Fertigung:");
-		lblArtDerFertigung.setBounds(1430, 118, 140, 14);
-		panelPerson.add(lblArtDerFertigung);
+		GridBagConstraints gbc_lblArtDerFertigung = new GridBagConstraints();
+		gbc_lblArtDerFertigung.insets = new Insets(0, 0, 5, 5);
+		gbc_lblArtDerFertigung.gridx = 10;
+		gbc_lblArtDerFertigung.gridy = 5;
+		panelPerson.add(lblArtDerFertigung, gbc_lblArtDerFertigung);
+		
+		JLabel lblTelefonnummer = new JLabel("Telefonnummer:");
+		GridBagConstraints gbc_lblTelefonnummer = new GridBagConstraints();
+		gbc_lblTelefonnummer.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTelefonnummer.gridx = 4;
+		gbc_lblTelefonnummer.gridy = 6;
+		panelPerson.add(lblTelefonnummer, gbc_lblTelefonnummer);
 		
 		JLabel lblDateiname = new JLabel("Dateiname:");
-		lblDateiname.setBounds(1430, 143, 140, 14);
-		panelPerson.add(lblDateiname);
+		GridBagConstraints gbc_lblDateiname = new GridBagConstraints();
+		gbc_lblDateiname.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDateiname.gridx = 10;
+		gbc_lblDateiname.gridy = 6;
+		panelPerson.add(lblDateiname, gbc_lblDateiname);
 		
-		JLabel lblDateiort = new JLabel("Dateiort:");
-		lblDateiort.setBounds(1430, 168, 140, 14);
-		panelPerson.add(lblDateiort);
+		JLabel lblEmail = new JLabel("E-Mail:");
+		GridBagConstraints gbc_lblEmail = new GridBagConstraints();
+		gbc_lblEmail.insets = new Insets(0, 0, 5, 5);
+		gbc_lblEmail.gridx = 4;
+		gbc_lblEmail.gridy = 7;
+		panelPerson.add(lblEmail, gbc_lblEmail);
+		
+		JLabel lblOrderDateiort = new JLabel("Dateiort:");
+		GridBagConstraints gbc_lblOrderDateiort = new GridBagConstraints();
+		gbc_lblOrderDateiort.insets = new Insets(0, 0, 5, 5);
+		gbc_lblOrderDateiort.gridx = 10;
+		gbc_lblOrderDateiort.gridy = 7;
+		panelPerson.add(lblOrderDateiort, gbc_lblOrderDateiort);
+		
+		JLabel lblRolle = new JLabel("Rolle:");
+		GridBagConstraints gbc_lblRolle = new GridBagConstraints();
+		gbc_lblRolle.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRolle.gridx = 4;
+		gbc_lblRolle.gridy = 8;
+		panelPerson.add(lblRolle, gbc_lblRolle);
 		
 		JLabel lblPrognostizierteKosten = new JLabel("Prognostizierte Kosten:");
-		lblPrognostizierteKosten.setBounds(1430, 193, 140, 14);
-		panelPerson.add(lblPrognostizierteKosten);
+		GridBagConstraints gbc_lblPrognostizierteKosten = new GridBagConstraints();
+		gbc_lblPrognostizierteKosten.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPrognostizierteKosten.gridx = 10;
+		gbc_lblPrognostizierteKosten.gridy = 8;
+		panelPerson.add(lblPrognostizierteKosten, gbc_lblPrognostizierteKosten);
+		
+		JLabel lblStrae = new JLabel("Stra\u00DFe:");
+		GridBagConstraints gbc_lblStrae = new GridBagConstraints();
+		gbc_lblStrae.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStrae.gridx = 4;
+		gbc_lblStrae.gridy = 9;
+		panelPerson.add(lblStrae, gbc_lblStrae);
 		
 		JLabel lblReelleKosten = new JLabel("Reelle Kosten:");
-		lblReelleKosten.setBounds(1430, 218, 140, 14);
-		panelPerson.add(lblReelleKosten);
+		GridBagConstraints gbc_lblReelleKosten = new GridBagConstraints();
+		gbc_lblReelleKosten.insets = new Insets(0, 0, 5, 5);
+		gbc_lblReelleKosten.gridx = 10;
+		gbc_lblReelleKosten.gridy = 9;
+		panelPerson.add(lblReelleKosten, gbc_lblReelleKosten);
+		
+		JLabel lblHausnummer = new JLabel("Hausnummer:");
+		GridBagConstraints gbc_lblHausnummer = new GridBagConstraints();
+		gbc_lblHausnummer.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHausnummer.gridx = 4;
+		gbc_lblHausnummer.gridy = 10;
+		panelPerson.add(lblHausnummer, gbc_lblHausnummer);
 		
 		JLabel lblStatus = new JLabel("Status:");
-		lblStatus.setBounds(1430, 243, 140, 14);
-		panelPerson.add(lblStatus);
+		GridBagConstraints gbc_lblStatus = new GridBagConstraints();
+		gbc_lblStatus.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStatus.gridx = 10;
+		gbc_lblStatus.gridy = 10;
+		panelPerson.add(lblStatus, gbc_lblStatus);
 		
-		txtDetailPkOrder = new JTextField();
-		txtDetailPkOrder.setBounds(1580, 190, 160, 20);
-		panelPerson.add(txtDetailPkOrder);
-		txtDetailPkOrder.setColumns(10);
-		
-		txtDetailDateiortOrder = new JTextField();
-		txtDetailDateiortOrder.setBounds(1580, 165, 160, 20);
-		panelPerson.add(txtDetailDateiortOrder);
-		txtDetailDateiortOrder.setColumns(10);
-		
-		txtDetailDateinameOrder = new JTextField();
-		txtDetailDateinameOrder.setBounds(1580, 140, 160, 20);
-		panelPerson.add(txtDetailDateinameOrder);
-		txtDetailDateinameOrder.setColumns(10);
-		
-		txtDetailAfOrder = new JTextField();
-		txtDetailAfOrder.setBounds(1580, 115, 160, 20);
-		panelPerson.add(txtDetailAfOrder);
-		txtDetailAfOrder.setColumns(10);
-		
-		txtDetailTitelOrder = new JTextField();
-		txtDetailTitelOrder.setBounds(1580, 90, 160, 20);
-		panelPerson.add(txtDetailTitelOrder);
-		txtDetailTitelOrder.setColumns(10);
-		
-		txtDetailRkOrder = new JTextField();
-		txtDetailRkOrder.setBounds(1580, 215, 160, 20);
-		panelPerson.add(txtDetailRkOrder);
-		txtDetailRkOrder.setColumns(10);
-		
-		txtDetailStatusOrder = new JTextField();
-		txtDetailStatusOrder.setBounds(1580, 240, 160, 20);
-		panelPerson.add(txtDetailStatusOrder);
-		txtDetailStatusOrder.setColumns(10);
+		JLabel lblPlz = new JLabel("PLZ:");
+		GridBagConstraints gbc_lblPlz = new GridBagConstraints();
+		gbc_lblPlz.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPlz.gridx = 4;
+		gbc_lblPlz.gridy = 11;
+		panelPerson.add(lblPlz, gbc_lblPlz);
 		
 		JLabel lblRolleDerPerson = new JLabel("Rolle der Person:");
-		lblRolleDerPerson.setBounds(1430, 268, 140, 14);
-		panelPerson.add(lblRolleDerPerson);
+		GridBagConstraints gbc_lblRolleDerPerson = new GridBagConstraints();
+		gbc_lblRolleDerPerson.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRolleDerPerson.gridx = 10;
+		gbc_lblRolleDerPerson.gridy = 11;
+		panelPerson.add(lblRolleDerPerson, gbc_lblRolleDerPerson);
 		
-		txtDetailRolleOrder = new JTextField();
-		txtDetailRolleOrder.setBounds(1580, 265, 160, 20);
-		panelPerson.add(txtDetailRolleOrder);
-		txtDetailRolleOrder.setColumns(10);
+		JLabel lblStadt = new JLabel("Stadt:");
+		GridBagConstraints gbc_lblStadt = new GridBagConstraints();
+		gbc_lblStadt.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStadt.gridx = 4;
+		gbc_lblStadt.gridy = 12;
+		panelPerson.add(lblStadt, gbc_lblStadt);
 		
-		btnLoeschen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				DefaultTableModel model = (DefaultTableModel) tblPersonen.getModel();
-				//get selected row index
-				int selectedRowIndex = tblPersonen.getSelectedRow();
-				if (selectedRowIndex >= 0) {
-				try {
-				Delete x = new Delete();
-				x.setVisible(true);
-				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
-				}
-				
-			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
-			}
-				
-			}
-		});
+		JButton btnSaveOrder = new JButton("Speichern");
+		GridBagConstraints gbc_btnSaveOrder = new GridBagConstraints();
+		gbc_btnSaveOrder.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSaveOrder.gridx = 11;
+		gbc_btnSaveOrder.gridy = 12;
+		panelPerson.add(btnSaveOrder, gbc_btnSaveOrder);
 		
-		btnSuchen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-//				DataBase.searchTable(txtSuchen.getText());
-				DataBase.searchPerson(txtSuchen.getText());
-			}
-		});
+		JLabel lblLand = new JLabel("Land:");
+		GridBagConstraints gbc_lblLand = new GridBagConstraints();
+		gbc_lblLand.insets = new Insets(0, 0, 5, 5);
+		gbc_lblLand.gridx = 4;
+		gbc_lblLand.gridy = 13;
+		panelPerson.add(lblLand, gbc_lblLand);
 		
-		JPanel panelOrders = new JPanel();
-		tabbedPane.addTab("Offene Auftraege", null, panelOrders, null);
-		panelOrders.setLayout(null);
+		JButton btnSavePerson = new JButton("Speichern");
+		GridBagConstraints gbc_btnSavePerson = new GridBagConstraints();
+		gbc_btnSavePerson.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSavePerson.gridx = 5;
+		gbc_btnSavePerson.gridy = 14;
+		panelPerson.add(btnSavePerson, gbc_btnSavePerson);
 		
-		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(10, 56, 939, 344);
-		panelOrders.add(scrollPane_2);
+		JButton btnNewPerson = new JButton("Neue Person");
+		GridBagConstraints gbc_btnNewPerson = new GridBagConstraints();
+		gbc_btnNewPerson.insets = new Insets(0, 0, 0, 5);
+		gbc_btnNewPerson.gridx = 1;
+		gbc_btnNewPerson.gridy = 16;
+		panelPerson.add(btnNewPerson, gbc_btnNewPerson);
 		
-		String[] column_headers_orders = {"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"};
-		String[][] data_orders = new String[1000][7];
-		tblOffeneAuftraege = new JTable(data_orders, column_headers_orders);
-		tblOffeneAuftraege.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				try {
-				OrderApprove x = new OrderApprove(); // -id Order 
-				x.setVisible(true);  
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine  aus.");
-				}	
-			}
-		});
-		DefaultTableModel modelOffeneAuftraege = new DefaultTableModel(new String[]{"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"}, 0) {
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};	
-			
-			DataBase.loadOffeneAuftraegeToRam();
-			
-			
-			for(OffenerAuftragObjektRAM tmp: DataBase.offeneAuftraege) {
-				
-			int id_aenderung = tmp.getid_aenderung();
-			int id_bauteil = tmp.getId_bauteil();
-			int id_person = tmp.getId_person();
-			String vorname = tmp.getVorname();
-			String name = tmp.getName();
-			String timestamp = tmp.getTimestamp();
-			int aenderung = tmp.getAenderung();
-			
-			
-			 modelOffeneAuftraege.addRow(new Object[]{id_aenderung, id_bauteil, id_person, vorname, name, timestamp, aenderung});
-			
-			
-			
-	
-			}
-			
-			tblOffeneAuftraege.setModel(modelOffeneAuftraege);
+		JButton btnDeletePerson = new JButton("Person l\u00F6schen");
+		GridBagConstraints gbc_btnDeletePerson = new GridBagConstraints();
+		gbc_btnDeletePerson.insets = new Insets(0, 0, 0, 5);
+		gbc_btnDeletePerson.gridx = 3;
+		gbc_btnDeletePerson.gridy = 16;
+		panelPerson.add(btnDeletePerson, gbc_btnDeletePerson);
 		
+		JButton btnCreateOrder = new JButton("Auftrag erstellen");
+		GridBagConstraints gbc_btnCreateOrder = new GridBagConstraints();
+		gbc_btnCreateOrder.insets = new Insets(0, 0, 0, 5);
+		gbc_btnCreateOrder.gridx = 7;
+		gbc_btnCreateOrder.gridy = 16;
+		panelPerson.add(btnCreateOrder, gbc_btnCreateOrder);
 		
-		scrollPane_2.setViewportView(tblOffeneAuftraege);
-		//contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panelPerson, btnHinzufuegen, btnLoeschen, txtSuchen, tabbedPane, lblNewLabel, scrollPane, tblPersonen, scrollPane_1, tblAuftraege, lblAuftraege, btnSuchen, btnSearchOrder, btnChangePerson, btnRefresh, btnErstellen, btnChangeOrder, btnDeleteOrder, txtSearchOrder, btnNewButton, panelFinanz, panelBau, panelOrders}));
+		JButton btnDeleteOrder = new JButton("Auftrag l\u00F6schen");
+		GridBagConstraints gbc_btnDeleteOrder = new GridBagConstraints();
+		gbc_btnDeleteOrder.insets = new Insets(0, 0, 0, 5);
+		gbc_btnDeleteOrder.gridx = 9;
+		gbc_btnDeleteOrder.gridy = 16;
+		panelPerson.add(btnDeleteOrder, gbc_btnDeleteOrder);
+		
+		JPanel panelBauteil = new JPanel();
+		tabbedPane.addTab("Bauteileverwaltung", null, panelBauteil, null);
+		GridBagLayout gbl_panelBauteil = new GridBagLayout();
+		gbl_panelBauteil.columnWidths = new int[]{0};
+		gbl_panelBauteil.rowHeights = new int[]{0};
+		gbl_panelBauteil.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelBauteil.rowWeights = new double[]{Double.MIN_VALUE};
+		panelBauteil.setLayout(gbl_panelBauteil);
 		
 		JPanel panelFinanz = new JPanel();
 		tabbedPane.addTab("Finanzverwaltung", null, panelFinanz, null);
-		panelFinanz.setLayout(null);		
+		panelFinanz.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		scrollPane_Kasse = new JScrollPane();
-		scrollPane_Kasse.setBounds(10, 61, 134, 180);
-		panelFinanz.add(scrollPane_Kasse);
-			
+		JTabbedPane tabbedPaneFinanz = new JTabbedPane(JTabbedPane.TOP);
+		panelFinanz.add(tabbedPaneFinanz);
 		
-		String[] column_headers_kasse = {"ID_Kasse", "Art", "Nummer", "Soll", "Ist"};
-		String[][] data_kasse = new String[1000][11];
-		tblKasse = new JTable(data_kasse, column_headers_kasse);
-		tblKasse.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-				DataBase.getConnection();
-				int colnr  = MainMenu.tblKasse.getSelectedRow();
-				DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "Soll", "Ist"}, 0) {
-					
-					@Override
-					public boolean isCellEditable(int row, int column) {
-							return false;
-						}
-					};
-				String id = MainMenu.tblKasse.getModel().getValueAt(colnr, 0).toString();
-				
-			
-				
-				Statement stmtTopf = null;
-				
-					try {
-						
-						stmtTopf = DataBase.c.createStatement();
-						System.out.println("Statement");
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
-				
-				String sqlTopf = "SELECT Topf.* FROM Topf INNER JOIN 'Mischtabelle-Kasse-Topf' on Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf where 'Mischtabelle-Kasse-Topf'.ID_Kasse ="+id+";";
-				
-				ResultSet rsTopf = null;
-				
-					try {
-						rsTopf = stmtTopf.executeQuery(sqlTopf);
-						System.out.println("Query executed");
-						System.out.println(rsTopf);
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
-				
-				
-				
-				
-				
-					try {
-						while(rsTopf.next())
-						{
-							String a1 = rsTopf.getString("ID_Topf");
-						 
-						    String c1 = rsTopf.getString("Soll");
-						    String d1 = rsTopf.getString("Ist");
-						    
-						    
-						 
-						  
-						    
-						    modelTopf.addRow(new Object[]{a1,c1,d1});
-						    
-						    System.out.println("While done");
-						    
-						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					tblTopf.setModel(modelTopf);
-				
-				
-				
-				
-				
-				
-				DataBase.closeConnection();
-			}
-		});
-		DefaultTableModel modelKasse = new DefaultTableModel(new String[]{"ID_Kasse", "Art", "Nummer", "Soll", "Ist"}, 0) {
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-		String sqlKasse = "SELECT * FROM Kasse";
-		ResultSet rsKasse = stmt.executeQuery(sqlKasse);
-		
-		while(rsKasse.next())
-		{
-			String a1 = rsKasse.getString("ID_Kasse");
-		    String b1 = rsKasse.getString("Art");
-		    String c1 = rsKasse.getString("Nummer");
-		    String d1 = rsKasse.getString("Soll");
-		    String e1 = rsKasse.getString("Ist");
-		    
-		    modelKasse.addRow(new Object[]{a1, b1,c1,d1,e1});
-		}
-		
-		tblKasse.setModel(modelKasse);
-				
-		scrollPane_Kasse.setViewportView(tblKasse);
-		
-		JLabel lblKassen = new JLabel("Kasse:");
-		lblKassen.setBounds(10, 36, 46, 14);
-		panelFinanz.add(lblKassen);
-		
-		scrollPane_Topf = new JScrollPane();
-		scrollPane_Topf.setBounds(154, 61, 282, 180);
-		panelFinanz.add(scrollPane_Topf);
-			
-		
-		String[] column_headers_topf = {"ID_Topf", "ID_Kasse", "Soll", "Ist"};
-		String[][] data_topf = new String[1000][11];
-		tblTopf = new JTable(data_topf, column_headers_topf);
-		tblTopf.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				
-				DataBase.getConnection();
-				int colnr  = MainMenu.tblTopf.getSelectedRow();
-				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
-					
-					@Override
-					public boolean isCellEditable(int row, int column) {
-							return false;
-						}
-					};
-				String id = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
-				
-			
-				
-				Statement stmtRechnung = null;
-				
-					try {
-						
-						stmtRechnung = DataBase.c.createStatement();
-						System.out.println("Statement");
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				
-				
-				String sqlRechnung = "SELECT Rechnung.* FROM Rechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on Rechnung.ID_Rechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+";";
-				
-				ResultSet rsRechnung = null;
-				
-					try {
-						rsRechnung = stmtRechnung.executeQuery(sqlRechnung);
-						System.out.println("Query executed");
-						System.out.println(rsRechnung);
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				
-				
-				
-				
-				
-				
-					try {
-						while(rsRechnung.next())
-						{
-							String a1 = rsRechnung.getString("ID_Rechnung");
-						    String b1 = rsRechnung.getString("Rechnungsname");
-						    String c1 = rsRechnung.getString("Auftraggeber");
-//						    String d1 = rsRechnung.getString("Bezahlung_Art");
-						    String e1 = rsRechnung.getString("Betrag");
-						    String f1 = rsRechnung.getString("Beschreibung");
-						    String g1 = rsRechnung.getString("Bearbeiter");
-						    String h1 = rsRechnung.getString("Timestamp");
-						    
-						    modelRechnung.addRow(new Object[]{a1, b1,c1, e1, f1, g1, h1});
-						}
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					tblRechn.setModel(modelRechnung);
-				
-				
-				
-				
-				
-				
-				DataBase.closeConnection();
-			}
-		});
-		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "ID_Kasse", "Soll", "Ist"}, 0) {
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-		String sqlTopf = "SELECT Topf.*, 'Mischtabelle-Kasse-Topf'.ID_Kasse FROM Topf LEFT JOIN 'Mischtabelle-Kasse-Topf' ON Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf;";
-		ResultSet rsTopf = stmt.executeQuery(sqlTopf);
-		
-		while(rsTopf.next())
-		{
-			String a1 = rsTopf.getString("ID_Topf");
-		    String b1 = rsTopf.getString("ID_Kasse");
-		    String c1 = rsTopf.getString("Soll");
-		    String d1 = rsTopf.getString("Ist");
-		    
-		    modelTopf.addRow(new Object[]{a1,b1,c1,d1});
-		}
-		
-		tblTopf.setModel(modelTopf);
-				
-		scrollPane_Topf.setViewportView(tblTopf);
-		
-		
-		JLabel lblTopf = new JLabel("Topf:");
-		lblTopf.setBounds(220, 36, 46, 14);
-		panelFinanz.add(lblTopf);
-		
-		scrollPane_Rechnung = new JScrollPane();
-		scrollPane_Rechnung.setBounds(446, 61, 489, 180);
-		panelFinanz.add(scrollPane_Rechnung);
-			
-		
-		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"};
-		String[][] data_rechnung = new String[1000][11];
-		tblRechn = new JTable(data_rechnung, column_headers_topf);
-		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-		String sqlRechnung = "SELECT * FROM Rechnung";
-		ResultSet rsRechnung = stmt.executeQuery(sqlRechnung);
-		
-		while(rsRechnung.next())
-		{
-			String a1 = rsRechnung.getString("ID_Rechnung");
-		    String b1 = rsRechnung.getString("Rechnungsname");
-		    String c1 = rsRechnung.getString("Auftraggeber");
-//		    String d1 = rsRechnung.getString("Bezahlung_Art");
-		    String e1 = rsRechnung.getString("Betrag");
-		    String f1 = rsRechnung.getString("Beschreibung");
-		    String g1 = rsRechnung.getString("Bearbeiter");
-		    String h1 = rsRechnung.getString("Timestamp");
-		    
-		    modelRechnung.addRow(new Object[]{a1, b1,c1, e1, f1, g1, h1});
-		}
-		
-		tblRechn.setModel(modelRechnung);
-				
-		scrollPane_Rechnung.setViewportView(tblRechn);
-		
-		
-		JLabel lblRechnung = new JLabel("Rechnung:");
-		lblRechnung.setBounds(446, 36, 83, 14);
-		panelFinanz.add(lblRechnung);
-		
-		JButton btnNeueKasse = new JButton("Neue Kasse");
-		btnNeueKasse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				AddKasse x = new AddKasse();
-				x.setVisible(true);
-			}
-		});
-		btnNeueKasse.setBounds(10, 252, 134, 23);
-		panelFinanz.add(btnNeueKasse);
-		
-		JButton btnAendern_2 = new JButton("Aendern");
-		btnAendern_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-				AlterKasse x = new AlterKasse();
-				x.setVisible(true);
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus!");
-				}
-			}
-		});
-		btnAendern_2.setBounds(10, 286, 134, 23);
-		panelFinanz.add(btnAendern_2);
-		
-		JButton btnKasseLoeschen = new JButton("Kasse Loeschen");
-		btnKasseLoeschen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				DefaultTableModel model = (DefaultTableModel) tblKasse.getModel();
-				//get selected row index
-				int selectedRowIndex = tblKasse.getSelectedRow();
-				try {
-				DeleteKasse x = new DeleteKasse();
-				x.setVisible(true);
-				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
-				}
-			}
-		});
-		btnKasseLoeschen.setBounds(10, 320, 134, 23);
-		panelFinanz.add(btnKasseLoeschen);
-		
-		JButton btnTopfErstellen = new JButton("Topf erstellen");
-		btnTopfErstellen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				AddTopf x = new AddTopf();
-				x.setVisible(true);
-			}
-		});
-		btnTopfErstellen.setBounds(220, 252, 134, 23);
-		panelFinanz.add(btnTopfErstellen);
-		
-		JButton btnTopfaendern = new JButton("Topf Aendern");
-		btnTopfaendern.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					//n
-					String oldSoll = null; 
-					String oldIst = null; 
-					String oldIdKasse = null; 
-			
-					
-					int colnr = tblTopf.getSelectedRow();
-					String idTopf = tblTopf.getModel().getValueAt(colnr, 0).toString();
-					
-					if (tblKasse.getSelectedRow() < 0 ) {
-					 oldIdKasse = tblTopf.getModel().getValueAt(colnr, 1).toString();
-					  oldSoll = tblTopf.getModel().getValueAt(colnr, 2).toString();
-					 oldIst = tblTopf.getModel().getValueAt(colnr, 3).toString(); 
-					} else {
-						 oldSoll = tblTopf.getModel().getValueAt(colnr, 1).toString();
-						 oldIst = tblTopf.getModel().getValueAt(colnr, 2).toString();
-						 oldIdKasse = tblKasse.getModel().getValueAt(tblKasse.getSelectedRow(), 0).toString();
-					}
-					
-					
-				
-					
-					//n
-					AlterTopf x = new AlterTopf(colnr, idTopf, oldIdKasse, oldSoll, oldIst);
-					x.setVisible(true);
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus.");
-				}
-			}
-		});
-		btnTopfaendern.setBounds(220, 286, 134, 23);
-		panelFinanz.add(btnTopfaendern);
-		
-		JButton btnTopfLoeschen = new JButton("Topf Loeschen");
-		btnTopfLoeschen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					DeleteTopf x = new DeleteTopf();
-					x.setVisible(true);
-				}catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus.");
-				}
-			}
-		});
-		btnTopfLoeschen.setBounds(220, 320, 134, 23);
-		panelFinanz.add(btnTopfLoeschen);
-		
-		JButton btnRechnungZuTopf = new JButton("Rechnung einem Topf hinzuf\u00FCgen");
-		btnRechnungZuTopf.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					TopfRechnung x = new TopfRechnung();
-					x.setVisible(true);
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
-				}
-			}
-		});
-		btnRechnungZuTopf.setBounds(446, 252, 250, 23);
-		panelFinanz.add(btnRechnungZuTopf);
-		
-		JButton btnNewButton_1 = new JButton("Alle anzeigen");
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				
-				DataBase.refreshBill2();
-				DataBase.refreshKasse();
-				DataBase.refreshTopf();
-			}
-		});
-		btnNewButton_1.setBounds(133, 2, 151, 23);
-		panelFinanz.add(btnNewButton_1);
-		
-		JButton btnDeleteRechnungFromTopf = new JButton("Rechnung von Topf entfernen");
-		btnDeleteRechnungFromTopf.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					int colnrRechnung = MainMenu.tblRechn.getSelectedRow();
-					String idRechnung = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 0).toString();
-					
-					Finanzverwaltung.deleteBillFromTopf(Integer.parseInt(idRechnung));
-					//DataBase.refreshBill2();
-					} catch (ArrayIndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf und eine Rechnung aus!");
-					}
-			}
-		});
-		btnDeleteRechnungFromTopf.setBounds(446, 286, 250, 23);
-		panelFinanz.add(btnDeleteRechnungFromTopf);
-		
-		JButton btnSuchen_1 = new JButton("Suchen");
-		btnSuchen_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				DataBase.searchBill(txtSearchBill.getText());
-			}
-		});
-		btnSuchen_1.setBounds(685, 32, 89, 23);
-		panelFinanz.add(btnSuchen_1);
-		
-		txtSearchBill = new JTextField();
-		txtSearchBill.setBounds(784, 33, 151, 20);
-		panelFinanz.add(txtSearchBill);
-		txtSearchBill.setColumns(10);
-		
-		JButton btnExportPDF = new JButton("Rechnung als PDF exportieren");
-		btnExportPDF.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				DataBase.getConnection();
-				try {
-				//"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"
-				int colnrRechnung = MainMenu.tblRechn.getSelectedRow();
-				int idRechnung = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 0).toString());
-				String rechnungsname = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 1).toString();
-				int idAuftraggeber = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 2).toString());
-				String betrag = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 3).toString();
-				String beschreibung = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 4).toString();
-				int idBearbeiter = Integer.parseInt(MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 5).toString());
-				String timestamp = MainMenu.tblRechn.getModel().getValueAt(colnrRechnung, 6).toString();
-				String[] parts = timestamp.split("_");
-				String day = parts[0];
-				String time = parts[1];
-				
-				if (System.getProperty("os.name").toLowerCase().indexOf("win")<0) {
-		            System.err.println("Sorry, Windows only!");
-		            System.exit(1);
-		        }
-		        File desktopDir = new File(System.getProperty("user.home"), "Desktop");
-		        System.out.println(desktopDir.getPath() + " " + desktopDir.exists());
-				
-		        File theDir = new File(desktopDir.getPath() + "/Rechnungen/");
-
-		        // if the directory does not exist, create it
-		        if (!theDir.exists()) {
-		         System.out.println("creating directory: " + theDir.getName());
-		         boolean result = false;
-
-		         try{
-		             theDir.mkdir();
-		             result = true;
-		         } 
-		         catch(SecurityException se){
-		             //handle it
-		         }        
-		         if(result) {    
-		             System.out.println("DIR created");  
-		         }
-		     	}
-		        
-				String filename = desktopDir.getPath() + "/Rechnungen/Rechnung_" + rechnungsname + "_" + day + ".pdf";
-				try {
-				    Desktop.getDesktop().open(new File(desktopDir.getPath() + "/Rechnungen/"));
-				} catch (IOException e) {
-				    e.printStackTrace();
-				}
-				
-				ExportToPDF.createPdf(filename, idRechnung, rechnungsname, idAuftraggeber, betrag, beschreibung, idBearbeiter, timestamp);
-				
-				} catch (ArrayIndexOutOfBoundsException e) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus!");
-				} catch (DocumentException ex) {
-					JOptionPane.showMessageDialog(null, ex);
-				} catch (IOException exception) {
-					JOptionPane.showMessageDialog(null, exception);
-				}
-				DataBase.closeConnection();
-			}
-		});
-		btnExportPDF.setBounds(446, 320, 250, 23);
-		panelFinanz.add(btnExportPDF);
+		JPanel panelTopf = new JPanel();
+		tabbedPaneFinanz.addTab("T\u00F6pfe & Kassen", null, panelTopf, null);
+		GridBagLayout gbl_panelTopf = new GridBagLayout();
+		gbl_panelTopf.columnWidths = new int[]{0};
+		gbl_panelTopf.rowHeights = new int[]{0};
+		gbl_panelTopf.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelTopf.rowWeights = new double[]{Double.MIN_VALUE};
+		panelTopf.setLayout(gbl_panelTopf);
 		
 		JPanel panelRechnung = new JPanel();
-		tabbedPane.addTab("Rechnung", null, panelRechnung, null);
-		panelRechnung.setLayout(null);
+		tabbedPaneFinanz.addTab("Rechnungen", null, panelRechnung, null);
+		GridBagLayout gbl_panelRechnung = new GridBagLayout();
+		gbl_panelRechnung.columnWidths = new int[]{0};
+		gbl_panelRechnung.rowHeights = new int[]{0};
+		gbl_panelRechnung.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelRechnung.rowWeights = new double[]{Double.MIN_VALUE};
+		panelRechnung.setLayout(gbl_panelRechnung);
 		
-		JScrollPane scrollPane_5 = new JScrollPane();
-		scrollPane_5.setBounds(10, 42, 411, 304);
-		panelRechnung.add(scrollPane_5);
-		
-		
-	
-	
-		
-		String[] headers_auftraegeR = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"};
-		String[][] auftraegeR = new String[1000][11];
-		tblAuftraegeRechnung = new JTable(auftraegeR,headers_auftraegeR);
-		scrollPane_5.setViewportView(tblAuftraegeRechnung);
-		
-		
-		DefaultTableModel modelAuftragR = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-		String sqlAuftragR = "SELECT * FROM Auftrag WHERE ID_Rechnung is null;";
-		ResultSet rsAuftragR = stmt.executeQuery(sqlAuftragR);
-		
-		//String r = null;
-		//String sqlRolle = "SELECT Rolle FROM Mischtabelle-Person-Auftrag WHERE ID_Auftrag =" + r + ";";
-		
-		
-		while(rsAuftragR.next())
-		{
-			String a1 = rsAuftragR.getString("ID_Auftrag");
-		    String b1 = rsAuftragR.getString("Titel");
-		    String c1 = rsAuftragR.getString("AF");
-		    String d1 = rsAuftragR.getString("Dateiname");
-		    String e1 = rsAuftragR.getString("Dateiort");
-		    String f1 = rsAuftragR.getString("PK");
-		    String g1 = rsAuftragR.getString("RK");
-		    String h1 = DataBase.getStatusBeiAuftragId(a1);
-		    
-		    String j1 = DataBase.getRolleByOrderId(a1);
-		    //System.out.println(a1);
-		   // System.out.println(j1);
-		  
-		    
-		    modelAuftragR.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
-		}
-		
-		tblAuftraegeRechnung.setModel(modelAuftragR);
-		
-		JButton btnAddToBill = new JButton("Auftrag einer Rechnung zuweisen");
-		btnAddToBill.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-				int selectedRowIndexBills = MainMenu.tblBills.getSelectedRow();
-				int selectedRowIndexOrders = MainMenu.tblAuftraegeRechnung.getSelectedRow();
-		
-				int id_Bill = Integer.parseInt(MainMenu.tblBills.getModel().getValueAt(selectedRowIndexBills, 0).toString());
-				int id_Order =Integer.parseInt( MainMenu.tblAuftraegeRechnung.getModel().getValueAt(selectedRowIndexOrders, 0).toString());
-				
-				
-				Finanzverwaltung.addOrderToBill(id_Order, id_Bill);
-				DataBase.refreshOrderBill();
-				DataBase.refreshOrdersInBill();
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung und einen Auftrag aus, der noch keiner Rechnung zugeordnet ist.");
-				}
-			}
-		});
-		btnAddToBill.setBounds(10, 363, 178, 23);
-		panelRechnung.add(btnAddToBill);
-		
-		JScrollPane scrollPane_6 = new JScrollPane();
-		scrollPane_6.setBounds(494, 234, 455, 111);
-		panelRechnung.add(scrollPane_6);
-		
-		
-		
-		String[] headersOrdersInBills = {"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"};
-		String[][] dataOrdersInBills = new String[1000][11];
-		tblOrdersInBill = new JTable(dataOrdersInBills, headersOrdersInBills);
-		scrollPane_6.setViewportView(tblOrdersInBill);
-		
-		
-		
-		
-		//int selectedRowIndex = MainMenu.tblBills.getSelectedRow();
-	
-		//String tableClick = MainMenu.tblBills.getModel().getValueAt(selectedRowIndex, 0).toString();
-		
-		DefaultTableModel modelOrderBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
-			
-			
-			
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-//		//String sqlOrderBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag WHERE 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung like '" + idbill +"';";
-//			String sqlOrderBill = "SELECT * FROM Auftrag";";
-//			ResultSet rsOrderBill = stmt.executeQuery(sqlOrderBill);
-//		
-//		//String r = null;
-//		//String sqlRolle = "SELECT Rolle FROM Mischtabelle-Person-Auftrag WHERE ID_Auftrag =" + r + ";";
-//		
-//		
-//		while(rsOrderBill.next())
-//		{
-//			String a1 = rsOrderBill.getString("ID_Auftrag");
-//		    String b1 = rsOrderBill.getString("Titel");
-//		    String c1 = rsOrderBill.getString("AF");
-//		    String d1 = rsOrderBill.getString("Dateiname");
-//		    String e1 = rsOrderBill.getString("Dateiort");
-//		    String f1 = rsOrderBill.getString("PK");
-//		    String g1 = rsOrderBill.getString("RK");
-//		    String h1 = DataBase.getStatusBeiAuftragId(a1);
-//		    
-//		    String j1 = DataBase.getRolleByOrderId(a1);
-//		    //System.out.println(a1);
-//		   // System.out.println(j1);
-//		  
-//		    
-//		    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
-//		}
-		
-		tblOrdersInBill.setModel(modelOrderBill);
-		
-		JButton btnErstellen_1 = new JButton("Erstellen");
-		btnErstellen_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				NewBill x = new NewBill(); // -id Order 
-				x.setVisible(true); 
-			}
-		});
-		btnErstellen_1.setBounds(860, 17, 89, 23);
-		panelRechnung.add(btnErstellen_1);
-		
-		JButton btnAuftragEntfernen = new JButton("Auftrag entfernen");
-		btnAuftragEntfernen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				try {
-					
-				int colnr = tblOrdersInBill.getSelectedRow();
-				int id_Bill = Integer.parseInt(MainMenu.tblOrdersInBill.getModel().getValueAt(colnr, 0).toString());
-				Finanzverwaltung.deleteOrderFromBill(id_Bill);
-				
-				DataBase.getConnection();
-				DataBase.refreshOrderBill();
-				DataBase.refreshOrdersInBill();
-
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Auftrag aus.");
-				}finally {
-					DataBase.closeConnection();
-				}
-			}
-		});
-		btnAuftragEntfernen.setBounds(787, 363, 162, 23);
-		panelRechnung.add(btnAuftragEntfernen);
-		
-		JLabel lblAuftraege_1 = new JLabel("Auftraege:");
-		lblAuftraege_1.setBounds(10, 17, 150, 14);
-		panelRechnung.add(lblAuftraege_1);
-		
-		JLabel lblOrdersInThis = new JLabel("Auftr\u00E4ge in dieser Rechnung:");
-		lblOrdersInThis.setBounds(494, 209, 455, 14);
-		panelRechnung.add(lblOrdersInThis);
-		
-		JScrollPane scrollPane_7 = new JScrollPane();
-		scrollPane_7.setBounds(494, 43, 455, 151);
-		panelRechnung.add(scrollPane_7);
-		
-		
-		
-		
-		String[] headers_bills = {"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung",  "TimeStamp"};
-		String[][] data_bills = new String[1000][9];
-		tblBills = new JTable(data_bills, headers_bills);
-		DefaultTableModel modelBills = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "TimeStamp"}, 0) {
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-		String sqlBill = "SELECT * FROM Rechnung";
-		ResultSet rsBill = stmt.executeQuery(sqlBill);
-		
-	
-		
-		
-		while(rsBill.next())
-		{
-			String a1 = rsBill.getString("ID_Rechnung");
-		    String b1 = rsBill.getString("Rechnungsname");
-		    String c1 = rsBill.getString("Auftraggeber");
-		   // String d1 = rsBill.getString("Ansprechpartner");
-		   // String e1 = rsBill.getString("Bezahlung_Art");
-		    String f1 = rsBill.getString("Betrag");
-		    String g1 = rsBill.getString("Beschreibung");
-		   // String h1 = rsBill.getString("Bearbeiter");
-		    String j1 = rsBill.getString("TimeStamp");
-		   
-		  
-		    
-		    modelBills.addRow(new Object[]{a1, b1,c1,f1,g1, j1});
-		}
-		
-		tblBills.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-				DataBase.getConnection();
-								
-								int colnr  = MainMenu.tblBills.getSelectedRow();
-								
-								DefaultTableModel modelOrderBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
-									
-									@Override
-									public boolean isCellEditable(int row, int column) {
-											return false;
-										}
-									};	
-								String id = MainMenu.tblBills.getModel().getValueAt(colnr, 0).toString();
-								
-								System.out.println(id);
-								
-								Statement stmtOrderBills = null;
-								
-									try {
-										
-										stmtOrderBills = DataBase.c.createStatement();
-										System.out.println("Statement");
-									} catch (SQLException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-								
-								
-								String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Rechnung-Auftrag' on Auftrag.ID_Auftrag = 'Mischtabelle-Rechnung-Auftrag'.ID_Auftrag where 'Mischtabelle-Rechnung-Auftrag'.ID_Rechnung ="+id+";";
-								
-								ResultSet rsOrdersBills = null;
-								
-									try {
-										rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
-										System.out.println("Query executed");
-										System.out.println(rsOrdersBills);
-									} catch (SQLException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-								
-								
-								
-								
-								
-								
-									try {
-										while(rsOrdersBills.next())
-										{
-											String a1 = rsOrdersBills.getString("ID_Auftrag");
-										    String b1 = rsOrdersBills.getString("Titel");
-										    String c1 = rsOrdersBills.getString("AF");
-										    String d1 = rsOrdersBills.getString("Dateiname");
-										    String e1 = rsOrdersBills.getString("Dateiort");
-										    String f1 = rsOrdersBills.getString("PK");
-										    String g1 = rsOrdersBills.getString("RK");
-										    String h1 = DataBase.getStatusBeiAuftragId(a1);
-										    
-										    String j1 = DataBase.getRolleByOrderId(a1);
-										    //System.out.println(a1);
-										   // System.out.println(j1);
-										  
-										    
-										    modelOrderBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
-										    										    
-//										    modelOrderBill.addRow(new Object[]{a1, b1,c1,f1,g1, h1});
-										    
-										    System.out.println("While done");
-										    
-										}
-									} catch (SQLException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									tblOrdersInBill.setModel(modelOrderBill);
-								
-									
-									DefaultTableModel modelOrdersForBill = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
-										
-										@Override
-										public boolean isCellEditable(int row, int column) {
-												return false;
-											}
-										};	
-									String auftraggeberID = MainMenu.tblBills.getModel().getValueAt(colnr, 2).toString();
-									
-									System.out.println(auftraggeberID);
-									
-									Statement stmtOrdersForBills = null;
-									
-										try {
-											
-											stmtOrdersForBills = DataBase.c.createStatement();
-											System.out.println("Statement");
-										} catch (SQLException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-									
-									
-									String sqlOrdersForBill = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag where Auftrag.ID_Rechnung IS NULL AND 'Mischtabelle-Person-Auftrag'.ID_Person ="+auftraggeberID+";";
-									
-									ResultSet rsOrdersForBills = null;
-									
-										try {
-											rsOrdersForBills = stmtOrdersForBills.executeQuery(sqlOrdersForBill);
-											System.out.println("Query executed");
-											System.out.println(rsOrdersForBills);
-										} catch (SQLException e) {
-										// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-									
-									
-									
-									
-									
-									
-										try {
-											while(rsOrdersForBills.next())
-											{
-												String a1 = rsOrdersForBills.getString("ID_Auftrag");
-											    String b1 = rsOrdersForBills.getString("Titel");
-											    String c1 = rsOrdersForBills.getString("AF");
-											    String d1 = rsOrdersForBills.getString("Dateiname");
-											    String e1 = rsOrdersForBills.getString("Dateiort");
-											    String f1 = rsOrdersForBills.getString("PK");
-											    String g1 = rsOrdersForBills.getString("RK");
-											    String h1 = DataBase.getStatusBeiAuftragId(a1);
-											    
-											    String j1 = DataBase.getRolleByOrderId(a1);
-											    //System.out.println(a1);
-											   // System.out.println(j1);
-											  
-											    
-											    modelOrdersForBill.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
-											    
-											    
-											    System.out.println("While done");
-											    
-											}
-										} catch (SQLException e) {
-											// TODO Auto-generated catch block
-											e.printStackTrace();
-										}
-										tblAuftraegeRechnung.setModel(modelOrdersForBill);
-									
-								
-								
-								
-								
-								DataBase.closeConnection();
-							
-							}
-		});
-		
-		tblBills.setModel(modelBills);
-		
-		
-		//bis hier
-		
-		scrollPane_7.setViewportView(tblBills);
-		
-		JLabel lblBills = new JLabel("Rechnungen:");
-		lblBills.setBounds(494, 17, 158, 14);
-		panelRechnung.add(lblBills);
-		
-		JButton btnAendern_3 = new JButton("Aendern");
-		btnAendern_3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				DataBase.getConnection();
-				DefaultTableModel model = (DefaultTableModel) tblBills.getModel();
-				//get selected row index
-				int selectedRowIndex = tblBills.getSelectedRow();
-				if (selectedRowIndex >= 0) {
-				try {
-				UpdateBill x = new UpdateBill();
-				x.setVisible(true);
-				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
-				}
-				
-			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
-			}
-				
-				DataBase.closeConnection();
-			}
-		});
-		btnAendern_3.setBounds(761, 17, 89, 23);
-		panelRechnung.add(btnAendern_3);
-		
-		JButton btnLoeschen_2 = new JButton("Loeschen");
-		btnLoeschen_2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				DefaultTableModel model = (DefaultTableModel) tblBills.getModel();
-				//get selected row index
-				int selectedRowIndex = tblBills.getSelectedRow();
-				if (selectedRowIndex >= 0) {
-				try {
-				DeleteBill x = new DeleteBill();
-				x.setVisible(true);
-				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus. Bitte alle Auftraege entfernen!");
-				}
-				
-			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
-			}
-			}
-		});
-		btnLoeschen_2.setBounds(662, 17, 89, 23);
-		panelRechnung.add(btnLoeschen_2);
-		
-		JPanel panelBau = new JPanel();
-		tabbedPane.addTab("Bauteileverwaltung", null, panelBau, null);
-		panelBau.setLayout(null);
-		
-		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(194, 56, 755, 299);
-		panelBau.add(scrollPane_3);
-		
-		String[] column_headers_component = {"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"};
-		String[][] data_components = new String[1000][8];
-		tblComponents = new JTable(data_components, column_headers_component);
-		DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"}, 0) {
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};	
-			Statement stmtComponents = DataBase.c.createStatement();
-			String sqlComponent = "SELECT * FROM Bauteil";
-			ResultSet rsComponent = stmtComponents.executeQuery(sqlComponent);
-			
-			
-			
-			
-			while(rsComponent.next())
-			{
-				String a1 = rsComponent.getString("ID_Bauteil");
-			    String b1 = rsComponent.getString("Name");
-			    String c1 = rsComponent.getString("Link");
-			    String d1 = rsComponent.getString("MengeLagernd");
-			    String e1 = rsComponent.getString("MengeBestellt");
-			    String f1 = rsComponent.getString("MengeGeplant");
-			    String g1 = rsComponent.getString("Lagerort");
-			    int id = Integer.parseInt(a1);
-			    
-			    String h1 =BauteileAuftragsabwicklung.getComponentPrice(id);
-			    
-			    
-			 
-			  
-			    
-			    modelComponents.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
-			}
-			
-			tblComponents.setModel(modelComponents);
-			
-			
-			
-		
-		
-		scrollPane_3.setViewportView(tblComponents);
-		
-		txtSearchComponent = new JTextField();
-		txtSearchComponent.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				SwingUtilities.getRootPane(btnSearchComponent).setDefaultButton(btnSearchComponent);
-			}
-		});
-		txtSearchComponent.setBounds(749, 11, 200, 20);
-		panelBau.add(txtSearchComponent);
-		txtSearchComponent.setColumns(10);
-		
-		JButton btnAddComponent = new JButton("Hinzufuegen");
-		btnAddComponent.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				AddComponent x = new AddComponent(); // -id Order 
-				x.setVisible(true);
-			}
-		});
-		btnAddComponent.setBounds(204, 359, 101, 23);
-		panelBau.add(btnAddComponent);
-		
-		JButton btnDeleteComponent = new JButton("Loeschen");
-		btnDeleteComponent.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model = (DefaultTableModel) tblComponents.getModel();
-				//get selected row index
-				int selectedRowIndex = tblComponents.getSelectedRow();
-				if (selectedRowIndex >= 0) {
-				try {
-				DeleteComponent x = new DeleteComponent();
-				x.setVisible(true);
-				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
-				}
-				
-			} else {
-				JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
-			}
-				
-			}
-		});
-		btnDeleteComponent.setBounds(204, 388, 101, 23);
-		panelBau.add(btnDeleteComponent);
-		
-		JButton btnAendern = new JButton("Aendern");
-		btnAendern.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					UpdateComponent x = new UpdateComponent(); // -id Order 
-					x.setVisible(true);	
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
-				}
-				
-			}
-		});
-		btnAendern.setBounds(318, 359, 101, 23);
-		panelBau.add(btnAendern);
-		
-		btnSearchComponent = new JButton("Suchen");
-		btnSearchComponent.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				DataBase.searchComponent(txtSearchComponent.getText());
-			}
-		});
-		btnSearchComponent.setBounds(650, 10, 89, 23);
-		panelBau.add(btnSearchComponent);
-		
-		String[] column_headers_category = {"ID", "Name"};
-		String[][] data_category = new String[1000][2];
-		DefaultTableModel modelCategory = new DefaultTableModel(new String[]{"ID", "Name"}, 0) {
-			
-			@Override 
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-			
-			Statement stmtCategory = DataBase.c.createStatement();
-			String sqlCategory = "SELECT * FROM Kategorie";
-			ResultSet rsCategory = stmtCategory.executeQuery(sqlCategory);
-			
-			
-			
-			
-			while(rsCategory.next())
-			{
-				String a1 = rsCategory.getString("ID_Kategorie");
-			    String b1 = rsCategory.getString("Name");
-			  
-			    
-			    
-			 
-			  
-			    
-			    modelCategory.addRow(new Object[]{a1, b1});
-			}
-			
-			JScrollPane scrollPane_4 = new JScrollPane();
-			scrollPane_4.setBounds(10, 56, 174, 299);
-			panelBau.add(scrollPane_4);
-			
-			tblCategory = new JTable(data_category, column_headers_category);
-			scrollPane_4.setViewportView(tblCategory);
-			tblCategory.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent arg0) {
-					
-					DataBase.getConnection();
-					int colnr  = MainMenu.tblCategory.getSelectedRow();
-					DefaultTableModel modelComponentsKategorie = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"}, 0) {
-						
-						@Override
-						public boolean isCellEditable(int row, int column) {
-								return false;
-							}
-						};	
-					String id = MainMenu.tblCategory.getModel().getValueAt(colnr, 0).toString();
-					
-					System.out.println(id);
-					
-					Statement stmtCategoryComponents = null;
-					
-						try {
-							
-							stmtCategoryComponents = DataBase.c.createStatement();
-							System.out.println("Statement");
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					
-					
-					String sqlCategoryComponents = "SELECT Bauteil.* FROM Bauteil INNER JOIN 'Mischtabelle-Kategorie-Bauteil' on Bauteil.ID_Bauteil = 'Mischtabelle-Kategorie-Bauteil'.ID_Bauteil where 'Mischtabelle-Kategorie-Bauteil'.ID_Kategorie ="+id+";";
-					
-					ResultSet rsCategoryComponents = null;
-					
-						try {
-							rsCategoryComponents = stmtCategoryComponents.executeQuery(sqlCategoryComponents);
-							System.out.println("Query executed");
-							System.out.println(rsCategoryComponents);
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					
-					
-					
-					
-					
-					
-						try {
-							while(rsCategoryComponents.next())
-							{
-								String a1 = rsCategoryComponents.getString("ID_Bauteil");
-							    String b1 = rsCategoryComponents.getString("Name");
-							    String c1 = rsCategoryComponents.getString("Link");
-							    String d1 = rsCategoryComponents.getString("MengeLagernd");
-							    String e1 = rsCategoryComponents.getString("MengeBestellt");
-							    String f1 = rsCategoryComponents.getString("MengeGeplant");
-							    String g1 = rsCategoryComponents.getString("Lagerort");
-							    int id1 = Integer.parseInt(a1);
-							   
-							    String h1 =BauteileAuftragsabwicklung.getComponentPrice(id1);
-							    
-							    
-							 
-							  
-							    
-							    modelComponentsKategorie.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
-							    
-							    System.out.println("While done");
-							    
-							}
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						tblComponents.setModel(modelComponentsKategorie);
-					
-					
-					
-					
-					
-					
-					DataBase.closeConnection();
-				}
-			});
-			
-			tblCategory.setModel(modelCategory);
-			
-			JButton btnNeueKategorie = new JButton("Neue Kategorie");
-			btnNeueKategorie.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					NewCategory x = new NewCategory();
-					x.setVisible(true);
-				}
-			});
-			btnNeueKategorie.setBounds(20, 359, 145, 23);
-			panelBau.add(btnNeueKategorie);
-			
-			JButton btnKategorieverwaltung = new JButton("Kategorieverwaltung");
-			btnKategorieverwaltung.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						AddToCategory x;
-						
-							x = new AddToCategory();
-							x.setVisible(true);	
-					} catch (ArrayIndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Bauteil aus.");
-					}
-					
-				}
-			});
-			btnKategorieverwaltung.setBounds(792, 388, 157, 23);
-			panelBau.add(btnKategorieverwaltung);
-			
-			JButton btnShowAll = new JButton("Alle anzeigen");
-			btnShowAll.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					txtSearchComponent.setText("");
-					DataBase.refreshComponent();
-					
-				}
-			});
-			btnShowAll.setBounds(194, 22, 111, 23);
-			panelBau.add(btnShowAll);
-			
-			JButton btnMengenverwaltung = new JButton("Mengenverwaltung");
-			btnMengenverwaltung.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					try {
-						Mengenverwaltung x= new Mengenverwaltung();
-						x.setVisible(true);
-					} catch (ArrayIndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
-					}
-					
-				}
-			});
-			btnMengenverwaltung.setBounds(792, 359, 157, 23);
-			panelBau.add(btnMengenverwaltung);
-			
-			JButton btnLoeschen_1 = new JButton("Loeschen");
-			btnLoeschen_1.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					DefaultTableModel model = (DefaultTableModel) tblCategory.getModel();
-					//get selected row index
-					int selectedRowIndex = tblCategory.getSelectedRow();
-					if (selectedRowIndex >= 0) {
-					try {
-					DeleteCategory x = new DeleteCategory();
-					x.setVisible(true);
-					}catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kategorie aus.");
-					}
-					
-				} else {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kategorie aus.");
-				}
-				}
-			});
-			btnLoeschen_1.setBounds(0, 388, 89, 23);
-			panelBau.add(btnLoeschen_1);
-			
-			JButton btnAendern_1 = new JButton("Aendern");
-			btnAendern_1.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					
-					try {
-						UpdateCategory x = new UpdateCategory(); // -id Order 
-						x.setVisible(true);	
-					} catch (ArrayIndexOutOfBoundsException ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
-					}
-				}
-			});
-			btnAendern_1.setBounds(95, 388, 89, 23);
-			panelBau.add(btnAendern_1);
-			
-			JButton btnPreis = new JButton("Preis");
-			btnPreis.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					DefaultTableModel model = (DefaultTableModel) tblComponents.getModel();
-					//get selected row index
-					int selectedRowIndex = tblComponents.getSelectedRow();
-					if (selectedRowIndex >= 0) {
-					try {
-					AddPrice x = new AddPrice();
-					x.setVisible(true);
-					}catch (Exception ex) {
-						JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
-					}
-					
-				} else {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
-				}
-				}
-			});
-			btnPreis.setBounds(315, 388, 104, 23);
-			panelBau.add(btnPreis);
-			
-			Label label = new Label("Kategorien");
-			label.setFont(new Font("Dialog", Font.BOLD, 20));
-			label.setBounds(10, 28, 131, 22);
-			panelBau.add(label);
-			
-			JLabel lblEingeloggtAls = new JLabel("eingeloggt als:");
-			lblEingeloggtAls.setBounds(1500, 11, 140, 14);
-			contentPane.add(lblEingeloggtAls);
-			
-			JButton btnAusloggen = new JButton("ausloggen");
-			btnAusloggen.setBounds(1703, 7, 120, 23);
-			contentPane.add(btnAusloggen);
-		
-		
-		
-		
-		contentPane.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{panelPerson, btnHinzufuegen, btnLoeschen, txtSuchen, tabbedPane, lblNewLabel, scrollPane, tblPersonen, scrollPane_1, tblAuftraege, lblAuftraege, btnSuchen, btnSearchOrder, btnChangePerson, btnRefresh, btnErstellen, btnChangeOrder, btnDeleteOrder, txtSearchOrder, btnNewButton, panelFinanz, panelBau, panelOrders}));
-
+		JPanel panelOffen = new JPanel();
+		tabbedPane.addTab("Offene Auftr\u00E4ge", null, panelOffen, null);
+		GridBagLayout gbl_panelOffen = new GridBagLayout();
+		gbl_panelOffen.columnWidths = new int[]{0};
+		gbl_panelOffen.rowHeights = new int[]{0};
+		gbl_panelOffen.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelOffen.rowWeights = new double[]{Double.MIN_VALUE};
+		panelOffen.setLayout(gbl_panelOffen);
+		setVisible(true);
 		
 		DataBase.closeConnection();
-	}
-	
-	public void refresh() {
-		
 	}
 }

@@ -494,7 +494,7 @@ public static void loadOrdersToRAM() {
 		}
 		
 		MainMenu.tblPersonen.setModel(model);
-		MainMenu.scrollPane.setViewportView(MainMenu.tblPersonen);
+		MainMenu.scrollPanePerson.setViewportView(MainMenu.tblPersonen);
 	}
 	
 	
@@ -514,6 +514,11 @@ public static void loadOrdersToRAM() {
 		
 		DefaultTableModel model = new DefaultTableModel(new String[]{"ID-Person", "Name", "Vorname", "Email"}, 0) {
 			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
@@ -570,7 +575,7 @@ public static void loadOrdersToRAM() {
 		}
 		
 		MainMenu.tblPersonen.setModel(model);
-		MainMenu.scrollPane.setViewportView(MainMenu.tblPersonen);
+		MainMenu.scrollPanePerson.setViewportView(MainMenu.tblPersonen);
 		TableColumnModel tcm = MainMenu.tblPersonen.getColumnModel();
 		tcm.removeColumn( tcm.getColumn(0) );
 		
@@ -640,7 +645,7 @@ public static void searchOrder(String search) {
 		}
 		
 		MainMenu.tblAuftraege.setModel(model);
-		MainMenu.scrollPane_1.setViewportView(MainMenu.tblAuftraege);
+		MainMenu.scrollPaneOrder.setViewportView(MainMenu.tblAuftraege);
 		TableColumnModel tcm = MainMenu.tblAuftraege.getColumnModel();
 		tcm.removeColumn( tcm.getColumn(0) );
 		
@@ -877,7 +882,7 @@ public static void searchOrder(String search) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		MainMenu.txtSuchen.setText("");
+		MainMenu.txtSearchPerson.setText("");
 		
 		MainMenu.tblPersonen.setModel(model);
 	
@@ -935,7 +940,7 @@ public static void searchOrder(String search) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		MainMenu.txtSuchen.setText("");
+		MainMenu.txtSearchPerson.setText("");
 		
 		MainMenu.tblPersonen.setModel(model);
 		TableColumnModel tcm = MainMenu.tblPersonen.getColumnModel();
