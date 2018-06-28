@@ -76,5 +76,5 @@ public class Rechnungsabwicklung {
 	
 	public static void delteARechnung() {
 		
-	}//
+	}
 }
