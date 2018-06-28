@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import Data.BauteileAuftragsabwicklung;
 import Data.Calculations;
 import Data.DataBase;
 import Data.OrderObjektRAM;
@@ -34,6 +35,8 @@ import javax.swing.JTable;
 import java.awt.Color;
 import javax.swing.JTextField;
 import java.awt.Font;
+import javax.swing.JTree;
+import javax.swing.JComboBox;
 
 public class MainMenu extends JFrame {
 
@@ -73,13 +76,27 @@ public class MainMenu extends JFrame {
 	private JTextField txtDetailRkOrder;
 	private JTextField txtDetailStatusOrder;
 	private JTextField txtDetailRolleOrder;
+	private JTextField txtSearchComponent;
+	private JTextField txtDetailNameComponent;
+	private JTextField txtDetailLinkComponent;
+	private JTextField txtDetailStockComponent;
+	private JTextField txtDetailOrderedComponent;
+	private JTextField txtDetailPlannedComponent;
+	private JTextField txtDetailLocationComponent;
+	private JTextField txtDetailPriceComponent;
 	public static JTable tblPersonen;
 	public static JTable tblAuftraege;
-	public static JScrollPane scrollPanePerson;
-	public static JScrollPane scrollPaneOrder;
-	private boolean hdResolution;
+	public static JTable tblComponents;
 	public static JTable tblKasse;
 	public static JTable tblTopf;
+	public static JScrollPane scrollPanePerson;
+	public static JScrollPane scrollPaneOrder;
+	public static JScrollPane scrollPaneCategory;
+	public static JScrollPane scrollPaneComponent;
+	private boolean hdResolution;
+
+	
+
 
 	public MainMenu() throws SQLException {
 		DataBase.getConnection();
@@ -757,11 +774,310 @@ public class MainMenu extends JFrame {
 		JPanel panelBauteil = new JPanel();
 		tabbedPane.addTab("Bauteileverwaltung", null, panelBauteil, null);
 		GridBagLayout gbl_panelBauteil = new GridBagLayout();
-		gbl_panelBauteil.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
-		gbl_panelBauteil.rowHeights = new int[]{0};
-		gbl_panelBauteil.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panelBauteil.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelBauteil.columnWidths = new int[]{10, 300, 10, 150, 150, 150, 100, 100, 100, 300, 100, 50, 10};
+		gbl_panelBauteil.rowHeights = new int[]{10, 20, 20, 600, 20, 20, 20, 20, 20, 20, 20, 20};
+		gbl_panelBauteil.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0};
+		gbl_panelBauteil.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panelBauteil.setLayout(gbl_panelBauteil);
+		//		gbl_contentPane.columnWidths = new int[]{20, 1680, 110, 110};
+		//		gbl_contentPane.rowHeights = new int[]{13, 1054, 13};
+				
+				JLabel lblKategorien = new JLabel("Kategorien:");
+				GridBagConstraints gbc_lblKategorien = new GridBagConstraints();
+				gbc_lblKategorien.insets = new Insets(0, 0, 5, 5);
+				gbc_lblKategorien.gridx = 1;
+				gbc_lblKategorien.gridy = 1;
+				panelBauteil.add(lblKategorien, gbc_lblKategorien);
+				
+				JLabel lblBauteile = new JLabel("Bauteile:");
+				GridBagConstraints gbc_lblBauteile = new GridBagConstraints();
+				gbc_lblBauteile.insets = new Insets(0, 0, 5, 5);
+				gbc_lblBauteile.gridx = 3;
+				gbc_lblBauteile.gridy = 1;
+				panelBauteil.add(lblBauteile, gbc_lblBauteile);
+				
+				scrollPaneCategory = new JScrollPane();
+				GridBagConstraints gbc_scrollPaneCategory = new GridBagConstraints();
+				gbc_scrollPaneCategory.insets = new Insets(0, 0, 5, 5);
+				gbc_scrollPaneCategory.fill = GridBagConstraints.BOTH;
+				gbc_scrollPaneCategory.gridx = 1;
+				gbc_scrollPaneCategory.gridy = 2;
+				gbc_scrollPaneCategory.gridwidth = 1;
+				gbc_scrollPaneCategory.gridheight = 2;
+				panelBauteil.add(scrollPaneCategory, gbc_scrollPaneCategory);
+				
+				txtSearchComponent = new JTextField();
+				GridBagConstraints gbc_txtSearchComponent = new GridBagConstraints();
+				gbc_txtSearchComponent.anchor = GridBagConstraints.NORTH;
+				gbc_txtSearchComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_txtSearchComponent.fill = GridBagConstraints.HORIZONTAL;
+				gbc_txtSearchComponent.gridx = 10;
+				gbc_txtSearchComponent.gridy = 2;
+				panelBauteil.add(txtSearchComponent, gbc_txtSearchComponent);
+				txtSearchComponent.setColumns(10);
+				
+				JButton btnSearchComponent = new JButton("Suchen");
+				GridBagConstraints gbc_btnSearchComponent = new GridBagConstraints();
+				gbc_btnSearchComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_btnSearchComponent.gridx = 11;
+				gbc_btnSearchComponent.gridy = 2;
+				panelBauteil.add(btnSearchComponent, gbc_btnSearchComponent);
+				
+				scrollPaneComponent = new JScrollPane();
+				GridBagConstraints gbc_scrollPaneComponent = new GridBagConstraints();
+				gbc_scrollPaneComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_scrollPaneComponent.fill = GridBagConstraints.BOTH;
+				gbc_scrollPaneComponent.gridx = 3;
+				gbc_scrollPaneComponent.gridy = 3;
+				gbc_scrollPaneComponent.gridwidth = 9;
+				gbc_scrollPaneComponent.gridheight = 1;
+				panelBauteil.add(scrollPaneComponent, gbc_scrollPaneComponent);
+				
+				String[] column_headers_component = {"Name", "Menge lagernd", "Preis"};
+				String[][] data_components = new String[1000][8];
+				tblComponents = new JTable(data_components, column_headers_component);
+//				DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"}, 0) {
+				DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name", "Menge lagernd", "Preis"}, 0) {
+					
+					@Override
+					public boolean isCellEditable(int row, int column) {
+							return false;
+						}
+					};	
+					Statement stmtComponents = DataBase.c.createStatement();
+					String sqlComponent = "SELECT * FROM Bauteil";
+					ResultSet rsComponent = stmtComponents.executeQuery(sqlComponent);
+					
+					
+					
+					
+					while(rsComponent.next())
+					{
+						String a1 = rsComponent.getString("ID_Bauteil");
+					    String b1 = rsComponent.getString("Name");
+					    String d1 = rsComponent.getString("MengeLagernd");
+					    int id = Integer.parseInt(a1);
+					    
+					    String h1 = BauteileAuftragsabwicklung.getComponentPrice(id);
+					    
+					    
+					 
+					  
+					    
+					    modelComponents.addRow(new Object[]{a1, b1,d1,h1});
+					}
+					
+					tblComponents.setModel(modelComponents);
+					TableColumnModel tcmComponents = MainMenu.tblComponents.getColumnModel();
+					tcm.removeColumn( tcmComponents.getColumn(0) );
+					
+					
+				
+				
+				scrollPaneComponent.setViewportView(tblComponents);
+				
+				JTree tree = new JTree();
+				scrollPaneCategory.setViewportView(tree);
+				
+				JButton btnShowAllComponents = new JButton("Alle anzeigen");
+				GridBagConstraints gbc_btnShowAllComponents = new GridBagConstraints();
+				gbc_btnShowAllComponents.insets = new Insets(0, 0, 5, 5);
+				gbc_btnShowAllComponents.gridx = 3;
+				gbc_btnShowAllComponents.gridy = 2;
+				panelBauteil.add(btnShowAllComponents, gbc_btnShowAllComponents);
+				
+				JButton btnNeueKategorie = new JButton("Neue Kategorie");
+				GridBagConstraints gbc_btnNeueKategorie = new GridBagConstraints();
+				gbc_btnNeueKategorie.insets = new Insets(0, 0, 5, 5);
+				gbc_btnNeueKategorie.gridx = 1;
+				gbc_btnNeueKategorie.gridy = 4;
+				panelBauteil.add(btnNeueKategorie, gbc_btnNeueKategorie);
+				
+				JButton btnNeuesBauteil = new JButton("Neues Bauteil");
+				GridBagConstraints gbc_btnNeuesBauteil = new GridBagConstraints();
+				gbc_btnNeuesBauteil.insets = new Insets(0, 0, 5, 5);
+				gbc_btnNeuesBauteil.gridx = 3;
+				gbc_btnNeuesBauteil.gridy = 4;
+				panelBauteil.add(btnNeuesBauteil, gbc_btnNeuesBauteil);
+				
+				JButton btnBauteilLoeschen = new JButton("Bauteil loeschen");
+				GridBagConstraints gbc_btnBauteilLoeschen = new GridBagConstraints();
+				gbc_btnBauteilLoeschen.insets = new Insets(0, 0, 5, 5);
+				gbc_btnBauteilLoeschen.gridx = 4;
+				gbc_btnBauteilLoeschen.gridy = 4;
+				panelBauteil.add(btnBauteilLoeschen, gbc_btnBauteilLoeschen);
+				
+				JButton btnMengenverwaltung = new JButton("Mengenverwaltung");
+				GridBagConstraints gbc_btnMengenverwaltung = new GridBagConstraints();
+				gbc_btnMengenverwaltung.insets = new Insets(0, 0, 5, 5);
+				gbc_btnMengenverwaltung.gridx = 5;
+				gbc_btnMengenverwaltung.gridy = 4;
+				panelBauteil.add(btnMengenverwaltung, gbc_btnMengenverwaltung);
+				
+				JButton btnKategorieAendern = new JButton("Kategorie Aendern");
+				GridBagConstraints gbc_btnKategorieAendern = new GridBagConstraints();
+				gbc_btnKategorieAendern.insets = new Insets(0, 0, 5, 5);
+				gbc_btnKategorieAendern.gridx = 1;
+				gbc_btnKategorieAendern.gridy = 5;
+				panelBauteil.add(btnKategorieAendern, gbc_btnKategorieAendern);
+				
+				JButton btnKategorieLoeschen = new JButton("Kategorie loeschen");
+				GridBagConstraints gbc_btnKategorieLoeschen = new GridBagConstraints();
+				gbc_btnKategorieLoeschen.insets = new Insets(0, 0, 5, 5);
+				gbc_btnKategorieLoeschen.gridx = 1;
+				gbc_btnKategorieLoeschen.gridy = 6;
+				panelBauteil.add(btnKategorieLoeschen, gbc_btnKategorieLoeschen);
+				
+				JLabel lblDetailsComponent = new JLabel("Details:");
+				lblDetailsComponent.setFont(new Font("Tahoma", Font.BOLD, 15));
+				GridBagConstraints gbc_lblDetailsComponent = new GridBagConstraints();
+				gbc_lblDetailsComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_lblDetailsComponent.gridx = 3;
+				gbc_lblDetailsComponent.gridy = 6;
+				panelBauteil.add(lblDetailsComponent, gbc_lblDetailsComponent);
+				
+				JLabel lblName_1 = new JLabel("Name:");
+				GridBagConstraints gbc_lblName_1 = new GridBagConstraints();
+				gbc_lblName_1.anchor = GridBagConstraints.EAST;
+				gbc_lblName_1.insets = new Insets(0, 0, 5, 5);
+				gbc_lblName_1.gridx = 3;
+				gbc_lblName_1.gridy = 7;
+				panelBauteil.add(lblName_1, gbc_lblName_1);
+				
+				txtDetailNameComponent = new JTextField();
+				GridBagConstraints gbc_txtDetailNameComponent = new GridBagConstraints();
+				gbc_txtDetailNameComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_txtDetailNameComponent.fill = GridBagConstraints.HORIZONTAL;
+				gbc_txtDetailNameComponent.gridx = 4;
+				gbc_txtDetailNameComponent.gridy = 7;
+				panelBauteil.add(txtDetailNameComponent, gbc_txtDetailNameComponent);
+				txtDetailNameComponent.setColumns(10);
+				
+				JLabel lblLink = new JLabel("Link:");
+				GridBagConstraints gbc_lblLink = new GridBagConstraints();
+				gbc_lblLink.anchor = GridBagConstraints.EAST;
+				gbc_lblLink.insets = new Insets(0, 0, 5, 5);
+				gbc_lblLink.gridx = 5;
+				gbc_lblLink.gridy = 7;
+				panelBauteil.add(lblLink, gbc_lblLink);
+				
+				txtDetailLinkComponent = new JTextField();
+				GridBagConstraints gbc_txtDetailLinkComponent = new GridBagConstraints();
+				gbc_txtDetailLinkComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_txtDetailLinkComponent.fill = GridBagConstraints.HORIZONTAL;
+				gbc_txtDetailLinkComponent.gridx = 6;
+				gbc_txtDetailLinkComponent.gridy = 7;
+				panelBauteil.add(txtDetailLinkComponent, gbc_txtDetailLinkComponent);
+				txtDetailLinkComponent.setColumns(10);
+				
+				JLabel lblMengelagernd = new JLabel("Menge (lagernd):");
+				GridBagConstraints gbc_lblMengelagernd = new GridBagConstraints();
+				gbc_lblMengelagernd.anchor = GridBagConstraints.EAST;
+				gbc_lblMengelagernd.insets = new Insets(0, 0, 5, 5);
+				gbc_lblMengelagernd.gridx = 3;
+				gbc_lblMengelagernd.gridy = 8;
+				panelBauteil.add(lblMengelagernd, gbc_lblMengelagernd);
+				
+				txtDetailStockComponent = new JTextField();
+				GridBagConstraints gbc_txtDetailStockComponent = new GridBagConstraints();
+				gbc_txtDetailStockComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_txtDetailStockComponent.fill = GridBagConstraints.HORIZONTAL;
+				gbc_txtDetailStockComponent.gridx = 4;
+				gbc_txtDetailStockComponent.gridy = 8;
+				panelBauteil.add(txtDetailStockComponent, gbc_txtDetailStockComponent);
+				txtDetailStockComponent.setColumns(10);
+				
+				JLabel lblMengebestellt = new JLabel("Menge (bestellt):");
+				GridBagConstraints gbc_lblMengebestellt = new GridBagConstraints();
+				gbc_lblMengebestellt.anchor = GridBagConstraints.EAST;
+				gbc_lblMengebestellt.insets = new Insets(0, 0, 5, 5);
+				gbc_lblMengebestellt.gridx = 5;
+				gbc_lblMengebestellt.gridy = 8;
+				panelBauteil.add(lblMengebestellt, gbc_lblMengebestellt);
+				
+				txtDetailOrderedComponent = new JTextField();
+				GridBagConstraints gbc_txtDetailOrderedComponent = new GridBagConstraints();
+				gbc_txtDetailOrderedComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_txtDetailOrderedComponent.fill = GridBagConstraints.HORIZONTAL;
+				gbc_txtDetailOrderedComponent.gridx = 6;
+				gbc_txtDetailOrderedComponent.gridy = 8;
+				panelBauteil.add(txtDetailOrderedComponent, gbc_txtDetailOrderedComponent);
+				txtDetailOrderedComponent.setColumns(10);
+				
+				JLabel lblMengegeplant = new JLabel("Menge (geplant):");
+				GridBagConstraints gbc_lblMengegeplant = new GridBagConstraints();
+				gbc_lblMengegeplant.anchor = GridBagConstraints.EAST;
+				gbc_lblMengegeplant.insets = new Insets(0, 0, 5, 5);
+				gbc_lblMengegeplant.gridx = 7;
+				gbc_lblMengegeplant.gridy = 8;
+				panelBauteil.add(lblMengegeplant, gbc_lblMengegeplant);
+				
+				txtDetailPlannedComponent = new JTextField();
+				GridBagConstraints gbc_txtDetailPlannedComponent = new GridBagConstraints();
+				gbc_txtDetailPlannedComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_txtDetailPlannedComponent.fill = GridBagConstraints.HORIZONTAL;
+				gbc_txtDetailPlannedComponent.gridx = 8;
+				gbc_txtDetailPlannedComponent.gridy = 8;
+				panelBauteil.add(txtDetailPlannedComponent, gbc_txtDetailPlannedComponent);
+				txtDetailPlannedComponent.setColumns(10);
+				
+				JComboBox comboBoxCategory = new JComboBox();
+				GridBagConstraints gbc_comboBoxCategory = new GridBagConstraints();
+				gbc_comboBoxCategory.insets = new Insets(0, 0, 5, 5);
+				gbc_comboBoxCategory.fill = GridBagConstraints.HORIZONTAL;
+				gbc_comboBoxCategory.gridx = 8;
+				gbc_comboBoxCategory.gridy = 9;
+				panelBauteil.add(comboBoxCategory, gbc_comboBoxCategory);
+				
+				JLabel lblLagerort = new JLabel("Lagerort:");
+				GridBagConstraints gbc_lblLagerort = new GridBagConstraints();
+				gbc_lblLagerort.anchor = GridBagConstraints.EAST;
+				gbc_lblLagerort.insets = new Insets(0, 0, 5, 5);
+				gbc_lblLagerort.gridx = 3;
+				gbc_lblLagerort.gridy = 9;
+				panelBauteil.add(lblLagerort, gbc_lblLagerort);
+				
+				txtDetailLocationComponent = new JTextField();
+				GridBagConstraints gbc_txtDetailLocationComponent = new GridBagConstraints();
+				gbc_txtDetailLocationComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_txtDetailLocationComponent.fill = GridBagConstraints.HORIZONTAL;
+				gbc_txtDetailLocationComponent.gridx = 4;
+				gbc_txtDetailLocationComponent.gridy = 9;
+				panelBauteil.add(txtDetailLocationComponent, gbc_txtDetailLocationComponent);
+				txtDetailLocationComponent.setColumns(10);
+				
+				JLabel lblPreis = new JLabel("Preis:");
+				GridBagConstraints gbc_lblPreis = new GridBagConstraints();
+				gbc_lblPreis.anchor = GridBagConstraints.EAST;
+				gbc_lblPreis.insets = new Insets(0, 0, 5, 5);
+				gbc_lblPreis.gridx = 5;
+				gbc_lblPreis.gridy = 9;
+				panelBauteil.add(lblPreis, gbc_lblPreis);
+				
+				txtDetailPriceComponent = new JTextField();
+				GridBagConstraints gbc_txtDetailPriceComponent = new GridBagConstraints();
+				gbc_txtDetailPriceComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_txtDetailPriceComponent.fill = GridBagConstraints.HORIZONTAL;
+				gbc_txtDetailPriceComponent.gridx = 6;
+				gbc_txtDetailPriceComponent.gridy = 9;
+				panelBauteil.add(txtDetailPriceComponent, gbc_txtDetailPriceComponent);
+				txtDetailPriceComponent.setColumns(10);
+				
+				JLabel lblKategorie = new JLabel("Kategorie:");
+				GridBagConstraints gbc_lblKategorie = new GridBagConstraints();
+				gbc_lblKategorie.anchor = GridBagConstraints.EAST;
+				gbc_lblKategorie.insets = new Insets(0, 0, 5, 5);
+				gbc_lblKategorie.gridx = 7;
+				gbc_lblKategorie.gridy = 9;
+				panelBauteil.add(lblKategorie, gbc_lblKategorie);
+				
+				JButton btnSaveComponent = new JButton("Speichern");
+				GridBagConstraints gbc_btnSaveComponent = new GridBagConstraints();
+				gbc_btnSaveComponent.insets = new Insets(0, 0, 5, 5);
+				gbc_btnSaveComponent.gridx = 8;
+				gbc_btnSaveComponent.gridy = 10;
+				panelBauteil.add(btnSaveComponent, gbc_btnSaveComponent);
+				
 		
 		JPanel panelFinanz = new JPanel();
 		tabbedPane.addTab("Finanzverwaltung", null, panelFinanz, null);

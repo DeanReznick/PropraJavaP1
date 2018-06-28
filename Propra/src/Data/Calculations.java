@@ -27,8 +27,17 @@ public class Calculations {
 		int[] result = new int[10];
 		int width = (int) widths - 20 - 220;
 		boolean a = false;
-		double temp = width / 8;
+		double temp = 0;
 		int b;
+		boolean c = false;
+		if (width % 8 == 0) {
+			temp = (width - 20) / 8;
+		} else {
+			temp = width / 8;
+			c = true;
+		}
+		
+		
 		while (a = false) {
 			temp = temp - 0.1;
 			System.out.println(temp);
@@ -36,14 +45,20 @@ public class Calculations {
 				a = true;
 			}
 		}
+		
 		for (int i = 0; i<=9; i++) {
 		result[i] = (int) temp;
 		}
-		System.out.println(temp);
 		b = (int) width - (int) (temp*8);
-		System.out.println(b);
+		
 		result[0] = b/2;
 		result[5] = b/2;
+
+		int tempus = 0;
+		for (int i=0; i<=9; i++) {
+			System.out.println(result[i]);
+			tempus = tempus + i;
+		}
 		return result;
 	}
 	
