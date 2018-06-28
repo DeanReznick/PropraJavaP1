@@ -869,7 +869,7 @@ public class MainMenu extends JFrame {
 					
 					tblComponents.setModel(modelComponents);
 					TableColumnModel tcmComponents = MainMenu.tblComponents.getColumnModel();
-					tcm.removeColumn( tcmComponents.getColumn(0) );
+					tcmComponents.removeColumn( tcmComponents.getColumn(0) );
 					
 					
 				
