@@ -7,16 +7,27 @@ import GUI.GUILogin;
 
 public class Rechnungsabwicklung {
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
 		createBRechnung("test", 1, 1, "Bar", 11.0, "Kredit"); 
 		//alterBRechnung(1, "test", 1, 1, "Bar", 11.0, "Kredit A"); 
 		//AddTBauteilToBRechnung(1,1); 
 		//delteTBauteilFromBRechnung(1,1); 
-	}
+	
+		//createARechnung("test", 1, 1, "Bar", 11.0, "Kredit",77); 
+		//alterARechnung(5,"test", 1, 1, "Bar", 1.0, "Kredit"); 
+		
+		//delteARechnung(5); 
+		//delteBRechnung(2); 
+		
+	}*/
 	
 	//BRechnung
+	
+	public static void sumKosten(){
+		
+	}
 	
 	public static void createBRechnung(String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung) {
 			// +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'"
@@ -39,7 +50,6 @@ public class Rechnungsabwicklung {
 		DataBase.closeConnection();
 		
 		
-		
 	}
 	public static void delteTBauteilFromBRechnung(int id_TBauteil, int id_BRechnung) {
 		
@@ -48,8 +58,6 @@ public class Rechnungsabwicklung {
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
 		
-		
-		// ID löschen. 
 		
 	}
 	
@@ -63,27 +71,81 @@ public class Rechnungsabwicklung {
 		DataBase.closeConnection();
 	}
 	
-	public static void delteBRechnung() {
+	public static void delteBRechnung(int id_BRechnung) {
+		
+		DataBase.getConnection();
+		String query = "DELETE FROM BRechnung WHERE ID_BRechnung = "+ id_BRechnung +";"; 
+		System.out.println(query);
+		DataBase.executeQuery(query); 
+		DataBase.closeConnection();
+		
+		DataBase.getConnection();
+		query = "DELETE FROM 'Mischtabelle-TBauteil-BRechnung' WHERE ID_BRechnung = "+ id_BRechnung +";"; 
+		System.out.println(query);
+		DataBase.executeQuery(query); 
+		DataBase.closeConnection();
 		
 		
 		
-		
-		// Mischtabelle mit löschen!! -> Meherere Ids? 
+		// Mischtabelle mit löschen!! -> Meherere Ids? -> ID Rechnugn löschen !
 		
 		
 	}
 	
 	// ARechnung
 	
-	public static void createARechnung() {
+	public static void createARechnung(String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung, int id_Auftrag) {
+		// +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'"
+
+		DataBase.getConnection();
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		String query = "INSERT INTO ARechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp, ID_Auftrag) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"', "+ id_Auftrag +" );";
+		System.out.println(query);
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+		// im Auftrag Verankern
+		DataBase.getConnection();
+		int id = DataBase.getSpecificID("current", "SELECT max(ID_ARechnung) as current FROM ARechnung;");
+		DataBase.closeConnection();
+		
+		DataBase.getConnection();
+		query = "UPDATE Auftrag SET ID_ARechnung = "+id+" WHERE ID_Auftrag = "+id_Auftrag+";"; 
+		System.out.println(query);
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
+		
 		
 	}
 
-	public static void alterARechnung() {
+	public static void alterARechnung(int id_Bill, String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung) {
+		DataBase.getConnection();
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		String query = "UPDATE ARechnung SET Name='"  + rechnungsname + "' , Id_Auftraggeber= "+ id_Auftraggeber + ", Id_Ansprechpartner = " + id_Ansprechpartner + ", Art_Bezahlung='" + artBezahlung + "', Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"' WHERE ID_ARechnung = " + id_Bill + ";";  
+		System.out.println(query);
 		
+		DataBase.executeQuery(query); 
+		DataBase.closeConnection();
 	}
 	
-	public static void delteARechnung() {
+	public static void delteARechnung(int id_ARechnung) {
+
+		// = NULL 
 		
+		DataBase.getConnection();
+		String query = "DELETE FROM ARechnung WHERE ID_ARechnung = "+ id_ARechnung +";"; 
+		System.out.println(query);
+		DataBase.executeQuery(query); 
+		DataBase.closeConnection();
+		
+			
+		// Auftrag anpassen: 
+	
+		DataBase.getConnection();
+		query = "UPDATE Auftrag SET ID_ARechnung = NULL WHERE ID_ARechnung = "+id_ARechnung+";"; 
+		System.out.println(query);
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
 	}
 }
