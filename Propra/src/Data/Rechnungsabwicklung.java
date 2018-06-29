@@ -10,11 +10,10 @@ public class Rechnungsabwicklung {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//createBRechnung("test", 1, 1, "Bar", 11.0, "Kredit"); 
-		alterBRechnung(1, "test", 1, 1, "Bar", 11.0, "Kredit A"); 
-		
-		AddTBauteilToBRechnung(1,1); 
-
+		createBRechnung("test", 1, 1, "Bar", 11.0, "Kredit"); 
+		//alterBRechnung(1, "test", 1, 1, "Bar", 11.0, "Kredit A"); 
+		//AddTBauteilToBRechnung(1,1); 
+		//delteTBauteilFromBRechnung(1,1); 
 	}
 	
 	//BRechnung
@@ -42,7 +41,13 @@ public class Rechnungsabwicklung {
 		
 		
 	}
-	public static void delteTBauteilFromBRechnung() {
+	public static void delteTBauteilFromBRechnung(int id_TBauteil, int id_BRechnung) {
+		
+		DataBase.getConnection();
+		String query = "DELETE FROM 'Mischtabelle-TBauteil-BRechnung' WHERE ID_TBauteil = "+id_TBauteil+" AND ID_BRechnung = "+ id_BRechnung+";"; 
+		DataBase.executeQuery(query);
+		DataBase.closeConnection();
+		
 		
 		// ID löschen. 
 		
@@ -60,7 +65,11 @@ public class Rechnungsabwicklung {
 	
 	public static void delteBRechnung() {
 		
-		// Mischtabelle mit löschen!!
+		
+		
+		
+		// Mischtabelle mit löschen!! -> Meherere Ids? 
+		
 		
 	}
 	
