@@ -212,6 +212,7 @@ public class AddPerson extends JFrame {
 					JOptionPane.showMessageDialog(null, "PLZ has to be a number.");
 					txtPlz.setBackground(Color.RED);
 				} finally {
+					DataBase.loadPeopleToRAM();
 					DataBase.closeConnection();
 				}
 			 

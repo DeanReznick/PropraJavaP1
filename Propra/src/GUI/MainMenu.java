@@ -12,8 +12,10 @@ import javax.swing.table.TableColumnModel;
 import Data.BauteileAuftragsabwicklung;
 import Data.Calculations;
 import Data.DataBase;
+import Data.OffenerAuftragObjektRAM;
 import Data.OrderObjektRAM;
 import Data.PersonObjektRAM;
+import Data.PersonenFertigungsverwaltung;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -37,6 +39,8 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JTree;
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainMenu extends JFrame {
 
@@ -89,11 +93,14 @@ public class MainMenu extends JFrame {
 	public static JTable tblComponents;
 	public static JTable tblKasse;
 	public static JTable tblTopf;
+	public static JTable tblOffeneAuftraege;
 	public static JScrollPane scrollPanePerson;
 	public static JScrollPane scrollPaneOrder;
 	public static JScrollPane scrollPaneCategory;
 	public static JScrollPane scrollPaneComponent;
 	private boolean hdResolution;
+	public static JTree treeCategory;
+	
 
 	
 
@@ -161,17 +168,17 @@ public class MainMenu extends JFrame {
 		JPanel panelPerson = new JPanel();
 		tabbedPane.addTab("Personen & Fertigungsverwaltung", null, panelPerson, null);
 		GridBagLayout gbl_panelPerson = new GridBagLayout();
-		if (hdResolution = false) {
+//		if (hdResolution = false) {
 		gbl_panelPerson.columnWidths = panelWidths;
 		gbl_panelPerson.rowHeights = new int[]{0, 10, 30, 60, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 60, 30, 30, 30, 30, 30, 30, 30, 30, 30};
 		gbl_panelPerson.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
 		gbl_panelPerson.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		} else {
-			gbl_panelPerson.columnWidths = new int[]{12, 207, 207, 207, 207, 12, 207, 207, 207, 207};
-			gbl_panelPerson.rowHeights = new int[]{0, 10, 30, 60, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 60, 30, 30, 30, 30, 30, 30, 30, 30, 30};
-			gbl_panelPerson.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
-			gbl_panelPerson.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		}
+//		} else {
+//			gbl_panelPerson.columnWidths = new int[]{12, 207, 207, 207, 207, 12, 207, 207, 207, 207};
+//			gbl_panelPerson.rowHeights = new int[]{0, 10, 30, 60, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 60, 30, 30, 30, 30, 30, 30, 30, 30, 30};
+//			gbl_panelPerson.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE};
+//			gbl_panelPerson.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+//		}
 		panelPerson.setLayout(gbl_panelPerson);
 		
 		JLabel lblPersonen = new JLabel("Personen:");
@@ -188,13 +195,18 @@ public class MainMenu extends JFrame {
 		gbc_lblAuftrge.gridy = 1;
 		panelPerson.add(lblAuftrge, gbc_lblAuftrge);
 		
-		JButton btnAlleAnzeigen = new JButton("Alle anzeigen");
-		GridBagConstraints gbc_btnAlleAnzeigen = new GridBagConstraints();
-		gbc_btnAlleAnzeigen.anchor = GridBagConstraints.WEST;
-		gbc_btnAlleAnzeigen.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAlleAnzeigen.gridx = 1;
-		gbc_btnAlleAnzeigen.gridy = 2;
-		panelPerson.add(btnAlleAnzeigen, gbc_btnAlleAnzeigen);
+		JButton btnShowAllPersons = new JButton("Alle anzeigen");
+		btnShowAllPersons.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DataBase.refreshPersonen();
+			}
+		});
+		GridBagConstraints gbc_btnShowAllPersons = new GridBagConstraints();
+		gbc_btnShowAllPersons.anchor = GridBagConstraints.WEST;
+		gbc_btnShowAllPersons.insets = new Insets(0, 0, 5, 5);
+		gbc_btnShowAllPersons.gridx = 1;
+		gbc_btnShowAllPersons.gridy = 2;
+		panelPerson.add(btnShowAllPersons, gbc_btnShowAllPersons);
 		
 		txtSearchPerson = new JTextField();
 		GridBagConstraints gbc_txtSearchPerson = new GridBagConstraints();
@@ -206,6 +218,11 @@ public class MainMenu extends JFrame {
 		txtSearchPerson.setColumns(1);
 		
 		JButton btnSearchPerson = new JButton("Suchen");
+		btnSearchPerson.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DataBase.searchPerson(txtSearchPerson.getText());
+			}
+		});
 		GridBagConstraints gbc_btnSearchPerson = new GridBagConstraints();
 		gbc_btnSearchPerson.anchor = GridBagConstraints.EAST;
 		gbc_btnSearchPerson.insets = new Insets(0, 0, 5, 5);
@@ -213,13 +230,18 @@ public class MainMenu extends JFrame {
 		gbc_btnSearchPerson.gridy = 2;
 		panelPerson.add(btnSearchPerson, gbc_btnSearchPerson);
 		
-		JButton btnAlleAnzeigen_1 = new JButton("Alle anzeigen");
-		GridBagConstraints gbc_btnAlleAnzeigen_1 = new GridBagConstraints();
-		gbc_btnAlleAnzeigen_1.anchor = GridBagConstraints.WEST;
-		gbc_btnAlleAnzeigen_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAlleAnzeigen_1.gridx = 6;
-		gbc_btnAlleAnzeigen_1.gridy = 2;
-		panelPerson.add(btnAlleAnzeigen_1, gbc_btnAlleAnzeigen_1);
+		JButton btnShowAllOrders = new JButton("Alle anzeigen");
+		btnShowAllOrders.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DataBase.refreshOrder();
+			}
+		});
+		GridBagConstraints gbc_btnShowAllOrders = new GridBagConstraints();
+		gbc_btnShowAllOrders.anchor = GridBagConstraints.WEST;
+		gbc_btnShowAllOrders.insets = new Insets(0, 0, 5, 5);
+		gbc_btnShowAllOrders.gridx = 6;
+		gbc_btnShowAllOrders.gridy = 2;
+		panelPerson.add(btnShowAllOrders, gbc_btnShowAllOrders);
 		
 		txtSearchOrder = new JTextField();
 		GridBagConstraints gbc_txtSearchOrder = new GridBagConstraints();
@@ -230,13 +252,18 @@ public class MainMenu extends JFrame {
 		panelPerson.add(txtSearchOrder, gbc_txtSearchOrder);
 		txtSearchOrder.setColumns(1);
 		
-		JButton btnSuchen = new JButton("Suchen");
-		GridBagConstraints gbc_btnSuchen = new GridBagConstraints();
-		gbc_btnSuchen.anchor = GridBagConstraints.EAST;
-		gbc_btnSuchen.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSuchen.gridx = 9;
-		gbc_btnSuchen.gridy = 2;
-		panelPerson.add(btnSuchen, gbc_btnSuchen);
+		JButton btnSearchOrder = new JButton("Suchen");
+		btnSearchOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DataBase.searchOrder(txtSearchOrder.getText());
+			}
+		});
+		GridBagConstraints gbc_btnSearchOrder = new GridBagConstraints();
+		gbc_btnSearchOrder.anchor = GridBagConstraints.EAST;
+		gbc_btnSearchOrder.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSearchOrder.gridx = 9;
+		gbc_btnSearchOrder.gridy = 2;
+		panelPerson.add(btnSearchOrder, gbc_btnSearchOrder);
 		
 		scrollPanePerson = new JScrollPane();
 		GridBagConstraints gbc_scrollPanePerson = new GridBagConstraints();
@@ -426,13 +453,37 @@ public class MainMenu extends JFrame {
 		scrollPaneOrder.setViewportView(tblAuftraege);
 		
 		JButton btnNewPerson = new JButton("Neue Person");
+		btnNewPerson.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddPerson x = new AddPerson();
+				x.setVisible(true);
+			}
+		});
 		GridBagConstraints gbc_btnNewPerson = new GridBagConstraints();
 		gbc_btnNewPerson.insets = new Insets(0, 0, 5, 5);
 		gbc_btnNewPerson.gridx = 1;
 		gbc_btnNewPerson.gridy = 16;
 		panelPerson.add(btnNewPerson, gbc_btnNewPerson);
 		
-		JButton btnDeletePerson = new JButton("Person l\u00F6schen");
+		JButton btnDeletePerson = new JButton("Person loeschen");
+		btnDeletePerson.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) tblPersonen.getModel();
+				//get selected row index
+				int selectedRowIndex = tblPersonen.getSelectedRow();
+				if (selectedRowIndex >= 0) {
+				try {
+				Delete x = new Delete();
+				x.setVisible(true);
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
+			}
+			}
+		});
 		GridBagConstraints gbc_btnDeletePerson = new GridBagConstraints();
 		gbc_btnDeletePerson.insets = new Insets(0, 0, 5, 5);
 		gbc_btnDeletePerson.gridx = 4;
@@ -440,13 +491,37 @@ public class MainMenu extends JFrame {
 		panelPerson.add(btnDeletePerson, gbc_btnDeletePerson);
 		
 		JButton btnCreateOrder = new JButton("Auftrag erstellen");
+		btnCreateOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				NewOrder x = new NewOrder();
+				x.setVisible(true);
+			}
+		});
 		GridBagConstraints gbc_btnCreateOrder = new GridBagConstraints();
 		gbc_btnCreateOrder.insets = new Insets(0, 0, 5, 5);
 		gbc_btnCreateOrder.gridx = 6;
 		gbc_btnCreateOrder.gridy = 16;
 		panelPerson.add(btnCreateOrder, gbc_btnCreateOrder);
 		
-		JButton btnDeleteOrder = new JButton("Auftrag l\u00F6schen");
+		JButton btnDeleteOrder = new JButton("Auftrag loeschen");
+		btnDeleteOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) tblAuftraege.getModel();
+				//get selected row index
+				int selectedRowIndex = tblAuftraege.getSelectedRow();
+				if (selectedRowIndex >= 0) {
+				try {
+				DeleteOrder x = new DeleteOrder();
+				x.setVisible(true);
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Auftrag aus.");
+				}
+				
+			} else {
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Auftrag aus.");
+			}
+			}
+		});
 		GridBagConstraints gbc_btnDeleteOrder = new GridBagConstraints();
 		gbc_btnDeleteOrder.insets = new Insets(0, 0, 5, 5);
 		gbc_btnDeleteOrder.gridx = 9;
@@ -758,6 +833,105 @@ public class MainMenu extends JFrame {
 		txtDetailLandPerson.setColumns(1);
 		
 		JButton btnSaveOrder = new JButton("Speichern");
+		btnSaveOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+//					DataBase.getConnection();
+					
+					int colId = 0;
+					int colTitel = 1;
+					int colAf = 2; 
+					int colDateiname = 3; 
+					int colDateiort = 4; 
+					int colPk= 5;
+					int colRk = 6;
+					int colIdStatus = 7;
+					int colnr  = tblAuftraege.getSelectedRow();
+					
+					/*txtDetailTitelOrder.setText(clicked.getTitel());
+					txtDetailAfOrder.setText(clicked.getAf());
+					txtDetailDateinameOrder.setText(clicked.getDateiname());
+					txtDetailDateiortOrder.setText(clicked.getDateiort());
+					txtDetailPkOrder.setText(clicked.getPk());
+					txtDetailRkOrder.setText(clicked.getRk());
+					txtDetailStatusOrder.setText(DataBase.getStatusBeiAuftragId(id));
+					txtDetailRolleOrder.setText(DataBase.getRolleByOrderId(id));*/
+					
+					OrderObjektRAM clicked = new OrderObjektRAM();
+					String id = MainMenu.tblAuftraege.getModel().getValueAt(colnr, 0).toString();
+					
+					for (OrderObjektRAM o : DataBase.orders) {
+						if (o.getId_Auftrag() == Integer.parseInt(id)) {
+							clicked = o;
+						}
+					}
+					
+					int idOld = Integer.parseInt(id);
+					String headerOld = clicked.getTitel();
+					String afOld = clicked.getAf();
+					String filenameOld = clicked.getDateiname();
+					String repositoryOld = clicked.getDateiort();
+					String pkOld = clicked.getPk();
+					String rkOld = clicked.getRk();
+					String statusOld = DataBase.getStatusBeiAuftragId(id);
+					
+					int colnrPers  = MainMenu.tblPersonen.getSelectedRow();
+					int idPerson = Integer.parseInt(MainMenu.tblPersonen.getModel().getValueAt(colnrPers, 0).toString());
+					String jobOld = DataBase.getRolleByOrderId(id);
+						
+						
+						int idNew = idOld;
+						String headerNew = txtDetailTitelOrder.getText();
+						String afNew = txtDetailAfOrder.getText(); 
+						String filenameNew = txtDetailDateinameOrder.getText();
+						String repositoryNew = txtDetailDateiortOrder.getText();
+						String pkNew = txtDetailPkOrder.getText();
+						String rkNew = txtDetailRkOrder.getText();
+						String jobNew = txtDetailRolleOrder.getText();
+						String statusNew = txtDetailStatusOrder.getText();
+						
+						
+//						Manager.checkStandardOrderUpdate(headerNew, afNew, filenameNew, repositoryNew, pkNew, rkNew);
+						
+						if(!headerNew.equals(headerOld) 
+								||!afNew.equals(afOld) 
+								||!filenameNew.equals(filenameOld)
+								||!repositoryNew.equals(repositoryOld)
+								||!pkNew.equals(pkOld)
+								||!rkNew.equals(rkOld)
+								) {
+							
+							
+							
+							PersonenFertigungsverwaltung.changeDataSetOrder(idNew, headerNew, afNew, filenameNew, repositoryNew, pkNew, rkNew);
+						}
+						
+						
+						PersonenFertigungsverwaltung.changeJobOrderPerson(idPerson, idOld, jobNew);
+
+						Object id_order  =  tblAuftraege.getModel().getValueAt(colnr, 0);
+						
+						Integer idAuftrag = Integer.valueOf(id_order.toString()); 
+						
+
+						
+						PersonenFertigungsverwaltung.alterStatus(idAuftrag, txtDetailStatusOrder.getText());
+						
+						
+							
+						DataBase.refreshOrder();
+						DataBase.refreshOrderBill();
+//						DataBase.closeConnection();
+						
+						
+					} catch (ArrayIndexOutOfBoundsException ex) {
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person und einen Auftrag aus.");
+					} 
+//					catch (InvalidArgumentsException e) {
+//						
+//					}
+			}
+		});
 		GridBagConstraints gbc_btnSaveOrder = new GridBagConstraints();
 		gbc_btnSaveOrder.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSaveOrder.gridx = 9;
@@ -765,6 +939,104 @@ public class MainMenu extends JFrame {
 		panelPerson.add(btnSaveOrder, gbc_btnSaveOrder);
 		
 		JButton btnSavePerson = new JButton("Speichern");
+		btnSavePerson.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					DataBase.getConnection();
+					int colnr  = MainMenu.tblPersonen.getSelectedRow();
+					
+					String personName = MainMenu.tblPersonen.getModel().getValueAt(colnr, 1).toString();
+					String personVorname = MainMenu.tblPersonen.getModel().getValueAt(colnr, 2).toString();
+					
+					PersonObjektRAM clicked = new PersonObjektRAM();
+					String mail = MainMenu.tblPersonen.getModel().getValueAt(colnr, 3).toString();
+					
+					for (PersonObjektRAM p : DataBase.people) {
+						if (p.getMail().equals(mail) && p.getName().equals(personName) && p.getVorname().equals(personVorname)) {
+							clicked = p;
+						}
+					}
+					String oldName = clicked.getName();
+					String oldVorname = clicked.getVorname();
+					String oldTel = clicked.getTelefonnummer();
+					String oldMail = clicked.getMail();
+					String oldRolle = clicked.getRolle();
+					String oldStr = clicked.getStraße();
+					String oldHaus = clicked.getHausnummer();
+					int oldPlz = clicked.getPlz();
+					String oldOrt = clicked.getOrt();
+					String oldLand = clicked.getLand();
+					
+					
+					String newName = txtDetailNamePerson.getText();
+					String newVorname = txtDetailVornamePerson.getText();
+					String newTel = txtDetailTelefonPerson.getText();
+					String newMail = txtDetailMailPerson.getText();
+					String newRolle = txtDetailRollePerson.getText();
+					String newStr = txtDetailStrassePerson.getText();
+					String newHaus = txtDetailHausnummerPerson.getText();
+					int newPlz = Integer.parseInt(txtDetailPlzPerson.getText());
+					String newOrt = txtDetailOrtPerson.getText();
+					String newLand = txtDetailLandPerson.getText();
+					
+					if(!newName.equals(oldName) || !newVorname.equals(oldVorname)) {
+						
+						PersonenFertigungsverwaltung.changeNameSurname(oldVorname, oldName, newVorname, newName);
+						System.out.println(oldName);
+						System.out.println(newVorname);
+						
+						
+					}
+					
+					
+					if(!newTel.equals(oldTel))
+					{
+						PersonenFertigungsverwaltung.changePhoneNumber(oldVorname, oldName, newTel);
+					}
+					
+					
+					if(!newMail.equals(oldMail))
+					{
+						PersonenFertigungsverwaltung.changeMail(oldVorname, oldName, newMail);
+					}
+					
+					if(!newRolle.equals(oldRolle))
+					{
+					PersonenFertigungsverwaltung.changeRolle(clicked.getID_Person(), newRolle);
+					}
+					
+					
+					
+					if(!newLand.equals(oldLand)
+						|| !newStr.equals(oldStr)
+						|| !newOrt.equals(oldOrt)
+						|| !newHaus.equals(oldHaus)
+						|| newPlz != oldPlz)
+					{
+						PersonenFertigungsverwaltung.changeAddressDataSet(oldVorname, oldName, newLand, newStr, newOrt, newHaus, newPlz);
+					}
+					
+					txtDetailNamePerson.setText("");
+					txtDetailVornamePerson.setText("");
+					txtDetailTelefonPerson.setText("");
+					txtDetailMailPerson.setText("");
+					txtDetailRollePerson.setText("");
+					txtDetailStrassePerson.setText("");
+					txtDetailHausnummerPerson.setText("");
+					txtDetailPlzPerson.setText("");
+					txtDetailOrtPerson.setText("");
+					txtDetailLandPerson.setText("");
+					
+					DataBase.loadPeopleToRAM();
+					DataBase.refreshPersonen();
+					
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
+				} finally {
+					DataBase.closeConnection();
+				}
+			}
+		});
 		GridBagConstraints gbc_btnSavePerson = new GridBagConstraints();
 		gbc_btnSavePerson.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSavePerson.gridx = 4;
@@ -876,8 +1148,8 @@ public class MainMenu extends JFrame {
 				
 				scrollPaneComponent.setViewportView(tblComponents);
 				
-				JTree tree = new JTree();
-				scrollPaneCategory.setViewportView(tree);
+				treeCategory = new JTree();
+				scrollPaneCategory.setViewportView(treeCategory);
 				
 				JButton btnShowAllComponents = new JButton("Alle anzeigen");
 				GridBagConstraints gbc_btnShowAllComponents = new GridBagConstraints();
@@ -1296,11 +1568,72 @@ public class MainMenu extends JFrame {
 		JPanel panelOffen = new JPanel();
 		tabbedPane.addTab("Offene Auftr\u00E4ge", null, panelOffen, null);
 		GridBagLayout gbl_panelOffen = new GridBagLayout();
-		gbl_panelOffen.columnWidths = new int[]{0};
-		gbl_panelOffen.rowHeights = new int[]{0};
-		gbl_panelOffen.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_panelOffen.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelOffen.columnWidths = new int[]{0, 0, 0};
+		gbl_panelOffen.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_panelOffen.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelOffen.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panelOffen.setLayout(gbl_panelOffen);
+		
+		JLabel lblHierFindenSie = new JLabel("Hier finden Sie alle offenen Auftraege, die \u00FCber die Webapplikation in auftrag gegeben wurden. Wenn Sie nun aus der unten stehenden Tabelle einen Auftrag ausw\u00E4hlen, k\u00F6nnen Sie diesen annehmen, oder ablehnen.");
+		GridBagConstraints gbc_lblHierFindenSie = new GridBagConstraints();
+		gbc_lblHierFindenSie.insets = new Insets(0, 0, 5, 0);
+		gbc_lblHierFindenSie.gridx = 1;
+		gbc_lblHierFindenSie.gridy = 1;
+		panelOffen.add(lblHierFindenSie, gbc_lblHierFindenSie);
+		
+		JScrollPane scrollPaneOffeneAuftraege = new JScrollPane();
+		GridBagConstraints gbc_scrollPaneOffeneAuftraege = new GridBagConstraints();
+		gbc_scrollPaneOffeneAuftraege.fill = GridBagConstraints.BOTH;
+		gbc_scrollPaneOffeneAuftraege.gridx = 1;
+		gbc_scrollPaneOffeneAuftraege.gridy = 2;
+		panelOffen.add(scrollPaneOffeneAuftraege, gbc_scrollPaneOffeneAuftraege);
+		
+//		String[] column_headers_orders = {"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"};
+		String[] column_headers_orders = {"Bauteil", "Vorname", "Name", "Timestamp", "Menge"};
+		String[][] data_orders = new String[1000][7];
+		tblOffeneAuftraege = new JTable(data_orders, column_headers_orders);
+		tblOffeneAuftraege.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				try {
+				OrderApprove x = new OrderApprove(); // -id Order 
+				x.setVisible(true);  
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine  aus.");
+				}	
+			}
+		});
+		DefaultTableModel modelOffeneAuftraege = new DefaultTableModel(new String[]{"ID Änderung", "Bauteil", "Vorname", "Name", "Timestamp", "Menge"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};	
+			
+			DataBase.loadOffeneAuftraegeToRam();
+			
+			
+			for(OffenerAuftragObjektRAM tmp: DataBase.offeneAuftraege) {
+				
+			int id_aenderung = tmp.getid_aenderung();
+			int id_bauteil = tmp.getId_bauteil();
+			String bauteilName = DataBase.getBauteilName(id_bauteil);
+			int id_person = tmp.getId_person();
+			String vorname = tmp.getVorname();
+			String name = tmp.getName();
+			String timestamp = tmp.getTimestamp();
+			int aenderung = tmp.getAenderung();
+			
+			
+			 modelOffeneAuftraege.addRow(new Object[]{id_aenderung, bauteilName, vorname, name, timestamp, aenderung});
+			}
+			
+			tblOffeneAuftraege.setModel(modelOffeneAuftraege);
+		
+		scrollPaneOffeneAuftraege.setViewportView(tblOffeneAuftraege);
+		TableColumnModel tcmOffen = tblOffeneAuftraege.getColumnModel();
+		tcmOffen.removeColumn( tcmOffen.getColumn(0) );
 		setVisible(true);
 		
 		DataBase.closeConnection();

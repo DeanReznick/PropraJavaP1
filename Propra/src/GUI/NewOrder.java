@@ -99,6 +99,7 @@ public class NewOrder extends JFrame {
 				catch (InvalidArgumentsException ex){
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {
+					DataBase.loadOrdersToRAM();
 					DataBase.closeConnection();
 				}
 				

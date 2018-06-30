@@ -119,7 +119,7 @@ public class UpdateComponent extends JFrame {
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {
 					DataBase.refreshComponent();
-					int selectedRowIndexCategory = MainMenu.tblCategory.getSelectedRow();
+					int selectedRowIndexCategory = MainMenu.treeCategory.getMaxSelectionRow();
 					if(selectedRowIndexCategory>=0) {DataBase.refreshComponentCategory();}
 					
 					

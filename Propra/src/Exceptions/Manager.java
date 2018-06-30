@@ -166,7 +166,7 @@ public class Manager {
 		if(id == -1) {
 			NewOrder.txtName.setBackground(Color.RED);
 			NewOrder.txtSurname.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Person " + name + " " + surname + " existiert nicht!");
+			throw new InvalidArgumentsException("Person " + name + ", " + surname + " existiert nicht!");
 			
 			
 		}
