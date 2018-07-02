@@ -1345,6 +1345,9 @@ public static void refreshBill2() {
 		
 		MainMenu.tblKasse.setModel(modelKasse);
 	
+		TableColumnModel tcmKasse = MainMenu.tblKasse.getColumnModel();
+		tcmKasse.removeColumn( tcmKasse.getColumn(0) );
+		tcmKasse.removeColumn( tcmKasse.getColumn(1) );
 		closeConnection();
 	}
 
@@ -1395,6 +1398,9 @@ public static void refreshBill2() {
 		
 		
 		MainMenu.tblTopf.setModel(modelTopf);
+		
+		TableColumnModel tcmTopf = MainMenu.tblTopf.getColumnModel();
+		tcmTopf.removeColumn( tcmTopf.getColumn(1) );
 	
 		closeConnection();
 	}

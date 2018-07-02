@@ -12,6 +12,7 @@ import javax.swing.table.TableColumnModel;
 import Data.BauteileAuftragsabwicklung;
 import Data.Calculations;
 import Data.DataBase;
+import Data.Finanzverwaltung;
 import Data.OffenerAuftragObjektRAM;
 import Data.OrderObjektRAM;
 import Data.PersonObjektRAM;
@@ -100,6 +101,12 @@ public class MainMenu extends JFrame {
 	public static JScrollPane scrollPaneComponent;
 	private boolean hdResolution;
 	public static JTree treeCategory;
+	private JTable tblRechn;
+	private JTextField txtKasseNr;
+	private JTextField txtKasseSoll;
+	private JTextField txtKasseIst;
+	private JTextField txtTopfSoll;
+	private JTextField txtTopfIst;
 	
 
 	
@@ -133,7 +140,7 @@ public class MainMenu extends JFrame {
 		gbl_contentPane.columnWidths = frameWidths;
 		gbl_contentPane.rowHeights = frameHeights;
 		gbl_contentPane.columnWeights = new double[]{0.0, 1.0, 0.0};
-		gbl_contentPane.rowWeights = new double[]{0.0, 1.0};
+		gbl_contentPane.rowWeights = new double[]{0.0, 1.0, 0.0};
 //		} else {
 //			gbl_contentPane.columnWidths = new int[]{20, 1680, 110, 110};
 //			gbl_contentPane.rowHeights = new int[]{13, 1054, 13};
@@ -1358,124 +1365,9 @@ public class MainMenu extends JFrame {
 		JTabbedPane tabbedPaneFinanz = new JTabbedPane(JTabbedPane.TOP);
 		panelFinanz.add(tabbedPaneFinanz);
 		
-		JPanel panelTopf = new JPanel();
-		tabbedPaneFinanz.addTab("T\u00F6pfe & Kassen", null, panelTopf, null);
-		GridBagLayout gbl_panelTopf = new GridBagLayout();
-		gbl_panelTopf.columnWidths = new int[]{362, 362, 200, 374, 0};
-		gbl_panelTopf.rowHeights = new int[]{67, 402, 0, 0, 0};
-		gbl_panelTopf.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panelTopf.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panelTopf.setLayout(gbl_panelTopf);
-		
-		JLabel lblKassen = new JLabel("Kassen:");
-		lblKassen.setFont(new Font("Tahoma", Font.BOLD, 16));
-		GridBagConstraints gbc_lblKassen = new GridBagConstraints();
-		gbc_lblKassen.gridwidth = 2;
-		gbc_lblKassen.insets = new Insets(0, 0, 5, 5);
-		gbc_lblKassen.gridx = 0;
-		gbc_lblKassen.gridy = 0;
-		panelTopf.add(lblKassen, gbc_lblKassen);
-		
-		JLabel lblToepfe = new JLabel("Toepfe:");
-		lblToepfe.setFont(new Font("Tahoma", Font.BOLD, 16));
-		GridBagConstraints gbc_lblToepfe = new GridBagConstraints();
-		gbc_lblToepfe.insets = new Insets(0, 0, 5, 0);
-		gbc_lblToepfe.gridx = 3;
-		gbc_lblToepfe.gridy = 0;
-		panelTopf.add(lblToepfe, gbc_lblToepfe);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.gridwidth = 2;
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 1;
-		panelTopf.add(scrollPane, gbc_scrollPane);
-		
 		
 		String[] column_headers_kasse = {"Art", "Soll", "Ist"};
 		String[][] data_kasse = new String[1000][11];
-		tblKasse = new JTable(data_kasse, column_headers_kasse);
-		
-		tblKasse.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				
-				DataBase.getConnection();
-				int colnr  = MainMenu.tblKasse.getSelectedRow();
-				DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "Soll", "Ist"}, 0) {
-					
-					@Override
-					public boolean isCellEditable(int row, int column) {
-							return false;
-						}
-					};
-				String id = MainMenu.tblKasse.getModel().getValueAt(colnr, 0).toString();
-				
-			
-				
-				Statement stmtTopf = null;
-				
-					try {
-						
-						stmtTopf = DataBase.c.createStatement();
-						System.out.println("Statement");
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
-				
-				String sqlTopf = "SELECT Topf.* FROM Topf INNER JOIN 'Mischtabelle-Kasse-Topf' on Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf where 'Mischtabelle-Kasse-Topf'.ID_Kasse ="+id+";";
-				
-				ResultSet rsTopf = null;
-				
-					try {
-						rsTopf = stmtTopf.executeQuery(sqlTopf);
-						System.out.println("Query executed");
-						System.out.println(rsTopf);
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				
-				
-				
-				
-				
-				
-					try {
-						while(rsTopf.next())
-						{
-							String a1 = rsTopf.getString("ID_Topf");
-						 
-						    String c1 = rsTopf.getString("Soll");
-						    String d1 = rsTopf.getString("Ist");
-						    
-						    
-						 
-						  
-						    
-						    modelTopf.addRow(new Object[]{a1,c1,d1});
-						    
-						    System.out.println("While done");
-						    
-						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					tblTopf.setModel(modelTopf);
-				
-				
-				
-				
-				
-				
-				DataBase.closeConnection();
-			}
-		});
 		DefaultTableModel modelKasse = new DefaultTableModel(new String[]{"ID_Kasse", "Art", "Nummer", "Soll", "Ist"}, 0) {
 			
 			@Override
@@ -1498,28 +1390,358 @@ public class MainMenu extends JFrame {
 		    
 		    modelKasse.addRow(new Object[]{a1, b1,c1,d1,e1});
 		}
+		//tcmKasse.removeColumn( tcmKasse.getColumn(0) );
+		
+		
+		
+		
+//		String[] column_headers_topf = {"ID_Topf", "Soll", "Ist"};
+//		String[][] data_topf = new String[1000][11];
+//		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "Soll", "Ist"}, 0) {
+//			
+//			@Override
+//			public boolean isCellEditable(int row, int column) {
+//					return false;
+//				}
+//			};
+//		String sqlTopf = "SELECT Topf.*, 'Mischtabelle-Kasse-Topf'.ID_Kasse FROM Topf LEFT JOIN 'Mischtabelle-Kasse-Topf' ON Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf;";
+//		ResultSet rsTopf = stmt.executeQuery(sqlTopf);
+//		
+//		while(rsTopf.next())
+//		{
+//			String a1 = rsTopf.getString("ID_Topf");
+//		    String b1 = rsTopf.getString("ID_Kasse");
+//		    String c1 = rsTopf.getString("Soll");
+//		    String d1 = rsTopf.getString("Ist");
+//		    
+//		    modelTopf.addRow(new Object[]{a1,b1,c1,d1});
+//		}
+		
+		
+	
+		
+
+		
+		JPanel panelRechnung = new JPanel();
+		tabbedPaneFinanz.addTab("Rechnungen", null, panelRechnung, null);
+		GridBagLayout gbl_panelRechnung = new GridBagLayout();
+		gbl_panelRechnung.columnWidths = new int[]{0};
+		gbl_panelRechnung.rowHeights = new int[]{0};
+		gbl_panelRechnung.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_panelRechnung.rowWeights = new double[]{Double.MIN_VALUE};
+		panelRechnung.setLayout(gbl_panelRechnung);
+		
+		JPanel panelTopf = new JPanel();
+		tabbedPaneFinanz.addTab("T\u00F6pfe & Kassen", null, panelTopf, null);
+		GridBagLayout gbl_panelTopf = new GridBagLayout();
+		gbl_panelTopf.columnWidths = new int[]{0, 11, 130, 230, 176, 207, 440, 180, 0};
+		gbl_panelTopf.rowHeights = new int[]{67, 500, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panelTopf.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelTopf.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panelTopf.setLayout(gbl_panelTopf);
+		
+		JLabel lblNewLabel = new JLabel("  Kassen:");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.anchor = GridBagConstraints.WEST;
+		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel.gridx = 2;
+		gbc_lblNewLabel.gridy = 0;
+		panelTopf.add(lblNewLabel, gbc_lblNewLabel);
+		
+		JLabel lblToepfe = new JLabel("Toepfe:");
+		lblToepfe.setFont(new Font("Tahoma", Font.BOLD, 16));
+		GridBagConstraints gbc_lblToepfe = new GridBagConstraints();
+		gbc_lblToepfe.gridwidth = 2;
+		gbc_lblToepfe.anchor = GridBagConstraints.WEST;
+		gbc_lblToepfe.insets = new Insets(0, 0, 5, 5);
+		gbc_lblToepfe.gridx = 4;
+		gbc_lblToepfe.gridy = 0;
+		panelTopf.add(lblToepfe, gbc_lblToepfe);
+		
+		JLabel lblRechnungen = new JLabel("Rechnungen:");
+		lblRechnungen.setFont(new Font("Tahoma", Font.BOLD, 16));
+		GridBagConstraints gbc_lblRechnungen = new GridBagConstraints();
+		gbc_lblRechnungen.anchor = GridBagConstraints.WEST;
+		gbc_lblRechnungen.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRechnungen.gridx = 6;
+		gbc_lblRechnungen.gridy = 0;
+		panelTopf.add(lblRechnungen, gbc_lblRechnungen);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.gridwidth = 2;
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane.gridx = 2;
+		gbc_scrollPane.gridy = 1;
+		panelTopf.add(scrollPane, gbc_scrollPane);
+		tblKasse = new JTable(data_kasse, column_headers_kasse);
+		
+		String[] comboBoxValues = {"Barkasse", "Konto", "Kostenstelle"};
+		
+		JButton btnTopfErstellen = new JButton("Topf Erstellen");
+		GridBagConstraints gbc_btnTopfErstellen = new GridBagConstraints();
+		gbc_btnTopfErstellen.insets = new Insets(0, 0, 5, 5);
+		gbc_btnTopfErstellen.gridx = 4;
+		gbc_btnTopfErstellen.gridy = 2;
+		panelTopf.add(btnTopfErstellen, gbc_btnTopfErstellen);
+		
+		JButton btnTopfLoeschen = new JButton("Topf Loeschen");
+		GridBagConstraints gbc_btnTopfLoeschen = new GridBagConstraints();
+		gbc_btnTopfLoeschen.insets = new Insets(0, 0, 5, 5);
+		gbc_btnTopfLoeschen.gridx = 5;
+		gbc_btnTopfLoeschen.gridy = 2;
+		panelTopf.add(btnTopfLoeschen, gbc_btnTopfLoeschen);
+		
+		JLabel lblDetails_1 = new JLabel("Details:");
+		lblDetails_1.setFont(new Font("Tahoma", Font.BOLD, 13));
+		GridBagConstraints gbc_lblDetails_1 = new GridBagConstraints();
+		gbc_lblDetails_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDetails_1.gridx = 4;
+		gbc_lblDetails_1.gridy = 3;
+		panelTopf.add(lblDetails_1, gbc_lblDetails_1);
+		JComboBox comboBoxArt = new JComboBox(comboBoxValues);
+		
+		GridBagConstraints gbc_comboBoxArt = new GridBagConstraints();
+		gbc_comboBoxArt.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxArt.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxArt.gridx = 3;
+		gbc_comboBoxArt.gridy = 5;
+		panelTopf.add(comboBoxArt, gbc_comboBoxArt);
+		
+		
+		 
+		tblKasse.addMouseListener(new MouseAdapter() {
+			@Override
+			
+			
+			
+			public void mouseClicked(MouseEvent arg0) {
+				
+				DataBase.getConnection();
+				int colnr  = MainMenu.tblKasse.getSelectedRow();
+				
+				
+				String id = MainMenu.tblKasse.getModel().getValueAt(colnr, 0).toString();
+				String oldArt = MainMenu.tblKasse.getModel().getValueAt(colnr, 1).toString();
+				String oldNumber = MainMenu.tblKasse.getModel().getValueAt(colnr, 2).toString();
+				String oldSoll = MainMenu.tblKasse.getModel().getValueAt(colnr, 3).toString();
+				String oldIst = MainMenu.tblKasse.getModel().getValueAt(colnr, 4).toString();
+				
+				comboBoxArt.setSelectedItem(oldArt);
+				txtKasseNr.setText(oldNumber);
+				txtKasseSoll.setText(oldSoll);
+				txtKasseIst.setText(oldIst);
+				
+				DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "ID_Kasse", "Soll", "Ist"}, 0) {
+					
+					@Override
+					public boolean isCellEditable(int row, int column) {
+							return false;
+						}
+					};
+				
+				
+			
+				
+				Statement stmtTopf = null;
+				
+					try {
+						
+						stmtTopf = DataBase.c.createStatement();
+						System.out.println("Statement");
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				
+				String sqlTopf = "SELECT Topf.*, 'Mischtabelle-Kasse-Topf'.ID_Kasse  FROM Topf INNER JOIN 'Mischtabelle-Kasse-Topf' on Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf where 'Mischtabelle-Kasse-Topf'.ID_Kasse ="+id+";";
+				
+				ResultSet rsTopf = null;
+				
+					try {
+						rsTopf = stmtTopf.executeQuery(sqlTopf);
+						System.out.println("Query executed");
+						System.out.println(rsTopf);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				
+				
+				
+				
+				
+				
+					try {
+						while(rsTopf.next())
+						{
+							String a1 = rsTopf.getString("ID_Topf");
+							String b1 = rsTopf.getString("ID_Kasse");
+						    String c1 = rsTopf.getString("Soll");
+						    String d1 = rsTopf.getString("Ist");
+						    
+						    
+						 
+						  
+						    
+						    modelTopf.addRow(new Object[]{a1,b1,c1,d1});
+						    
+						    System.out.println("While done");
+						    
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					tblTopf.setModel(modelTopf);
+				
+					TableColumnModel tcmTopf = tblTopf.getColumnModel();
+					tcmTopf.removeColumn( tcmTopf.getColumn(1) );
+				
+				
+				
+				
+				
+				DataBase.closeConnection();
+			}
+		});
 		
 		tblKasse.setModel(modelKasse);
 		scrollPane.setViewportView(tblKasse);
 		
 		TableColumnModel tcmKasse = tblKasse.getColumnModel();
 		tcmKasse.removeColumn( tcmKasse.getColumn(0) );
+		tcmKasse.removeColumn( tcmKasse.getColumn(1) );
+		
+		
+		
+		int count = MainMenu.tblKasse.getRowCount();
+		String[] idList = new String[count];
+				
+		for(int row=0; row < MainMenu.tblKasse.getRowCount(); row++) {
+		 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
+		 idList[row] = id;
+		 		
+		}
+		JComboBox comboBoxKasse = new JComboBox(idList);
+		GridBagConstraints gbc_comboBoxKasse = new GridBagConstraints();
+		gbc_comboBoxKasse.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxKasse.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxKasse.gridx = 5;
+		gbc_comboBoxKasse.gridy = 5;
+		panelTopf.add(comboBoxKasse, gbc_comboBoxKasse);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
-		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane_1.gridwidth = 2;
+		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_1.gridx = 3;
+		gbc_scrollPane_1.gridx = 4;
 		gbc_scrollPane_1.gridy = 1;
 		panelTopf.add(scrollPane_1, gbc_scrollPane_1);
-		
-		
-		
-		
-		String[] column_headers_topf = {"ID_Topf", "Soll", "Ist"};
+		String[] column_headers_topf = {"ID_Topf", "ID_Kasse", "Soll", "Ist"};
 		String[][] data_topf = new String[1000][11];
 		tblTopf = new JTable(data_topf, column_headers_topf);
-		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "Soll", "Ist"}, 0) {
+		tblTopf.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				
+				
+				int colnr = MainMenu.tblTopf.getSelectedRow();
+				
+				String idTopf = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
+				String oldIdKasse = MainMenu.tblTopf.getModel().getValueAt(colnr, 1).toString();
+				
+				System.out.println("old id kasse:" +oldIdKasse);
+				String oldSoll = MainMenu.tblTopf.getModel().getValueAt(colnr, 2).toString();
+				String oldIst = MainMenu.tblTopf.getModel().getValueAt(colnr, 3).toString();
+				
+				
+				txtTopfSoll.setText(oldSoll);
+				txtTopfIst.setText(oldIst);
+				comboBoxKasse.setSelectedItem(oldIdKasse);
+				DataBase.getConnection();
+				
+				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
+					
+					@Override
+					public boolean isCellEditable(int row, int column) {
+							return false;
+						}
+					};
+				String id = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
+				
+			
+				
+				Statement stmtRechnung = null;
+				
+					try {
+						
+						stmtRechnung = DataBase.c.createStatement();
+						System.out.println("Statement");
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
+				
+				String sqlRechnung = "SELECT Rechnung.* FROM Rechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on Rechnung.ID_Rechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+";";
+				
+				ResultSet rsRechnung = null;
+				
+					try {
+						rsRechnung = stmtRechnung.executeQuery(sqlRechnung);
+						System.out.println("Query executed");
+						System.out.println(rsRechnung);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				
+				
+				
+				
+				
+				
+					try {
+						while(rsRechnung.next())
+						{
+							String a1 = rsRechnung.getString("ID_Rechnung");
+						    String b1 = rsRechnung.getString("Rechnungsname");
+						    String c1 = rsRechnung.getString("Auftraggeber");
+//						    String d1 = rsRechnung.getString("Bezahlung_Art");
+						    String e1 = rsRechnung.getString("Betrag");
+						    String f1 = rsRechnung.getString("Beschreibung");
+						    String g1 = rsRechnung.getString("Bearbeiter");
+						    String h1 = rsRechnung.getString("Timestamp");
+						    
+						    modelRechnung.addRow(new Object[]{a1, b1,c1, e1, f1, g1, h1});
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					tblRechn.setModel(modelRechnung);
+					
+					TableColumnModel tcmRechn = tblRechn.getColumnModel();
+					tcmRechn.removeColumn( tcmRechn.getColumn(0) );
+					tcmRechn.removeColumn( tcmRechn.getColumn(1) );
+					tcmRechn.removeColumn( tcmRechn.getColumn(2) );
+					tcmRechn.removeColumn( tcmRechn.getColumn(2) );
+				
+				
+				
+				
+				
+				
+				DataBase.closeConnection();
+			}
+		});
+		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "ID_Kasse", "Soll", "Ist"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -1540,30 +1762,236 @@ public class MainMenu extends JFrame {
 		}
 		
 		tblTopf.setModel(modelTopf);
+		TableColumnModel tcmTopf = tblTopf.getColumnModel();
+		tcmTopf.removeColumn( tcmTopf.getColumn(1) );
+	
+				
+	
 		scrollPane_1.setViewportView(tblTopf);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane_2 = new GridBagConstraints();
+		gbc_scrollPane_2.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane_2.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane_2.gridx = 6;
+		gbc_scrollPane_2.gridy = 1;
+		panelTopf.add(scrollPane_2, gbc_scrollPane_2);
+		
+		
+		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"};
+		String[][] data_rechnung = new String[1000][11];
+		tblRechn = new JTable(data_rechnung, column_headers_topf);
+		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		String sqlRechnung = "SELECT * FROM Rechnung";
+		ResultSet rsRechnung = stmt.executeQuery(sqlRechnung);
+		
+		while(rsRechnung.next())
+		{
+			String a1 = rsRechnung.getString("ID_Rechnung");
+		    String b1 = rsRechnung.getString("Rechnungsname");
+		    String c1 = rsRechnung.getString("Auftraggeber");
+//		    String d1 = rsRechnung.getString("Bezahlung_Art");
+		    String e1 = rsRechnung.getString("Betrag");
+		    String f1 = rsRechnung.getString("Beschreibung");
+		    String g1 = rsRechnung.getString("Bearbeiter");
+		    String h1 = rsRechnung.getString("Timestamp");
+		    
+		    modelRechnung.addRow(new Object[]{a1, b1,c1, e1, f1, g1, h1});
+		}
+		
+		tblRechn.setModel(modelRechnung);
+		
+		
+		
+		
+		
+		
+		TableColumnModel tcmRechn = tblRechn.getColumnModel();
+		tcmRechn.removeColumn( tcmRechn.getColumn(0) );
+		tcmRechn.removeColumn( tcmRechn.getColumn(1) );
+		tcmRechn.removeColumn( tcmRechn.getColumn(2) );
+		tcmRechn.removeColumn( tcmRechn.getColumn(2) );
+		
+		scrollPane_2.setViewportView(tblRechn);
 		
 		JButton btnKasseErstellen = new JButton("Kasse Erstellen");
 		GridBagConstraints gbc_btnKasseErstellen = new GridBagConstraints();
-		gbc_btnKasseErstellen.insets = new Insets(0, 0, 0, 5);
-		gbc_btnKasseErstellen.gridx = 0;
-		gbc_btnKasseErstellen.gridy = 3;
+		gbc_btnKasseErstellen.insets = new Insets(0, 0, 5, 5);
+		gbc_btnKasseErstellen.gridx = 2;
+		gbc_btnKasseErstellen.gridy = 2;
 		panelTopf.add(btnKasseErstellen, gbc_btnKasseErstellen);
 		
 		JButton btnKasseLoeschen = new JButton("Kasse Loeschen");
 		GridBagConstraints gbc_btnKasseLoeschen = new GridBagConstraints();
-		gbc_btnKasseLoeschen.insets = new Insets(0, 0, 0, 5);
-		gbc_btnKasseLoeschen.gridx = 1;
-		gbc_btnKasseLoeschen.gridy = 3;
+		gbc_btnKasseLoeschen.insets = new Insets(0, 0, 5, 5);
+		gbc_btnKasseLoeschen.gridx = 3;
+		gbc_btnKasseLoeschen.gridy = 2;
 		panelTopf.add(btnKasseLoeschen, gbc_btnKasseLoeschen);
 		
-		JPanel panelRechnung = new JPanel();
-		tabbedPaneFinanz.addTab("Rechnungen", null, panelRechnung, null);
-		GridBagLayout gbl_panelRechnung = new GridBagLayout();
-		gbl_panelRechnung.columnWidths = new int[]{0};
-		gbl_panelRechnung.rowHeights = new int[]{0};
-		gbl_panelRechnung.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_panelRechnung.rowWeights = new double[]{Double.MIN_VALUE};
-		panelRechnung.setLayout(gbl_panelRechnung);
+		JLabel lblDetails = new JLabel("Details:");
+		lblDetails.setFont(new Font("Tahoma", Font.BOLD, 13));
+		GridBagConstraints gbc_lblDetails = new GridBagConstraints();
+		gbc_lblDetails.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDetails.gridx = 2;
+		gbc_lblDetails.gridy = 3;
+		panelTopf.add(lblDetails, gbc_lblDetails);
+		
+		JLabel lblArt = new JLabel("Art:");
+		GridBagConstraints gbc_lblArt = new GridBagConstraints();
+		gbc_lblArt.anchor = GridBagConstraints.EAST;
+		gbc_lblArt.insets = new Insets(0, 0, 5, 5);
+		gbc_lblArt.gridx = 2;
+		gbc_lblArt.gridy = 5;
+		panelTopf.add(lblArt, gbc_lblArt);
+		
+		JLabel lblKasse = new JLabel("Kasse:");
+		GridBagConstraints gbc_lblKasse = new GridBagConstraints();
+		gbc_lblKasse.anchor = GridBagConstraints.EAST;
+		gbc_lblKasse.insets = new Insets(0, 0, 5, 5);
+		gbc_lblKasse.gridx = 4;
+		gbc_lblKasse.gridy = 5;
+		panelTopf.add(lblKasse, gbc_lblKasse);
+		
+		
+		
+		
+		
+		
+	
+		
+		JLabel lblKasseNr = new JLabel("Nummer:");
+		GridBagConstraints gbc_lblKasseNr = new GridBagConstraints();
+		gbc_lblKasseNr.anchor = GridBagConstraints.EAST;
+		gbc_lblKasseNr.insets = new Insets(0, 0, 5, 5);
+		gbc_lblKasseNr.gridx = 2;
+		gbc_lblKasseNr.gridy = 6;
+		panelTopf.add(lblKasseNr, gbc_lblKasseNr);
+		
+		txtKasseNr = new JTextField();
+		GridBagConstraints gbc_txtKasseNr = new GridBagConstraints();
+		gbc_txtKasseNr.anchor = GridBagConstraints.NORTH;
+		gbc_txtKasseNr.insets = new Insets(0, 0, 5, 5);
+		gbc_txtKasseNr.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtKasseNr.gridx = 3;
+		gbc_txtKasseNr.gridy = 6;
+		panelTopf.add(txtKasseNr, gbc_txtKasseNr);
+		txtKasseNr.setColumns(10);
+		
+		JLabel lblSoll_1 = new JLabel("Soll:");
+		GridBagConstraints gbc_lblSoll_1 = new GridBagConstraints();
+		gbc_lblSoll_1.anchor = GridBagConstraints.EAST;
+		gbc_lblSoll_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSoll_1.gridx = 4;
+		gbc_lblSoll_1.gridy = 6;
+		panelTopf.add(lblSoll_1, gbc_lblSoll_1);
+		
+		txtTopfSoll = new JTextField();
+		GridBagConstraints gbc_txtTopfSoll = new GridBagConstraints();
+		gbc_txtTopfSoll.insets = new Insets(0, 0, 5, 5);
+		gbc_txtTopfSoll.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtTopfSoll.gridx = 5;
+		gbc_txtTopfSoll.gridy = 6;
+		panelTopf.add(txtTopfSoll, gbc_txtTopfSoll);
+		txtTopfSoll.setColumns(10);
+		
+		JLabel lblSoll = new JLabel("Soll:");
+		GridBagConstraints gbc_lblSoll = new GridBagConstraints();
+		gbc_lblSoll.anchor = GridBagConstraints.EAST;
+		gbc_lblSoll.insets = new Insets(0, 0, 5, 5);
+		gbc_lblSoll.gridx = 2;
+		gbc_lblSoll.gridy = 7;
+		panelTopf.add(lblSoll, gbc_lblSoll);
+		
+		txtKasseSoll = new JTextField();
+		GridBagConstraints gbc_txtKasseSoll = new GridBagConstraints();
+		gbc_txtKasseSoll.insets = new Insets(0, 0, 5, 5);
+		gbc_txtKasseSoll.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtKasseSoll.gridx = 3;
+		gbc_txtKasseSoll.gridy = 7;
+		panelTopf.add(txtKasseSoll, gbc_txtKasseSoll);
+		txtKasseSoll.setColumns(10);
+		
+		JLabel lblIst = new JLabel("Ist:");
+		GridBagConstraints gbc_lblIst = new GridBagConstraints();
+		gbc_lblIst.anchor = GridBagConstraints.EAST;
+		gbc_lblIst.insets = new Insets(0, 0, 5, 5);
+		gbc_lblIst.gridx = 4;
+		gbc_lblIst.gridy = 7;
+		panelTopf.add(lblIst, gbc_lblIst);
+		
+		txtTopfIst = new JTextField();
+		GridBagConstraints gbc_txtTopfIst = new GridBagConstraints();
+		gbc_txtTopfIst.insets = new Insets(0, 0, 5, 5);
+		gbc_txtTopfIst.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtTopfIst.gridx = 5;
+		gbc_txtTopfIst.gridy = 7;
+		panelTopf.add(txtTopfIst, gbc_txtTopfIst);
+		txtTopfIst.setColumns(10);
+		
+		JLabel lblKasseIst = new JLabel("Ist:");
+		GridBagConstraints gbc_lblKasseIst = new GridBagConstraints();
+		gbc_lblKasseIst.anchor = GridBagConstraints.EAST;
+		gbc_lblKasseIst.insets = new Insets(0, 0, 5, 5);
+		gbc_lblKasseIst.gridx = 2;
+		gbc_lblKasseIst.gridy = 8;
+		panelTopf.add(lblKasseIst, gbc_lblKasseIst);
+		
+		txtKasseIst = new JTextField();
+		GridBagConstraints gbc_txtKasseIst = new GridBagConstraints();
+		gbc_txtKasseIst.insets = new Insets(0, 0, 5, 5);
+		gbc_txtKasseIst.fill = GridBagConstraints.HORIZONTAL;
+		gbc_txtKasseIst.gridx = 3;
+		gbc_txtKasseIst.gridy = 8;
+		panelTopf.add(txtKasseIst, gbc_txtKasseIst);
+		txtKasseIst.setColumns(10);
+		
+		JButton btnKasseSpeichern = new JButton("Speichern");
+		btnKasseSpeichern.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				int colnr  = MainMenu.tblKasse.getSelectedRow();
+				int colnrKasse = MainMenu.tblKasse.getSelectedRow();
+				String idKasse = MainMenu.tblKasse.getModel().getValueAt(colnr, 0).toString();
+				 String oldArt = MainMenu.tblKasse.getModel().getValueAt(colnr, 1).toString();
+				 String oldNumber = MainMenu.tblKasse.getModel().getValueAt(colnr, 2).toString();
+				 String oldSoll = MainMenu.tblKasse.getModel().getValueAt(colnr, 3).toString();
+				 String oldIst = MainMenu.tblKasse.getModel().getValueAt(colnr, 4).toString();
+				 
+				Finanzverwaltung.alterKasse(Integer.parseInt(idKasse), comboBoxArt.getSelectedItem().toString(), txtKasseNr.getText(), Integer.parseInt(txtKasseSoll.getText()), Integer.parseInt(txtKasseIst.getText()));
+				DataBase.refreshKasse();
+			}
+		});
+		GridBagConstraints gbc_btnKasseSpeichern = new GridBagConstraints();
+		gbc_btnKasseSpeichern.insets = new Insets(0, 0, 5, 5);
+		gbc_btnKasseSpeichern.gridx = 3;
+		gbc_btnKasseSpeichern.gridy = 9;
+		panelTopf.add(btnKasseSpeichern, gbc_btnKasseSpeichern);
+		
+		JButton btnSpeichern = new JButton("Speichern");
+		btnSpeichern.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				DataBase.getConnection();
+				String idTopf2 = MainMenu.tblTopf.getModel().getValueAt(MainMenu.tblTopf.getSelectedRow(), 0).toString();
+		
+				System.out.println(idTopf2);
+				Finanzverwaltung.alterTopf(Integer.parseInt(idTopf2), Integer.parseInt(comboBoxKasse.getSelectedItem().toString()), Integer.parseInt(txtTopfSoll.getText()), Integer.parseInt(txtTopfIst.getText()));
+				DataBase.refreshTopf();
+				DataBase.closeConnection();
+			}
+		});
+		GridBagConstraints gbc_btnSpeichern = new GridBagConstraints();
+		gbc_btnSpeichern.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSpeichern.gridx = 5;
+		gbc_btnSpeichern.gridy = 9;
+		panelTopf.add(btnSpeichern, gbc_btnSpeichern);
 		
 		JPanel panelOffen = new JPanel();
 		tabbedPane.addTab("Offene Auftr\u00E4ge", null, panelOffen, null);
