@@ -20,6 +20,7 @@ public class DataBase {
 	public static ArrayList<OrderObjektRAM> orders = new ArrayList<OrderObjektRAM>();
 	public static ArrayList<StatusObjektRAM> status_list = new ArrayList<StatusObjektRAM>();  //  Status-objects for a specific Person. Will be overwritten !!
 	public static ArrayList<OffenerAuftragObjektRAM> offeneAuftraege = new ArrayList<OffenerAuftragObjektRAM>();
+	public static ArrayList<ComponentObjektRAM> components = new ArrayList<ComponentObjektRAM>();
 	
 	public static OrderObjektRAM order = null; 
 	
@@ -403,6 +404,60 @@ public static void loadOrdersToRAM() {
 	   }
 	   System.out.println("Operation done successfully");
 	   
+	   closeConnection();
+		
+	}
+
+	public static void loadComponentsToRAM() {
+		
+		getConnection();
+		
+		components.removeAll(components); 
+	
+		int ID_Bauteil;
+		int ID_Kategorie;
+		String name;
+		String link;
+		int mengeLagernd;
+		int mengeBestellt;
+		int mengeGeplant;
+		String lagerort;
+		
+		Statement stmt = null;
+	
+	   
+	   try {
+	    
+		   //Query 
+		   String query = "SELECT * FROM Bauteil;"; 
+		   
+		   // Getting Data from Database
+	      stmt = c.createStatement();
+	      ResultSet rs = stmt.executeQuery( query );
+	      
+	      while ( rs.next() ) {
+	    	  ID_Bauteil = rs.getInt("ID_Bauteil");
+//	    	  ID_Kategorie = rs.getInt("ID_Kategorie"); 
+	    	  name = rs.getString("Name"); 
+	    	  link = rs.getString("Link"); 
+	    	  mengeLagernd = rs.getInt("MengeLagernd"); 
+	    	  mengeBestellt = rs.getInt("MengeBestellt"); 
+	    	  mengeGeplant = rs.getInt("MengeGeplant"); 
+	    	  lagerort = rs.getString("Lagerort"); 
+	    	  
+	    	  ComponentObjektRAM component = new ComponentObjektRAM( ID_Bauteil, 0, name,  link, mengeLagernd, mengeBestellt,  mengeGeplant,  lagerort); 
+	    	  
+	    	  components.add(component); 
+	    	  
+	      }
+	     
+	      stmt.close();
+	    
+	   } catch ( Exception e ) {
+	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	      
+	   }
+	   System.out.println("Operation done successfully");
 	   closeConnection();
 		
 	}
@@ -2057,6 +2112,8 @@ public static void refreshBill2() {
 		   return namen; 
 		  
 	  }
+	  
+//	  public static 
 	  
 	  
 	  

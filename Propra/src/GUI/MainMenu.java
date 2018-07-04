@@ -11,6 +11,7 @@ import javax.swing.table.TableColumnModel;
 
 import Data.BauteileAuftragsabwicklung;
 import Data.Calculations;
+import Data.ComponentObjektRAM;
 import Data.DataBase;
 import Data.Finanzverwaltung;
 import Data.OffenerAuftragObjektRAM;
@@ -289,9 +290,8 @@ public class MainMenu extends JFrame {
 		tblPersonen.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				DataBase.getConnection();
 				int colnr  = tblPersonen.getSelectedRow();
-				
+				int id = Integer.parseInt(tblPersonen.getModel().getValueAt(colnr, 0).toString());
 				String personName = tblPersonen.getModel().getValueAt(colnr, 1).toString();
 				String personVorname = tblPersonen.getModel().getValueAt(colnr, 2).toString();
 				String fullName = personVorname + " " + personName;
@@ -299,10 +299,9 @@ public class MainMenu extends JFrame {
 				DataBase.searchOrder(fullName);
 				
 				PersonObjektRAM clicked = new PersonObjektRAM();
-				String mail = tblPersonen.getModel().getValueAt(colnr, 3).toString();
 				
 				for (PersonObjektRAM p : DataBase.people) {
-					if (p.getMail().equals(mail) && p.getName().equals(personName) && p.getVorname().equals(personVorname)) {
+					if (p.getID_Person() == id) {
 						clicked = p;
 					}
 				}
@@ -317,7 +316,6 @@ public class MainMenu extends JFrame {
 				txtDetailPlzPerson.setText(Integer.toString(clicked.getPlz()));
 				txtDetailOrtPerson.setText(clicked.getOrt());
 				txtDetailLandPerson.setText(clicked.getLand());
-				DataBase.closeConnection();
 			}
 		});
 		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Person", "Name", "Vorname", "Email"}, 0) {
@@ -1115,6 +1113,31 @@ public class MainMenu extends JFrame {
 				String[] column_headers_component = {"Name", "Menge lagernd", "Preis"};
 				String[][] data_components = new String[1000][8];
 				tblComponents = new JTable(data_components, column_headers_component);
+				tblComponents.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						int colnr  = tblComponents.getSelectedRow();
+						int id = Integer.parseInt(tblComponents.getModel().getValueAt(colnr, 0).toString());
+						
+						ComponentObjektRAM clicked = new ComponentObjektRAM();
+						
+						for (ComponentObjektRAM c : DataBase.components) {
+							if (c.getID_Bauteil() == id) {
+								clicked = c;
+								System.out.println("true");
+							}
+						}
+						
+						txtDetailNameComponent.setText(clicked.getName());
+						txtDetailLinkComponent.setText(clicked.getLink());
+						txtDetailOrderedComponent.setText(Integer.toString(clicked.getMengeBestellt()));
+						txtDetailPlannedComponent.setText(Integer.toString(clicked.getMengeGeplant()));
+						txtDetailStockComponent.setText(Integer.toString(clicked.getMengeLagernd()));
+						txtDetailLocationComponent.setText(clicked.getLagerort());
+						
+						DataBase.loadComponentsToRAM();
+					}
+				});
 //				DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"}, 0) {
 				DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name", "Menge lagernd", "Preis"}, 0) {
 					
@@ -1132,18 +1155,24 @@ public class MainMenu extends JFrame {
 					
 					while(rsComponent.next())
 					{
-						String a1 = rsComponent.getString("ID_Bauteil");
-					    String b1 = rsComponent.getString("Name");
-					    String d1 = rsComponent.getString("MengeLagernd");
-					    int id = Integer.parseInt(a1);
+						int idBauteil = rsComponent.getInt("ID_Bauteil");
+					    String name = rsComponent.getString("Name");
+					    String link = rsComponent.getString("Link");
+					    int stock = rsComponent.getInt("MengeLagernd");
+					    int ordered = rsComponent.getInt("MengeBestellt");
+					    int planned = rsComponent.getInt("MengeGeplant");
+					    String storage = rsComponent.getString("Lagerort");
+					    
+					    int id = idBauteil;
 					    
 					    String h1 = BauteileAuftragsabwicklung.getComponentPrice(id);
 					    
-					    
+					    ComponentObjektRAM component = new ComponentObjektRAM(idBauteil, 0, name, link, stock, ordered, planned, storage);  
+					    DataBase.components.add(component);
 					 
 					  
 					    
-					    modelComponents.addRow(new Object[]{a1, b1,d1,h1});
+					    modelComponents.addRow(new Object[]{idBauteil, name,stock,h1});
 					}
 					
 					tblComponents.setModel(modelComponents);
@@ -1159,6 +1188,12 @@ public class MainMenu extends JFrame {
 				scrollPaneCategory.setViewportView(treeCategory);
 				
 				JButton btnShowAllComponents = new JButton("Alle anzeigen");
+				btnShowAllComponents.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						txtSearchComponent.setText("");
+						DataBase.refreshComponent();
+					}
+				});
 				GridBagConstraints gbc_btnShowAllComponents = new GridBagConstraints();
 				gbc_btnShowAllComponents.insets = new Insets(0, 0, 5, 5);
 				gbc_btnShowAllComponents.gridx = 3;
@@ -1173,6 +1208,12 @@ public class MainMenu extends JFrame {
 				panelBauteil.add(btnNeueKategorie, gbc_btnNeueKategorie);
 				
 				JButton btnNeuesBauteil = new JButton("Neues Bauteil");
+				btnNeuesBauteil.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						AddComponent x = new AddComponent();
+						x.setVisible(true);
+					}
+				});
 				GridBagConstraints gbc_btnNeuesBauteil = new GridBagConstraints();
 				gbc_btnNeuesBauteil.insets = new Insets(0, 0, 5, 5);
 				gbc_btnNeuesBauteil.gridx = 3;
@@ -1180,6 +1221,24 @@ public class MainMenu extends JFrame {
 				panelBauteil.add(btnNeuesBauteil, gbc_btnNeuesBauteil);
 				
 				JButton btnBauteilLoeschen = new JButton("Bauteil loeschen");
+				btnBauteilLoeschen.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						DefaultTableModel model = (DefaultTableModel) tblComponents.getModel();
+						//get selected row index
+						int selectedRowIndex = tblComponents.getSelectedRow();
+						if (selectedRowIndex >= 0) {
+						try {
+						DeleteComponent x = new DeleteComponent();
+						x.setVisible(true);
+						}catch (Exception ex) {
+							JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
+						}
+						
+					} else {
+						JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
+					}
+					}
+				});
 				GridBagConstraints gbc_btnBauteilLoeschen = new GridBagConstraints();
 				gbc_btnBauteilLoeschen.insets = new Insets(0, 0, 5, 5);
 				gbc_btnBauteilLoeschen.gridx = 4;
@@ -1187,6 +1246,16 @@ public class MainMenu extends JFrame {
 				panelBauteil.add(btnBauteilLoeschen, gbc_btnBauteilLoeschen);
 				
 				JButton btnMengenverwaltung = new JButton("Mengenverwaltung");
+				btnMengenverwaltung.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						try {
+							Mengenverwaltung x= new Mengenverwaltung();
+							x.setVisible(true);
+						} catch (ArrayIndexOutOfBoundsException ex) {
+							JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
+						}
+					}
+				});
 				GridBagConstraints gbc_btnMengenverwaltung = new GridBagConstraints();
 				gbc_btnMengenverwaltung.insets = new Insets(0, 0, 5, 5);
 				gbc_btnMengenverwaltung.gridx = 5;
@@ -1351,6 +1420,49 @@ public class MainMenu extends JFrame {
 				panelBauteil.add(lblKategorie, gbc_lblKategorie);
 				
 				JButton btnSaveComponent = new JButton("Speichern");
+				btnSaveComponent.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int colnr  = MainMenu.tblComponents.getSelectedRow();
+						
+						try {
+							DataBase.getConnection();
+														
+							ComponentObjektRAM clicked = new ComponentObjektRAM();
+							
+							for (ComponentObjektRAM c : DataBase.components) {
+								if (c.getID_Bauteil() == Integer.parseInt(MainMenu.tblComponents.getModel().getValueAt(colnr, 0).toString())) {
+									clicked = c;
+								}
+							}
+							
+							String oldLink = clicked.getLink();
+							String oldName = clicked.getName();
+							int oldStock = clicked.getMengeLagernd();
+							int oldOrdered = clicked.getMengeBestellt();
+							int oldPlanned = clicked.getMengeGeplant();
+							String oldStorage = clicked.getLagerort();
+							String oldPrice = MainMenu.tblComponents.getModel().getValueAt(colnr, 7).toString();							
+							
+							String newLink = txtDetailLinkComponent.getText();
+							String newName = txtDetailNameComponent.getText();
+							int newStock = Integer.parseInt(txtDetailStockComponent.getText());
+							int newOrdered = Integer.parseInt(txtDetailOrderedComponent.getText());
+							int newPlanned = Integer.parseInt(txtDetailPlannedComponent.getText());
+							String newStorage = txtDetailLocationComponent.getText();
+							String newPrice = txtDetailPriceComponent.getText();
+							
+							int selectedRowIndex = MainMenu.tblComponents.getSelectedRow();
+							String tableClick = MainMenu.tblComponents.getModel().getValueAt(selectedRowIndex, 0).toString();
+							int id = Integer.parseInt(tableClick);
+							System.out.println(id);
+							BauteileAuftragsabwicklung.changeBauteil(id, newName, newLink, newStock, newOrdered, newPlanned, newStorage);
+							BauteileAuftragsabwicklung.alterPrice(id, newPrice);
+							
+						} catch (ArrayIndexOutOfBoundsException ex) {
+							JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
+						}
+					}
+				});
 				GridBagConstraints gbc_btnSaveComponent = new GridBagConstraints();
 				gbc_btnSaveComponent.insets = new Insets(0, 0, 5, 5);
 				gbc_btnSaveComponent.gridx = 8;
