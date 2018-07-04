@@ -95,7 +95,6 @@ public class MainMenu extends JFrame {
 	public static JTable tblComponents;
 	public static JTable tblKasse;
 	public static JTable tblTopf;
-	public static JTable tblOffeneAuftraege;
 	public static JScrollPane scrollPanePerson;
 	public static JScrollPane scrollPaneOrder;
 	public static JScrollPane scrollPaneCategory;
@@ -2115,76 +2114,7 @@ public class MainMenu extends JFrame {
 		gbc_btnSpeichern.gridy = 9;
 		panelTopf.add(btnSpeichern, gbc_btnSpeichern);
 		
-		JPanel panelOffen = new JPanel();
-		tabbedPane.addTab("Offene Auftr\u00E4ge", null, panelOffen, null);
-		GridBagLayout gbl_panelOffen = new GridBagLayout();
-		gbl_panelOffen.columnWidths = new int[]{0, 0, 0};
-		gbl_panelOffen.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_panelOffen.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelOffen.rowWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		panelOffen.setLayout(gbl_panelOffen);
-		
-		JLabel lblHierFindenSie = new JLabel("Hier finden Sie alle offenen Auftraege, die \u00FCber die Webapplikation in auftrag gegeben wurden. Wenn Sie nun aus der unten stehenden Tabelle einen Auftrag ausw\u00E4hlen, k\u00F6nnen Sie diesen annehmen, oder ablehnen.");
-		GridBagConstraints gbc_lblHierFindenSie = new GridBagConstraints();
-		gbc_lblHierFindenSie.insets = new Insets(0, 0, 5, 0);
-		gbc_lblHierFindenSie.gridx = 1;
-		gbc_lblHierFindenSie.gridy = 1;
-		panelOffen.add(lblHierFindenSie, gbc_lblHierFindenSie);
-		
-		JScrollPane scrollPaneOffeneAuftraege = new JScrollPane();
-		GridBagConstraints gbc_scrollPaneOffeneAuftraege = new GridBagConstraints();
-		gbc_scrollPaneOffeneAuftraege.fill = GridBagConstraints.BOTH;
-		gbc_scrollPaneOffeneAuftraege.gridx = 1;
-		gbc_scrollPaneOffeneAuftraege.gridy = 2;
-		panelOffen.add(scrollPaneOffeneAuftraege, gbc_scrollPaneOffeneAuftraege);
-		
 //		String[] column_headers_orders = {"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"};
-		String[] column_headers_orders = {"Bauteil", "Vorname", "Name", "Timestamp", "Menge"};
-		String[][] data_orders = new String[1000][7];
-		tblOffeneAuftraege = new JTable(data_orders, column_headers_orders);
-		tblOffeneAuftraege.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				try {
-				OrderApprove x = new OrderApprove(); // -id Order 
-				x.setVisible(true);  
-				} catch (ArrayIndexOutOfBoundsException ex) {
-					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine  aus.");
-				}	
-			}
-		});
-		DefaultTableModel modelOffeneAuftraege = new DefaultTableModel(new String[]{"ID Änderung", "Bauteil", "Vorname", "Name", "Timestamp", "Menge"}, 0) {
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};	
-			
-			DataBase.loadOffeneAuftraegeToRam();
-			
-			
-			for(OffenerAuftragObjektRAM tmp: DataBase.offeneAuftraege) {
-				
-			int id_aenderung = tmp.getid_aenderung();
-			int id_bauteil = tmp.getId_bauteil();
-			String bauteilName = DataBase.getBauteilName(id_bauteil);
-			int id_person = tmp.getId_person();
-			String vorname = tmp.getVorname();
-			String name = tmp.getName();
-			String timestamp = tmp.getTimestamp();
-			int aenderung = tmp.getAenderung();
-			
-			
-			 modelOffeneAuftraege.addRow(new Object[]{id_aenderung, bauteilName, vorname, name, timestamp, aenderung});
-			}
-			
-			tblOffeneAuftraege.setModel(modelOffeneAuftraege);
-		
-		scrollPaneOffeneAuftraege.setViewportView(tblOffeneAuftraege);
-		TableColumnModel tcmOffen = tblOffeneAuftraege.getColumnModel();
-		tcmOffen.removeColumn( tcmOffen.getColumn(0) );
-		setVisible(true);
 		
 		DataBase.closeConnection();
 	}
