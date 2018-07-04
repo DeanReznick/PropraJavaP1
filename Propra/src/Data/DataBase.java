@@ -445,7 +445,7 @@ public static void loadOrdersToRAM() {
 	    	  mengeGeplant = rs.getInt("MengeGeplant"); 
 	    	  lagerort = rs.getString("Lagerort"); 
 	    	  
-	    	  ComponentObjektRAM component = new ComponentObjektRAM( ID_Bauteil, 0, name,  link, mengeLagernd, mengeBestellt,  mengeGeplant,  lagerort); 
+	    	  ComponentObjektRAM component = new ComponentObjektRAM( ID_Bauteil, name,  link, mengeLagernd, mengeBestellt,  mengeGeplant,  lagerort); 
 	    	  
 	    	  components.add(component); 
 	    	  
@@ -1238,7 +1238,7 @@ public static void refreshBill2() {
 
 		getConnection();
 		
-	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"}, 0) {
+	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name", "Menge lagernd", "Preis"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -1266,19 +1266,15 @@ public static void refreshBill2() {
 		try {
 			while(rs.next())
 			{
-				String a1 = rs.getString("ID_Bauteil");
-			    String b1 = rs.getString("Name");
-			    String c1 = rs.getString("Link");
-			    String d1 = rs.getString("MengeLagernd");
-			    String e1 = rs.getString("MengeBestellt");
-			    String f1 = rs.getString("MengeGeplant");
-			    String g1 = rs.getString("Lagerort");
-			    int id = Integer.parseInt(a1);
+				String id = rs.getString("ID_Bauteil");
+			    String name = rs.getString("Name");
+			    String menge = rs.getString("MengeLagernd");
+			    int idBauteil = Integer.parseInt(id);
 			    
-			    String h1 =BauteileAuftragsabwicklung.getComponentPrice(id);
+			    String h1 =BauteileAuftragsabwicklung.getComponentPrice(idBauteil);
 			    
-			    modelComponents.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1});
-			   
+			    modelComponents.addRow(new Object[]{id, name, menge, h1});
+			    
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -1287,7 +1283,9 @@ public static void refreshBill2() {
 		
 		
 		MainMenu.tblComponents.setModel(modelComponents);
-	
+		TableColumnModel tcm = MainMenu.tblComponents.getColumnModel();
+		tcm.removeColumn( tcm.getColumn(0) );
+		
 		closeConnection();
 	}
 	

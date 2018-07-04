@@ -353,13 +353,13 @@ public static void addPrice(int id_Bauteil, String price) {
 		
 	}
 	
-	public static void getLatestPrice (int id_Bauteil) {
+	public static int getLatestPrice (int id_Bauteil) {
 		DataBase.getConnection();
 		int price = DataBase.getSpecificID("Preis", "SELECT Preis, max(ID_Preis)  FROM PreisBauteil WHERE ID_Bauteil = " + id_Bauteil + " ;" ); 
 		DataBase.closeConnection();
 		currentPrice = price + ""; 
 		
-		
+		return price;
 	}
 	
 	

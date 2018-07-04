@@ -1134,6 +1134,7 @@ public class MainMenu extends JFrame {
 						txtDetailPlannedComponent.setText(Integer.toString(clicked.getMengeGeplant()));
 						txtDetailStockComponent.setText(Integer.toString(clicked.getMengeLagernd()));
 						txtDetailLocationComponent.setText(clicked.getLagerort());
+						txtDetailPriceComponent.setText(Integer.toString(BauteileAuftragsabwicklung.getLatestPrice(clicked.getID_Bauteil())));
 						
 						DataBase.loadComponentsToRAM();
 					}
@@ -1167,7 +1168,7 @@ public class MainMenu extends JFrame {
 					    
 					    String h1 = BauteileAuftragsabwicklung.getComponentPrice(id);
 					    
-					    ComponentObjektRAM component = new ComponentObjektRAM(idBauteil, 0, name, link, stock, ordered, planned, storage);  
+					    ComponentObjektRAM component = new ComponentObjektRAM(idBauteil, name, link, stock, ordered, planned, storage);  
 					    DataBase.components.add(component);
 					 
 					  
@@ -1422,10 +1423,9 @@ public class MainMenu extends JFrame {
 				JButton btnSaveComponent = new JButton("Speichern");
 				btnSaveComponent.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						int colnr  = MainMenu.tblComponents.getSelectedRow();
-						
 						try {
 							DataBase.getConnection();
+							int colnr  = MainMenu.tblComponents.getSelectedRow();
 														
 							ComponentObjektRAM clicked = new ComponentObjektRAM();
 							
@@ -1441,7 +1441,7 @@ public class MainMenu extends JFrame {
 							int oldOrdered = clicked.getMengeBestellt();
 							int oldPlanned = clicked.getMengeGeplant();
 							String oldStorage = clicked.getLagerort();
-							String oldPrice = MainMenu.tblComponents.getModel().getValueAt(colnr, 7).toString();							
+							String oldPrice = MainMenu.tblComponents.getModel().getValueAt(colnr, 3).toString();							
 							
 							String newLink = txtDetailLinkComponent.getText();
 							String newName = txtDetailNameComponent.getText();
@@ -1457,9 +1457,19 @@ public class MainMenu extends JFrame {
 							System.out.println(id);
 							BauteileAuftragsabwicklung.changeBauteil(id, newName, newLink, newStock, newOrdered, newPlanned, newStorage);
 							BauteileAuftragsabwicklung.alterPrice(id, newPrice);
+							DataBase.refreshComponent();
 							
+							txtDetailNameComponent.setText("");
+							txtDetailLinkComponent.setText("");
+							txtDetailOrderedComponent.setText("");
+							txtDetailPlannedComponent.setText("");
+							txtDetailStockComponent.setText("");
+							txtDetailLocationComponent.setText("");
+							txtDetailPriceComponent.setText("");
+							
+							DataBase.closeConnection();
 						} catch (ArrayIndexOutOfBoundsException ex) {
-							JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");
+							JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");							
 						}
 					}
 				});
