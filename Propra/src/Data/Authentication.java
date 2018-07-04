@@ -2,6 +2,7 @@ package Data;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 
 
 
@@ -29,15 +30,15 @@ public class Authentication {
   
   
   
-  public static boolean checkCredentials(String name, String surname, String password) {
+  public static boolean checkCredentials(String name, String surname, String password) throws SQLException {
 	DataBase.getConnection(); 
 	
 	if(!(DataBase.getRolleByIDPerson(DataBase.getIdPersonByNameSurname(name, surname)).equals("Intern"))){
 		return false; 
 	}
 	  
-    String query ="SELECT Passwort FROM Person WHERE name like '" + name + "' and vorname like '" + surname +"';";
-    if(sha256(password).equals(DataBase.getPassword(query))){
+    //String query ="SELECT Passwort FROM Person WHERE name like '" + name + "' and vorname like '" + surname +"';";
+    if(sha256(password).equals(DataBase.pStmt(name, surname))){
     	DataBase.closeConnection();
       return true;
     }else {

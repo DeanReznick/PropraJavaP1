@@ -2111,6 +2111,30 @@ public static void refreshBill2() {
 		  
 	  }
 	  
+	  
+	  public static String pStmt(String name, String vorname) throws SQLException {
+			
+			
+			String selectSQL = "SELECT * FROM Person WHERE Name like ? and Vorname like ?";
+			PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
+			preparedStatement.setString(1, name);
+			preparedStatement.setString(2, vorname);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			String pw = null; 
+			while (rs.next()) {
+				 pw = rs.getString("Passwort");
+				
+			}
+			return pw; 
+		}
+	  
+	  
+
+
+
+
+
 //	  public static 
 	  
 	  

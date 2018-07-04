@@ -1,5 +1,6 @@
 package Data;
 
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -7,8 +8,8 @@ import GUI.GUILogin;
 
 public class Rechnungsabwicklung {
 
-	/*public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void main(String[] args) {
+
 		
 		createBRechnung("test", 1, 1, "Bar", 11.0, "Kredit"); 
 		//alterBRechnung(1, "test", 1, 1, "Bar", 11.0, "Kredit A"); 
@@ -21,7 +22,22 @@ public class Rechnungsabwicklung {
 		//delteARechnung(5); 
 		//delteBRechnung(2); 
 		
-	}*/
+		DataBase.getConnection();
+		
+		try {
+			System.out.println(Authentication.checkCredentials("Klein", "Anna", "123"));
+	
+			
+			System.out.println(Authentication.sha256("123"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		DataBase.closeConnection();
+		
+	}
 	
 	//BRechnung
 	
