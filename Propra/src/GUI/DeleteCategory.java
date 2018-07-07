@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
@@ -20,25 +21,7 @@ public class DeleteCategory extends JFrame {
 
 	private JPanel contentPane;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					DeleteOrder frame = new DeleteOrder();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-	/**
-	 * Create the frame.
-	 */
+	
 	public DeleteCategory() {
 		setTitle("Kategorie löschen");
 		DataBase.getConnection();
@@ -55,18 +38,35 @@ public class DeleteCategory extends JFrame {
 		JButton btnDeleteCategory = new JButton("Kategorie löschen");
 		btnDeleteCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model = (DefaultTableModel) MainMenu.tblCategory.getModel();
-				//get selected row index
-				int selectedRowIndex = MainMenu.tblCategory.getSelectedRow();
-				System.out.println(selectedRowIndex);
-				String tableClick = MainMenu.tblCategory.getModel().getValueAt(selectedRowIndex, 0).toString();
-				int id = Integer.parseInt(tableClick);
-				System.out.println(id);
-				BauteileAuftragsabwicklung.deleteKategorie(id);
+				DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+						MainMenu.treeCategory.getLastSelectedPathComponent();
 				
-				model.removeRow(selectedRowIndex);
-				DataBase.closeConnection();
-				dispose();
+				node.toString();
+
+			    if (node == null)
+			    //Nothing is selected.     
+			    return;
+		
+//			    Object nodeInfo = node.getUserObject();
+//			    if (node.isLeaf()) {
+//			        BookInfo book = (BookInfo)nodeInfo;
+//			        displayURL(book.bookURL);
+//			    } else {
+//			        displayURL(helpURL); 
+//			    }
+			    
+//				DefaultTableModel model = (DefaultTableModel) MainMenu.tblCategory.getModel();
+//				//get selected row index
+//				int selectedRowIndex = MainMenu.tblCategory.getSelectedRow();
+//				System.out.println(selectedRowIndex);
+//				String tableClick = MainMenu.tblCategory.getModel().getValueAt(selectedRowIndex, 0).toString();
+//				int id = Integer.parseInt(tableClick);
+//				System.out.println(id);
+//				BauteileAuftragsabwicklung.deleteKategorie(id);
+//				
+//				model.removeRow(selectedRowIndex);
+//				DataBase.closeConnection();
+//				dispose();
 			}
 		});
 		btnDeleteCategory.setBounds(5, 47, 150, 23);

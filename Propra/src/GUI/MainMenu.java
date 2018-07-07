@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeSelectionModel;
 
 import Data.BauteileAuftragsabwicklung;
 import Data.Calculations;
@@ -1184,7 +1186,12 @@ public class MainMenu extends JFrame {
 				
 				scrollPaneComponent.setViewportView(tblComponents);
 				
-				treeCategory = new JTree();
+				DefaultMutableTreeNode top =
+				        new DefaultMutableTreeNode("Bauteile");
+				    DataBase.createNodes(top);
+				treeCategory = new JTree(top);
+				treeCategory.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+//				treeCategory.addTreeSelectionListener(this);
 				scrollPaneCategory.setViewportView(treeCategory);
 				
 				JButton btnShowAllComponents = new JButton("Alle anzeigen");
@@ -1201,6 +1208,12 @@ public class MainMenu extends JFrame {
 				panelBauteil.add(btnShowAllComponents, gbc_btnShowAllComponents);
 				
 				JButton btnNeueKategorie = new JButton("Neue Kategorie");
+				btnNeueKategorie.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						AddCategory x = new AddCategory();
+						x.setVisible(true);
+					}
+				});
 				GridBagConstraints gbc_btnNeueKategorie = new GridBagConstraints();
 				gbc_btnNeueKategorie.insets = new Insets(0, 0, 5, 5);
 				gbc_btnNeueKategorie.gridx = 1;
@@ -1263,6 +1276,11 @@ public class MainMenu extends JFrame {
 				panelBauteil.add(btnMengenverwaltung, gbc_btnMengenverwaltung);
 				
 				JButton btnKategorieAendern = new JButton("Kategorie Aendern");
+				btnKategorieAendern.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						
+					}
+				});
 				GridBagConstraints gbc_btnKategorieAendern = new GridBagConstraints();
 				gbc_btnKategorieAendern.insets = new Insets(0, 0, 5, 5);
 				gbc_btnKategorieAendern.gridx = 1;
@@ -1270,6 +1288,12 @@ public class MainMenu extends JFrame {
 				panelBauteil.add(btnKategorieAendern, gbc_btnKategorieAendern);
 				
 				JButton btnKategorieLoeschen = new JButton("Kategorie loeschen");
+				btnKategorieLoeschen.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						DeleteCategory x = new DeleteCategory();
+						x.setVisible(true);
+					}
+				});
 				GridBagConstraints gbc_btnKategorieLoeschen = new GridBagConstraints();
 				gbc_btnKategorieLoeschen.insets = new Insets(0, 0, 5, 5);
 				gbc_btnKategorieLoeschen.gridx = 1;

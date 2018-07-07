@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import GUI.MainMenu;
 public class DataBase {
@@ -2129,6 +2130,74 @@ public static void refreshBill2() {
 			return pw; 
 		}
 	  
+	  public static void createNodes(DefaultMutableTreeNode top) {
+		  	DefaultMutableTreeNode category = null;
+		    DefaultMutableTreeNode component = null;
+		    
+		    Statement stmt = null;
+			   
+			   try {
+			    
+				   //Query 
+				   String query = "SELECT * FROM TKategorie;"; 
+				   
+				   // Getting Data from Database
+			      stmt = c.createStatement();
+			      ResultSet rs = stmt.executeQuery( query );
+			
+			      while ( rs.next() ) {
+			    	  
+			    	int id = rs.getInt("ID_TKategorie");
+			    	String name = rs.getString("Name");
+			    	int parent = rs.getInt("ID_Parent");
+			    	
+			    	 category = new DefaultMutableTreeNode(name);
+					    top.add(category);
+			      }
+		    
+//		    category = new DefaultMutableTreeNode("Books for Java Programmers");
+//		    top.add(category);
+//		    
+//		    //original Tutorial
+//		    book = new DefaultMutableTreeNode(new BookInfo
+//		        ("The Java Tutorial: A Short Course on the Basics",
+//		        "tutorial.html"));
+//		    category.add(book);
+//		    
+//		    //Tutorial Continued
+//		    book = new DefaultMutableTreeNode(new BookInfo
+//		        ("The Java Tutorial Continued: The Rest of the JDK",
+//		        "tutorialcont.html"));
+//		    category.add(book);
+//		    
+//		    //Swing Tutorial
+//		    book = new DefaultMutableTreeNode(new BookInfo
+//		        ("The Swing Tutorial: A Guide to Constructing GUIs",
+//		        "swingtutorial.html"));
+//		    category.add(book);
+//
+//		    //...add more books for programmers...
+//
+//		    category = new DefaultMutableTreeNode("Books for Java Implementers");
+//		    top.add(category);
+//
+//		    //VM
+//		    book = new DefaultMutableTreeNode(new BookInfo
+//		        ("The Java Virtual Machine Specification",
+//		         "vm.html"));
+//		    category.add(book);
+//
+//		    //Language Spec
+//		    book = new DefaultMutableTreeNode(new BookInfo
+//		        ("The Java Language Specification",
+//		         "jls.html"));
+//		    category.add(book);
+	
+			   } catch ( Exception e ) {
+				      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+				      
+			}
+	  }
 	  
 
 
