@@ -22,6 +22,7 @@ public class DataBase {
 	public static ArrayList<StatusObjektRAM> status_list = new ArrayList<StatusObjektRAM>();  //  Status-objects for a specific Person. Will be overwritten !!
 	public static ArrayList<OffenerAuftragObjektRAM> offeneAuftraege = new ArrayList<OffenerAuftragObjektRAM>();
 	public static ArrayList<ComponentObjektRAM> components = new ArrayList<ComponentObjektRAM>();
+	public static ArrayList<CategoryObjektRAM> categories = new ArrayList<CategoryObjektRAM>();
 	
 	public static OrderObjektRAM order = null; 
 	
@@ -449,6 +450,50 @@ public static void loadOrdersToRAM() {
 	    	  ComponentObjektRAM component = new ComponentObjektRAM( ID_Bauteil, name,  link, mengeLagernd, mengeBestellt,  mengeGeplant,  lagerort); 
 	    	  
 	    	  components.add(component); 
+	    	  
+	      }
+	     
+	      stmt.close();
+	    
+	   } catch ( Exception e ) {
+	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	      
+	   }
+	   System.out.println("Operation done successfully");
+	   closeConnection();
+		
+	}
+	
+public static void loadCategoriesToRAM() {
+		
+		getConnection();
+		
+		categories.removeAll(categories); 
+
+		int ID_Category; 
+		int ID_Parent;
+		String name;
+		
+		Statement stmt = null;
+
+	   
+	   try {
+	    
+		   //Query 
+		   String query = "SELECT * FROM TKategorie;"; 
+		   
+		   // Getting Data from Database
+	      stmt = c.createStatement();
+	      ResultSet rs = stmt.executeQuery( query );
+	      
+	      while ( rs.next() ) {
+	    	  ID_Category = rs.getInt("ID_Category");
+	    	  ID_Parent = rs.getInt("ID_Parent");
+	    	  name = rs.getString("name"); 
+	    	  
+	    	  CategoryObjektRAM category = new CategoryObjektRAM( ID_Category, ID_Parent, name); 
+	    	  
+	    	  categories.add(category); 
 	    	  
 	      }
 	     
@@ -2149,8 +2194,23 @@ public static void refreshBill2() {
 			    	  
 			    	int id = rs.getInt("ID_TKategorie");
 			    	String name = rs.getString("Name");
-			    	int parent = rs.getInt("ID_Parent");
+			    	String parent = rs.getString("ID_Parent");
 			    	
+			    	CategoryObjektRAM c = new CategoryObjektRAM(id, Integer.parseInt(parent), name);
+			    	categories.add(c);
+			    	
+			    	CategoryObjektRAM cTemp = new CategoryObjektRAM();
+			    	
+			    	if (parent != null) {
+			    		int idParent = c.getIdParent();
+			    		for (CategoryObjektRAM cat : categories) {
+			    			if (cat.getIdCategory() == idParent) {
+			    				cTemp = cat;
+			    			}
+			    		}
+			    		category = new DefaultMutableTreeNode(name);
+					    top.add(category);
+			    	}
 			    	 category = new DefaultMutableTreeNode(name);
 					    top.add(category);
 			      }
