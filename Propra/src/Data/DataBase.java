@@ -2175,9 +2175,9 @@ public static void refreshBill2() {
 			return pw; 
 		}
 	  
-	  public static void createNodes(DefaultMutableTreeNode top) {
+	  public static void createNodes(DefaultMutableTreeNode top, int idTop) {
 		  	DefaultMutableTreeNode category = null;
-		    DefaultMutableTreeNode component = null;
+		    ArrayList<DefaultMutableTreeNode> categoryNames = new ArrayList<DefaultMutableTreeNode>();
 		    
 		    Statement stmt = null;
 			   
@@ -2188,32 +2188,35 @@ public static void refreshBill2() {
 				   
 				   // Getting Data from Database
 			      stmt = c.createStatement();
-			      ResultSet rs = stmt.executeQuery( query );
-			
+			      ResultSet rs = stmt.executeQuery( query );			      
+			      
 			      while ( rs.next() ) {
 			    	  
 			    	int id = rs.getInt("ID_TKategorie");
 			    	String name = rs.getString("Name");
 			    	String parent = rs.getString("ID_Parent");
 			    	
+			    	if (parent != null) {
 			    	CategoryObjektRAM c = new CategoryObjektRAM(id, Integer.parseInt(parent), name);
 			    	categories.add(c);
+			    	categoryNames.add(category = new DefaultMutableTreeNode(name));
 			    	
-			    	CategoryObjektRAM cTemp = new CategoryObjektRAM();
+			    	CategoryObjektRAM parentObject = new CategoryObjektRAM();
 			    	
-			    	if (parent != null) {
 			    		int idParent = c.getIdParent();
 			    		for (CategoryObjektRAM cat : categories) {
 			    			if (cat.getIdCategory() == idParent) {
-			    				cTemp = cat;
+			    				parentObject = cat;
 			    			}
 			    		}
-			    		category = new DefaultMutableTreeNode(name);
+			    		if (parentObject.getIdCategory() == idTop) {
 					    top.add(category);
+			    		} else {
+			    			category.setParent(categoryNames.get(parentObject.getIdCategory()));
+			    		}
 			    	}
-			    	 category = new DefaultMutableTreeNode(name);
-					    top.add(category);
 			      }
+			      
 		    
 //		    category = new DefaultMutableTreeNode("Books for Java Programmers");
 //		    top.add(category);

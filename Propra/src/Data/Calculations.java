@@ -40,7 +40,6 @@ public class Calculations {
 		
 		while (a = false) {
 			temp = temp - 0.1;
-			System.out.println(temp);
 			if (temp % 5 == 0) {
 				a = true;
 			}
@@ -56,7 +55,6 @@ public class Calculations {
 
 		int tempus = 0;
 		for (int i=0; i<=9; i++) {
-			System.out.println(result[i]);
 			tempus = tempus + i;
 		}
 		return result;

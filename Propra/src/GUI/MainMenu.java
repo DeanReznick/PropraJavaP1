@@ -13,6 +13,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import Data.BauteileAuftragsabwicklung;
 import Data.Calculations;
+import Data.CategoryObjektRAM;
 import Data.ComponentObjektRAM;
 import Data.DataBase;
 import Data.Finanzverwaltung;
@@ -1186,9 +1187,27 @@ public class MainMenu extends JFrame {
 				
 				scrollPaneComponent.setViewportView(tblComponents);
 				
-				DefaultMutableTreeNode top =
-				        new DefaultMutableTreeNode("Bauteile");
-				    DataBase.createNodes(top);
+				 DefaultMutableTreeNode top = null;
+				 Statement stmt = null;
+				 String query = "SELECT * FROM TKategorie WHERE Name LIKE 'Bauteile';"; 
+				 stmt = DataBase.c.createStatement();
+			      ResultSet rs = stmt.executeQuery( query );
+			      int topID = 0;
+			
+			      while ( rs.next() ) {
+			    	  
+			    	int id = rs.getInt("ID_TKategorie");
+			    	String name = rs.getString("Name");
+			    	int parent = rs.getInt("ID_Parent");
+			    	
+			    	CategoryObjektRAM c = new CategoryObjektRAM(id, parent, name);
+			    	DataBase.categories.add(c);
+			    	
+			    	 top = new DefaultMutableTreeNode(name);
+			    	 topID = id;
+			      }
+			      DataBase.createNodes(top, topID);
+				    
 				treeCategory = new JTree(top);
 				treeCategory.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 //				treeCategory.addTreeSelectionListener(this);
@@ -1521,7 +1540,7 @@ public class MainMenu extends JFrame {
 				}
 			};
 			
-		Statement stmt = DataBase.c.createStatement();
+		stmt = DataBase.c.createStatement();
 		String sqlKasse = "SELECT * FROM Kasse";
 		ResultSet rsKasse = stmt.executeQuery(sqlKasse);
 		
