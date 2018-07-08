@@ -110,6 +110,8 @@ public class MainMenu extends JFrame {
 	private JTextField txtKasseIst;
 	private JTextField txtTopfSoll;
 	private JTextField txtTopfIst;
+	private JTable table;
+	private JTable table_1;
 	
 
 	
@@ -1554,46 +1556,6 @@ public class MainMenu extends JFrame {
 		    
 		    modelKasse.addRow(new Object[]{a1, b1,c1,d1,e1});
 		}
-		//tcmKasse.removeColumn( tcmKasse.getColumn(0) );
-		
-		
-		
-		
-//		String[] column_headers_topf = {"ID_Topf", "Soll", "Ist"};
-//		String[][] data_topf = new String[1000][11];
-//		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "Soll", "Ist"}, 0) {
-//			
-//			@Override
-//			public boolean isCellEditable(int row, int column) {
-//					return false;
-//				}
-//			};
-//		String sqlTopf = "SELECT Topf.*, 'Mischtabelle-Kasse-Topf'.ID_Kasse FROM Topf LEFT JOIN 'Mischtabelle-Kasse-Topf' ON Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf;";
-//		ResultSet rsTopf = stmt.executeQuery(sqlTopf);
-//		
-//		while(rsTopf.next())
-//		{
-//			String a1 = rsTopf.getString("ID_Topf");
-//		    String b1 = rsTopf.getString("ID_Kasse");
-//		    String c1 = rsTopf.getString("Soll");
-//		    String d1 = rsTopf.getString("Ist");
-//		    
-//		    modelTopf.addRow(new Object[]{a1,b1,c1,d1});
-//		}
-		
-		
-	
-		
-
-		
-		JPanel panelRechnung = new JPanel();
-		tabbedPaneFinanz.addTab("Rechnungen", null, panelRechnung, null);
-		GridBagLayout gbl_panelRechnung = new GridBagLayout();
-		gbl_panelRechnung.columnWidths = new int[]{0};
-		gbl_panelRechnung.rowHeights = new int[]{0};
-		gbl_panelRechnung.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_panelRechnung.rowWeights = new double[]{Double.MIN_VALUE};
-		panelRechnung.setLayout(gbl_panelRechnung);
 		
 		JPanel panelTopf = new JPanel();
 		tabbedPaneFinanz.addTab("T\u00F6pfe & Kassen", null, panelTopf, null);
@@ -2156,6 +2118,138 @@ public class MainMenu extends JFrame {
 		gbc_btnSpeichern.gridx = 5;
 		gbc_btnSpeichern.gridy = 9;
 		panelTopf.add(btnSpeichern, gbc_btnSpeichern);
+		//tcmKasse.removeColumn( tcmKasse.getColumn(0) );
+		
+		
+		
+		
+//		String[] column_headers_topf = {"ID_Topf", "Soll", "Ist"};
+//		String[][] data_topf = new String[1000][11];
+//		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "Soll", "Ist"}, 0) {
+//			
+//			@Override
+//			public boolean isCellEditable(int row, int column) {
+//					return false;
+//				}
+//			};
+//		String sqlTopf = "SELECT Topf.*, 'Mischtabelle-Kasse-Topf'.ID_Kasse FROM Topf LEFT JOIN 'Mischtabelle-Kasse-Topf' ON Topf.ID_Topf = 'Mischtabelle-Kasse-Topf'.ID_Topf;";
+//		ResultSet rsTopf = stmt.executeQuery(sqlTopf);
+//		
+//		while(rsTopf.next())
+//		{
+//			String a1 = rsTopf.getString("ID_Topf");
+//		    String b1 = rsTopf.getString("ID_Kasse");
+//		    String c1 = rsTopf.getString("Soll");
+//		    String d1 = rsTopf.getString("Ist");
+//		    
+//		    modelTopf.addRow(new Object[]{a1,b1,c1,d1});
+//		}
+		
+		
+	
+		
+
+		
+		JPanel panelRechnung = new JPanel();
+		tabbedPaneFinanz.addTab("Rechnungen", null, panelRechnung, null);
+		GridBagLayout gbl_panelRechnung = new GridBagLayout();
+		gbl_panelRechnung.columnWidths = new int[]{130, 131, 107, 0, 120, 120, 190, 0};
+		gbl_panelRechnung.rowHeights = new int[]{0, 599, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panelRechnung.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelRechnung.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panelRechnung.setLayout(gbl_panelRechnung);
+		
+		JLabel lblNewLabel_1 = new JLabel("Rechnung: Bauteile");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.gridwidth = 3;
+		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_1.gridx = 0;
+		gbc_lblNewLabel_1.gridy = 0;
+		panelRechnung.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		
+		JLabel lblRechnungAuftraege = new JLabel("Rechnung: Auftraege");
+		lblRechnungAuftraege.setFont(new Font("Tahoma", Font.BOLD, 14));
+		GridBagConstraints gbc_lblRechnungAuftraege = new GridBagConstraints();
+		gbc_lblRechnungAuftraege.gridwidth = 3;
+		gbc_lblRechnungAuftraege.insets = new Insets(0, 0, 5, 0);
+		gbc_lblRechnungAuftraege.gridx = 4;
+		gbc_lblRechnungAuftraege.gridy = 0;
+		panelRechnung.add(lblRechnungAuftraege, gbc_lblRechnungAuftraege);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane_3 = new GridBagConstraints();
+		gbc_scrollPane_3.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane_3.gridwidth = 3;
+		gbc_scrollPane_3.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane_3.gridx = 0;
+		gbc_scrollPane_3.gridy = 1;
+		panelRechnung.add(scrollPane_3, gbc_scrollPane_3);
+		
+		table = new JTable();
+		scrollPane_3.setViewportView(table);
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		GridBagConstraints gbc_scrollPane_4 = new GridBagConstraints();
+		gbc_scrollPane_4.gridwidth = 3;
+		gbc_scrollPane_4.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane_4.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane_4.gridx = 4;
+		gbc_scrollPane_4.gridy = 1;
+		panelRechnung.add(scrollPane_4, gbc_scrollPane_4);
+		
+		table_1 = new JTable();
+		scrollPane_4.setViewportView(table_1);
+		
+		JButton btnErstellen = new JButton("Erstellen");
+		GridBagConstraints gbc_btnErstellen = new GridBagConstraints();
+		gbc_btnErstellen.insets = new Insets(0, 0, 5, 5);
+		gbc_btnErstellen.gridx = 0;
+		gbc_btnErstellen.gridy = 2;
+		panelRechnung.add(btnErstellen, gbc_btnErstellen);
+		
+		JButton btnLoeschen = new JButton("Loeschen");
+		GridBagConstraints gbc_btnLoeschen = new GridBagConstraints();
+		gbc_btnLoeschen.insets = new Insets(0, 0, 5, 5);
+		gbc_btnLoeschen.gridx = 2;
+		gbc_btnLoeschen.gridy = 2;
+		panelRechnung.add(btnLoeschen, gbc_btnLoeschen);
+		
+		JButton btnLoeschen_1 = new JButton("Loeschen");
+		GridBagConstraints gbc_btnLoeschen_1 = new GridBagConstraints();
+		gbc_btnLoeschen_1.insets = new Insets(0, 0, 5, 0);
+		gbc_btnLoeschen_1.gridx = 6;
+		gbc_btnLoeschen_1.gridy = 2;
+		panelRechnung.add(btnLoeschen_1, gbc_btnLoeschen_1);
+		
+		JLabel lblDetails_2 = new JLabel("Details:");
+		lblDetails_2.setFont(new Font("Tahoma", Font.BOLD, 14));
+		GridBagConstraints gbc_lblDetails_2 = new GridBagConstraints();
+		gbc_lblDetails_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDetails_2.gridx = 0;
+		gbc_lblDetails_2.gridy = 3;
+		panelRechnung.add(lblDetails_2, gbc_lblDetails_2);
+		
+		JLabel lblDetails_3 = new JLabel("Details:");
+		lblDetails_3.setFont(new Font("Tahoma", Font.BOLD, 14));
+		GridBagConstraints gbc_lblDetails_3 = new GridBagConstraints();
+		gbc_lblDetails_3.insets = new Insets(0, 0, 5, 5);
+		gbc_lblDetails_3.gridx = 4;
+		gbc_lblDetails_3.gridy = 3;
+		panelRechnung.add(lblDetails_3, gbc_lblDetails_3);
+		
+		JButton btnSpeichern_1 = new JButton("Speichern");
+		GridBagConstraints gbc_btnSpeichern_1 = new GridBagConstraints();
+		gbc_btnSpeichern_1.insets = new Insets(0, 0, 0, 5);
+		gbc_btnSpeichern_1.gridx = 2;
+		gbc_btnSpeichern_1.gridy = 8;
+		panelRechnung.add(btnSpeichern_1, gbc_btnSpeichern_1);
+		
+		JButton btnSpeichern_2 = new JButton("Speichern");
+		GridBagConstraints gbc_btnSpeichern_2 = new GridBagConstraints();
+		gbc_btnSpeichern_2.gridx = 6;
+		gbc_btnSpeichern_2.gridy = 8;
+		panelRechnung.add(btnSpeichern_2, gbc_btnSpeichern_2);
 		
 //		String[] column_headers_orders = {"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"};
 		
