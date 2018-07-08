@@ -2265,6 +2265,29 @@ public static void refreshBill2() {
 
 
 
+	  
+	  public static ArrayList<MengenTBauteilObjektRAM> createMTBObjektRAM(int id_BRechnung) throws SQLException {
+			
+			
+			String selectSQL = "SELECT TBauteil.ID_TBauteil as TB , 'Mischtabelle-TBauteil-BRechnung'.Menge as M , TBauteil.MengeLagernd as ML FROM TBauteil JOIN 'Mischtabelle-TBauteil-BRechnung' ON TBauteil.ID_TBauteil = 'Mischtabelle-TBauteil-BRechnung'.ID_TBauteil WHERE ID_BRechnung = ? ;";
+			
+			PreparedStatement preparedStatement = c.prepareStatement(selectSQL);
+			preparedStatement.setInt(1, id_BRechnung);
+
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			ArrayList<MengenTBauteilObjektRAM> list = new ArrayList<MengenTBauteilObjektRAM>(); 
+			
+			while (rs.next()) {
+				//int id_TBauteil, int menge, int mengeLagernd
+				MengenTBauteilObjektRAM tmp = new MengenTBauteilObjektRAM(rs.getInt("TB"), rs.getInt("M"), rs.getInt("ML"));
+				list.add(tmp); 
+				
+				
+			}
+			return list; 
+		}
 
 
 //	  public static 

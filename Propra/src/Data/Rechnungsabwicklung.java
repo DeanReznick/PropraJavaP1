@@ -2,13 +2,15 @@ package Data;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 import GUI.GUILogin;
 
 public class Rechnungsabwicklung {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 
 		
 		createBRechnung("test", 1, 1, "Bar", 11.0, "Kredit"); 
@@ -20,7 +22,7 @@ public class Rechnungsabwicklung {
 		//alterARechnung(5,"test", 1, 1, "Bar", 1.0, "Kredit"); 
 		
 		//delteARechnung(5); 
-		//delteBRechnung(2); 
+		//delteBRechnung(13); 
 		
 		DataBase.getConnection();
 		
@@ -36,6 +38,10 @@ public class Rechnungsabwicklung {
 
 		
 		DataBase.closeConnection();
+		
+		
+		
+		
 		
 	}
 	
@@ -87,7 +93,11 @@ public class Rechnungsabwicklung {
 		DataBase.closeConnection();
 	}
 	
-	public static void delteBRechnung(int id_BRechnung) {
+	public static void delteBRechnung(int id_BRechnung) throws SQLException {
+		
+		
+		changeMengeLagernd(id_BRechnung); 
+		
 		
 		DataBase.getConnection();
 		String query = "DELETE FROM BRechnung WHERE ID_BRechnung = "+ id_BRechnung +";"; 
@@ -101,12 +111,44 @@ public class Rechnungsabwicklung {
 		DataBase.executeQuery(query); 
 		DataBase.closeConnection();
 		
-		
+	
 		
 		// Mischtabelle mit löschen!! -> Meherere Ids? -> ID Rechnugn löschen !
 		
 		
 	}
+	
+	
+	public static void changeMengeLagernd( int id_BRechnung) throws SQLException {
+		DataBase.getConnection();
+		ArrayList<MengenTBauteilObjektRAM> list = DataBase.createMTBObjektRAM(id_BRechnung); 
+		DataBase.closeConnection();
+		
+		//System.out.println(list.toString());
+		
+		Iterator<MengenTBauteilObjektRAM> it = list.iterator(); 
+		
+		while(it.hasNext()) {
+			MengenTBauteilObjektRAM tmp = it.next(); 
+			
+			
+			DataBase.getConnection();
+			
+			int mengeUpdate  = tmp.getMengeLagernd() + tmp.getMenge(); 
+			
+			String query = "UPDATE TBauteil SET mengeLagernd = "+ mengeUpdate +" WHERE ID_TBauteil = "+ tmp.getId_TBauteil()+ ";"; 
+			DataBase.executeQuery(query);
+			
+			DataBase.closeConnection();
+			
+			
+		}
+		
+		
+	}
+	
+	
+	
 	
 	// ARechnung
 	
@@ -163,5 +205,7 @@ public class Rechnungsabwicklung {
 		System.out.println(query);
 		DataBase.executeQuery(query);
 		DataBase.closeConnection();
+		
+
 	}
 }
