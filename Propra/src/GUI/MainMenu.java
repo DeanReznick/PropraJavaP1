@@ -110,8 +110,8 @@ public class MainMenu extends JFrame {
 	private JTextField txtKasseIst;
 	private JTextField txtTopfSoll;
 	private JTextField txtTopfIst;
-	private JTable table;
-	private JTable table_1;
+	private JTable tblRechnB;
+	private JTable tblRechnA;
 	
 
 	
@@ -2153,7 +2153,7 @@ public class MainMenu extends JFrame {
 		JPanel panelRechnung = new JPanel();
 		tabbedPaneFinanz.addTab("Rechnungen", null, panelRechnung, null);
 		GridBagLayout gbl_panelRechnung = new GridBagLayout();
-		gbl_panelRechnung.columnWidths = new int[]{130, 131, 107, 0, 120, 120, 190, 0};
+		gbl_panelRechnung.columnWidths = new int[]{130, 131, 333, 0, 120, 120, 318, 0};
 		gbl_panelRechnung.rowHeights = new int[]{0, 599, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panelRechnung.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panelRechnung.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -2186,8 +2186,48 @@ public class MainMenu extends JFrame {
 		gbc_scrollPane_3.gridy = 1;
 		panelRechnung.add(scrollPane_3, gbc_scrollPane_3);
 		
-		table = new JTable();
-		scrollPane_3.setViewportView(table);
+		String[] column_headers_rechnungB= {"ID_BRechnung", "Name", "ID_Auftraggeber", "Art_Bezahlung" , "Betrag", "Beschreibung", "ID_Bearbeiter", "Timestamp", "ID_Ansprechpartner"};
+		String[][] data_rechnungB = new String[1000][11];
+		tblRechnB = new JTable(data_rechnungB, column_headers_rechnungB);
+		
+DefaultTableModel modelRechnungB = new DefaultTableModel(new String[]{"ID_BRechnung", "Name", "ID_Auftraggeber", "Art_Bezahlung", "Betrag", "Beschreibung", "ID_Bearbeiter", "Timestamp", "ID_Ansprechpartner"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		String sqlRechnungB = "SELECT * FROM BRechnung";
+		ResultSet rsRechnungB = stmt.executeQuery(sqlRechnungB);
+		
+		while(rsRechnungB.next())
+		{
+			String a1 = rsRechnungB.getString("ID_BRechnung");
+		    String b1 = rsRechnungB.getString("Name");
+		    String c1 = rsRechnungB.getString("ID_Auftraggeber");
+		    String d1 = rsRechnungB.getString("Art_Bezahlung");
+		    String e1 = rsRechnungB.getString("Betrag");
+		    String f1 = rsRechnungB.getString("Beschreibung");
+		    String g1 = rsRechnungB.getString("ID_Bearbeiter");
+		    String h1 = rsRechnungB.getString("Timestamp");
+		    String j1 = rsRechnungB.getString("ID_Ansprechpartner");
+		    
+		    
+		    modelRechnungB.addRow(new Object[]{a1, b1,c1, d1, e1, f1, g1, h1, j1});
+		}
+		tblRechnB.setModel(modelRechnungB);
+		
+		TableColumnModel tcmRechnungB = tblRechnB.getColumnModel();
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(0) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(7) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(5) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(4) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(2) );
+		
+		
+		
+		
+		scrollPane_3.setViewportView(tblRechnB);
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_4 = new GridBagConstraints();
@@ -2198,8 +2238,49 @@ public class MainMenu extends JFrame {
 		gbc_scrollPane_4.gridy = 1;
 		panelRechnung.add(scrollPane_4, gbc_scrollPane_4);
 		
-		table_1 = new JTable();
-		scrollPane_4.setViewportView(table_1);
+		
+		String[] column_headers_rechnungA= {"ID_ARechnung", "Name", "ID_Auftraggeber", "Art_Bezahlung", "Betrag", "Beschreibung", "ID_Bearbeiter", "Timestamp","ID_Ansprechpartner", "ID_Auftrag"};
+		String[][] data_rechnungA = new String[1000][11];
+		tblRechnA = new JTable(data_rechnungA, column_headers_rechnungA);
+		
+DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechnung", "Name", "ID_Auftraggeber","Art_Bezahlung", "Betrag", "Beschreibung", "ID_Bearbeiter", "Timestamp", "ID_Ansprechpartner", "ID_Auftrag"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+		String sqlRechnungA = "SELECT * FROM ARechnung";
+		ResultSet rsRechnungA = stmt.executeQuery(sqlRechnungA);
+		
+		while(rsRechnungA.next())
+		{
+			String a1 = rsRechnungA.getString("ID_ARechnung");
+		    String b1 = rsRechnungA.getString("Name");
+		    String c1 = rsRechnungA.getString("ID_Auftraggeber");
+		    String d1 = rsRechnungA.getString("Art_Bezahlung");
+		    String e1 = rsRechnungA.getString("Betrag");
+		    String f1 = rsRechnungA.getString("Beschreibung");
+		    String g1 = rsRechnungA.getString("ID_Bearbeiter");
+		    String h1 = rsRechnungA.getString("Timestamp");
+		    String j1 = rsRechnungA.getString("ID_Ansprechpartner");
+		    String i1 = rsRechnungA.getString("ID_Auftrag");
+		    
+		    modelRechnungA.addRow(new Object[]{a1, b1,c1,d1, e1, f1, g1, h1, j1, i1});
+		}
+		
+		tblRechnA.setModel(modelRechnungA);
+		TableColumnModel tcmRechnungA = tblRechnA.getColumnModel();
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(0) );
+		
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(4) );
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(4) );
+	
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(5) );
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(2) );
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(4) );
+		
+		scrollPane_4.setViewportView(tblRechnA);
 		
 		JButton btnErstellen = new JButton("Erstellen");
 		GridBagConstraints gbc_btnErstellen = new GridBagConstraints();
