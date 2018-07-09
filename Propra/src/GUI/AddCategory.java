@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import Data.CategoryObjektRAM;
+import Data.DataBase;
 import Data.TreeBauteile;
 
 import javax.swing.JLabel;
@@ -14,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.awt.event.ActionEvent;
 
 public class AddCategory extends JFrame {
@@ -48,10 +51,41 @@ public class AddCategory extends JFrame {
 		comboBoxParent.setBounds(214, 39, 210, 20);
 		contentPane.add(comboBoxParent);
 		
+		
+		Iterator<CategoryObjektRAM> it = DataBase.categories.iterator(); 
+		
+		
+		while(it.hasNext()) {
+			CategoryObjektRAM tmp = it.next(); 
+			
+			comboBoxParent.addItem(tmp.getName());
+			
+		}
+		
+		
+		
+		
 		JButton btnKategorieErstellen = new JButton("Kategorie erstellen");
 		btnKategorieErstellen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TreeBauteile.addTKat(Integer.parseInt(comboBoxParent.getName()), txtName.getText());
+				
+				DataBase.getConnection();
+				int index = comboBoxParent.getSelectedIndex(); 
+				
+				CategoryObjektRAM obj = DataBase.categories.get(index); 
+				
+				int id = obj.getIdCategory(); 
+				
+				System.out.println(id);
+				
+				
+				TreeBauteile.addTKat(id, txtName.getText());
+				
+				
+				
+				DataBase.closeConnection();
+				
+				
 			}
 		});
 		btnKategorieErstellen.setBounds(140, 70, 150, 23);

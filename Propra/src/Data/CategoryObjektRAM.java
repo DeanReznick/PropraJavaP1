@@ -1,10 +1,39 @@
 package Data;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class CategoryObjektRAM {
 
 	int idCategory;
 	int idParent;
 	String name;
+	ArrayList<Integer> c = new ArrayList<Integer>(); 
+	
+						
+	
+	
+	public void fillChildren() throws SQLException {
+		
+		System.out.println("*");
+		// Was ist meine ID 
+		// Welche kat haben diese ID als Parent. 
+		// Diese Kat in Liste. 
+		
+		
+		c.removeAll(c); 
+		
+		
+		
+		c = DataBase.getIDParents(idCategory);
+	
+		
+		
+		
+		
+	}
+	
+	
 	public CategoryObjektRAM(int idCategory, int idParent, String name) {
 		super();
 		this.idCategory = idCategory;

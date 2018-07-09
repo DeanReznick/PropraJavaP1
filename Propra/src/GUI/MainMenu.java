@@ -21,6 +21,7 @@ import Data.OffenerAuftragObjektRAM;
 import Data.OrderObjektRAM;
 import Data.PersonObjektRAM;
 import Data.PersonenFertigungsverwaltung;
+import Data.TreeErstellen;
 
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -35,6 +36,7 @@ import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -1204,31 +1206,14 @@ public class MainMenu extends JFrame {
 				
 				scrollPaneComponent.setViewportView(tblComponents);
 				
-				 DefaultMutableTreeNode top = null;
-				 Statement stmt = null;
-				 String query = "SELECT * FROM TKategorie WHERE Name LIKE 'Bauteile';"; 
-				 stmt = DataBase.c.createStatement();
-			      ResultSet rs = stmt.executeQuery( query );
-			      int topID = 0;
-			
-			      while ( rs.next() ) {
-			    	  
-			    	int id = rs.getInt("ID_TKategorie");
-			    	String name = rs.getString("Name");
-			    	int parent = rs.getInt("ID_Parent");
-			    	
-			    	CategoryObjektRAM c = new CategoryObjektRAM(id, parent, name);
-			    	DataBase.categories.add(c);
-			    	
-			    	 top = new DefaultMutableTreeNode(name);
-			    	 topID = id;
-			      }
-			      DataBase.createNodes(top, topID);
+				
+				
 				    
-				treeCategory = new JTree(top);
+				treeCategory = new JTree(TreeErstellen.createTree());
 				treeCategory.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 //				treeCategory.addTreeSelectionListener(this);
 				scrollPaneCategory.setViewportView(treeCategory);
+				
 				
 				JButton btnShowAllComponents = new JButton("Alle anzeigen");
 				btnShowAllComponents.addActionListener(new ActionListener() {
@@ -1546,7 +1531,7 @@ public class MainMenu extends JFrame {
 		JTabbedPane tabbedPaneFinanz = new JTabbedPane(JTabbedPane.TOP);
 		panelFinanz.add(tabbedPaneFinanz);
 		
-		
+		DataBase.getConnection();
 		String[] column_headers_kasse = {"Art", "Soll", "Ist"};
 		String[][] data_kasse = new String[1000][11];
 		DefaultTableModel modelKasse = new DefaultTableModel(new String[]{"ID_Kasse", "Art", "Nummer", "Soll", "Ist"}, 0) {
@@ -1557,7 +1542,7 @@ public class MainMenu extends JFrame {
 				}
 			};
 			
-		stmt = DataBase.c.createStatement();
+		Statement stmt = DataBase.c.createStatement();
 		String sqlKasse = "SELECT * FROM Kasse";
 		ResultSet rsKasse = stmt.executeQuery(sqlKasse);
 		
@@ -1572,6 +1557,7 @@ public class MainMenu extends JFrame {
 		    modelKasse.addRow(new Object[]{a1, b1,c1,d1,e1});
 		}
 		
+//		DataBase.closeConnection();
 		JPanel panelTopf = new JPanel();
 		tabbedPaneFinanz.addTab("T\u00F6pfe & Kassen", null, panelTopf, null);
 		GridBagLayout gbl_panelTopf = new GridBagLayout();

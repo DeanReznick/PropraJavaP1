@@ -2,6 +2,7 @@ package Data;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -487,7 +488,7 @@ public static void loadCategoriesToRAM() {
 	      ResultSet rs = stmt.executeQuery( query );
 	      
 	      while ( rs.next() ) {
-	    	  ID_Category = rs.getInt("ID_Category");
+	    	  ID_Category = rs.getInt("ID_TKategorie");
 	    	  ID_Parent = rs.getInt("ID_Parent");
 	    	  name = rs.getString("name"); 
 	    	  
@@ -498,15 +499,29 @@ public static void loadCategoriesToRAM() {
 	      }
 	     
 	      stmt.close();
-	    
-	   } catch ( Exception e ) {
-	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	      closeConnection();
 	      
-	   }
-	   System.out.println("Operation done successfully");
-	   closeConnection();
-		
-	}
+	      Iterator<CategoryObjektRAM> it = categories.iterator(); 
+	      
+	      while (it.hasNext()) {
+	    	  
+	    	  CategoryObjektRAM tmp = it.next(); 
+	    	  tmp.fillChildren();
+	    	  
+	    	  System.out.println("+++> " + tmp.c.toString());
+	    	  
+	    	  
+	    	  
+	      }
+	   		} catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      
+		   }
+		   System.out.println("Operation done successfully");
+		   
+			
+		}
+	      
 	
 	
 //	public static ArrayList<PersonObjektRAM> searchPerson(String search) {
@@ -543,7 +558,7 @@ public static void loadCategoriesToRAM() {
 //		   }
 //	return result; // -1 = Keiner
 //	
-//	}
+	//}
 	
 	public static void getAllPersons() {
 		
@@ -2287,6 +2302,30 @@ public static void refreshBill2() {
 				
 			}
 			return list; 
+		}
+	  
+	  public static ArrayList<Integer> getIDParents(int id_TKategorie) throws SQLException {
+			
+		  getConnection();
+			
+		    String query = "Select ID_TKategorie as T FROM TKategorie WHERE ID_Parent = ?; "; 
+			
+			PreparedStatement preparedStatement = c.prepareStatement(query);
+			preparedStatement.setInt(1, id_TKategorie);
+
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			ArrayList<Integer> list = new ArrayList<Integer>(); 
+			
+			while (rs.next()) {
+				
+				list.add(rs.getInt("T")); // int -> Integer ? 
+								
+			}
+			closeConnection();
+			return list; 
+			
 		}
 
 
