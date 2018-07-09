@@ -2,6 +2,7 @@ package GUI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,14 +11,21 @@ import javax.swing.border.EmptyBorder;
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
 import Data.Finanzverwaltung;
+import Data.Rechnungsabwicklung;
 import Exceptions.InvalidArgumentsException;
 import Exceptions.Manager;
 
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
@@ -71,7 +79,8 @@ public class NewBill extends JFrame {
 		}
 		
 		
-		setBounds(100, 100, 267, 300);
+		
+		setBounds(100, 100, 267, 381);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -86,7 +95,55 @@ public class NewBill extends JFrame {
 		comboBoxAuftraggeber.setBounds(124, 72, 86, 20);
 		contentPane.add(comboBoxAuftraggeber);
 		
+		JComboBox comboBoxAuftraege = new JComboBox();
+		comboBoxAuftraege.setBounds(124, 227, 28, 20);
+		contentPane.add(comboBoxAuftraege);
+		
+		
+		
 		comboBoxAnsprechpartner = new JComboBox(personName);
+		comboBoxAnsprechpartner.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DataBase.getConnection();
+				
+				
+				
+				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
+				String[] parts = auftraggeber_name.split(" ");
+				String name = parts[0]; 
+				String surname = parts[1];
+				
+				int auftraggeber_id = DataBase.getIdPersonByNameSurname(name, surname);
+				System.out.println(name);
+				System.out.println(auftraggeber_id);
+				Statement stmtOrderBills = null;
+				String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = 20";
+				ResultSet rsOrdersBills = null;
+				
+				try {
+					rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				  ArrayList rows = new ArrayList();
+			        try {
+						while(rsOrdersBills.next()){
+							String x = rsOrdersBills.getString("ID_Auftrag");
+						    rows.add(x);
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			        comboBoxAuftraege.setModel((ComboBoxModel) new DefaultComboBoxModel(rows.toArray()));
+			
+				
+			        DataBase.closeConnection();
+			}
+		});
 		comboBoxAnsprechpartner.setBounds(124, 103, 86, 20);
 		contentPane.add(comboBoxAnsprechpartner);
 		
@@ -145,6 +202,10 @@ public class NewBill extends JFrame {
 				}
 				int auftraggeber_id = Integer.parseInt(list[indexAuftraggeber]);
 				
+				
+				
+				
+				
 				String ansprechpartner_name = comboBoxAnsprechpartner.getSelectedItem().toString();
 				int indexAnsprechpartner = -1;
 				for (int i=0;i<personName.length;i++) {
@@ -158,23 +219,27 @@ public class NewBill extends JFrame {
 				
 				String rechnungsname = txtRechnungsName.getText();
 				String artBezahlung = txtZahlungsArt.getText();
-				String betrag = txtBetrag.getText();
+				double betrag = Double.parseDouble(txtBetrag.getText());
 				String beschreibung = txtBeschreibung.getText();
 				
-				Manager.checkStandardBill(rechnungsname, artBezahlung, betrag, beschreibung);
-				Finanzverwaltung.addBill(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung);
-				DataBase.refreshBill();
-				DataBase.refreshRechn();
+				int id_Auftrag = Integer.parseInt(comboBoxAuftraege.getSelectedItem().toString());
+				Rechnungsabwicklung.createARechnung(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung, id_Auftrag);
+				
+			
 				dispose();
-				} catch (InvalidArgumentsException ex) {
-					JOptionPane.showMessageDialog(null, ex);
 				} finally {
 					DataBase.closeConnection();
 				}
 			}
 		});
-		btnErstellen.setBounds(121, 227, 89, 23);
+		btnErstellen.setBounds(124, 294, 89, 23);
 		contentPane.add(btnErstellen);
+		
+		JLabel lblAuftrag = new JLabel("Auftrag:");
+		lblAuftrag.setBounds(10, 230, 46, 14);
+		contentPane.add(lblAuftrag);
+		
+		
 		
 		
 	}
