@@ -2280,7 +2280,7 @@ DefaultTableModel modelRechnungB = new DefaultTableModel(new String[]{"ID_BRechn
 		gbc_scrollPane_4.gridy = 1;
 		panelRechnung.add(scrollPane_4, gbc_scrollPane_4);
 		
-		
+		///
 		String[] column_headers_rechnungA= {"ID_ARechnung", "Name", "ID_Auftraggeber", "Art_Bezahlung", "Betrag", "Beschreibung", "ID_Bearbeiter", "Timestamp","ID_Ansprechpartner", "ID_Auftrag"};
 		String[][] data_rechnungA = new String[1000][11];
 		tblRechnA = new JTable(data_rechnungA, column_headers_rechnungA);
