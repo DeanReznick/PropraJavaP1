@@ -10,20 +10,20 @@ public class Finanzverwaltung {
 	// Rechnung 
 	
 	public static void addBill(String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, String betrag, String beschreibung) {
-		DataBase.getConnection();
+		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		String query = "INSERT INTO Rechnung (Rechnungsname, Auftraggeber, Ansprechpartner, Bezahlung_Art, Betrag, Beschreibung, Bearbeiter, TimeStamp) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', '" + betrag +"','"  + beschreibung +"', " +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'" + timeStamp +"');";
 		DataBase.executeQuery(query);
 	
 		int id_Bill = DataBase.getSpecificID("current", "SELECT max(ID_Rechnung) as current FROM 'Rechnung';"); 
-		DataBase.closeConnection();
 		
-		DataBase.getConnection();
+		
+		
 	
 		
 		changeStatusBill(id_Bill, "Rechnung wurde erstellt."); 
 				
-		DataBase.closeConnection();
+		
 		
 		// Könnte der Teil hin, dass die Aufträge dann gelöscht werden. 
 		
@@ -31,19 +31,19 @@ public class Finanzverwaltung {
 	
 	public static void alterBill(int id_Bill, String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, String betrag, String beschreibung) {
 		
-		DataBase.getConnection();
+		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		String query = "UPDATE Rechnung SET Rechnungsname='"  + rechnungsname + "' , Auftraggeber= "+ id_Auftraggeber + ", Ansprechpartner = " + id_Ansprechpartner + ", Bezahlung_Art='" + artBezahlung + "', Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"' WHERE ID_Rechnung = " + id_Bill + ";";  
 		System.out.println(query);
 		
 		DataBase.executeQuery(query); 
-		DataBase.closeConnection();
+		
 		
 	}
 
 	public static void deleteBill(int id_Rechnung) {
 		
-		DataBase.getConnection();
+		
 		String query = "DELETE FROM Rechnung WHERE ID_Rechnung = "+ id_Rechnung +";"; 
 		DataBase.executeQuery(query);
 		
@@ -56,14 +56,14 @@ public class Finanzverwaltung {
 		query = "DELETE FROM 'Status_Rechnung' WHERE ID_Status = "+ id_Status +";"; 
 		DataBase.executeQuery(query);
 		
-		DataBase.closeConnection();
+		
 		
 	}
 	
 	
 	public static void changeStatusBill(int id_Bill, String statusBill) {
 		
-		DataBase.getConnection();
+		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		String query = "INSERT INTO 'Status_Rechnung' (Name)" + 
 				"VALUES ('"+ statusBill +"');";
@@ -75,7 +75,7 @@ public class Finanzverwaltung {
 					"VALUES ("+ id_Bill + ", " + id_Status + ", '" + timeStamp + "', " +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) +");"; 
 		
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 	}
 	
@@ -87,7 +87,7 @@ public class Finanzverwaltung {
 		// Preis ändern -> Float Real ? 
 		// Mischtabelle (X) 
 		
-		DataBase.getConnection();
+		
 			
 		String query = "INSERT INTO 'Mischtabelle-Rechnung-Auftrag' (ID_Rechnung, ID_Auftrag)" + 
 				"VALUES ("+ id_Bill +", " + id_Order + ");";
@@ -103,7 +103,7 @@ public class Finanzverwaltung {
 		query = "UPDATE Auftrag SET ID_Rechnung="  + id_Bill + " WHERE ID_Auftrag = " + id_Order + ";";  
 		DataBase.executeQuery(query);
 
-		DataBase.closeConnection();
+		
 		
 		//. .
 	
@@ -112,7 +112,7 @@ public class Finanzverwaltung {
 	
 	public static void deleteOrderFromBill(int id_Order) {
 		
-		DataBase.getConnection();
+		
 		String query = "DELETE FROM 'Mischtabelle-Rechnung-Auftrag' WHERE ID_Auftrag = "+ id_Order +";"; 
 		System.out.println(id_Order);
 		
@@ -128,7 +128,7 @@ public class Finanzverwaltung {
 		query = "UPDATE Auftrag SET ID_Rechnung= null WHERE ID_Auftrag = " + id_Order + ";";  
 		DataBase.executeQuery(query);
 
-		DataBase.closeConnection();
+		
 		
 	}
 	
@@ -137,23 +137,23 @@ public class Finanzverwaltung {
 	
 	public static void addKasse(String art, String nummer, int soll, int ist) {
 		
-		DataBase.getConnection();
+		
 		String query = "INSERT INTO Kasse (Art, Nummer, Soll, Ist) VALUES ('"+ art +"', '" +  nummer + "', " + soll + ", " + ist + ");";
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		
 	}
 	public static void alterKasse(int id_Kasse, String art, String nummer, int soll, int ist) {
-		DataBase.getConnection();
+		
 		String query = "UPDATE Kasse SET Art= '" + art + "', Nummer = '"+ nummer + "', Soll = " + soll +", Ist = " + ist +" WHERE ID_Kasse = " + id_Kasse + ";";  
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 	}
 	public static void deleteKasse(int id_Kasse) {
 		
-		DataBase.getConnection();
+		
 		String query = "DELETE FROM Kasse WHERE ID_Kasse = "+ id_Kasse +";"; 
 		
 		// mischtabelle ->
@@ -161,13 +161,13 @@ public class Finanzverwaltung {
 		
 		
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 	}
 	public static void addTopf(int id_Kasse, int soll, int ist) {
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		DataBase.getConnection();
+		
 		String query = "INSERT INTO Topf (Soll, Ist) VALUES ("+ soll +", " + ist + ");";
 		DataBase.executeQuery(query);
 		
@@ -180,13 +180,13 @@ public class Finanzverwaltung {
 		query = "INSERT INTO 'Mischtabelle-Kasse-Topf' (ID_Kasse, ID_Topf, ID_Bearbeiter, Timestamp) VALUES ("+ id_Kasse +", " + id_Topf + ", " + DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn)+ ",'"+ timeStamp +"');";
 		DataBase.executeQuery(query);
 		
-		DataBase.closeConnection();
+		
 		
 	}
 	public static void alterTopf(int id_Topf, int id_Kasse, int soll, int ist) {
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		DataBase.getConnection();
+		
 		String query = "UPDATE Topf SET Soll= " + soll + ", Ist = "+ ist + " WHERE ID_Topf = " + id_Topf + ";";  
 		DataBase.executeQuery(query);
 		query = "DELETE FROM 'Mischtabelle-Kasse-Topf' WHERE ID_Topf = "+ id_Topf +";"; 
@@ -194,7 +194,7 @@ public class Finanzverwaltung {
 		query = "INSERT INTO 'Mischtabelle-Kasse-Topf' (ID_Kasse, ID_Topf, ID_Bearbeiter, Timestamp) VALUES ("+ id_Kasse +", " + id_Topf + ", " + DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn)+ ",'"+ timeStamp +"');";
 		DataBase.executeQuery(query);
 		
-		DataBase.closeConnection();
+		
 		
 		
 	}
@@ -202,39 +202,39 @@ public class Finanzverwaltung {
 		
 		// Mischtabelle löschen!
 				
-		DataBase.getConnection();
+		
 		
 		String query = "DELETE FROM Topf WHERE ID_Topf = " + id_Topf + ";";  
 		DataBase.executeQuery(query);
 		query = "DELETE FROM 'Mischtabelle-Kasse-Topf' WHERE ID_Topf = "+ id_Topf +";"; 
 		DataBase.executeQuery(query);
 		
-		DataBase.closeConnection();
+		
 	}
 	public static void addBillToTopf(int id_Bill, int id_Topf) {
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		DataBase.getConnection();
+		
 		String query = "INSERT INTO 'Mischtabelle-Topf-Rechnung' (ID_Topf, ID_Rechnung, ID_Bearbeiter, Timestamp) VALUES (" + id_Topf +", " + id_Bill +", " + DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn)+ ",'"+ timeStamp +"');";
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 	}
 	public static void deleteBillFromTopf(int id_Bill) {
 		
-		DataBase.getConnection();
+		
 		String query = "DELETE FROM 'Mischtabelle-Topf-Rechnung' WHERE ID_Rechnung = " + id_Bill + ";";
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		
 	}
 	
 	public static int getIDRechnungByOrder(int id_Order) {
 		
-		DataBase.getConnection();
+		
 		int id_Bill = DataBase.getSpecificID("ID_Rechnung", "SELECT * FROM 'Mischtabelle-Rechnung-Auftrag' WHERE ID_Auftrag =" + id_Order+";");
-		DataBase.closeConnection();
+		
 		
 		return id_Bill; 
 		

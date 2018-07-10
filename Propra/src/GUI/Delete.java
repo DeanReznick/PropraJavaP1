@@ -39,7 +39,7 @@ public class Delete extends JFrame {
 	 */
 	public Delete() {
 		setTitle("Person l\u00F6schen");
-		DataBase.getConnection();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
@@ -67,7 +67,7 @@ public class Delete extends JFrame {
 				
 				model.removeRow(selectedRowIndex);
 				DataBase.loadPeopleToRAM();
-				DataBase.closeConnection();
+				
 				dispose();
 			}
 		});

@@ -41,7 +41,6 @@ public class DeleteTopf extends JFrame {
 	 */
 	public DeleteTopf() {
 		setTitle("Topf löschen");
-		DataBase.getConnection();
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -72,8 +71,6 @@ public class DeleteTopf extends JFrame {
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus, den Sie löschen möchten.");
 					dispose();
-				} finally {
-					DataBase.closeConnection();
 				}
 			}
 		});

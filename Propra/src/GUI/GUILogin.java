@@ -51,8 +51,8 @@ public class GUILogin extends JFrame {
 			}
 		});
 		
-		 DataBase.loadStatusToRam(21);
-		 DataBase.closeConnection();
+		
+//		 DataBase.closeConnection();
 	}
 
 	/**
@@ -60,6 +60,7 @@ public class GUILogin extends JFrame {
 	 */
 	public GUILogin() {
 		setTitle("Login");
+		DataBase.getConnection();
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 243, 240);
@@ -91,10 +92,10 @@ public class GUILogin extends JFrame {
 						String mail = txt_mail.getText(); 
 						String password = txt_password.getText();  
 					 
-						DataBase.getConnection();
+						
 						String[] namen = new String[2]; 
 						namen = DataBase.getNameVornameByMail(mail); 
-						DataBase.closeConnection();
+						
 						
 						String vorname = namen[0]; 
 						String name = namen[1]; 

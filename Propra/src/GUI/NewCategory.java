@@ -64,7 +64,6 @@ public class NewCategory extends JFrame {
 		btnErstellen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-				DataBase.getConnection();
 				String name = txtCategory.getText();
 				Manager.checkStandardCategory(name);
 				BauteileAuftragsabwicklung.createKategorie(name);
@@ -72,8 +71,6 @@ public class NewCategory extends JFrame {
 				dispose();
 				} catch (InvalidArgumentsException ex) {
 					JOptionPane.showMessageDialog(null, ex);
-				} finally {
-					DataBase.closeConnection();
 				}
 			}
 		});

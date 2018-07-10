@@ -11,7 +11,7 @@ public class PersonenFertigungsverwaltung {
 	
 	
 	public static void createNewPerson(String name, String vorname, String telefonnummer, String mail, String land, String straﬂe, String ort, String hausnummer, int plz) {
-		DataBase.getConnection();
+		
 		//String name, String telefonnummer, String mail, String land, String straﬂe, String ort, String hausnummer, int plz
 		
 		
@@ -35,11 +35,11 @@ public class PersonenFertigungsverwaltung {
 		}else {
 			System.out.println("(PFV): Person existiert bereits. Code: -1");
 		}
-		DataBase.closeConnection();
+		
 	}
 	
 	public static void createNewPerson(String name, String vorname, String telefonnummer, String mail, String land, String straﬂe, String ort, String hausnummer, int plz, String job, String password) {
-		DataBase.getConnection();
+		
 	    //String name, String telefonnummer, String mail, String land, String straﬂe, String ort, String hausnummer, int plz
 	    
 	    
@@ -66,46 +66,46 @@ public class PersonenFertigungsverwaltung {
 	    
 	      
 	    }
-	    DataBase.closeConnection();
+	    
 	  }
 	
 	
 	public static boolean deletePerson(String name, String vorname ) {
-		DataBase.getConnection();
+		
 		 // Deletes person entries from the database. 
 		String query = "DELETE FROM Person WHERE name like '" + name + "' AND vorname like '"+  vorname +"';"; 
 		DataBase.executeQuery(query); 
-		DataBase.closeConnection();
+		
 		return true; 
 		
 	}
 	
 	
 	public static boolean deletePersonById(int id) {
-		DataBase.getConnection();
+		
 		 // Deletes person entries from the database. 
 		String query = "DELETE FROM Person WHERE ID_Person=" + id + ";"; 
 		DataBase.executeQuery(query); 
 		
 		removePersonFromArrayList(id);
-		DataBase.closeConnection();
+		
 		return true; 
 		
 	}
 	
 	public static void removePersonFromArrayList(int id) {
-		DataBase.getConnection();
+		
 		for (int i = 0; i < DataBase.people.size(); i++) {
 			   if (DataBase.people.get(i).getID_Person() == id) {
 				   DataBase.people.remove(i);
 			   }
 		   }
-		DataBase.closeConnection();
+		
 	}
 	
 	
 	public static void changeNameSurname(String name_old, String surname_old, String name, String surname) {
-		DataBase.getConnection();
+		
 		//Modification of a data record. The person to be changed is searched by name and surname. You can also only edit both entries together (as tuples). 
 		//Note: The function could of course also be programmed differently. 
 		
@@ -113,21 +113,21 @@ public class PersonenFertigungsverwaltung {
 		String query = "UPDATE Person SET name = '" + surname + "', vorname = '" + name  + "' WHERE name = '"+ surname_old + "' and vorname = '" + name_old +"';";  
 		
 		DataBase.executeQuery(query); 
-		DataBase.closeConnection();	
+			
 	}
 	
 	public static void changeRolle(int id_Person, String rolle) {
-		DataBase.getConnection();
+		
 		
 		String query = "UPDATE Person SET Rolle = '" + rolle + "' WHERE ID_Person = "+ id_Person + ";"; 
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 	
 	}
 	
 	
 public static void changeName(String name_old, String surname_old, String name, String surname) {
-		DataBase.getConnection();
+		
 		//Modification of a data record. The person to be changed is searched by name and surname. You can also only edit both entries together (as tuples). 
 		//Note: The function could of course also be programmed differently. 
 		
@@ -135,7 +135,7 @@ public static void changeName(String name_old, String surname_old, String name, 
 		String query = "UPDATE Person SET name = '" + name + "' WHERE name = '"+ name_old + "' and vorname = '" + surname_old +"';";  
 		
 		DataBase.executeQuery(query); 
-		DataBase.closeConnection();
+		
 		
 		
 		
@@ -146,10 +146,10 @@ public static void changeName(String name_old, String surname_old, String name, 
 	
 	
 	public static void changePhoneNumber (String name, String surname, String number) {
-		DataBase.getConnection();
+		
 		String query = "UPDATE Person SET telefonnummer = '" + number + "' WHERE name like '"+ surname + "' and vorname like '" + name+"';";  
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		
 		
@@ -157,17 +157,17 @@ public static void changeName(String name_old, String surname_old, String name, 
 	}
 	
 public static void changeMail (String name, String surname, String mail) {
-	DataBase.getConnection();
+	
 		String query = "UPDATE Person SET mail = '" + mail + "' WHERE name like '"+ surname + "' and vorname like '" + name+"';";  
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 }
 	
 	public static void changeAddressDataSet(String name, String surname, String country, String street, String location, String number, int zipCode ) {
-		DataBase.getConnection();
+		
 		String query = "UPDATE Person SET land = '" + country + "', straﬂe= '" + street  + "' , ort= '" + location + "' , Hausnummer = '" + number +"' , PLZ ='" + zipCode + "' WHERE name like '"+ surname + "' and vorname like '" + name +"';";  	
 		DataBase.executeQuery(query); 
-		DataBase.closeConnection();
+		
 		
 	}
 
@@ -177,7 +177,7 @@ public static void changeMail (String name, String surname, String mail) {
 	  
 	  
 	  public static void createNewOrder(String header, String af, String filename, String repository, String pk, String rk, String name, String surname, String job ) {
-		  DataBase.getConnection();
+		 
 	    // Create a new job and assign it to a person. 
 	    //The necessary entries are created in the mixing table. 
 	    
@@ -204,35 +204,35 @@ public static void changeMail (String name, String surname, String mail) {
 	    int id_status = DataBase.getSpecificID("ID_Status", "SELECT ID_Status FROM Status WHERE timestamp like '" + timeStamp + "';"); 
 	    String query_add_status_to_oder = "UPDATE Auftrag SET ID_status ="  + id_status + " WHERE ID_Auftrag = " + id_order + ";";  
 	    DataBase.executeQuery(query_add_status_to_oder); 
-	    DataBase.closeConnection();
+	    
 	  }
 	  
 	  public static void changeDataSetOrder(int id, String header, String af, String filename, String repository, String pk, String rk) {
-		  DataBase.getConnection();
+		
 	    String query = "UPDATE Auftrag SET titel = '" + header + "' , af = '"+ af +"', Dateiname = '" + filename +"' , Dateiort='" + repository +"', pk = '" + pk +"' , rk = '" + rk +"' WHERE ID_Auftrag = "+ id + ";";  
 	      
 	    DataBase.executeQuery(query);
-	    DataBase.closeConnection();
+	    
 	    
 	    
 	  }
 	  
 	  
 	  public static void changeJobOrderPerson(int id_person, int id_order, String job) {
-		  DataBase.getConnection();
+		  
 	    String query = "UPDATE 'Mischtabelle-Person-Auftrag' SET rolle = '" + job + "' WHERE ID_Person = "+ id_person + " AND ID_Auftrag = " + id_order +";";  
 	    
 	    DataBase.executeQuery(query);
-	    DataBase.closeConnection();
+	   
 	  }
 	  
 	  
 	  public static void addJobOrderPerson(int id_person, int id_order, String job) {
-		  DataBase.getConnection();
+		  
 		    String query = "INSERT INTO 'Mischtabelle-Person-Auftrag' (rolle, ID_Auftrag, ID_Person) VALUES ('" + job + "', " + id_order + "," + id_person +");";  
  
 		    DataBase.executeQuery(query);
-		    DataBase.closeConnection();
+		    
 		  }
 		  
 	  
@@ -240,7 +240,7 @@ public static void changeMail (String name, String surname, String mail) {
 	  
 	  
 	  public static void deleteOrder(int id_Order) {
-		  DataBase.getConnection();
+		  
 	    //Procedure: 
 	      //(1) Deleting an order from the database
 	      //(2) Delete the relevant entry in the mixing table. 
@@ -254,7 +254,7 @@ public static void changeMail (String name, String surname, String mail) {
 	    
 	    query = "DELETE FROM Status WHERE ID_Auftrag = " + id_Order + ";";
 	    DataBase.executeQuery(query);
-	    DataBase.closeConnection();
+	    
 	    
 	    
 	  }
@@ -262,7 +262,7 @@ public static void changeMail (String name, String surname, String mail) {
 	  
 	  public static void alterStatus(int id_order, String new_Status) {
 		  
-		DataBase.getConnection();  
+		  
 	    
 	    String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime()); // Could be outsourced to its own function. 
 	    String query_status = "INSERT INTO Status (ID_Auftrag, Status, Timestamp) VALUES (" + id_order + ", '" +new_Status +"' , '" + timeStamp +"');";
@@ -270,7 +270,7 @@ public static void changeMail (String name, String surname, String mail) {
 	    int id_status = DataBase.getSpecificID("ID_Status", "SELECT ID_Status FROM Status WHERE timestamp like '" + timeStamp + "';"); 
 	    String query_add_status_to_oder = "UPDATE Auftrag SET ID_status ="  + id_status + " WHERE ID_Auftrag = " + id_order + ";";  
 	    DataBase.executeQuery(query_add_status_to_oder); 
-	    DataBase.closeConnection();
+	   
 	    
 	  }
 	  

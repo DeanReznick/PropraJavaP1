@@ -24,7 +24,7 @@ public class DeleteCategory extends JFrame {
 	
 	public DeleteCategory() {
 		setTitle("Kategorie löschen");
-		DataBase.getConnection();
+		
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

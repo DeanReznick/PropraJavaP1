@@ -158,7 +158,7 @@ public class Manager {
 		
 		
 		
-		DataBase.getConnection();
+		
 		int id = -1;
 	    id = DataBase.getIdPersonByNameSurname(name, surname);
 		

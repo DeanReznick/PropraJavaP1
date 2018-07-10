@@ -41,7 +41,7 @@ public class DeleteBill extends JFrame {
 	 */
 	public DeleteBill() {
 		setTitle("Rechnung löschen");
-		DataBase.getConnection();
+		
 		setBounds(100, 100, 503, 120);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -64,7 +64,7 @@ public class DeleteBill extends JFrame {
 				
 				model.removeRow(selectedRowIndex);
 				DataBase.refreshRechn();
-				DataBase.closeConnection();
+				
 				dispose();
 			}
 		});

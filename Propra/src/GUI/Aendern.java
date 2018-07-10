@@ -177,7 +177,7 @@ public class Aendern extends JFrame {
 		JButton btnAendern = new JButton("Aendern");
 		btnAendern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DataBase.getConnection();
+			
 				try {
 				
 				int colId = 0;
@@ -265,7 +265,7 @@ public class Aendern extends JFrame {
 				}
 				
 				DataBase.refreshDatabase();
-				DataBase.closeConnection();
+			
 				dispose();
 				
 				} catch (InvalidArgumentsException ex) {

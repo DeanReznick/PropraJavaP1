@@ -84,12 +84,12 @@ public class AlterTopf extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				
-				DataBase.getConnection();
+				
 				String idTopf2 = MainMenu.tblTopf.getModel().getValueAt(MainMenu.tblTopf.getSelectedRow(), 0).toString();
 				System.out.println(idTopf2);
 				Finanzverwaltung.alterTopf(Integer.parseInt(idTopf2), Integer.parseInt(comboBoxArt.getSelectedItem().toString()), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
 				DataBase.refreshTopf();
-				DataBase.closeConnection();
+				
 				dispose();
 			}
 		});

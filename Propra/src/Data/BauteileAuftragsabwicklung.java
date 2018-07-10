@@ -23,7 +23,7 @@ public class BauteileAuftragsabwicklung {
 	
 		
 		// prüfen (evtl. prüfen ob die Änderung  geht) 
-		DataBase.getConnection();
+		
 		DataBase.loadAuftragID(id_aenderung);
 		
 		OffenerAuftragObjektRAM tmp = DataBase.offeneAuftraege.get(0); 
@@ -57,7 +57,7 @@ public class BauteileAuftragsabwicklung {
 			query = "DELETE FROM Änderung WHERE ID_Änderung = " + id_aenderung +";"; 
 			DataBase.executeQuery(query);
 		
-			DataBase.closeConnection();
+			
 			
 			
 		}else {
@@ -73,9 +73,9 @@ public class BauteileAuftragsabwicklung {
 		
 		int [] mengen = null; 
 		
-		DataBase.getConnection();
+		
 		mengen = DataBase.getMengenBauteile(id_bauteil); 		
-		DataBase.closeConnection();
+		
 		
 		try {
 			int change = mengen[2] - mengen[0]; 
@@ -83,9 +83,9 @@ public class BauteileAuftragsabwicklung {
 			
 			String query = "UPDATE Bauteil SET MengeBestellt = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
 			
-			DataBase.getConnection();
+			
 			DataBase.executeQuery(query);
-			DataBase.closeConnection();
+			
 			
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
@@ -97,22 +97,22 @@ public class BauteileAuftragsabwicklung {
 		
 		int [] mengen = null; 
 		
-		DataBase.getConnection();
+		
 		mengen = DataBase.getMengenBauteile(id_bauteil); 		
-		DataBase.closeConnection();
+		
 		
 		try {
 			
 			int change = mengen[0] + mengen[1]; 
 			String query = "UPDATE Bauteil SET MengeBestellt = 0 WHERE ID_Bauteil =" + id_bauteil +";";
-			DataBase.getConnection();
+			
 			DataBase.executeQuery(query);
-			DataBase.closeConnection();
+			
 			
 			query = "UPDATE Bauteil SET MengeLagernd = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
-			DataBase.getConnection();
+			
 			DataBase.executeQuery(query);
-			DataBase.closeConnection();
+			
 			
 			
 		} catch (Exception e) {
@@ -123,38 +123,38 @@ public class BauteileAuftragsabwicklung {
 	}
 	
 	public static int newBauteil(String name, String link, int mengeLagernd, int mengeBestellt, int mengeGeplant, String lagerort) {
-		DataBase.getConnection();
+		
 		String query = "INSERT INTO Bauteil (Name, Link, MengeLagernd, MengeBestellt, MengeGeplant, Lagerort) VALUES ('" + name +"','"+ link +"'," + mengeLagernd +"," + mengeBestellt + "," + mengeGeplant + ",'"+ lagerort +"');";
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
 		
-		DataBase.getConnection();
+		
+		
 		int id_current = DataBase.getSpecificID("ID_Max", "SELECT max(ID_Bauteil) as ID_Max FROM Bauteil;");
-		DataBase.closeConnection();
+		
 		
 		
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		
-		DataBase.getConnection();
+		
 		query = "INSERT INTO 'Mischtabelle-Kategorie-Bauteil' (ID_Kategorie, ID_Bauteil, Timestamp) VALUES ( 1 , " + id_current + ",'"+ timeStamp + "');";
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		return id_current;
 		
 	}
 	public static void deleteBauteil(int id_bauteil) {
-		DataBase.getConnection();
+		
 		String query = "DELETE FROM Bauteil WHERE ID_Bauteil = "+ id_bauteil +";"; 
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		// Bauteil auch aus der Mischtabelle löschen
-		DataBase.getConnection();
+		
 		 query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Bauteil = "+ id_bauteil +";"; 
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		
 	}
@@ -167,18 +167,18 @@ public class BauteileAuftragsabwicklung {
 	
 	
 	public static void deleteAuftrag(int id_aenderung) {
-		DataBase.getConnection();
+		
 		String query = "DELETE FROM Änderung WHERE ID_Änderung = " + id_aenderung +";"; 
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 	}
 	
 	public static void loadOffeneAuftraege() {
 		
-		DataBase.getConnection();
+		
 		DataBase.loadOffeneAuftraegeToRam();
 		System.out.println(DataBase.offeneAuftraege.toString()); 
-		DataBase.closeConnection();
+		
 	
 	}
 	
@@ -186,50 +186,50 @@ public class BauteileAuftragsabwicklung {
 	
 	public static void createKategorie(String name) {
 		
-		DataBase.getConnection();
+		
 		String query = "INSERT INTO Kategorie (Name) VALUES ('"+ name +"');"; 
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 	}
 
 	public static void renameKategrie(int id_Kategorie, String name) {
 		
-		DataBase.getConnection();
+
 		String query = "UPDATE Kategorie SET Name = '"+ name +"' WHERE ID_Kategorie = "+ id_Kategorie +";"; 
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		
 	} 
 	
 	public static void deleteKategorie(int id_Kategorie) {
-		DataBase.getConnection();
+		
 		String query = "DELETE FROM Kategorie WHERE ID_Kategorie = "+ id_Kategorie +";"; 
 		DataBase.executeQuery(query);
 		
 		
 		
 		// Alle Bauteile zu default
-		DataBase.getConnection();
+		
 		ArrayList<Integer> ids = DataBase.getBauteileIDByKategorie(id_Kategorie); 
 
 		
-		DataBase.closeConnection();
+		
 		Iterator<Integer> it = ids.iterator(); 
 		
 		while(it.hasNext()) {
 			System.out.println("*");
-			DataBase.getConnection();
+			
 			addBauteilToKategorie(1, it.next().intValue()); 
-			DataBase.closeConnection();
+			
 		}
 		
-		DataBase.getConnection();
+		
 		query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Kategorie = "+ id_Kategorie +";"; 
 		DataBase.executeQuery(query);
 		
-		DataBase.closeConnection();
+		
 		
 		
 	}
@@ -255,27 +255,27 @@ public class BauteileAuftragsabwicklung {
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		
-		DataBase.getConnection();
+		
 		String query = "UPDATE 'Mischtabelle-Kategorie-Bauteil' SET ID_Kategorie = " + id_Kategorie + ", Timestamp = '" + timeStamp + "' WHERE ID_Bauteil = " + id_Bauteil + ";";
 		DataBase.executeQuery(query);
 		
-		DataBase.closeConnection();
+		
 		
 	}
 	
 	public static void deleteBauteilFromKategorie(int id_Bauteil) {
-		DataBase.getConnection();
+		
 		String query = "DELETE FROM 'Mischtabelle-Kategorie-Bauteil' WHERE ID_Bauteil = "+ id_Bauteil +";"; 
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		// Bauteil wird der default Zugeordnet
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		DataBase.getConnection();
+		
 		query = "INSERT INTO 'Mischtabelle-Kategorie-Bauteil' (ID_Kategorie, ID_Bauteil, Timestamp) VALUES ( 1 , " + id_Bauteil + ",'"+ timeStamp + "');";
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		
 		
@@ -285,12 +285,12 @@ public class BauteileAuftragsabwicklung {
 	
 	
 	public static void manualOrderingOfComponents(int id_Bauteil, int quantum_ordering) {
-		DataBase.getConnection();
+		
 		int [] mengen = DataBase.getMengenBauteile(id_Bauteil); 
 		quantum_ordering += mengen[1]; 
 		String query = "UPDATE Bauteil SET MengeBestellt = " + quantum_ordering + " WHERE ID_Bauteil =" + id_Bauteil +";";
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+	
 		
 	}
 	
@@ -331,10 +331,10 @@ public static void addPrice(int id_Bauteil, String price) {
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		
-		DataBase.getConnection();
+		
 		String query = "INSERT INTO PreisBauteil  (ID_Bauteil, Timestamp, Preis, ID_Person) VALUES (" + id_Bauteil+ " , '" + timeStamp + "','"+ price + "', "+ DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn)+");";
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		
 	}
@@ -343,20 +343,20 @@ public static void addPrice(int id_Bauteil, String price) {
 		
 		// Unbedingt Testen !!! 
 		
-		DataBase.getConnection();
+	
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
 		String query = "UPDATE PreisBauteil SET Preis = '" + price + "', Timestamp = '"+ timeStamp +"', ID_Person = "+  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) +" WHERE ID_Bauteil =" + id_Bauteil +";";
 		DataBase.executeQuery(query);
-		DataBase.closeConnection();
+		
 		
 		
 	}
 	
 	public static int getLatestPrice (int id_Bauteil) {
-		DataBase.getConnection();
+		
 		int price = DataBase.getSpecificID("Preis", "SELECT Preis, max(ID_Preis)  FROM PreisBauteil WHERE ID_Bauteil = " + id_Bauteil + " ;" ); 
-		DataBase.closeConnection();
+		
 		currentPrice = price + ""; 
 		
 		return price;

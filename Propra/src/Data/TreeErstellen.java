@@ -24,7 +24,6 @@ public class TreeErstellen {
 		Iterator<Integer> it = obj.c.iterator();
 		
 		
-		System.out.println(obj.c.size());
 		
 		
 	
@@ -37,14 +36,12 @@ public class TreeErstellen {
 			ArrayList<CategoryObjektRAM> liste =  DataBase.categories; 
 			
 			
-			System.out.println(liste.size());
 			
 			Iterator<CategoryObjektRAM> it2 = liste.iterator(); 
 			
 			while(it2.hasNext()) {
 				CategoryObjektRAM tmp_obj = it2.next(); 
 				
-				System.out.println("------>>>>>>" + tmp_obj.getName());
 				
 				if(tmp_obj.getIdCategory() == tmp.intValue()) {
 					

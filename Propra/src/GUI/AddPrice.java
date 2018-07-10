@@ -65,7 +65,7 @@ public class AddPrice extends JFrame {
 				
 				String price = txtPrice.getText();
 				try{
-					DataBase.getConnection();
+					
 					DefaultTableModel model = (DefaultTableModel) MainMenu.tblComponents.getModel();
 					//get selected row index
 					int selectedRowIndex = MainMenu.tblComponents.getSelectedRow();
@@ -80,7 +80,7 @@ public class AddPrice extends JFrame {
 						JOptionPane.showMessageDialog(null, ex);
 					}finally {
 						DataBase.refreshComponent();
-						DataBase.closeConnection();
+						
 						
 					}
 			}

@@ -174,7 +174,7 @@ public class AddPerson extends JFrame {
 		JButton btnHinzufuegen = new JButton("Hinzufuegen");
 		btnHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DataBase.getConnection();
+				
 				try {
 					txtName.setBackground(Color.WHITE);
 					txtVorname.setBackground(Color.WHITE);
@@ -213,7 +213,7 @@ public class AddPerson extends JFrame {
 					txtPlz.setBackground(Color.RED);
 				} finally {
 					DataBase.loadPeopleToRAM();
-					DataBase.closeConnection();
+					
 				}
 			 
 			}

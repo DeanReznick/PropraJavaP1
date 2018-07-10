@@ -31,7 +31,7 @@ public class Authentication {
   
   
   public static boolean checkCredentials(String name, String surname, String password) throws SQLException {
-	DataBase.getConnection(); 
+	
 	
 	if(!(DataBase.getRolleByIDPerson(DataBase.getIdPersonByNameSurname(name, surname)).equals("Intern"))){
 		return false; 
@@ -39,10 +39,10 @@ public class Authentication {
 	  
     //String query ="SELECT Passwort FROM Person WHERE name like '" + name + "' and vorname like '" + surname +"';";
     if(sha256(password).equals(DataBase.pStmt(name, surname))){
-    	DataBase.closeConnection();
+    	
       return true;
     }else {
-    	DataBase.closeConnection();
+    	
       return false; 
     }
    

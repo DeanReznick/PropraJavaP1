@@ -42,7 +42,7 @@ public class DeleteKasse extends JFrame {
 	 */
 	public DeleteKasse() {
 		setTitle("Kasse löschen");
-		DataBase.getConnection();
+		
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -72,8 +72,8 @@ public class DeleteKasse extends JFrame {
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Wählen Sie eine Kasse, die Sie löschen möchten.");
 					dispose();
-				} finally {
-				DataBase.closeConnection();
+				
+				
 				}
 			}
 		});

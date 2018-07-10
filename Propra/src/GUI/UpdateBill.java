@@ -138,7 +138,7 @@ public class UpdateBill extends JFrame {
 		JButton btnUpdate = new JButton("Aendern");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DataBase.getConnection();
+				
 				
 				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
 				int indexAuftraggeber = -1;
@@ -170,7 +170,7 @@ public class UpdateBill extends JFrame {
 				Finanzverwaltung.alterBill(id_Bill_int, rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung);
 				DataBase.refreshBill();
 				DataBase.refreshBill2();
-				DataBase.closeConnection();
+				
 				dispose();
 				
 			}

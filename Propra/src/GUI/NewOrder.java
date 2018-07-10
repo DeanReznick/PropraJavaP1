@@ -76,7 +76,7 @@ public class NewOrder extends JFrame {
 				txtSurname.setBackground(Color.WHITE);
 				txtJob.setBackground(Color.WHITE);
 				
-				DataBase.getConnection();
+	
 				String header = txtHeader.getText();
 				String af = txtAf.getText();
 				String filename = txtFilename.getText();
@@ -100,7 +100,7 @@ public class NewOrder extends JFrame {
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {
 					DataBase.loadOrdersToRAM();
-					DataBase.closeConnection();
+					
 				}
 				
 				

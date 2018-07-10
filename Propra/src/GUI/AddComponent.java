@@ -87,7 +87,7 @@ public class AddComponent extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				try{
-				DataBase.getConnection();
+				
 				//Test
 				BauteileAuftragsabwicklung.addPrice((BauteileAuftragsabwicklung.newBauteil(txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText())), txtPrice.getText());
 				DataBase.refreshChange();
@@ -97,7 +97,7 @@ public class AddComponent extends JFrame {
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {
 					DataBase.refreshComponent();
-					DataBase.closeConnection();
+					
 					
 				}
 			}
@@ -194,6 +194,6 @@ public class AddComponent extends JFrame {
 		
 		SwingUtilities.getRootPane(btnBestaetigen).setDefaultButton(btnBestaetigen);
 		
-		DataBase.closeConnection();
+		
 	}
 }

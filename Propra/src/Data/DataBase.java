@@ -31,17 +31,20 @@ public class DataBase {
 	
 	public static void getConnection() {
 	
-		  
-		//Verbindungsaufbau zur Datenbank	
-	      try {
-	    	 File desktopDir = new File(System.getProperty("user.home"), "Desktop");
-	         Class.forName("org.sqlite.JDBC");
-	         c = DriverManager.getConnection("jdbc:sqlite:"+ desktopDir.getPath() +"\\Projekt1-DB.db");
-	         c.setAutoCommit(false);
-	      } catch ( Exception e ) {
-	         System.err.println( e.getClass().getName() + ": " + e.getMessage() ); 
-	      }
-	      System.out.println("Opened database successfully");
+		  if(c == null)
+		  {
+			//Verbindungsaufbau zur Datenbank	
+		      try {
+		    	 File desktopDir = new File(System.getProperty("user.home"), "Desktop");
+		         Class.forName("org.sqlite.JDBC");
+		         c = DriverManager.getConnection("jdbc:sqlite:"+ desktopDir.getPath() +"\\Projekt1-DB.db");
+		         c.setAutoCommit(false);
+		      } catch ( Exception e ) {
+		         System.err.println( e.getClass().getName() + ": " + e.getMessage() ); 
+		      }
+		      System.out.println("Opened database successfully");
+		  }
+		
 	      
 }
 	
@@ -297,7 +300,7 @@ public class DataBase {
 	
 	public static void loadPeopleToRAM() {
 		
-		getConnection();
+		
 		
 		people.removeAll(people); 
 
@@ -355,13 +358,13 @@ public class DataBase {
 	      
 	   }
 	   System.out.println("Operation done successfully");
-	   closeConnection();
+	   
 		
 	}
 	
 public static void loadOrdersToRAM() {
 		
-	getConnection();
+	
 		orders.removeAll(orders); 
 
 		int idAuftrag; 
@@ -407,13 +410,13 @@ public static void loadOrdersToRAM() {
 	   }
 	   System.out.println("Operation done successfully");
 	   
-	   closeConnection();
+	   
 		
 	}
 
 	public static void loadComponentsToRAM() {
 		
-		getConnection();
+		
 		
 		components.removeAll(components); 
 	
@@ -461,13 +464,13 @@ public static void loadOrdersToRAM() {
 	      
 	   }
 	   System.out.println("Operation done successfully");
-	   closeConnection();
+	   
 		
 	}
 	
 public static void loadCategoriesToRAM() {
 		
-		getConnection();
+		
 		
 		categories.removeAll(categories); 
 
@@ -499,7 +502,7 @@ public static void loadCategoriesToRAM() {
 	      }
 	     
 	      stmt.close();
-	      closeConnection();
+	      
 	      
 	      Iterator<CategoryObjektRAM> it = categories.iterator(); 
 	      
@@ -616,7 +619,7 @@ public static void loadCategoriesToRAM() {
 	
 	public static void searchPerson(String search) {
 		
-		getConnection();
+		
 		
 		String firstName = null;
 		String lastName = null;
@@ -695,12 +698,12 @@ public static void loadCategoriesToRAM() {
 		TableColumnModel tcm = MainMenu.tblPersonen.getColumnModel();
 		tcm.removeColumn( tcm.getColumn(0) );
 		
-		closeConnection();
+		
 	}
 	
 public static void searchOrder(String search) {
 		
-		getConnection();
+		
 		
 		String firstName = null;
 		String lastName = null;
@@ -765,12 +768,12 @@ public static void searchOrder(String search) {
 		TableColumnModel tcm = MainMenu.tblAuftraege.getColumnModel();
 		tcm.removeColumn( tcm.getColumn(0) );
 		
-		closeConnection();
+		
 	}
 
 	public static void searchComponent(String search) {
 	
-	getConnection();
+	
 	
 	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
 		
@@ -820,12 +823,12 @@ public static void searchOrder(String search) {
 	MainMenu.tblComponents.setModel(modelComponents);
 //	MainMenu.scrollPane_3.setViewportView(MainMenu.tblComponents);
 	
-	closeConnection();
+	
 }
 	
 	public static void searchBill(String search) {
 		
-		getConnection();
+		
 		
 		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
 			
@@ -875,7 +878,7 @@ public static void searchOrder(String search) {
 		MainMenu.tblRechn.setModel(modelRechnung);
 //		MainMenu.scrollPane_3.setViewportView(MainMenu.tblComponents);
 		
-		closeConnection();
+		
 	}
 	
 	public static void searchTable(String text) {
@@ -949,7 +952,7 @@ public static void searchOrder(String search) {
 	
 	public static void refreshDatabase() {
 
-		getConnection();
+		
 		
 		DefaultTableModel model = new DefaultTableModel(new String[]{"ID", "Name", "Vorname", "Telefon", "Email", "Rolle",  "Straße", "Hausnummer", "PLZ", "Ort", "Land"}, 0) {
 			
@@ -1002,12 +1005,12 @@ public static void searchOrder(String search) {
 		
 		MainMenu.tblPersonen.setModel(model);
 	
-		closeConnection();
+		
 	}
 	
 	public static void refreshPersonen() {
 
-		getConnection();
+		
 		
 		DefaultTableModel model = new DefaultTableModel(new String[]{"ID_Person", "Name", "Vorname", "Email"}, 0) {
 			
@@ -1062,12 +1065,12 @@ public static void searchOrder(String search) {
 		TableColumnModel tcm = MainMenu.tblPersonen.getColumnModel();
 		tcm.removeColumn( tcm.getColumn(0) );
 	
-		closeConnection();
+		
 	}
 	
 public static void refreshBill2() {
 		
-		getConnection();
+		
 		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
 			
 			@Override
@@ -1117,14 +1120,14 @@ public static void refreshBill2() {
 		
 		MainMenu.tblRechn.setModel(modelRechnung);
 
-		closeConnection();
+		
 		
 	}
 	
 	
 	public static void refreshOrder() {
 
-		getConnection();
+		
 		
 		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "Status"}, 0) {
 			
@@ -1171,12 +1174,12 @@ public static void refreshBill2() {
 		TableColumnModel tcm = MainMenu.tblAuftraege.getColumnModel();
 		tcm.removeColumn( tcm.getColumn(0) );
 	
-		closeConnection();
+		
 	}
 	
 	public static void refreshOrderBill() {
 
-		getConnection();
+		
 		
 		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
 			
@@ -1227,11 +1230,11 @@ public static void refreshBill2() {
 		
 		MainMenu.tblAuftraegeRechnung.setModel(modelAuftrag);
 	
-		closeConnection();
+		
 	}
 	
 	public static void refreshOrdersInBill() {
-		getConnection();
+		
 		
 
 		int selectedRowIndexBills = MainMenu.tblBills.getSelectedRow();
@@ -1290,14 +1293,14 @@ public static void refreshBill2() {
 		
 		MainMenu.tblOrdersInBill.setModel(modelOrderBill);
 		
-		closeConnection();
+		
 	}
 	
 	
 	
 	public static void refreshComponent() {
 
-		getConnection();
+		
 		
 	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name", "Menge lagernd", "Preis"}, 0) {
 			
@@ -1347,13 +1350,13 @@ public static void refreshBill2() {
 		TableColumnModel tcm = MainMenu.tblComponents.getColumnModel();
 		tcm.removeColumn( tcm.getColumn(0) );
 		
-		closeConnection();
+		
 	}
 	
 	
 	public static void refreshComponentCategory() {
 
-		getConnection();
+		
 		
 	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort", "Preis"}, 0) {
 			
@@ -1407,12 +1410,12 @@ public static void refreshBill2() {
 		
 		MainMenu.tblComponents.setModel(modelComponents);
 	
-		closeConnection();
+		
 	}
 	
 	public static void refreshKasse() {
 
-		getConnection();
+		
 		
 		DefaultTableModel modelKasse = new DefaultTableModel(new String[]{"ID_Kasse", "Art", "Nummer", "Soll", "Ist"}, 0) {
 			
@@ -1462,12 +1465,12 @@ public static void refreshBill2() {
 		TableColumnModel tcmKasse = MainMenu.tblKasse.getColumnModel();
 		tcmKasse.removeColumn( tcmKasse.getColumn(0) );
 		tcmKasse.removeColumn( tcmKasse.getColumn(1) );
-		closeConnection();
+		
 	}
 
 	public static void refreshTopf() {
 
-		getConnection();
+		
 		
 		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "ID_Kasse", "Soll", "Ist"}, 0) {
 			
@@ -1516,11 +1519,11 @@ public static void refreshBill2() {
 		TableColumnModel tcmTopf = MainMenu.tblTopf.getColumnModel();
 		tcmTopf.removeColumn( tcmTopf.getColumn(1) );
 	
-		closeConnection();
+		
 	}
 	
 	public static void refreshBill () {
-		getConnection();
+		
 		
 		DefaultTableModel modelBill = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "TimeStamp"}, 0) {
 			
@@ -1574,14 +1577,14 @@ public static void refreshBill2() {
 		
 		MainMenu.tblBills.setModel(modelBill);
 	
-		closeConnection();
+		
 		
 		
 		
 	}
 	
 	public static void refreshRechn () {
-		getConnection();
+		
 		
 		DefaultTableModel modelBill = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "TimeStamp"}, 0) {
 			
@@ -1635,14 +1638,14 @@ public static void refreshBill2() {
 		
 		MainMenu.tblRechn.setModel(modelBill);
 	
-		closeConnection();
+		
 		
 		
 		
 	}
 	public static void refreshCategory() {
 
-		getConnection();
+		
 		
 		DefaultTableModel modelCategory = new DefaultTableModel(new String[]{"ID", "Kategorie"}, 0) {
 			
@@ -1692,13 +1695,13 @@ public static void refreshBill2() {
 		
 		MainMenu.tblCategory.setModel(modelCategory);
 	
-		closeConnection();
+		
 	}
 
 	
 	public static void refreshChange() {
 
-		getConnection();
+		
 		
 		DefaultTableModel modelOffeneAuftraege = new DefaultTableModel(new String[]{"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"}, 0) {
 			
@@ -1732,7 +1735,7 @@ public static void refreshBill2() {
 			MainMenu.tblOffeneAuftraege.setModel(modelOffeneAuftraege);
 		
 		
-			closeConnection();
+			
 			   
 			}
 		
@@ -2306,7 +2309,7 @@ public static void refreshBill2() {
 	  
 	  public static ArrayList<Integer> getIDParents(int id_TKategorie) throws SQLException {
 			
-		  getConnection();
+		  
 			
 		    String query = "Select ID_TKategorie as T FROM TKategorie WHERE ID_Parent = ?; "; 
 			
@@ -2323,7 +2326,7 @@ public static void refreshBill2() {
 				list.add(rs.getInt("T")); // int -> Integer ? 
 								
 			}
-			closeConnection();
+			
 			return list; 
 			
 		}

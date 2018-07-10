@@ -104,7 +104,7 @@ public class NewBill extends JFrame {
 		comboBoxAnsprechpartner = new JComboBox(personName);
 		comboBoxAnsprechpartner.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DataBase.getConnection();
+				
 				
 				
 				
@@ -141,7 +141,7 @@ public class NewBill extends JFrame {
 			        comboBoxAuftraege.setModel((ComboBoxModel) new DefaultComboBoxModel(rows.toArray()));
 			
 				
-			        DataBase.closeConnection();
+			     
 			}
 		});
 		comboBoxAnsprechpartner.setBounds(124, 103, 86, 20);
@@ -190,7 +190,7 @@ public class NewBill extends JFrame {
 		btnErstellen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-				DataBase.getConnection();
+				
 				
 				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
 				int indexAuftraggeber = -1;
@@ -227,8 +227,8 @@ public class NewBill extends JFrame {
 				
 			
 				dispose();
-				} finally {
-					DataBase.closeConnection();
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, ex);
 				}
 			}
 		});

@@ -59,7 +59,7 @@ public class OrderApprove extends JFrame {
 	 */
 	public OrderApprove() {
 		
-		DataBase.getConnection();
+		
 		
 		int colnr  = MainMenu.tblOffeneAuftraege.getSelectedRow();
 		
@@ -122,7 +122,7 @@ public class OrderApprove extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				try{
-				DataBase.getConnection();
+				
 				
 				BauteileAuftragsabwicklung.process(Integer.parseInt(idAenderung), Integer.parseInt(amount), txtPrice.getText());
 			
@@ -133,7 +133,7 @@ public class OrderApprove extends JFrame {
 				}finally {
 					DataBase.refreshChange();
 					DataBase.refreshOrder();
-					DataBase.closeConnection();
+					
 				}
 			}
 		});
@@ -223,6 +223,6 @@ public class OrderApprove extends JFrame {
 		contentPane.add(txtPrice);
 		txtPrice.setColumns(10);
 		
-		DataBase.closeConnection();
+		
 	}
 }

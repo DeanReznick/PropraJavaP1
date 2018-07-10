@@ -100,7 +100,7 @@ public class UpdateComponent extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				try{
-				DataBase.getConnection();
+				
 				DefaultTableModel model = (DefaultTableModel) MainMenu.tblComponents.getModel();
 				//get selected row index
 				int selectedRowIndex = MainMenu.tblComponents.getSelectedRow();
@@ -123,7 +123,7 @@ public class UpdateComponent extends JFrame {
 					if(selectedRowIndexCategory>=0) {DataBase.refreshComponentCategory();}
 					
 					
-					DataBase.closeConnection(); 
+					
 					
 				
 					
@@ -249,6 +249,6 @@ public class UpdateComponent extends JFrame {
 		lblPreis.setBounds(10, 233, 46, 14);
 		contentPane.add(lblPreis);
 		
-		DataBase.closeConnection();
+		
 	}
 }

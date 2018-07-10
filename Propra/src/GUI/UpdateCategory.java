@@ -64,11 +64,11 @@ public class UpdateCategory extends JFrame {
 		JButton btnAendern = new JButton("Aendern");
 		btnAendern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DataBase.getConnection();
+				
 				String name = txtCategory.getText();
 				BauteileAuftragsabwicklung.renameKategrie(id, name);
 				DataBase.refreshCategory();
-				DataBase.closeConnection();
+				
 				dispose();
 			}
 		});

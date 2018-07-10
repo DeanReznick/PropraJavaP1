@@ -69,7 +69,7 @@ public class AddCategory extends JFrame {
 		btnKategorieErstellen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				DataBase.getConnection();
+				
 				int index = comboBoxParent.getSelectedIndex(); 
 				
 				CategoryObjektRAM obj = DataBase.categories.get(index); 
@@ -83,7 +83,7 @@ public class AddCategory extends JFrame {
 				
 				
 				
-				DataBase.closeConnection();
+				
 				
 				
 			}

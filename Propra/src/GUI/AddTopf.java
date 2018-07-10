@@ -91,14 +91,14 @@ public class AddTopf extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				try{
-				DataBase.getConnection();
+				
 				Finanzverwaltung.addTopf(Integer.parseInt(comboBoxArt.getSelectedItem().toString()), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
 				dispose();
 				}catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Soll und Ist müssen Zahlen sein!");
 				} finally {
 					DataBase.refreshTopf();
-					DataBase.closeConnection();
+					
 					
 			}
 				

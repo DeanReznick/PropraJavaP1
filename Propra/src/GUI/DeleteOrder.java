@@ -40,7 +40,7 @@ public class DeleteOrder extends JFrame {
 	 */
 	public DeleteOrder() {
 		setTitle("Auftrag löschen");
-		DataBase.getConnection();
+	
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -62,7 +62,7 @@ public class DeleteOrder extends JFrame {
 				PersonenFertigungsverwaltung.deleteOrder(id);;
 				
 				model.removeRow(selectedRowIndex);
-				DataBase.closeConnection();
+			
 				dispose();
 			}
 		});

@@ -48,23 +48,31 @@ import javax.swing.JTree;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class MainMenu extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public static void main (String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainMenu frame = new MainMenu();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main (String[] args) {
+//		
+//		DataBase.getConnection();
+//		
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					
+//					MainMenu frame = new MainMenu();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//		
+//		DataBase.closeConnection();
+//	}
 	
 	private JPanel contentPane;
 	public static JTextField txtSearchPerson;
@@ -106,7 +114,7 @@ public class MainMenu extends JFrame {
 	public static JScrollPane scrollPaneComponent;
 	private boolean hdResolution;
 	public static JTree treeCategory;
-	private JTable tblRechn;
+	public static JTable tblRechn;
 	private JTextField txtKasseNr;
 	private JTextField txtKasseSoll;
 	private JTextField txtKasseIst;
@@ -135,7 +143,13 @@ public class MainMenu extends JFrame {
 
 
 	public MainMenu() throws SQLException {
-		DataBase.getConnection();
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				DataBase.closeConnection();
+			}
+		});
+		
 		setTitle("eLab");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -179,6 +193,13 @@ public class MainMenu extends JFrame {
 		contentPane.add(lblEingeloggtAls, gbc_lblEingeloggtAls);
 		
 		JButton btnAusloggen = new JButton("ausloggen");
+		btnAusloggen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				GUILogin x = new GUILogin();
+				x.setVisible(true);
+			}
+		});
 		btnAusloggen.setBackground(Color.RED);
 		GridBagConstraints gbc_btnAusloggen = new GridBagConstraints();
 		gbc_btnAusloggen.insets = new Insets(0, 0, 5, 0);
@@ -377,7 +398,7 @@ public class MainMenu extends JFrame {
 		    model.addRow(new Object[]{idPerson, name, vorname, mail});
 		}
 		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null, "Fehler im Programm!");
+			JOptionPane.showMessageDialog(null, ex);
 		}
 		
 		tblPersonen.setModel(model);
@@ -405,7 +426,7 @@ public class MainMenu extends JFrame {
 		tblAuftraege.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				DataBase.getConnection();
+				
 				int colnr  = MainMenu.tblAuftraege.getSelectedRow();
 				String id = MainMenu.tblAuftraege.getModel().getValueAt(colnr, 0).toString();
 				
@@ -426,7 +447,6 @@ public class MainMenu extends JFrame {
 				txtDetailStatusOrder.setText(DataBase.getStatusBeiAuftragId(id));
 				txtDetailRolleOrder.setText(DataBase.getRolleByOrderId(id));
 
-				DataBase.closeConnection();
 			}
 		});
 		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "Status"}, 0) {
@@ -469,7 +489,7 @@ public class MainMenu extends JFrame {
 		    modelAuftrag.addRow(new Object[]{idAuftrag, titel, status});
 		}
 			} catch (SQLException ex) {
-				JOptionPane.showMessageDialog(null, "Fehler im Programm!");
+				JOptionPane.showMessageDialog(null, ex);
 			}
 		
 		tblAuftraege.setModel(modelAuftrag);
@@ -862,7 +882,6 @@ public class MainMenu extends JFrame {
 		btnSaveOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
-//					DataBase.getConnection();
 					
 					int colId = 0;
 					int colTitel = 1;
@@ -947,7 +966,7 @@ public class MainMenu extends JFrame {
 							
 						DataBase.refreshOrder();
 						DataBase.refreshOrderBill();
-//						DataBase.closeConnection();
+
 						
 						
 					} catch (ArrayIndexOutOfBoundsException ex) {
@@ -968,7 +987,6 @@ public class MainMenu extends JFrame {
 		btnSavePerson.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					DataBase.getConnection();
 					int colnr  = MainMenu.tblPersonen.getSelectedRow();
 					
 					String personName = MainMenu.tblPersonen.getModel().getValueAt(colnr, 1).toString();
@@ -1059,7 +1077,7 @@ public class MainMenu extends JFrame {
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
 				} finally {
-					DataBase.closeConnection();
+					
 				}
 			}
 		});
@@ -1468,7 +1486,6 @@ public class MainMenu extends JFrame {
 				btnSaveComponent.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						try {
-							DataBase.getConnection();
 							int colnr  = MainMenu.tblComponents.getSelectedRow();
 														
 							ComponentObjektRAM clicked = new ComponentObjektRAM();
@@ -1511,7 +1528,7 @@ public class MainMenu extends JFrame {
 							txtDetailLocationComponent.setText("");
 							txtDetailPriceComponent.setText("");
 							
-							DataBase.closeConnection();
+							
 						} catch (ArrayIndexOutOfBoundsException ex) {
 							JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");							
 						}
@@ -1531,7 +1548,7 @@ public class MainMenu extends JFrame {
 		JTabbedPane tabbedPaneFinanz = new JTabbedPane(JTabbedPane.TOP);
 		panelFinanz.add(tabbedPaneFinanz);
 		
-		DataBase.getConnection();
+		
 		String[] column_headers_kasse = {"Art", "Soll", "Ist"};
 		String[][] data_kasse = new String[1000][11];
 		DefaultTableModel modelKasse = new DefaultTableModel(new String[]{"ID_Kasse", "Art", "Nummer", "Soll", "Ist"}, 0) {
@@ -1557,7 +1574,7 @@ public class MainMenu extends JFrame {
 		    modelKasse.addRow(new Object[]{a1, b1,c1,d1,e1});
 		}
 		
-//		DataBase.closeConnection();
+
 		JPanel panelTopf = new JPanel();
 		tabbedPaneFinanz.addTab("T\u00F6pfe & Kassen", null, panelTopf, null);
 		GridBagLayout gbl_panelTopf = new GridBagLayout();
@@ -1646,7 +1663,7 @@ public class MainMenu extends JFrame {
 			
 			public void mouseClicked(MouseEvent arg0) {
 				
-				DataBase.getConnection();
+				
 				int colnr  = MainMenu.tblKasse.getSelectedRow();
 				
 				
@@ -1732,7 +1749,7 @@ public class MainMenu extends JFrame {
 				
 				
 				
-				DataBase.closeConnection();
+				
 			}
 		});
 		
@@ -1791,7 +1808,7 @@ public class MainMenu extends JFrame {
 				txtTopfSoll.setText(oldSoll);
 				txtTopfIst.setText(oldIst);
 				comboBoxKasse.setSelectedItem(oldIdKasse);
-				DataBase.getConnection();
+				
 				
 				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
 					
@@ -1865,7 +1882,7 @@ public class MainMenu extends JFrame {
 				
 				
 				
-				DataBase.closeConnection();
+				
 			}
 		});
 		DefaultTableModel modelTopf = new DefaultTableModel(new String[]{"ID_Topf", "ID_Kasse", "Soll", "Ist"}, 0) {
@@ -2105,13 +2122,13 @@ public class MainMenu extends JFrame {
 		btnSpeichern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				DataBase.getConnection();
+				
 				String idTopf2 = MainMenu.tblTopf.getModel().getValueAt(MainMenu.tblTopf.getSelectedRow(), 0).toString();
 		
 				System.out.println(idTopf2);
 				Finanzverwaltung.alterTopf(Integer.parseInt(idTopf2), Integer.parseInt(comboBoxKasse.getSelectedItem().toString()), Integer.parseInt(txtTopfSoll.getText()), Integer.parseInt(txtTopfIst.getText()));
 				DataBase.refreshTopf();
-				DataBase.closeConnection();
+				
 			}
 		});
 		GridBagConstraints gbc_btnSpeichern = new GridBagConstraints();
@@ -2275,7 +2292,7 @@ DefaultTableModel modelRechnungB = new DefaultTableModel(new String[]{"ID_BRechn
 			public void mouseClicked(MouseEvent arg0) {
 				System.out.println("hey");
 				
-				DataBase.getConnection();
+				
 				int colnr  = MainMenu.tblRechnA.getSelectedRow();
 				String id = MainMenu.tblRechnA.getModel().getValueAt(colnr, 0).toString();
 				String oldName = MainMenu.tblRechnA.getModel().getValueAt(colnr, 1).toString();
@@ -2660,6 +2677,6 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		
 //		String[] column_headers_orders = {"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"};
 		
-		DataBase.closeConnection();
+		
 	}
 }

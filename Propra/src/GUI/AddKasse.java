@@ -93,14 +93,14 @@ public class AddKasse extends JFrame {
 		btnHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					DataBase.getConnection();
+					
 					Finanzverwaltung.addKasse(comboBoxArt.getSelectedItem().toString(), txtNummer.getText(), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
 					dispose();
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Nummer, Soll und Ist müssen Zahlen sein!");
 				} finally {
 				DataBase.refreshKasse();
-				DataBase.closeConnection();
+				
 			}
 			}
 		});

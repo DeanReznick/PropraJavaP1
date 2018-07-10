@@ -55,7 +55,7 @@ public class UpdateOrder extends JFrame {
 	public UpdateOrder() throws SQLException {
 		setTitle("Auftragsdaten \u00E4ndern");
 		Statement stmt = null;
-		DataBase.getConnection();
+		
 		
 		int colId = 0;
 		int colTitel = 1;
@@ -151,7 +151,7 @@ public class UpdateOrder extends JFrame {
 		JButton btnSave = new JButton("Speichern");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DataBase.getConnection();
+				
 				try{
 				
 				
@@ -191,7 +191,7 @@ public class UpdateOrder extends JFrame {
 					
 				DataBase.refreshOrder();
 				DataBase.refreshOrderBill();
-				DataBase.closeConnection();
+			
 				dispose();
 				}
 				

@@ -41,7 +41,7 @@ public class DeleteComponent extends JFrame {
 	 */
 	public DeleteComponent() {
 		setTitle("Bauteil löschen");
-		DataBase.getConnection();
+		
 		setBounds(100, 100, 400, 120);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -65,7 +65,7 @@ public class DeleteComponent extends JFrame {
 				BauteileAuftragsabwicklung.deleteBauteil(id);
 				
 				model.removeRow(selectedRowIndex);
-				DataBase.closeConnection();
+				
 				dispose();
 			}
 		});
