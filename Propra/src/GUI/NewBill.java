@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
 import Data.Finanzverwaltung;
+import Data.PersonObjektRAM;
 import Data.Rechnungsabwicklung;
 import Exceptions.InvalidArgumentsException;
 import Exceptions.Manager;
@@ -28,6 +29,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class NewBill extends JFrame {
 
@@ -61,22 +64,37 @@ public class NewBill extends JFrame {
 	 */
 	public NewBill() {
 		setTitle("Neue Rechnung erstellen");
+		DataBase.loadPeopleToRAM();
 		
-		int count = MainMenu.tblPersonen.getRowCount();
-		String[] list = new String[count];
-		String[] personName = new String[count];
-		
-		
-		
-		for(int row=0; row < MainMenu.tblPersonen.getRowCount(); row++) {
-		 String id = MainMenu.tblPersonen.getModel().getValueAt(row, 0).toString();
-		 String lastName = MainMenu.tblPersonen.getModel().getValueAt(row, 1).toString();
-		 String firstName = MainMenu.tblPersonen.getModel().getValueAt(row, 2).toString();
-		 String fullName = firstName + " " + lastName;
-		 list[row] = id;
-		 personName[row] = fullName;
-		
+		ArrayList<Integer> count = new ArrayList<Integer>();
+		for (PersonObjektRAM p : DataBase.people) {
+			count.add(p.getID_Person());
 		}
+		
+		String[] personName = new String[count.size()];
+		int[] idList = new int[count.size()];
+		int i = 0;
+		
+		for (PersonObjektRAM p : DataBase.people) {
+			personName[i] = p.getVorname() + " " + p.getName();
+			idList[i] = p.getID_Person();
+			i++;
+		}
+//		int count = MainMenu.tblPersonen.getRowCount();
+//		String[] list = new String[count];
+//		String[] personName = new String[count];
+//		
+//		
+//		
+//		for(int row=0; row < MainMenu.tblPersonen.getRowCount(); row++) {
+//		 String id = MainMenu.tblPersonen.getModel().getValueAt(row, 0).toString();
+//		 String lastName = MainMenu.tblPersonen.getModel().getValueAt(row, 1).toString();
+//		 String firstName = MainMenu.tblPersonen.getModel().getValueAt(row, 2).toString();
+//		 String fullName = firstName + " " + lastName;
+//		 list[row] = id;
+//		 personName[row] = fullName;
+//		
+//		}
 		
 		
 		
@@ -91,59 +109,109 @@ public class NewBill extends JFrame {
 		contentPane.add(txtRechnungsName);
 		txtRechnungsName.setColumns(10);
 		
+		JComboBox comboBoxAuftraege = new JComboBox();
+		comboBoxAuftraege.setBounds(124, 227, 86, 20);
+		contentPane.add(comboBoxAuftraege);
+		
 		comboBoxAuftraggeber = new JComboBox(personName);
+		comboBoxAuftraggeber.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
+				int index = 0;
+				
+				for (int i = 0; i<personName.length; i++) {
+					if (auftraggeber_name.equals(personName[i])) {
+						index = i;
+					}
+				}
+				int auftraggeber_id = idList[index];
+				
+				System.out.println(auftraggeber_name);
+				System.out.println(auftraggeber_id);
+				Statement stmtOrderBills = null;
+//				String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag LEFT JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag WHERE Auftrag.ID_Auftrag =" + auftraggeber_id + ";";
+				String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = " + auftraggeber_id + ";";
+				ResultSet rsOrdersBills = null;
+				
+				try {
+					stmtOrderBills = DataBase.c.createStatement();
+					rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
+				} catch (SQLException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
+				
+				
+				  ArrayList<Integer> ids = new ArrayList<Integer>();
+//				  ArrayList<String> orderNames = new ArrayList<String>();
+			        try {
+						while(rsOrdersBills.next()){
+							int x = rsOrdersBills.getInt("ID_Auftrag");
+//							String y = rsOrdersBills.getString("Name");
+						    ids.add(x);
+//						    orderNames.add(y);
+						}
+					} catch (SQLException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+			        for (int i = 0; i < ids.size(); i++) {
+			        	comboBoxAuftraege.addItem(ids.get(i));
+			        }
+			        
+			}
+		});
 		comboBoxAuftraggeber.setBounds(124, 72, 86, 20);
 		contentPane.add(comboBoxAuftraggeber);
 		
-		JComboBox comboBoxAuftraege = new JComboBox();
-		comboBoxAuftraege.setBounds(124, 227, 28, 20);
-		contentPane.add(comboBoxAuftraege);
+		
 		
 		
 		
 		comboBoxAnsprechpartner = new JComboBox(personName);
-		comboBoxAnsprechpartner.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				
-				
-				
-				
-				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
-				String[] parts = auftraggeber_name.split(" ");
-				String name = parts[0]; 
-				String surname = parts[1];
-				
-				int auftraggeber_id = DataBase.getIdPersonByNameSurname(name, surname);
-				System.out.println(name);
-				System.out.println(auftraggeber_id);
-				Statement stmtOrderBills = null;
-				String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = 20";
-				ResultSet rsOrdersBills = null;
-				
-				try {
-					rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
-				  ArrayList rows = new ArrayList();
-			        try {
-						while(rsOrdersBills.next()){
-							String x = rsOrdersBills.getString("ID_Auftrag");
-						    rows.add(x);
-						}
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			        comboBoxAuftraege.setModel((ComboBoxModel) new DefaultComboBoxModel(rows.toArray()));
-			
-				
-			     
-			}
-		});
+		
+//		comboBoxAnsprechpartner.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent arg0) {
+//				
+//				
+//				
+//				
+//				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
+//				String[] parts = auftraggeber_name.split(" ");
+//				String name = parts[0]; 
+//				String surname = parts[1];
+//				
+//				int auftraggeber_id = DataBase.getIdPersonByNameSurname(name, surname);
+//				System.out.println(name);
+//				System.out.println(auftraggeber_id);
+//				Statement stmtOrderBills = null;
+//				String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = 20";
+//				ResultSet rsOrdersBills = null;
+//				
+//				try {
+//					rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
+//				} catch (SQLException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				
+//				
+//				  ArrayList rows = new ArrayList();
+//			        try {
+//						while(rsOrdersBills.next()){
+//							String x = rsOrdersBills.getString("ID_Auftrag");
+//						    rows.add(x);
+//						}
+//					} catch (SQLException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//			        comboBoxAuftraege.setModel((ComboBoxModel) new DefaultComboBoxModel(rows.toArray()));
+//			
+//				
+//			     
+//			}
+//		});
 		comboBoxAnsprechpartner.setBounds(124, 103, 86, 20);
 		contentPane.add(comboBoxAnsprechpartner);
 		
@@ -200,7 +268,7 @@ public class NewBill extends JFrame {
 				        break;
 				    }
 				}
-				int auftraggeber_id = Integer.parseInt(list[indexAuftraggeber]);
+				int auftraggeber_id = idList[indexAuftraggeber];
 				
 				
 				
@@ -214,7 +282,7 @@ public class NewBill extends JFrame {
 				        break;
 				    }
 				}
-				int ansprechpartner_id = Integer.parseInt(list[indexAnsprechpartner]);
+				int ansprechpartner_id = idList[indexAnsprechpartner];
 				
 				
 				String rechnungsname = txtRechnungsName.getText();

@@ -185,7 +185,7 @@ public class MainMenu extends JFrame {
 //		}
 		contentPane.setLayout(gbl_contentPane);
 		
-		JLabel lblEingeloggtAls = new JLabel("eingeloggt, als:" + GUILogin.vorname_signedIn + " " + GUILogin.name_signedIn);
+		JLabel lblEingeloggtAls = new JLabel("eingeloggt, als: " + GUILogin.vorname_signedIn + " " + GUILogin.name_signedIn);
 		GridBagConstraints gbc_lblEingeloggtAls = new GridBagConstraints();
 		gbc_lblEingeloggtAls.insets = new Insets(0, 0, 5, 5);
 		gbc_lblEingeloggtAls.gridx = 2;
