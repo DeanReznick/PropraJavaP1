@@ -1177,61 +1177,61 @@ public static void refreshBill2() {
 		
 	}
 	
-	public static void refreshOrderBill() {
-
-		
-		
-		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
-			
-			@Override
-			public boolean isCellEditable(int row, int column) {
-					return false;
-				}
-			};
-		
-		Statement stmt = null;
-		try {
-			stmt = DataBase.c.createStatement();
-		} catch (SQLException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-
-		String sql = "SELECT * FROM Auftrag WHERE ID_Rechnung is null;";
-		ResultSet rs = null;
-		try {
-			rs = stmt.executeQuery(sql);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			while(rs.next())
-			{
-				String a1 = rs.getString("ID_Auftrag");
-			    String b1 = rs.getString("Titel");
-			    String c1 = rs.getString("AF");
-			    String d1 = rs.getString("Dateiname");
-			    String e1 = rs.getString("Dateiort");
-			    String f1 = rs.getString("PK");
-			    String g1 = rs.getString("RK");
-			    String h1 = DataBase.getStatusBeiAuftragId(a1);
-			    String j1 = DataBase.getRolleByOrderId(a1);
-			    
-			    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
-			   
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		MainMenu.tblAuftraegeRechnung.setModel(modelAuftrag);
-	
-		
-	}
+//	public static void refreshOrderBill() {
+//
+//		
+//		
+//		DefaultTableModel modelAuftrag = new DefaultTableModel(new String[]{"ID_Auftrag", "Titel", "AF", "Dateiname", "Dateiort", "PK", "RK", "ID_Status", "Rolle"}, 0) {
+//			
+//			@Override
+//			public boolean isCellEditable(int row, int column) {
+//					return false;
+//				}
+//			};
+//		
+//		Statement stmt = null;
+//		try {
+//			stmt = DataBase.c.createStatement();
+//		} catch (SQLException e2) {
+//			// TODO Auto-generated catch block
+//			e2.printStackTrace();
+//		}
+//
+//		String sql = "SELECT * FROM Auftrag WHERE ID_Rechnung is null;";
+//		ResultSet rs = null;
+//		try {
+//			rs = stmt.executeQuery(sql);
+//		} catch (SQLException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		
+//		try {
+//			while(rs.next())
+//			{
+//				String a1 = rs.getString("ID_Auftrag");
+//			    String b1 = rs.getString("Titel");
+//			    String c1 = rs.getString("AF");
+//			    String d1 = rs.getString("Dateiname");
+//			    String e1 = rs.getString("Dateiort");
+//			    String f1 = rs.getString("PK");
+//			    String g1 = rs.getString("RK");
+//			    String h1 = DataBase.getStatusBeiAuftragId(a1);
+//			    String j1 = DataBase.getRolleByOrderId(a1);
+//			    
+//			    modelAuftrag.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1, h1, j1});
+//			   
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		
+//		MainMenu.tblAuftraegeRechnung.setModel(modelAuftrag);
+//	
+//		
+//	}
 	
 	public static void refreshOrdersInBill() {
 		

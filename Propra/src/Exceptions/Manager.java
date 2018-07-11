@@ -137,17 +137,22 @@ public class Manager {
 	}
 	
 	
-	public static void checkStandardOrder(String header, String af, String filename, String repository, String pk, String rk, String name, String surname, String job) throws InvalidArgumentsException
+	public static void checkStandardOrder(String header, String af, String filename, String repository, String pk, String rk, String name, String job) throws InvalidArgumentsException
 	{
-		if (header.length() == 0 || af.length() == 0 || filename.length() == 0 || repository.length() == 0 || pk.length() == 0 || rk.length() == 0 || name.length() == 0 || surname.length() == 0 || job.length() == 0) {
+		System.out.println(name);
+		String[] parts = name.split(" ");
+		String firstname = parts[0];
+		System.out.println(firstname);
+		String lastname = parts[1];
+		System.out.println(lastname);
+		if (header.length() == 0 || af.length() == 0 || filename.length() == 0 || repository.length() == 0 || pk.length() == 0 || rk.length() == 0 || job.length() == 0) {
 			NewOrder.txtHeader.setBackground(Color.RED);
 			NewOrder.txtAf.setBackground(Color.RED);
 			NewOrder.txtFilename.setBackground(Color.RED);
 			NewOrder.txtRepository.setBackground(Color.RED);
 			NewOrder.txtPk.setBackground(Color.RED);
 			NewOrder.txtRk.setBackground(Color.RED);
-			NewOrder.txtName.setBackground(Color.RED);
-			NewOrder.txtSurname.setBackground(Color.RED);
+			NewOrder.comboBoxName.setBackground(Color.RED);
 			NewOrder.txtJob.setBackground(Color.RED);
 		
 			throw new InvalidArgumentsException("Bitte füllen Sie alle Felder aus.");
@@ -161,13 +166,12 @@ public class Manager {
 		
 		
 		int id = -1;
-	    id = DataBase.getIdPersonByNameSurname(name, surname);
+	    id = DataBase.getIdPersonByNameSurname(lastname, firstname);
 		
 		
 		if(id == -1) {
-			NewOrder.txtName.setBackground(Color.RED);
-			NewOrder.txtSurname.setBackground(Color.RED);
-			throw new InvalidArgumentsException("Person " + name + ", " + surname + " existiert nicht!");
+			NewOrder.comboBoxName.setBackground(Color.RED);
+			throw new InvalidArgumentsException("Person " + firstname + ", " + lastname + " existiert nicht!");
 			
 			
 		}

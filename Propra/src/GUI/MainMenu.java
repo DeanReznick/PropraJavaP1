@@ -966,7 +966,7 @@ public class MainMenu extends JFrame {
 						
 							
 						DataBase.refreshOrder();
-						DataBase.refreshOrderBill();
+//						DataBase.refreshOrderBill();
 
 						
 						
@@ -1318,8 +1318,12 @@ public class MainMenu extends JFrame {
 				JButton btnKategorieAendern = new JButton("Kategorie Aendern");
 				btnKategorieAendern.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						try {
 						AlterCategory x = new AlterCategory();
 						x.setVisible(true);
+						} catch (NullPointerException ex) {
+							JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kategorie aus!");
+						}
 					}
 				});
 				GridBagConstraints gbc_btnKategorieAendern = new GridBagConstraints();

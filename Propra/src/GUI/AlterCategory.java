@@ -40,20 +40,34 @@ public class AlterCategory extends JFrame {
 		String[] categoryNames = new String[DataBase.categories.size()];
 		int[] categoryIds = new int[DataBase.categories.size()];
 		int[] categoryParentId = new int[DataBase.categories.size()];
-		String[] parentNames = new String[DataBase.categories.size()];
+		String parentName = "";
+		int parentId = 0;
+//		String[] parentNames = new String[DataBase.categories.size()];
 		
 		for (int i = 0; i < DataBase.categories.size(); i++) {
 			categoryNames[i] = DataBase.categories.get(i).getName();
 			categoryIds[i] = DataBase.categories.get(i).getIdCategory();
 			categoryParentId[i] = DataBase.categories.get(i).getIdParent();
-			System.out.println(categoryNames[i]);
-			System.out.println(categoryIds[i]);
-			System.out.println(categoryParentId[i]);
 		}
 
-		for (int i = 0; i < parentNames.length; i++) {
-			parentNames[i] = DataBase.categories.get(i).getName();
+		for (CategoryObjektRAM c : DataBase.categories) {
+			if (c.getName().equals(node.toString())) {
+				parentId = c.getIdParent();
+			}
 		}
+		
+		for (CategoryObjektRAM c : DataBase.categories) {
+			if (parentId == c.getIdCategory()) {
+				parentName = c.getName();
+			}
+		}
+		
+//		for (int i = 0; i < parentNames.length; i++) {
+//			System.out.println(categoryNames[i]);
+//			System.out.println(categoryIds[i]);
+//			System.out.println(categoryParentId[i]);
+//			System.out.println(parentNames[i]);
+//		}
 		
 			
 		setTitle("Kategorie bearbeiten");
@@ -77,16 +91,17 @@ public class AlterCategory extends JFrame {
 		txtName.setColumns(10);
 		txtName.setText(node.toString());
 		
-		JComboBox comboBoxParent = new JComboBox(parentNames);
+		JComboBox comboBoxParent = new JComboBox(categoryNames);
 		comboBoxParent.setBounds(224, 33, 200, 20);
 		contentPane.add(comboBoxParent);
 		
 		for (int i = 0; i< categoryNames.length; i++) {
 			if (categoryNames[i].equals(node.toString())) {
 				txtName.setText(categoryNames[i]);
-				comboBoxParent.setSelectedItem(parentNames[i]);
+				comboBoxParent.setSelectedItem(parentName);
 			}
 		}
+		
 		
 		JButton btnSpeichern = new JButton("Speichern");
 		btnSpeichern.addActionListener(new ActionListener() {
@@ -102,7 +117,7 @@ public class AlterCategory extends JFrame {
 				}
 				
 				for (int i = 0; i < DataBase.categories.size(); i++) {
-					if (parentNames[i].equals(comboBoxParent.getSelectedItem())) {
+					if (categoryNames[i].equals(comboBoxParent.getSelectedItem())) {
 						parentId = categoryIds[i];
 					}
 				}
