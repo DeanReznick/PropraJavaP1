@@ -71,6 +71,8 @@ public class NewBill extends JFrame {
 			count.add(p.getID_Person());
 		}
 		
+	
+		
 		String[] personName = new String[count.size()];
 		int[] idList = new int[count.size()];
 		int i = 0;
@@ -96,7 +98,8 @@ public class NewBill extends JFrame {
 //		
 //		}
 		
-		
+		System.out.println("idList länge" +idList.length);
+		System.out.println("personen länge:" +personName.length);
 		
 		setBounds(100, 100, 267, 381);
 		contentPane = new JPanel();
@@ -119,6 +122,8 @@ public class NewBill extends JFrame {
 				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
 				int index = 0;
 				
+				ArrayList<Integer> ids = new ArrayList<Integer>();
+						
 				for (int i = 0; i<personName.length; i++) {
 					if (auftraggeber_name.equals(personName[i])) {
 						index = i;
@@ -126,8 +131,13 @@ public class NewBill extends JFrame {
 				}
 				int auftraggeber_id = idList[index];
 				
-				System.out.println(auftraggeber_name);
-				System.out.println(auftraggeber_id);
+				
+				for (int i = 0; i<personName.length; i++) {
+				System.out.println(personName[i]);
+				}
+				
+				//System.out.println(auftraggeber_name);
+				//System.out.println(auftraggeber_id);
 				Statement stmtOrderBills = null;
 //				String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag LEFT JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag WHERE Auftrag.ID_Auftrag =" + auftraggeber_id + ";";
 				String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = " + auftraggeber_id + ";";
@@ -142,7 +152,7 @@ public class NewBill extends JFrame {
 				}
 				
 				
-				  ArrayList<Integer> ids = new ArrayList<Integer>();
+				  
 //				  ArrayList<String> orderNames = new ArrayList<String>();
 			        try {
 						while(rsOrdersBills.next()){
@@ -155,9 +165,19 @@ public class NewBill extends JFrame {
 						// TODO Auto-generated catch block
 						ex.printStackTrace();
 					}
+			        
+			        comboBoxAuftraege.removeAllItems();
+			        
+			        System.out.println("size of the combobox after remove all" + comboBoxAuftraege.getComponentCount());
+			        System.out.println("size of ids" +ids.size());
 			        for (int i = 0; i < ids.size(); i++) {
+			        	
+			        
 			        	comboBoxAuftraege.addItem(ids.get(i));
+			      
 			        }
+			        System.out.println("size of the combobox after adding" + comboBoxAuftraege.getComponentCount());
+			       
 			        
 			}
 		});
@@ -170,48 +190,7 @@ public class NewBill extends JFrame {
 		
 		comboBoxAnsprechpartner = new JComboBox(personName);
 		
-//		comboBoxAnsprechpartner.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent arg0) {
-//				
-//				
-//				
-//				
-//				String auftraggeber_name = comboBoxAuftraggeber.getSelectedItem().toString();
-//				String[] parts = auftraggeber_name.split(" ");
-//				String name = parts[0]; 
-//				String surname = parts[1];
-//				
-//				int auftraggeber_id = DataBase.getIdPersonByNameSurname(name, surname);
-//				System.out.println(name);
-//				System.out.println(auftraggeber_id);
-//				Statement stmtOrderBills = null;
-//				String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = 20";
-//				ResultSet rsOrdersBills = null;
-//				
-//				try {
-//					rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
-//				} catch (SQLException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				
-//				
-//				  ArrayList rows = new ArrayList();
-//			        try {
-//						while(rsOrdersBills.next()){
-//							String x = rsOrdersBills.getString("ID_Auftrag");
-//						    rows.add(x);
-//						}
-//					} catch (SQLException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//			        comboBoxAuftraege.setModel((ComboBoxModel) new DefaultComboBoxModel(rows.toArray()));
-//			
-//				
-//			     
-//			}
-//		});
+
 		comboBoxAnsprechpartner.setBounds(124, 103, 86, 20);
 		contentPane.add(comboBoxAnsprechpartner);
 		
