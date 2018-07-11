@@ -1627,6 +1627,12 @@ public class MainMenu extends JFrame {
 		String[] comboBoxValues = {"Barkasse", "Konto", "Kostenstelle"};
 		
 		JButton btnTopfErstellen = new JButton("Topf Erstellen");
+		btnTopfErstellen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddTopf x = new AddTopf();
+				x.setVisible(true);
+			}
+		});
 		GridBagConstraints gbc_btnTopfErstellen = new GridBagConstraints();
 		gbc_btnTopfErstellen.insets = new Insets(0, 0, 5, 5);
 		gbc_btnTopfErstellen.gridx = 4;
@@ -1634,6 +1640,17 @@ public class MainMenu extends JFrame {
 		panelTopf.add(btnTopfErstellen, gbc_btnTopfErstellen);
 		
 		JButton btnTopfLoeschen = new JButton("Topf Loeschen");
+		btnTopfLoeschen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					DeleteTopf x = new DeleteTopf();
+					x.setVisible(true);
+				}catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus.");
+				}
+			}
+		});
 		GridBagConstraints gbc_btnTopfLoeschen = new GridBagConstraints();
 		gbc_btnTopfLoeschen.insets = new Insets(0, 0, 5, 5);
 		gbc_btnTopfLoeschen.gridx = 5;
@@ -1967,6 +1984,12 @@ public class MainMenu extends JFrame {
 		scrollPane_2.setViewportView(tblRechn);
 		
 		JButton btnKasseErstellen = new JButton("Kasse Erstellen");
+		btnKasseErstellen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddKasse x = new AddKasse();
+				x.setVisible(true);
+			}
+		});
 		GridBagConstraints gbc_btnKasseErstellen = new GridBagConstraints();
 		gbc_btnKasseErstellen.insets = new Insets(0, 0, 5, 5);
 		gbc_btnKasseErstellen.gridx = 2;
@@ -1974,6 +1997,19 @@ public class MainMenu extends JFrame {
 		panelTopf.add(btnKasseErstellen, gbc_btnKasseErstellen);
 		
 		JButton btnKasseLoeschen = new JButton("Kasse Loeschen");
+		btnKasseLoeschen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel) tblKasse.getModel();
+				//get selected row index
+				int selectedRowIndex = tblKasse.getSelectedRow();
+				try {
+				DeleteKasse x = new DeleteKasse();
+				x.setVisible(true);
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
+				}
+			}
+		});
 		GridBagConstraints gbc_btnKasseLoeschen = new GridBagConstraints();
 		gbc_btnKasseLoeschen.insets = new Insets(0, 0, 5, 5);
 		gbc_btnKasseLoeschen.gridx = 3;
