@@ -4,11 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -16,10 +18,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
 import Data.PersonenFertigungsverwaltung;
+import Data.TreeBauteile;
+import Data.TreeErstellen;
 
 public class DeleteCategory extends JFrame {
 
 	private JPanel contentPane;
+	public static JTree actualTreeCategory;
 
 	
 	public DeleteCategory() {
@@ -39,13 +44,37 @@ public class DeleteCategory extends JFrame {
 		btnDeleteCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-						MainMenu.treeCategory.getLastSelectedPathComponent();
+					MainMenu.treeCategory.getLastSelectedPathComponent();
 				
-				node.toString();
+				DataBase.loadCategoriesToRAM();
+				
+				String[] categoryNames = new String[DataBase.categories.size()];
+				int[] categoryIds = new int[DataBase.categories.size()];
+				
+				for (int i = 0; i < DataBase.categories.size(); i++) {
+					categoryNames[i] = DataBase.categories.get(i).getName();
+					categoryIds[i] = DataBase.categories.get(i).getIdCategory();
+					System.out.println(categoryNames[i]);
+					System.out.println(categoryIds[i]);
+				}
+				
+				for (int i = 0; i< categoryNames.length; i++) {
+					if (categoryNames[i].equals(node.toString())) {
+						System.out.println(categoryNames[i]);
+						TreeBauteile.delteTKat(categoryIds[i]);
+					}
+				}
 
-			    if (node == null)
-			    //Nothing is selected.     
-			    return;
+				actualTreeCategory = new JTree(TreeErstellen.createTree());
+				MainMenu.treeCategory = actualTreeCategory;
+//				treeCategory.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+//				treeCategory.addTreeSelectionListener(this);
+				MainMenu.scrollPaneCategory.setViewportView(MainMenu.treeCategory);
+				
+				dispose();
+//			    if (node == null)
+//			    //Nothing is selected.     
+//			    return;
 		
 //			    Object nodeInfo = node.getUserObject();
 //			    if (node.isLeaf()) {

@@ -6,6 +6,7 @@ import java.awt.Color;
 //import javax.mail.internet.InternetAddress;
 import javax.swing.JOptionPane;
 
+import Data.CategoryObjektRAM;
 import Data.DataBase;
 import GUI.AddPerson;
 import GUI.Aendern;
@@ -194,6 +195,16 @@ public class Manager {
 		
 		
 		
+	}
+	
+	public static void duplicateCategory(String name) throws InvalidArgumentsException {
+		DataBase.loadCategoriesToRAM();
+		
+		for(CategoryObjektRAM c : DataBase.categories) {
+			if (name.equals(c.getName())) {
+				throw new InvalidArgumentsException("Kategorie bereits vorhanden. Bitte wählen Sie einen noch nicht genutzten Namen.");
+			}
+		}
 	}
 	
 	

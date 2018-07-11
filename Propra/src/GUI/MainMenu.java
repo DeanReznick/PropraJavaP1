@@ -1317,7 +1317,8 @@ public class MainMenu extends JFrame {
 				JButton btnKategorieAendern = new JButton("Kategorie Aendern");
 				btnKategorieAendern.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
+						AlterCategory x = new AlterCategory();
+						x.setVisible(true);
 					}
 				});
 				GridBagConstraints gbc_btnKategorieAendern = new GridBagConstraints();

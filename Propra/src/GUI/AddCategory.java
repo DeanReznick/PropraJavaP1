@@ -6,13 +6,19 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.tree.TreeSelectionModel;
 
 import Data.CategoryObjektRAM;
 import Data.DataBase;
 import Data.TreeBauteile;
+import Data.TreeErstellen;
+import Exceptions.InvalidArgumentsException;
+import Exceptions.Manager;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.JTree;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -24,10 +30,10 @@ public class AddCategory extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtName;
+	public static JTree actualTreeCategory;
 
 	public AddCategory() {
 		setTitle("Neue Kategorie");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 150);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -69,7 +75,7 @@ public class AddCategory extends JFrame {
 		btnKategorieErstellen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				
+				try {
 				int index = comboBoxParent.getSelectedIndex(); 
 				
 				CategoryObjektRAM obj = DataBase.categories.get(index); 
@@ -78,12 +84,20 @@ public class AddCategory extends JFrame {
 				
 				System.out.println(id);
 				
+				Manager.duplicateCategory(txtName.getText());
 				
 				TreeBauteile.addTKat(id, txtName.getText());
 				
+				actualTreeCategory = new JTree(TreeErstellen.createTree());
+				MainMenu.treeCategory = actualTreeCategory;
+//				treeCategory.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+//				treeCategory.addTreeSelectionListener(this);
+				MainMenu.scrollPaneCategory.setViewportView(MainMenu.treeCategory);
 				
-				
-				
+				dispose();
+				} catch (InvalidArgumentsException ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				}
 				
 				
 			}

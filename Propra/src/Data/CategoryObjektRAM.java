@@ -15,7 +15,7 @@ public class CategoryObjektRAM {
 	
 	public void fillChildren() throws SQLException {
 		
-		System.out.println("*");
+		
 		// Was ist meine ID 
 		// Welche kat haben diese ID als Parent. 
 		// Diese Kat in Liste. 

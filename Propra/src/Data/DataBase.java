@@ -511,7 +511,7 @@ public static void loadCategoriesToRAM() {
 	    	  CategoryObjektRAM tmp = it.next(); 
 	    	  tmp.fillChildren();
 	    	  
-	    	  System.out.println("+++> " + tmp.c.toString());
+	    	 
 	    	  
 	    	  
 	    	  
