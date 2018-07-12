@@ -1582,9 +1582,9 @@ public class MainMenu extends JFrame {
 		JPanel panelTopf = new JPanel();
 		tabbedPaneFinanz.addTab("T\u00F6pfe & Kassen", null, panelTopf, null);
 		GridBagLayout gbl_panelTopf = new GridBagLayout();
-		gbl_panelTopf.columnWidths = new int[]{0, 11, 130, 230, 176, 207, 440, 180, 0};
+		gbl_panelTopf.columnWidths = new int[]{0, 11, 130, 230, 0, 176, 207, 0, 440, 180, 0};
 		gbl_panelTopf.rowHeights = new int[]{67, 500, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panelTopf.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelTopf.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panelTopf.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelTopf.setLayout(gbl_panelTopf);
 		
@@ -1603,7 +1603,7 @@ public class MainMenu extends JFrame {
 		gbc_lblToepfe.gridwidth = 2;
 		gbc_lblToepfe.anchor = GridBagConstraints.WEST;
 		gbc_lblToepfe.insets = new Insets(0, 0, 5, 5);
-		gbc_lblToepfe.gridx = 4;
+		gbc_lblToepfe.gridx = 5;
 		gbc_lblToepfe.gridy = 0;
 		panelTopf.add(lblToepfe, gbc_lblToepfe);
 		
@@ -1612,14 +1612,14 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_lblRechnungen = new GridBagConstraints();
 		gbc_lblRechnungen.anchor = GridBagConstraints.WEST;
 		gbc_lblRechnungen.insets = new Insets(0, 0, 5, 5);
-		gbc_lblRechnungen.gridx = 6;
+		gbc_lblRechnungen.gridx = 8;
 		gbc_lblRechnungen.gridy = 0;
 		panelTopf.add(lblRechnungen, gbc_lblRechnungen);
 		
 		JButton btnAktualisieren = new JButton("Aktualisieren");
 		GridBagConstraints gbc_btnAktualisieren = new GridBagConstraints();
 		gbc_btnAktualisieren.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAktualisieren.gridx = 7;
+		gbc_btnAktualisieren.gridx = 9;
 		gbc_btnAktualisieren.gridy = 0;
 		panelTopf.add(btnAktualisieren, gbc_btnAktualisieren);
 		
@@ -1644,7 +1644,7 @@ public class MainMenu extends JFrame {
 		});
 		GridBagConstraints gbc_btnTopfErstellen = new GridBagConstraints();
 		gbc_btnTopfErstellen.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTopfErstellen.gridx = 4;
+		gbc_btnTopfErstellen.gridx = 5;
 		gbc_btnTopfErstellen.gridy = 2;
 		panelTopf.add(btnTopfErstellen, gbc_btnTopfErstellen);
 		
@@ -1662,7 +1662,7 @@ public class MainMenu extends JFrame {
 		});
 		GridBagConstraints gbc_btnTopfLoeschen = new GridBagConstraints();
 		gbc_btnTopfLoeschen.insets = new Insets(0, 0, 5, 5);
-		gbc_btnTopfLoeschen.gridx = 5;
+		gbc_btnTopfLoeschen.gridx = 6;
 		gbc_btnTopfLoeschen.gridy = 2;
 		panelTopf.add(btnTopfLoeschen, gbc_btnTopfLoeschen);
 		
@@ -1670,7 +1670,7 @@ public class MainMenu extends JFrame {
 		lblDetails_1.setFont(new Font("Tahoma", Font.BOLD, 13));
 		GridBagConstraints gbc_lblDetails_1 = new GridBagConstraints();
 		gbc_lblDetails_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDetails_1.gridx = 4;
+		gbc_lblDetails_1.gridx = 5;
 		gbc_lblDetails_1.gridy = 3;
 		panelTopf.add(lblDetails_1, gbc_lblDetails_1);
 		JComboBox comboBoxArt = new JComboBox(comboBoxValues);
@@ -1802,7 +1802,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_comboBoxKasse = new GridBagConstraints();
 		gbc_comboBoxKasse.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxKasse.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxKasse.gridx = 5;
+		gbc_comboBoxKasse.gridx = 6;
 		gbc_comboBoxKasse.gridy = 5;
 		panelTopf.add(comboBoxKasse, gbc_comboBoxKasse);
 		
@@ -1811,7 +1811,7 @@ public class MainMenu extends JFrame {
 		gbc_scrollPane_1.gridwidth = 2;
 		gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_1.gridx = 4;
+		gbc_scrollPane_1.gridx = 5;
 		gbc_scrollPane_1.gridy = 1;
 		panelTopf.add(scrollPane_1, gbc_scrollPane_1);
 		String[] column_headers_topf = {"ID_Topf", "ID_Kasse", "Soll", "Ist"};
@@ -1943,7 +1943,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_scrollPane_2 = new GridBagConstraints();
 		gbc_scrollPane_2.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_2.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane_2.gridx = 6;
+		gbc_scrollPane_2.gridx = 8;
 		gbc_scrollPane_2.gridy = 1;
 		panelTopf.add(scrollPane_2, gbc_scrollPane_2);
 		
@@ -2040,7 +2040,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_lblKasse = new GridBagConstraints();
 		gbc_lblKasse.anchor = GridBagConstraints.EAST;
 		gbc_lblKasse.insets = new Insets(0, 0, 5, 5);
-		gbc_lblKasse.gridx = 4;
+		gbc_lblKasse.gridx = 5;
 		gbc_lblKasse.gridy = 5;
 		panelTopf.add(lblKasse, gbc_lblKasse);
 		
@@ -2073,7 +2073,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_lblSoll_1 = new GridBagConstraints();
 		gbc_lblSoll_1.anchor = GridBagConstraints.EAST;
 		gbc_lblSoll_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblSoll_1.gridx = 4;
+		gbc_lblSoll_1.gridx = 5;
 		gbc_lblSoll_1.gridy = 6;
 		panelTopf.add(lblSoll_1, gbc_lblSoll_1);
 		
@@ -2081,7 +2081,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_txtTopfSoll = new GridBagConstraints();
 		gbc_txtTopfSoll.insets = new Insets(0, 0, 5, 5);
 		gbc_txtTopfSoll.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtTopfSoll.gridx = 5;
+		gbc_txtTopfSoll.gridx = 6;
 		gbc_txtTopfSoll.gridy = 6;
 		panelTopf.add(txtTopfSoll, gbc_txtTopfSoll);
 		txtTopfSoll.setColumns(10);
@@ -2107,7 +2107,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_lblIst = new GridBagConstraints();
 		gbc_lblIst.anchor = GridBagConstraints.EAST;
 		gbc_lblIst.insets = new Insets(0, 0, 5, 5);
-		gbc_lblIst.gridx = 4;
+		gbc_lblIst.gridx = 5;
 		gbc_lblIst.gridy = 7;
 		panelTopf.add(lblIst, gbc_lblIst);
 		
@@ -2115,7 +2115,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_txtTopfIst = new GridBagConstraints();
 		gbc_txtTopfIst.insets = new Insets(0, 0, 5, 5);
 		gbc_txtTopfIst.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtTopfIst.gridx = 5;
+		gbc_txtTopfIst.gridx = 6;
 		gbc_txtTopfIst.gridy = 7;
 		panelTopf.add(txtTopfIst, gbc_txtTopfIst);
 		txtTopfIst.setColumns(10);
@@ -2175,7 +2175,7 @@ public class MainMenu extends JFrame {
 		});
 		GridBagConstraints gbc_btnSpeichern = new GridBagConstraints();
 		gbc_btnSpeichern.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSpeichern.gridx = 5;
+		gbc_btnSpeichern.gridx = 6;
 		gbc_btnSpeichern.gridy = 9;
 		panelTopf.add(btnSpeichern, gbc_btnSpeichern);
 		//tcmKasse.removeColumn( tcmKasse.getColumn(0) );
@@ -2363,10 +2363,7 @@ public class MainMenu extends JFrame {
 					
 				}
 				ComboBoxRbAg.setSelectedItem(oldAuftraggeber);
-				txtRaBezahlung.setText(oldBezahlung);
-				//txtRbBearbeiter.setText(oldIdB);
-				txtRaBeschreibung.setText(oldBeschreibung);
-				txtRaBetrag.setText(oldBetrag);
+			
 				
 				String oldAnsprechpartner = null;
 				
