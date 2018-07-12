@@ -122,14 +122,12 @@ public class MainMenu extends JFrame {
 	private JTextField txtKasseIst;
 	private JTextField txtTopfSoll;
 	private JTextField txtTopfIst;
-	private static JTable tblRechnB;
-	private static JTable tblRechnA;
+	static JTable tblRechnB;
+	static JTable tblRechnA;
 	private JTextField txtRbName;
-	private JTextField txtRbAuftraggeber;
 	private JTextField txtRbBezahlungsart;
 	private JTextField txtRbBetrag;
 	private JTextField txtRbBeschreibung;
-	private JTextField txtRbAp;
 	private JTextField txtRaName;
 	private JTextField txtRaBezahlung;
 	private JTextField txtRaBetrag;
@@ -2248,6 +2246,14 @@ public class MainMenu extends JFrame {
 			i++;
 		}
 		
+		JComboBox ComboBoxRbAg = new JComboBox(personName);
+		GridBagConstraints gbc_ComboBoxRbAg = new GridBagConstraints();
+		gbc_ComboBoxRbAg.insets = new Insets(0, 0, 5, 5);
+		gbc_ComboBoxRbAg.fill = GridBagConstraints.HORIZONTAL;
+		gbc_ComboBoxRbAg.gridx = 1;
+		gbc_ComboBoxRbAg.gridy = 5;
+		panelRechnung.add(ComboBoxRbAg, gbc_ComboBoxRbAg);
+		
 		JLabel lblAnsprechspartner = new JLabel("Ansprechspartner:");
 		GridBagConstraints gbc_lblAnsprechspartner = new GridBagConstraints();
 		gbc_lblAnsprechspartner.anchor = GridBagConstraints.EAST;
@@ -2256,14 +2262,13 @@ public class MainMenu extends JFrame {
 		gbc_lblAnsprechspartner.gridy = 5;
 		panelRechnung.add(lblAnsprechspartner, gbc_lblAnsprechspartner);
 		
-		txtRbAp = new JTextField();
-		GridBagConstraints gbc_txtRbAp = new GridBagConstraints();
-		gbc_txtRbAp.insets = new Insets(0, 0, 5, 5);
-		gbc_txtRbAp.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtRbAp.gridx = 3;
-		gbc_txtRbAp.gridy = 5;
-		panelRechnung.add(txtRbAp, gbc_txtRbAp);
-		txtRbAp.setColumns(10);
+		JComboBox comboBoxRbAp = new JComboBox(personName);
+		GridBagConstraints gbc_comboBoxRbAp = new GridBagConstraints();
+		gbc_comboBoxRbAp.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxRbAp.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxRbAp.gridx = 3;
+		gbc_comboBoxRbAp.gridy = 5;
+		panelRechnung.add(comboBoxRbAp, gbc_comboBoxRbAp);
 		
 		JComboBox comboBoxRaAg = new JComboBox(personName);
 		GridBagConstraints gbc_comboBoxRaAg = new GridBagConstraints();
@@ -2319,12 +2324,46 @@ public class MainMenu extends JFrame {
 				
 				
 				txtRbName.setText(oldName);
-				txtRbAuftraggeber.setText(oldIdAg);
+	
 				txtRbBezahlungsart.setText(oldBezahlung);
 				//txtRbBearbeiter.setText(oldIdB);
 				txtRbBeschreibung.setText(oldBeschreibung);
 				txtRbBetrag.setText(oldBetrag);
-				txtRbAp.setText(oldIdAp);
+		
+				
+				int oldIdAgInt = Integer.parseInt(oldIdAg);
+				int oldIdApInt = Integer.parseInt(oldIdAp);
+				
+				DataBase.loadPeopleToRAM();
+				
+				
+				String oldAuftraggeber = null;
+				
+				for (PersonObjektRAM p : DataBase.people) {
+					
+					if(oldIdAgInt == p.getID_Person()) {
+						oldAuftraggeber = p.getVorname() + " " + p.getName();
+					}
+					
+				}
+				ComboBoxRbAg.setSelectedItem(oldAuftraggeber);
+				txtRaBezahlung.setText(oldBezahlung);
+				//txtRbBearbeiter.setText(oldIdB);
+				txtRaBeschreibung.setText(oldBeschreibung);
+				txtRaBetrag.setText(oldBetrag);
+				
+				String oldAnsprechpartner = null;
+				
+				for (PersonObjektRAM p : DataBase.people) {
+					
+					if(oldIdApInt == p.getID_Person()) {
+						oldAnsprechpartner = p.getVorname() + " " + p.getName();
+					}
+					
+				}
+				
+				
+				comboBoxRbAp.setSelectedItem(oldAnsprechpartner);
 				
 			
 			}
@@ -2393,18 +2432,20 @@ DefaultTableModel modelRechnungB = new DefaultTableModel(new String[]{"ID_BRechn
 				String oldName = MainMenu.tblRechnA.getModel().getValueAt(colnr, 1).toString();
 				String oldIdAg = MainMenu.tblRechnA.getModel().getValueAt(colnr, 2).toString();
 				
-				int oldIdAgInt = Integer.parseInt(oldIdAg);
+				
 				String oldBezahlung = MainMenu.tblRechnA.getModel().getValueAt(colnr, 3).toString();
 				String oldBetrag = MainMenu.tblRechnA.getModel().getValueAt(colnr, 4).toString();
 				String oldBeschreibung = MainMenu.tblRechnA.getModel().getValueAt(colnr, 5).toString();
 				//String oldIdB = MainMenu.tblRechnA.getModel().getValueAt(colnr, 6).toString();
 			
 				String oldIdAp = MainMenu.tblRechnA.getModel().getValueAt(colnr, 8).toString();
-				int oldIdApInt = Integer.parseInt(oldIdAp);
+				
 				String oldIdAuftrag = MainMenu.tblRechnA.getModel().getValueAt(colnr, 9).toString();
 				
 				
 				txtRaName.setText(oldName);
+				int oldIdAgInt = Integer.parseInt(oldIdAg);
+				int oldIdApInt = Integer.parseInt(oldIdAp);
 				
 				DataBase.loadPeopleToRAM();
 				
@@ -2480,6 +2521,20 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		scrollPane_4.setViewportView(tblRechnA);
 		
 		JButton btnLoeschen = new JButton("Loeschen");
+		btnLoeschen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				DefaultTableModel model = (DefaultTableModel) tblRechnB.getModel();
+				//get selected row index
+				int selectedRowIndex = tblRechnB.getSelectedRow();
+				try {
+				DeleteBill x = new DeleteBill();
+				x.setVisible(true);
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
+				}
+			}
+		});
 		GridBagConstraints gbc_btnLoeschen = new GridBagConstraints();
 		gbc_btnLoeschen.gridwidth = 2;
 		gbc_btnLoeschen.insets = new Insets(0, 0, 5, 5);
@@ -2502,6 +2557,20 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		panelRechnung.add(btnErstellen, gbc_btnErstellen);
 		
 		JButton btnLoeschen_1 = new JButton("Loeschen");
+		btnLoeschen_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				DefaultTableModel model = (DefaultTableModel) tblRechnB.getModel();
+				//get selected row index
+				int selectedRowIndex = tblRechnA.getSelectedRow();
+				try {
+				DeleteBillA x = new DeleteBillA();
+				x.setVisible(true);
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
+				}
+			}
+		});
 		GridBagConstraints gbc_btnLoeschen_1 = new GridBagConstraints();
 		gbc_btnLoeschen_1.gridwidth = 2;
 		gbc_btnLoeschen_1.insets = new Insets(0, 0, 5, 0);
@@ -2602,15 +2671,6 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		gbc_lblAuftraggeber.gridy = 5;
 		panelRechnung.add(lblAuftraggeber, gbc_lblAuftraggeber);
 		
-		txtRbAuftraggeber = new JTextField();
-		GridBagConstraints gbc_txtRbAuftraggeber = new GridBagConstraints();
-		gbc_txtRbAuftraggeber.insets = new Insets(0, 0, 5, 5);
-		gbc_txtRbAuftraggeber.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtRbAuftraggeber.gridx = 1;
-		gbc_txtRbAuftraggeber.gridy = 5;
-		panelRechnung.add(txtRbAuftraggeber, gbc_txtRbAuftraggeber);
-		txtRbAuftraggeber.setColumns(10);
-		
 		JLabel lblAuftraggeber_1 = new JLabel("Auftraggeber:");
 		GridBagConstraints gbc_lblAuftraggeber_1 = new GridBagConstraints();
 		gbc_lblAuftraggeber_1.anchor = GridBagConstraints.EAST;
@@ -2645,6 +2705,8 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		gbc_txtRbBezahlungsart.gridy = 6;
 		panelRechnung.add(txtRbBezahlungsart, gbc_txtRbBezahlungsart);
 		txtRbBezahlungsart.setColumns(10);
+		
+		
 		
 		JLabel lblBezahlungsart_1 = new JLabel("Bezahlungsart:");
 		GridBagConstraints gbc_lblBezahlungsart_1 = new GridBagConstraints();
@@ -2717,7 +2779,66 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		panelRechnung.add(txtRaBetrag, gbc_txtRaBetrag);
 		txtRaBetrag.setColumns(10);
 		
+	
+		
 		JButton btnSpeichern_1 = new JButton("Speichern");
+		btnSpeichern_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int colnr  = MainMenu.tblRechnB.getSelectedRow();
+				String id_string = MainMenu.tblRechnB.getModel().getValueAt(colnr, 0).toString();
+				int id = Integer.parseInt(id_string);
+			
+				
+				
+				
+				String rechnungsname = txtRbName.getText();
+				String Auftraggeber = ComboBoxRbAg.getSelectedItem().toString();
+				
+				
+				String[] partsA = Auftraggeber.split(" ");
+				String name = partsA[0]; 
+				String surname = partsA[1]; 
+				int id_Auftraggeber = 0;
+				
+				
+				
+						
+						
+				String artBezahlung = txtRbBezahlungsart.getText();
+				//txtRbBearbeiter.setText(oldIdB);
+				String beschreibung = txtRbBeschreibung.getText();
+				double betrag = Double.parseDouble(txtRbBetrag.getText());
+				String Ansprechpartner = comboBoxRbAp.getSelectedItem().toString();
+				String[] partsB = Ansprechpartner.split(" ");
+				String name1 = partsB[0]; 
+				String surname1 = partsB[1]; 
+				int id_Ansprechpartner = 0;
+				
+				
+				for (PersonObjektRAM p : DataBase.people) {
+					
+					if(p.getVorname().equals(name) &&p.getName().equals(surname)) {
+						id_Auftraggeber = p.getID_Person();
+							
+					}
+				}
+
+						
+				for (PersonObjektRAM p : DataBase.people) {
+					
+					if(p.getVorname().equals(name1) &&p.getName().equals(surname1)) {
+					id_Ansprechpartner = p.getID_Person();
+							
+					}
+				}
+				System.out.println(Ansprechpartner + " name : " + id_Ansprechpartner);
+				
+				
+				
+				Rechnungsabwicklung.alterBRechnung(id, rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
+			}
+		});
 		GridBagConstraints gbc_btnSpeichern_1 = new GridBagConstraints();
 		gbc_btnSpeichern_1.gridwidth = 2;
 		gbc_btnSpeichern_1.insets = new Insets(0, 0, 0, 5);

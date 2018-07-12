@@ -13,36 +13,33 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Data.DataBase;
-import Data.Finanzverwaltung;
-import Data.PersonenFertigungsverwaltung;
 import Data.Rechnungsabwicklung;
 
-public class DeleteBill extends JFrame {
+public class DeleteBillA extends JFrame {
 
 	private JPanel contentPane;
 
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					DeleteOrder frame = new DeleteOrder();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					DeleteBillA frame = new DeleteBillA();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the frame.
 	 */
-	public DeleteBill() {
-		setTitle("Rechnung löschen");
+	public DeleteBillA() {
+setTitle("Rechnung löschen");
 		
 		setBounds(100, 100, 503, 120);
 		contentPane = new JPanel();
@@ -57,17 +54,12 @@ public class DeleteBill extends JFrame {
 		JButton btnDeleteOrder = new JButton("Rechnung löschen");
 		btnDeleteOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model = (DefaultTableModel) MainMenu.tblRechnB.getModel();
+				DefaultTableModel model = (DefaultTableModel) MainMenu.tblRechnA.getModel();
 				//get selected row index
-				int selectedRowIndex = MainMenu.tblRechnB.getSelectedRow();
-				String tableClick = MainMenu.tblRechnB.getModel().getValueAt(selectedRowIndex, 0).toString();
+				int selectedRowIndex = MainMenu.tblRechnA.getSelectedRow();
+				String tableClick = MainMenu.tblRechnA.getModel().getValueAt(selectedRowIndex, 0).toString();
 				int id = Integer.parseInt(tableClick);
-				try {
-					Rechnungsabwicklung.delteBRechnung(id);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				Rechnungsabwicklung.delteARechnung(id);
 				
 				model.removeRow(selectedRowIndex);
 				
@@ -87,5 +79,5 @@ public class DeleteBill extends JFrame {
 		btnCancel.setBounds(327, 47, 150, 23);
 		contentPane.add(btnCancel);
 	}
-	}
 
+}
