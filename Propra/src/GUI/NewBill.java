@@ -271,6 +271,7 @@ public class NewBill extends JFrame {
 				
 				int id_Auftrag = Integer.parseInt(comboBoxAuftraege.getSelectedItem().toString());
 				Rechnungsabwicklung.createARechnung(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung, id_Auftrag);
+				DataBase.refreshRechnungA();
 				
 			
 				dispose();

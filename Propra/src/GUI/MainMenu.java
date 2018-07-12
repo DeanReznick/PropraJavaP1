@@ -122,8 +122,8 @@ public class MainMenu extends JFrame {
 	private JTextField txtKasseIst;
 	private JTextField txtTopfSoll;
 	private JTextField txtTopfIst;
-	static JTable tblRechnB;
-	static JTable tblRechnA;
+	public static JTable tblRechnB;
+	public static JTable tblRechnA;
 	private JTextField txtRbName;
 	private JTextField txtRbBezahlungsart;
 	private JTextField txtRbBetrag;
@@ -1616,6 +1616,13 @@ public class MainMenu extends JFrame {
 		gbc_lblRechnungen.gridy = 0;
 		panelTopf.add(lblRechnungen, gbc_lblRechnungen);
 		
+		JButton btnAktualisieren = new JButton("Aktualisieren");
+		GridBagConstraints gbc_btnAktualisieren = new GridBagConstraints();
+		gbc_btnAktualisieren.insets = new Insets(0, 0, 5, 0);
+		gbc_btnAktualisieren.gridx = 7;
+		gbc_btnAktualisieren.gridy = 0;
+		panelTopf.add(btnAktualisieren, gbc_btnAktualisieren);
+		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridwidth = 2;
@@ -1831,16 +1838,16 @@ public class MainMenu extends JFrame {
 				comboBoxKasse.setSelectedItem(oldIdKasse);
 				
 				
-				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
+				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag"}, 0) {
 					
 					@Override
 					public boolean isCellEditable(int row, int column) {
 							return false;
 						}
 					};
-				String id = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
+				int id = Integer.parseInt(MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString());
 				
-			
+			 System.out.println("THE TOPF ID IS:" + id + "!");
 				
 				Statement stmtRechnung = null;
 				
@@ -1854,12 +1861,13 @@ public class MainMenu extends JFrame {
 					}
 				
 				
-				String sqlRechnung = "SELECT Rechnung.* FROM Rechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on Rechnung.ID_Rechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+";";
-				
+				//String sqlRechnung = "SELECT ARechnung.* FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+";";
+				    String sqlTest = "SELECT ARechnung.* FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf = 10";
+					String sqlRechnung = "SELECT BRechnung.ID_BRechnung AS ID_Rechnung, BRechnung.Name AS Name, BRechnung.Betrag As Betrag FROM BRechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on BRechnung.ID_BRechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf = 10 UNION SELECT ARechnung.ID_ARechnung AS ID_Rechnung, ARechnung.Name as Name, ARechnung.Betrag AS Betrag FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf = 10";
 				ResultSet rsRechnung = null;
 				
 					try {
-						rsRechnung = stmtRechnung.executeQuery(sqlRechnung);
+						rsRechnung = stmtRechnung.executeQuery(sqlTest);
 						System.out.println("Query executed");
 						System.out.println(rsRechnung);
 					} catch (SQLException e1) {
@@ -1872,31 +1880,28 @@ public class MainMenu extends JFrame {
 				
 				
 				
+					
 					try {
 						while(rsRechnung.next())
 						{
-							String a1 = rsRechnung.getString("ID_Rechnung");
-						    String b1 = rsRechnung.getString("Rechnungsname");
-						    String c1 = rsRechnung.getString("Auftraggeber");
-//						    String d1 = rsRechnung.getString("Bezahlung_Art");
-						    String e1 = rsRechnung.getString("Betrag");
-						    String f1 = rsRechnung.getString("Beschreibung");
-						    String g1 = rsRechnung.getString("Bearbeiter");
-						    String h1 = rsRechnung.getString("Timestamp");
+							String a1 = rsRechnung.getString("ARechnung.ID_ARechnung");
+						    String b1 = rsRechnung.getString("ARechnung.Name");
+
+						    String e1 = rsRechnung.getString("ARechnung.Betrag");
+
+						  
 						    
-						    modelRechnung.addRow(new Object[]{a1, b1,c1, e1, f1, g1, h1});
+						    modelRechnung.addRow(new Object[]{a1, b1, e1});
+						    System.out.println("WHILE DONE !!!");
 						}
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
 					tblRechn.setModel(modelRechnung);
 					
-					TableColumnModel tcmRechn = tblRechn.getColumnModel();
-					tcmRechn.removeColumn( tcmRechn.getColumn(0) );
-					tcmRechn.removeColumn( tcmRechn.getColumn(1) );
-					tcmRechn.removeColumn( tcmRechn.getColumn(2) );
-					tcmRechn.removeColumn( tcmRechn.getColumn(2) );
+				
 				
 				
 				
@@ -1943,31 +1948,32 @@ public class MainMenu extends JFrame {
 		panelTopf.add(scrollPane_2, gbc_scrollPane_2);
 		
 		
-		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"};
+		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname",  "Betrag"};
 		String[][] data_rechnung = new String[1000][11];
 		tblRechn = new JTable(data_rechnung, column_headers_topf);
-		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "Bearbeiter", "Timestamp"}, 0) {
+		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
 			};
-		String sqlRechnung = "SELECT * FROM Rechnung";
+		String sqlRechnung = "SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Timestamp FROM ARechnung UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Timestamp FROM BRechnung";
 		ResultSet rsRechnung = stmt.executeQuery(sqlRechnung);
 		
 		while(rsRechnung.next())
 		{
 			String a1 = rsRechnung.getString("ID_Rechnung");
-		    String b1 = rsRechnung.getString("Rechnungsname");
-		    String c1 = rsRechnung.getString("Auftraggeber");
-//		    String d1 = rsRechnung.getString("Bezahlung_Art");
+		    String b1 = rsRechnung.getString("Name");
+
 		    String e1 = rsRechnung.getString("Betrag");
-		    String f1 = rsRechnung.getString("Beschreibung");
-		    String g1 = rsRechnung.getString("Bearbeiter");
-		    String h1 = rsRechnung.getString("Timestamp");
+
+		   
 		    
-		    modelRechnung.addRow(new Object[]{a1, b1,c1, e1, f1, g1, h1});
+		    modelRechnung.addRow(new Object[]{a1, b1, e1});
+		    
+		    
+		    System.out.println("WHILE RECHNUNG LOADING DONE!");
 		}
 		
 		tblRechn.setModel(modelRechnung);
@@ -1977,11 +1983,7 @@ public class MainMenu extends JFrame {
 		
 		
 		
-		TableColumnModel tcmRechn = tblRechn.getColumnModel();
-		tcmRechn.removeColumn( tcmRechn.getColumn(0) );
-		tcmRechn.removeColumn( tcmRechn.getColumn(1) );
-		tcmRechn.removeColumn( tcmRechn.getColumn(2) );
-		tcmRechn.removeColumn( tcmRechn.getColumn(2) );
+
 		
 		scrollPane_2.setViewportView(tblRechn);
 		
@@ -2211,20 +2213,11 @@ public class MainMenu extends JFrame {
 		JPanel panelRechnung = new JPanel();
 		tabbedPaneFinanz.addTab("Rechnungen", null, panelRechnung, null);
 		GridBagLayout gbl_panelRechnung = new GridBagLayout();
-		gbl_panelRechnung.columnWidths = new int[]{130, 172, 139, 177, 0, 171, 140, 134, 184, 0};
+		gbl_panelRechnung.columnWidths = new int[]{130, 172, 0, 139, 177, 0, 171, 140, 134, 184, 0};
 		gbl_panelRechnung.rowHeights = new int[]{0, 599, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panelRechnung.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panelRechnung.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelRechnung.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelRechnung.setLayout(gbl_panelRechnung);
-		
-		JLabel lblNewLabel_1 = new JLabel("Rechnung: Bauteile");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.gridwidth = 4;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 0;
-		gbc_lblNewLabel_1.gridy = 0;
-		panelRechnung.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
 		
 		DataBase.loadPeopleToRAM();
@@ -2246,6 +2239,29 @@ public class MainMenu extends JFrame {
 			i++;
 		}
 		
+		JButton btnRefresh = new JButton("Aktualisieren");
+		btnRefresh.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				DataBase.refreshRechnungB();
+				DataBase.refreshRechnungA();
+				
+			}
+		});
+		GridBagConstraints gbc_btnRefresh = new GridBagConstraints();
+		gbc_btnRefresh.insets = new Insets(0, 0, 5, 5);
+		gbc_btnRefresh.gridx = 0;
+		gbc_btnRefresh.gridy = 0;
+		panelRechnung.add(btnRefresh, gbc_btnRefresh);
+		
+		JLabel lblRechnungenbauteile = new JLabel("Rechnungen:Bauteile");
+		lblRechnungenbauteile.setFont(new Font("Tahoma", Font.BOLD, 14));
+		GridBagConstraints gbc_lblRechnungenbauteile = new GridBagConstraints();
+		gbc_lblRechnungenbauteile.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRechnungenbauteile.gridx = 1;
+		gbc_lblRechnungenbauteile.gridy = 0;
+		panelRechnung.add(lblRechnungenbauteile, gbc_lblRechnungenbauteile);
+		
 		JComboBox ComboBoxRbAg = new JComboBox(personName);
 		GridBagConstraints gbc_ComboBoxRbAg = new GridBagConstraints();
 		gbc_ComboBoxRbAg.insets = new Insets(0, 0, 5, 5);
@@ -2258,7 +2274,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_lblAnsprechspartner = new GridBagConstraints();
 		gbc_lblAnsprechspartner.anchor = GridBagConstraints.EAST;
 		gbc_lblAnsprechspartner.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAnsprechspartner.gridx = 2;
+		gbc_lblAnsprechspartner.gridx = 3;
 		gbc_lblAnsprechspartner.gridy = 5;
 		panelRechnung.add(lblAnsprechspartner, gbc_lblAnsprechspartner);
 		
@@ -2266,7 +2282,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_comboBoxRbAp = new GridBagConstraints();
 		gbc_comboBoxRbAp.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxRbAp.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxRbAp.gridx = 3;
+		gbc_comboBoxRbAp.gridx = 4;
 		gbc_comboBoxRbAp.gridy = 5;
 		panelRechnung.add(comboBoxRbAp, gbc_comboBoxRbAp);
 		
@@ -2274,7 +2290,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_comboBoxRaAg = new GridBagConstraints();
 		gbc_comboBoxRaAg.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxRaAg.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxRaAg.gridx = 6;
+		gbc_comboBoxRaAg.gridx = 7;
 		gbc_comboBoxRaAg.gridy = 5;
 		panelRechnung.add(comboBoxRaAg, gbc_comboBoxRaAg);
 		
@@ -2282,7 +2298,7 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_comboBoxRaAp = new GridBagConstraints();
 		gbc_comboBoxRaAp.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxRaAp.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxRaAp.gridx = 8;
+		gbc_comboBoxRaAp.gridx = 9;
 		gbc_comboBoxRaAp.gridy = 5;
 		panelRechnung.add(comboBoxRaAp, gbc_comboBoxRaAp);
 		
@@ -2291,14 +2307,14 @@ public class MainMenu extends JFrame {
 		GridBagConstraints gbc_lblRechnungAuftraege = new GridBagConstraints();
 		gbc_lblRechnungAuftraege.gridwidth = 4;
 		gbc_lblRechnungAuftraege.insets = new Insets(0, 0, 5, 0);
-		gbc_lblRechnungAuftraege.gridx = 5;
+		gbc_lblRechnungAuftraege.gridx = 6;
 		gbc_lblRechnungAuftraege.gridy = 0;
 		panelRechnung.add(lblRechnungAuftraege, gbc_lblRechnungAuftraege);
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_3 = new GridBagConstraints();
 		gbc_scrollPane_3.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_3.gridwidth = 4;
+		gbc_scrollPane_3.gridwidth = 5;
 		gbc_scrollPane_3.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane_3.gridx = 0;
 		gbc_scrollPane_3.gridy = 1;
@@ -2413,7 +2429,7 @@ DefaultTableModel modelRechnungB = new DefaultTableModel(new String[]{"ID_BRechn
 		gbc_scrollPane_4.gridwidth = 4;
 		gbc_scrollPane_4.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_4.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane_4.gridx = 5;
+		gbc_scrollPane_4.gridx = 6;
 		gbc_scrollPane_4.gridy = 1;
 		panelRechnung.add(scrollPane_4, gbc_scrollPane_4);
 		///
@@ -2538,7 +2554,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_btnLoeschen = new GridBagConstraints();
 		gbc_btnLoeschen.gridwidth = 2;
 		gbc_btnLoeschen.insets = new Insets(0, 0, 5, 5);
-		gbc_btnLoeschen.gridx = 2;
+		gbc_btnLoeschen.gridx = 3;
 		gbc_btnLoeschen.gridy = 2;
 		panelRechnung.add(btnLoeschen, gbc_btnLoeschen);
 		
@@ -2552,7 +2568,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		});
 		GridBagConstraints gbc_btnErstellen = new GridBagConstraints();
 		gbc_btnErstellen.insets = new Insets(0, 0, 5, 5);
-		gbc_btnErstellen.gridx = 5;
+		gbc_btnErstellen.gridx = 6;
 		gbc_btnErstellen.gridy = 2;
 		panelRechnung.add(btnErstellen, gbc_btnErstellen);
 		
@@ -2574,7 +2590,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_btnLoeschen_1 = new GridBagConstraints();
 		gbc_btnLoeschen_1.gridwidth = 2;
 		gbc_btnLoeschen_1.insets = new Insets(0, 0, 5, 0);
-		gbc_btnLoeschen_1.gridx = 7;
+		gbc_btnLoeschen_1.gridx = 8;
 		gbc_btnLoeschen_1.gridy = 2;
 		panelRechnung.add(btnLoeschen_1, gbc_btnLoeschen_1);
 		
@@ -2591,7 +2607,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_lblDetails_3 = new GridBagConstraints();
 		gbc_lblDetails_3.anchor = GridBagConstraints.EAST;
 		gbc_lblDetails_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblDetails_3.gridx = 5;
+		gbc_lblDetails_3.gridx = 6;
 		gbc_lblDetails_3.gridy = 3;
 		panelRechnung.add(lblDetails_3, gbc_lblDetails_3);
 		
@@ -2616,7 +2632,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_lblBeschreibung = new GridBagConstraints();
 		gbc_lblBeschreibung.anchor = GridBagConstraints.EAST;
 		gbc_lblBeschreibung.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBeschreibung.gridx = 2;
+		gbc_lblBeschreibung.gridx = 3;
 		gbc_lblBeschreibung.gridy = 4;
 		panelRechnung.add(lblBeschreibung, gbc_lblBeschreibung);
 		
@@ -2625,7 +2641,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		gbc_txtRbBeschreibung.anchor = GridBagConstraints.NORTH;
 		gbc_txtRbBeschreibung.insets = new Insets(0, 0, 5, 5);
 		gbc_txtRbBeschreibung.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtRbBeschreibung.gridx = 3;
+		gbc_txtRbBeschreibung.gridx = 4;
 		gbc_txtRbBeschreibung.gridy = 4;
 		panelRechnung.add(txtRbBeschreibung, gbc_txtRbBeschreibung);
 		txtRbBeschreibung.setColumns(10);
@@ -2633,7 +2649,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		JLabel lblName_3 = new JLabel("Name");
 		GridBagConstraints gbc_lblName_3 = new GridBagConstraints();
 		gbc_lblName_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblName_3.gridx = 5;
+		gbc_lblName_3.gridx = 6;
 		gbc_lblName_3.gridy = 4;
 		panelRechnung.add(lblName_3, gbc_lblName_3);
 		
@@ -2641,7 +2657,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_txtRaName = new GridBagConstraints();
 		gbc_txtRaName.insets = new Insets(0, 0, 5, 5);
 		gbc_txtRaName.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtRaName.gridx = 6;
+		gbc_txtRaName.gridx = 7;
 		gbc_txtRaName.gridy = 4;
 		panelRechnung.add(txtRaName, gbc_txtRaName);
 		txtRaName.setColumns(10);
@@ -2650,7 +2666,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_lblBeschreibung_1 = new GridBagConstraints();
 		gbc_lblBeschreibung_1.anchor = GridBagConstraints.EAST;
 		gbc_lblBeschreibung_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBeschreibung_1.gridx = 7;
+		gbc_lblBeschreibung_1.gridx = 8;
 		gbc_lblBeschreibung_1.gridy = 4;
 		panelRechnung.add(lblBeschreibung_1, gbc_lblBeschreibung_1);
 		
@@ -2658,7 +2674,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_txtRaBeschreibung = new GridBagConstraints();
 		gbc_txtRaBeschreibung.insets = new Insets(0, 0, 5, 0);
 		gbc_txtRaBeschreibung.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtRaBeschreibung.gridx = 8;
+		gbc_txtRaBeschreibung.gridx = 9;
 		gbc_txtRaBeschreibung.gridy = 4;
 		panelRechnung.add(txtRaBeschreibung, gbc_txtRaBeschreibung);
 		txtRaBeschreibung.setColumns(10);
@@ -2675,7 +2691,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_lblAuftraggeber_1 = new GridBagConstraints();
 		gbc_lblAuftraggeber_1.anchor = GridBagConstraints.EAST;
 		gbc_lblAuftraggeber_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAuftraggeber_1.gridx = 5;
+		gbc_lblAuftraggeber_1.gridx = 6;
 		gbc_lblAuftraggeber_1.gridy = 5;
 		panelRechnung.add(lblAuftraggeber_1, gbc_lblAuftraggeber_1);
 		
@@ -2683,7 +2699,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_lblAnsprechspartner_1 = new GridBagConstraints();
 		gbc_lblAnsprechspartner_1.anchor = GridBagConstraints.EAST;
 		gbc_lblAnsprechspartner_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAnsprechspartner_1.gridx = 7;
+		gbc_lblAnsprechspartner_1.gridx = 8;
 		gbc_lblAnsprechspartner_1.gridy = 5;
 		panelRechnung.add(lblAnsprechspartner_1, gbc_lblAnsprechspartner_1);
 		
@@ -2712,7 +2728,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_lblBezahlungsart_1 = new GridBagConstraints();
 		gbc_lblBezahlungsart_1.anchor = GridBagConstraints.EAST;
 		gbc_lblBezahlungsart_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBezahlungsart_1.gridx = 5;
+		gbc_lblBezahlungsart_1.gridx = 6;
 		gbc_lblBezahlungsart_1.gridy = 6;
 		panelRechnung.add(lblBezahlungsart_1, gbc_lblBezahlungsart_1);
 		
@@ -2720,7 +2736,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_txtRaBezahlung = new GridBagConstraints();
 		gbc_txtRaBezahlung.insets = new Insets(0, 0, 5, 5);
 		gbc_txtRaBezahlung.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtRaBezahlung.gridx = 6;
+		gbc_txtRaBezahlung.gridx = 7;
 		gbc_txtRaBezahlung.gridy = 6;
 		panelRechnung.add(txtRaBezahlung, gbc_txtRaBezahlung);
 		txtRaBezahlung.setColumns(10);
@@ -2729,7 +2745,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_lblAuftrag = new GridBagConstraints();
 		gbc_lblAuftrag.anchor = GridBagConstraints.EAST;
 		gbc_lblAuftrag.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAuftrag.gridx = 7;
+		gbc_lblAuftrag.gridx = 8;
 		gbc_lblAuftrag.gridy = 6;
 		panelRechnung.add(lblAuftrag, gbc_lblAuftrag);
 		
@@ -2739,7 +2755,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		gbc_txtRaAuftrag.anchor = GridBagConstraints.NORTH;
 		gbc_txtRaAuftrag.insets = new Insets(0, 0, 5, 0);
 		gbc_txtRaAuftrag.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtRaAuftrag.gridx = 8;
+		gbc_txtRaAuftrag.gridx = 9;
 		gbc_txtRaAuftrag.gridy = 6;
 		panelRechnung.add(txtRaAuftrag, gbc_txtRaAuftrag);
 		txtRaAuftrag.setColumns(10);
@@ -2766,7 +2782,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_lblBetrag_1 = new GridBagConstraints();
 		gbc_lblBetrag_1.anchor = GridBagConstraints.EAST;
 		gbc_lblBetrag_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBetrag_1.gridx = 5;
+		gbc_lblBetrag_1.gridx = 6;
 		gbc_lblBetrag_1.gridy = 7;
 		panelRechnung.add(lblBetrag_1, gbc_lblBetrag_1);
 		
@@ -2774,7 +2790,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		GridBagConstraints gbc_txtRaBetrag = new GridBagConstraints();
 		gbc_txtRaBetrag.insets = new Insets(0, 0, 5, 5);
 		gbc_txtRaBetrag.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtRaBetrag.gridx = 6;
+		gbc_txtRaBetrag.gridx = 7;
 		gbc_txtRaBetrag.gridy = 7;
 		panelRechnung.add(txtRaBetrag, gbc_txtRaBetrag);
 		txtRaBetrag.setColumns(10);
@@ -2837,12 +2853,13 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				
 				
 				Rechnungsabwicklung.alterBRechnung(id, rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
+				DataBase.refreshRechnungB();
 			}
 		});
 		GridBagConstraints gbc_btnSpeichern_1 = new GridBagConstraints();
 		gbc_btnSpeichern_1.gridwidth = 2;
 		gbc_btnSpeichern_1.insets = new Insets(0, 0, 0, 5);
-		gbc_btnSpeichern_1.gridx = 2;
+		gbc_btnSpeichern_1.gridx = 3;
 		gbc_btnSpeichern_1.gridy = 8;
 		panelRechnung.add(btnSpeichern_1, gbc_btnSpeichern_1);
 		
@@ -2913,12 +2930,14 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				
 				
 				Rechnungsabwicklung.alterARechnung(id, rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
+				
+				DataBase.refreshRechnungA();
 			
 			}
 		});
 		GridBagConstraints gbc_btnSpeichern_2 = new GridBagConstraints();
 		gbc_btnSpeichern_2.gridwidth = 2;
-		gbc_btnSpeichern_2.gridx = 7;
+		gbc_btnSpeichern_2.gridx = 8;
 		gbc_btnSpeichern_2.gridy = 8;
 		panelRechnung.add(btnSpeichern_2, gbc_btnSpeichern_2);
 		

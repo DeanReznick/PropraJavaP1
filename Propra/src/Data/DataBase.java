@@ -1522,66 +1522,133 @@ public static void refreshBill2() {
 		
 	}
 	
-	public static void refreshBill () {
+	
+	public static void refreshRechnungB () {
 		
 		
-		DefaultTableModel modelBill = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "TimeStamp"}, 0) {
+		DefaultTableModel modelRechnungB = new DefaultTableModel(new String[]{"ID_BRechnung", "Name", "ID_Auftraggeber", "Art_Bezahlung", "Betrag", "Beschreibung", "ID_Bearbeiter", "Timestamp", "ID_Ansprechpartner"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
-			};	
-		
-		Statement stmt = null;
+			};
+		String sqlRechnungB = "SELECT * FROM BRechnung";
+			Statement stmt = null;
+			
+			try {
+				stmt = DataBase.c.createStatement();
+			} catch (SQLException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+		ResultSet rsRechnungB = null;
 		try {
-			stmt = DataBase.c.createStatement();
+			rsRechnungB = stmt.executeQuery(sqlRechnungB);
 		} catch (SQLException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-
-		String sql = "SELECT * FROM Rechnung";
-		ResultSet rs = null;
-		try {
-			rs = stmt.executeQuery(sql);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
 		try {
-			while(rs.next())
+			while(rsRechnungB.next())
 			{
-				String a1 = rs.getString("ID_Rechnung");
-			    String b1 = rs.getString("Rechnungsname");
-			    String c1 = rs.getString("Auftraggeber");
-			   // String d1 = rsBill.getString("Ansprechpartner");
-			   // String e1 = rsBill.getString("Bezahlung_Art");
-			    String f1 = rs.getString("Betrag");
-			    String g1 = rs.getString("Beschreibung");
-			   // String h1 = rsBill.getString("Bearbeiter");
-			    String j1 = rs.getString("TimeStamp");
-			   
-			  
+				String a1 = rsRechnungB.getString("ID_BRechnung");
+			    String b1 = rsRechnungB.getString("Name");
+			    String c1 = rsRechnungB.getString("ID_Auftraggeber");
+			    String d1 = rsRechnungB.getString("Art_Bezahlung");
+			    String e1 = rsRechnungB.getString("Betrag");
+			    String f1 = rsRechnungB.getString("Beschreibung");
+			    String g1 = rsRechnungB.getString("ID_Bearbeiter");
+			    String h1 = rsRechnungB.getString("Timestamp");
+			    String j1 = rsRechnungB.getString("ID_Ansprechpartner");
 			    
-			    modelBill.addRow(new Object[]{a1, b1,c1,f1,g1, j1});
+			    
+			    modelRechnungB.addRow(new Object[]{a1, b1,c1, d1, e1, f1, g1, h1, j1});
 			}
-			
-
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		MainMenu.tblRechnB.setModel(modelRechnungB);
 		
-		
-		MainMenu.tblBills.setModel(modelBill);
+		TableColumnModel tcmRechnungB = MainMenu.tblRechnB.getColumnModel();
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(0) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(7) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(5) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(4) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(2) );
 	
 		
 		
 		
 		
 	}
+	
+	
+	public static void refreshRechnungA() {
+		
+DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechnung", "Name", "ID_Auftraggeber","Art_Bezahlung", "Betrag", "Beschreibung", "ID_Bearbeiter", "Timestamp", "ID_Ansprechpartner", "ID_Auftrag"}, 0) {
+			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+					return false;
+				}
+			};
+			
+			
+			Statement stmt = null;
+			
+			try {
+				stmt = DataBase.c.createStatement();
+			} catch (SQLException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+		String sqlRechnungA = "SELECT * FROM ARechnung";
+		ResultSet rsRechnungA = null;
+		try {
+			rsRechnungA = stmt.executeQuery(sqlRechnungA);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			while(rsRechnungA.next())
+			{
+				String a1 = rsRechnungA.getString("ID_ARechnung");
+			    String b1 = rsRechnungA.getString("Name");
+			    String c1 = rsRechnungA.getString("ID_Auftraggeber");
+			    String d1 = rsRechnungA.getString("Art_Bezahlung");
+			    String e1 = rsRechnungA.getString("Betrag");
+			    String f1 = rsRechnungA.getString("Beschreibung");
+			    String g1 = rsRechnungA.getString("ID_Bearbeiter");
+			    String h1 = rsRechnungA.getString("Timestamp");
+			    String j1 = rsRechnungA.getString("ID_Ansprechpartner");
+			    String i1 = rsRechnungA.getString("ID_Auftrag");
+			    
+			    modelRechnungA.addRow(new Object[]{a1, b1,c1,d1, e1, f1, g1, h1, j1, i1});
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		MainMenu.tblRechnA.setModel(modelRechnungA);
+		TableColumnModel tcmRechnungA = MainMenu.tblRechnA.getColumnModel();
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(0) );
+		
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(4) );
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(4) );
+	
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(5) );
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(2) );
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(4) );
+		
+		
+	}
+	
 	
 	public static void refreshRechn () {
 		
