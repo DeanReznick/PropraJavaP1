@@ -2418,7 +2418,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				
 			
 				stmt = DataBase.c.createStatement();
-			 String query = "SELECT * FROM TBauteil;"; 
+			 String query = "SELECT * FROM TBauteil WHERE ID_TKategorie = " + idCategory + ";"; 
 		      ResultSet rs = stmt.executeQuery( query );	
 			
 			
