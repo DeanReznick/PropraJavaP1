@@ -777,7 +777,7 @@ public static void searchOrder(String search) {
 	
 	
 	
-	DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name","Link", "Menge lagernd", "Menge bestellt", "Menge geplant", "Lagerort"}, 0) {
+		DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name", "Menge lagernd", "Preis"}, 0) {
 		
 		@Override
 		public boolean isCellEditable(int row, int column) {
@@ -793,7 +793,7 @@ public static void searchOrder(String search) {
 		e1.printStackTrace();
 	}
 	
-	String sqlsearch = "SELECT * FROM Bauteil WHERE UPPER(Name) like UPPER('%" + search + "%');";
+	String sqlsearch = "SELECT * FROM TBauteil WHERE UPPER(Name) like UPPER('%" + search + "%');";
 	
 	ResultSet rs = null;
 	try {
@@ -806,15 +806,16 @@ public static void searchOrder(String search) {
 	try {
 		while(rs.next())
 		{
-			String a1 = rs.getString("ID_Bauteil");
+			String a1 = rs.getString("ID_TBauteil");
 		    String b1 = rs.getString("Name");
 		    String c1 = rs.getString("Link");
 		    String d1 = rs.getString("MengeLagernd");
 		    String e1 = rs.getString("MengeBestellt");
 		    String f1 = rs.getString("MengeGeplant");
 		    String g1 = rs.getString("Lagerort");
+		    String h1 = rs.getString("Preis");
 		    
-		    modelComponents.addRow(new Object[]{a1, b1,c1,d1,e1,f1,g1});
+		    modelComponents.addRow(new Object[]{a1, b1,d1,h1});
 		   
 		}
 	} catch (SQLException e) {
@@ -824,6 +825,8 @@ public static void searchOrder(String search) {
 	
 	MainMenu.tblComponents.setModel(modelComponents);
 //	MainMenu.scrollPane_3.setViewportView(MainMenu.tblComponents);
+	TableColumnModel tcm = MainMenu.tblComponents.getColumnModel();
+	tcm.removeColumn( tcm.getColumn(0) );
 	
 	
 }

@@ -1133,6 +1133,11 @@ public class MainMenu extends JFrame {
 				txtSearchComponent.setColumns(10);
 				
 				JButton btnSearchComponent = new JButton("Suchen");
+				btnSearchComponent.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						DataBase.searchComponent(txtSearchComponent.getText());
+					}
+				});
 				GridBagConstraints gbc_btnSearchComponent = new GridBagConstraints();
 				gbc_btnSearchComponent.insets = new Insets(0, 0, 5, 5);
 				gbc_btnSearchComponent.gridx = 11;
