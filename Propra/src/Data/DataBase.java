@@ -435,23 +435,25 @@ public static void loadOrdersToRAM() {
 	   try {
 	    
 		   //Query 
-		   String query = "SELECT * FROM Bauteil;"; 
+		   String query = "SELECT * FROM TBauteil;"; 
 		   
 		   // Getting Data from Database
 	      stmt = c.createStatement();
 	      ResultSet rs = stmt.executeQuery( query );
 	      
 	      while ( rs.next() ) {
-	    	  ID_Bauteil = rs.getInt("ID_Bauteil");
+	    	  ID_Bauteil = rs.getInt("ID_TBauteil");
 //	    	  ID_Kategorie = rs.getInt("ID_Kategorie"); 
 	    	  name = rs.getString("Name"); 
 	    	  link = rs.getString("Link"); 
 	    	  mengeLagernd = rs.getInt("MengeLagernd"); 
 	    	  mengeBestellt = rs.getInt("MengeBestellt"); 
 	    	  mengeGeplant = rs.getInt("MengeGeplant"); 
-	    	  lagerort = rs.getString("Lagerort"); 
+	    	  lagerort = rs.getString("Lagerort");
+	    	  int category = rs.getInt("ID_TKategorie");
+	    	  double preis = rs.getDouble("Preis");
 	    	  
-	    	  ComponentObjektRAM component = new ComponentObjektRAM( ID_Bauteil, name,  link, mengeLagernd, mengeBestellt,  mengeGeplant,  lagerort); 
+	    	  ComponentObjektRAM component = new ComponentObjektRAM( ID_Bauteil, name,  link, mengeLagernd, mengeBestellt,  mengeGeplant,  lagerort, category, preis); 
 	    	  
 	    	  components.add(component); 
 	    	  
@@ -1318,7 +1320,7 @@ public static void refreshBill2() {
 			e2.printStackTrace();
 		}
 
-		String sql = "SELECT * FROM Bauteil";
+		String sql = "SELECT * FROM TBauteil";
 		ResultSet rs = null;
 		try {
 			rs = stmt.executeQuery(sql);
@@ -1330,14 +1332,15 @@ public static void refreshBill2() {
 		try {
 			while(rs.next())
 			{
-				String id = rs.getString("ID_Bauteil");
+				String id = rs.getString("ID_TBauteil");
 			    String name = rs.getString("Name");
 			    String menge = rs.getString("MengeLagernd");
 			    int idBauteil = Integer.parseInt(id);
 			    
-			    String h1 =BauteileAuftragsabwicklung.getComponentPrice(idBauteil);
+//			    String h1 =BauteileAuftragsabwicklung.getComponentPrice(idBauteil);
+			    double preis = rs.getDouble("Preis");
 			    
-			    modelComponents.addRow(new Object[]{id, name, menge, h1});
+			    modelComponents.addRow(new Object[]{id, name, menge, preis});
 			    
 			}
 		} catch (SQLException e) {
@@ -2399,7 +2402,55 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		}
 
 
-//	  public static 
+	  public static void showComponentsOfCategory(int idCategory) {
+		  
+			
+			DefaultTableModel modelComponents = new DefaultTableModel(new String[]{"ID Bauteil", "Name", "Menge lagernd", "Preis"}, 0) {
+				
+				@Override
+				public boolean isCellEditable(int row, int column) {
+						return false;
+					}
+				};	
+							
+			Statement stmt = null;
+			try {
+				
+			
+				stmt = DataBase.c.createStatement();
+			 String query = "SELECT * FROM TBauteil;"; 
+		      ResultSet rs = stmt.executeQuery( query );	
+			
+			
+				rs = stmt.executeQuery(query);
+			
+			
+			
+			
+				while(rs.next())
+				{
+					int idBauteil = rs.getInt("ID_TBauteil");
+				    String name = rs.getString("Name");
+				    String link = rs.getString("Link");
+				    int stock = rs.getInt("MengeLagernd");
+				    int ordered = rs.getInt("MengeBestellt");
+				    int planned = rs.getInt("MengeGeplant");
+				    String storage = rs.getString("Lagerort");
+				    int category = rs.getInt("ID_TKategorie");
+				    double preis = rs.getDouble("Preis");
+				    
+				    modelComponents.addRow(new Object[]{idBauteil, name,stock,preis});
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			MainMenu.tblComponents.setModel(modelComponents);
+			MainMenu.scrollPaneComponent.setViewportView(MainMenu.tblComponents);
+			TableColumnModel tcmComponents = MainMenu.tblComponents.getColumnModel();
+			tcmComponents.removeColumn( tcmComponents.getColumn(0) );
+	  }
 	  
 	  
 	  

@@ -54,8 +54,6 @@ public class DeleteCategory extends JFrame {
 				for (int i = 0; i < DataBase.categories.size(); i++) {
 					categoryNames[i] = DataBase.categories.get(i).getName();
 					categoryIds[i] = DataBase.categories.get(i).getIdCategory();
-					System.out.println(categoryNames[i]);
-					System.out.println(categoryIds[i]);
 				}
 				
 				for (int i = 0; i< categoryNames.length; i++) {

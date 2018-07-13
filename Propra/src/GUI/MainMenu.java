@@ -22,6 +22,7 @@ import Data.OrderObjektRAM;
 import Data.PersonObjektRAM;
 import Data.PersonenFertigungsverwaltung;
 import Data.Rechnungsabwicklung;
+import Data.TreeBauteile;
 import Data.TreeErstellen;
 
 import java.awt.GridBagLayout;
@@ -1148,6 +1149,26 @@ public class MainMenu extends JFrame {
 				gbc_scrollPaneComponent.gridheight = 1;
 				panelBauteil.add(scrollPaneComponent, gbc_scrollPaneComponent);
 				
+				DataBase.loadCategoriesToRAM();
+				DataBase.loadComponentsToRAM();
+				String[] categoryName = new String[DataBase.categories.size()];
+				int[] categoryId = new int[DataBase.categories.size()];
+				int index = 0;
+				
+				for (CategoryObjektRAM c : DataBase.categories) {
+					categoryName[index] = c.getName();
+					categoryId[index] = c.getIdCategory();
+					index++;
+				}
+				
+				JComboBox comboBoxCategory = new JComboBox(categoryName);
+				GridBagConstraints gbc_comboBoxCategory = new GridBagConstraints();
+				gbc_comboBoxCategory.insets = new Insets(0, 0, 5, 5);
+				gbc_comboBoxCategory.fill = GridBagConstraints.HORIZONTAL;
+				gbc_comboBoxCategory.gridx = 8;
+				gbc_comboBoxCategory.gridy = 9;
+				panelBauteil.add(comboBoxCategory, gbc_comboBoxCategory);
+				
 				String[] column_headers_component = {"Name", "Menge lagernd", "Preis"};
 				String[][] data_components = new String[1000][8];
 				tblComponents = new JTable(data_components, column_headers_component);
@@ -1156,6 +1177,7 @@ public class MainMenu extends JFrame {
 					public void mouseClicked(MouseEvent arg0) {
 						int colnr  = tblComponents.getSelectedRow();
 						int id = Integer.parseInt(tblComponents.getModel().getValueAt(colnr, 0).toString());
+						String category = "";
 						
 						ComponentObjektRAM clicked = new ComponentObjektRAM();
 						
@@ -1172,7 +1194,13 @@ public class MainMenu extends JFrame {
 						txtDetailPlannedComponent.setText(Integer.toString(clicked.getMengeGeplant()));
 						txtDetailStockComponent.setText(Integer.toString(clicked.getMengeLagernd()));
 						txtDetailLocationComponent.setText(clicked.getLagerort());
-						txtDetailPriceComponent.setText(Integer.toString(BauteileAuftragsabwicklung.getLatestPrice(clicked.getID_Bauteil())));
+						txtDetailPriceComponent.setText(Double.toString(clicked.getPreis()));
+						for (int i = 0; i<categoryId.length; i++) {
+							if (categoryId[i] == clicked.getID_Kategorie()) {
+								category = categoryName[i];
+							}
+						}
+						comboBoxCategory.setSelectedItem(category);
 						
 						DataBase.loadComponentsToRAM();
 					}
@@ -1186,7 +1214,7 @@ public class MainMenu extends JFrame {
 						}
 					};	
 					Statement stmtComponents = DataBase.c.createStatement();
-					String sqlComponent = "SELECT * FROM Bauteil";
+					String sqlComponent = "SELECT * FROM TBauteil";
 					ResultSet rsComponent = stmtComponents.executeQuery(sqlComponent);
 					
 					
@@ -1194,24 +1222,26 @@ public class MainMenu extends JFrame {
 					
 					while(rsComponent.next())
 					{
-						int idBauteil = rsComponent.getInt("ID_Bauteil");
+						int idBauteil = rsComponent.getInt("ID_TBauteil");
 					    String name = rsComponent.getString("Name");
 					    String link = rsComponent.getString("Link");
 					    int stock = rsComponent.getInt("MengeLagernd");
 					    int ordered = rsComponent.getInt("MengeBestellt");
 					    int planned = rsComponent.getInt("MengeGeplant");
 					    String storage = rsComponent.getString("Lagerort");
+					    int category = rsComponent.getInt("ID_TKategorie");
+					    double preis = rsComponent.getDouble("Preis");
 					    
 					    int id = idBauteil;
 					    
-					    String h1 = BauteileAuftragsabwicklung.getComponentPrice(id);
+//					    String h1 = BauteileAuftragsabwicklung.getComponentPrice(id);
 					    
-					    ComponentObjektRAM component = new ComponentObjektRAM(idBauteil, name, link, stock, ordered, planned, storage);  
+					    ComponentObjektRAM component = new ComponentObjektRAM(idBauteil, name, link, stock, ordered, planned, storage, category, preis);  
 					    DataBase.components.add(component);
 					 
 					  
 					    
-					    modelComponents.addRow(new Object[]{idBauteil, name,stock,h1});
+					    modelComponents.addRow(new Object[]{idBauteil, name,stock,preis});
 					}
 					
 					tblComponents.setModel(modelComponents);
@@ -1227,6 +1257,31 @@ public class MainMenu extends JFrame {
 				
 				    
 				treeCategory = new JTree(TreeErstellen.createTree());
+				treeCategory.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+								MainMenu.treeCategory.getLastSelectedPathComponent();
+						
+						String[] categoryNames = new String[DataBase.categories.size()];
+						int[] categoryIds = new int[DataBase.categories.size()];
+						
+						for (int i = 0; i < DataBase.categories.size(); i++) {
+							categoryNames[i] = DataBase.categories.get(i).getName();
+							categoryIds[i] = DataBase.categories.get(i).getIdCategory();
+						}
+						
+						for (int i = 0; i< categoryNames.length; i++) {
+							if (categoryNames[i].equals(node.toString())) {
+								System.out.println(categoryNames[i]);
+								DataBase.showComponentsOfCategory(categoryIds[i]);
+							}
+						}
+						
+						
+
+					}
+				});
 				treeCategory.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 //				treeCategory.addTreeSelectionListener(this);
 				scrollPaneCategory.setViewportView(treeCategory);
@@ -1333,8 +1388,15 @@ public class MainMenu extends JFrame {
 				JButton btnKategorieLoeschen = new JButton("Kategorie loeschen");
 				btnKategorieLoeschen.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						DefaultTableModel model = (DefaultTableModel) tblComponents.getModel();
+						//get selected row index
+						int selectedRowIndex = tblComponents.getSelectedRow();
+						if (selectedRowIndex >= 0) {
 						DeleteCategory x = new DeleteCategory();
 						x.setVisible(true);
+						} else {
+							JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kategorie aus!");
+						}
 					}
 				});
 				GridBagConstraints gbc_btnKategorieLoeschen = new GridBagConstraints();
@@ -1436,13 +1498,7 @@ public class MainMenu extends JFrame {
 				panelBauteil.add(txtDetailPlannedComponent, gbc_txtDetailPlannedComponent);
 				txtDetailPlannedComponent.setColumns(10);
 				
-				JComboBox comboBoxCategory = new JComboBox();
-				GridBagConstraints gbc_comboBoxCategory = new GridBagConstraints();
-				gbc_comboBoxCategory.insets = new Insets(0, 0, 5, 5);
-				gbc_comboBoxCategory.fill = GridBagConstraints.HORIZONTAL;
-				gbc_comboBoxCategory.gridx = 8;
-				gbc_comboBoxCategory.gridy = 9;
-				panelBauteil.add(comboBoxCategory, gbc_comboBoxCategory);
+				
 				
 				JLabel lblLagerort = new JLabel("Lagerort:");
 				GridBagConstraints gbc_lblLagerort = new GridBagConstraints();
@@ -1506,7 +1562,8 @@ public class MainMenu extends JFrame {
 							int oldOrdered = clicked.getMengeBestellt();
 							int oldPlanned = clicked.getMengeGeplant();
 							String oldStorage = clicked.getLagerort();
-							String oldPrice = MainMenu.tblComponents.getModel().getValueAt(colnr, 3).toString();							
+//							String oldPrice = MainMenu.tblComponents.getModel().getValueAt(colnr, 3).toString();	
+							int oldCategory = clicked.getID_Kategorie();
 							
 							String newLink = txtDetailLinkComponent.getText();
 							String newName = txtDetailNameComponent.getText();
@@ -1516,12 +1573,21 @@ public class MainMenu extends JFrame {
 							String newStorage = txtDetailLocationComponent.getText();
 							String newPrice = txtDetailPriceComponent.getText();
 							
+							String newCategoryName = comboBoxCategory.getSelectedItem().toString();
+							int newCategoryId = 0;
+							for (int i = 0; i<categoryName.length; i++) {
+								if (categoryName[i].equals(newCategoryName)) {
+									newCategoryId = categoryId[i];
+								}
+							}
+							
 							int selectedRowIndex = MainMenu.tblComponents.getSelectedRow();
 							String tableClick = MainMenu.tblComponents.getModel().getValueAt(selectedRowIndex, 0).toString();
 							int id = Integer.parseInt(tableClick);
 							System.out.println(id);
-							BauteileAuftragsabwicklung.changeBauteil(id, newName, newLink, newStock, newOrdered, newPlanned, newStorage);
-							BauteileAuftragsabwicklung.alterPrice(id, newPrice);
+//							BauteileAuftragsabwicklung.changeBauteil(id, newName, newLink, newStock, newOrdered, newPlanned, newStorage);
+							TreeBauteile.alterTBauteil(id, newCategoryId, newName, newLink, newStock, newOrdered, newPlanned, newStorage, Float.parseFloat(newPrice));
+//							BauteileAuftragsabwicklung.alterPrice(id, newPrice);
 							DataBase.refreshComponent();
 							
 							txtDetailNameComponent.setText("");
@@ -1651,11 +1717,17 @@ public class MainMenu extends JFrame {
 		JButton btnTopfLoeschen = new JButton("Topf Loeschen");
 		btnTopfLoeschen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				DefaultTableModel model = (DefaultTableModel) tblTopf.getModel();
+				//get selected row index
+				int selectedRowIndex = tblTopf.getSelectedRow();
+				if (selectedRowIndex >= 0) {
 				try {
 					DeleteTopf x = new DeleteTopf();
 					x.setVisible(true);
 				}catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus.");
+				}
+				} else {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus.");
 				}
 			}
@@ -2006,10 +2078,14 @@ public class MainMenu extends JFrame {
 				DefaultTableModel model = (DefaultTableModel) tblKasse.getModel();
 				//get selected row index
 				int selectedRowIndex = tblKasse.getSelectedRow();
+				if (selectedRowIndex >= 0) {
 				try {
 				DeleteKasse x = new DeleteKasse();
 				x.setVisible(true);
 				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
+				}
+				} else {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
 				}
 			}
@@ -2140,18 +2216,20 @@ public class MainMenu extends JFrame {
 		JButton btnKasseSpeichern = new JButton("Speichern");
 		btnKasseSpeichern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
-				int colnr  = MainMenu.tblKasse.getSelectedRow();
-				int colnrKasse = MainMenu.tblKasse.getSelectedRow();
-				String idKasse = MainMenu.tblKasse.getModel().getValueAt(colnr, 0).toString();
-				 String oldArt = MainMenu.tblKasse.getModel().getValueAt(colnr, 1).toString();
-				 String oldNumber = MainMenu.tblKasse.getModel().getValueAt(colnr, 2).toString();
-				 String oldSoll = MainMenu.tblKasse.getModel().getValueAt(colnr, 3).toString();
-				 String oldIst = MainMenu.tblKasse.getModel().getValueAt(colnr, 4).toString();
-				 
-				Finanzverwaltung.alterKasse(Integer.parseInt(idKasse), comboBoxArt.getSelectedItem().toString(), txtKasseNr.getText(), Integer.parseInt(txtKasseSoll.getText()), Integer.parseInt(txtKasseIst.getText()));
-				DataBase.refreshKasse();
+				try {
+					int colnr  = MainMenu.tblKasse.getSelectedRow();
+					int colnrKasse = MainMenu.tblKasse.getSelectedRow();
+					String idKasse = MainMenu.tblKasse.getModel().getValueAt(colnr, 0).toString();
+					 String oldArt = MainMenu.tblKasse.getModel().getValueAt(colnr, 1).toString();
+					 String oldNumber = MainMenu.tblKasse.getModel().getValueAt(colnr, 2).toString();
+					 String oldSoll = MainMenu.tblKasse.getModel().getValueAt(colnr, 3).toString();
+					 String oldIst = MainMenu.tblKasse.getModel().getValueAt(colnr, 4).toString();
+					 
+					Finanzverwaltung.alterKasse(Integer.parseInt(idKasse), comboBoxArt.getSelectedItem().toString(), txtKasseNr.getText(), Integer.parseInt(txtKasseSoll.getText()), Integer.parseInt(txtKasseIst.getText()));
+					DataBase.refreshKasse();
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus!");
+				}
 			}
 		});
 		GridBagConstraints gbc_btnKasseSpeichern = new GridBagConstraints();
@@ -2164,12 +2242,15 @@ public class MainMenu extends JFrame {
 		btnSpeichern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
-				
+				try {
 				String idTopf2 = MainMenu.tblTopf.getModel().getValueAt(MainMenu.tblTopf.getSelectedRow(), 0).toString();
 		
 				System.out.println(idTopf2);
 				Finanzverwaltung.alterTopf(Integer.parseInt(idTopf2), Integer.parseInt(comboBoxKasse.getSelectedItem().toString()), Integer.parseInt(txtTopfSoll.getText()), Integer.parseInt(txtTopfIst.getText()));
 				DataBase.refreshTopf();
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus!");
+				}
 				
 			}
 		});
@@ -2540,13 +2621,18 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				DefaultTableModel model = (DefaultTableModel) tblRechnB.getModel();
 				//get selected row index
 				int selectedRowIndex = tblRechnB.getSelectedRow();
+				if(selectedRowIndex >= 0) {
 				try {
 				DeleteBill x = new DeleteBill();
 				x.setVisible(true);
 				}catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
 				}
+				} else {
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
+				}
 			}
+			
 		});
 		GridBagConstraints gbc_btnLoeschen = new GridBagConstraints();
 		gbc_btnLoeschen.gridwidth = 2;
@@ -2576,12 +2662,16 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				DefaultTableModel model = (DefaultTableModel) tblRechnB.getModel();
 				//get selected row index
 				int selectedRowIndex = tblRechnA.getSelectedRow();
+				if (selectedRowIndex >= 0) {
 				try {
 				DeleteBillA x = new DeleteBillA();
 				x.setVisible(true);
 				}catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
 				}
+				} else {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus.");
+					}
 			}
 		});
 		GridBagConstraints gbc_btnLoeschen_1 = new GridBagConstraints();
@@ -2799,6 +2889,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 			public void actionPerformed(ActionEvent e) {
 				
 				int colnr  = MainMenu.tblRechnB.getSelectedRow();
+				if (colnr >= 0) {
 				String id_string = MainMenu.tblRechnB.getModel().getValueAt(colnr, 0).toString();
 				int id = Integer.parseInt(id_string);
 			
@@ -2851,6 +2942,9 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				
 				Rechnungsabwicklung.alterBRechnung(id, rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
 				DataBase.refreshRechnungB();
+				} else {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus!");
+				}
 			}
 		});
 		GridBagConstraints gbc_btnSpeichern_1 = new GridBagConstraints();
@@ -2864,11 +2958,8 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		btnSpeichern_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				
-				
-				
-				
 				int colnr  = MainMenu.tblRechnA.getSelectedRow();
+				if (colnr >= 0) {
 				String id_string = MainMenu.tblRechnA.getModel().getValueAt(colnr, 0).toString();
 				int id = Integer.parseInt(id_string);
 				String oldName = MainMenu.tblRechnA.getModel().getValueAt(colnr, 1).toString();
@@ -2929,6 +3020,9 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				Rechnungsabwicklung.alterARechnung(id, rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
 				
 				DataBase.refreshRechnungA();
+				} else {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus!");
+				}
 			
 			}
 		});
