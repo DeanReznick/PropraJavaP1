@@ -2,6 +2,10 @@ package Data;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import javax.swing.JOptionPane;
+
+import GUI.GUILogin;
+
 public class PersonenFertigungsverwaltung {
 
 	//Possible changes/extensions: 
@@ -83,13 +87,21 @@ public class PersonenFertigungsverwaltung {
 	
 	public static boolean deletePersonById(int id) {
 		
-		 // Deletes person entries from the database. 
-		String query = "DELETE FROM Person WHERE ID_Person=" + id + ";"; 
-		DataBase.executeQuery(query); 
+		int id_login = GUILogin.id_signedIn; 
+	
+		if (id_login == id) {
+			return false; 
+		}else {
+			 // Deletes person entries from the database. 
+			String query = "DELETE FROM Person WHERE ID_Person=" + id + ";"; 
+			DataBase.executeQuery(query); 
+			
+			removePersonFromArrayList(id);
+			
+			return true; 
+		}
 		
-		removePersonFromArrayList(id);
-		
-		return true; 
+	
 		
 	}
 	

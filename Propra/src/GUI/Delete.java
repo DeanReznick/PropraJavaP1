@@ -9,6 +9,7 @@ import Data.DataBase;
 import Data.PersonenFertigungsverwaltung;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -63,10 +64,18 @@ public class Delete extends JFrame {
 				int selectedRowIndex = MainMenu.tblPersonen.getSelectedRow();
 				String tableClick = MainMenu.tblPersonen.getModel().getValueAt(selectedRowIndex, 0).toString();
 				int id = Integer.parseInt(tableClick);
-				PersonenFertigungsverwaltung.deletePersonById(id);
 				
-				model.removeRow(selectedRowIndex);
-				DataBase.loadPeopleToRAM();
+				
+				boolean result = PersonenFertigungsverwaltung.deletePersonById(id);
+				
+				if (result == true) {
+					model.removeRow(selectedRowIndex);
+					DataBase.loadPeopleToRAM();
+					
+				
+				}else {
+					JOptionPane.showMessageDialog(null, "Unzulaessige Aktion", "Unzulaessige Aktion" , JOptionPane.ERROR_MESSAGE);
+				}
 				
 				dispose();
 			}

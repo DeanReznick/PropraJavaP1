@@ -28,6 +28,7 @@ import java.awt.Font;
 public class GUILogin extends JFrame {
 	public static String name_signedIn;
 	public static String vorname_signedIn; 
+	public static int id_signedIn; 
 		
 	private JPanel contentPane;
 	private JTextField txt_mail;
@@ -97,6 +98,11 @@ public class GUILogin extends JFrame {
 						namen = DataBase.getNameVornameByMail(mail); 
 						
 						
+						
+						int id = DataBase.getIdPersonByNameSurname(namen[1], namen[0]); 
+						
+						System.out.println(id);
+						
 						String vorname = namen[0]; 
 						String name = namen[1]; 
 						
@@ -105,7 +111,7 @@ public class GUILogin extends JFrame {
 												//Aus der Datenbank! 
 						name_signedIn = name; 
 						vorname_signedIn = vorname; 
-						
+						id_signedIn = id; 
 						
 						
 						
