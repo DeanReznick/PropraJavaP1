@@ -152,12 +152,12 @@ public class Rechnungsabwicklung {
 	
 	// ARechnung
 	
-	public static void createARechnung(String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung, int id_Auftrag) {
+	public static void createARechnung(String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung, int id_Auftrag, int id_Topf) {
 		// +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'"
 
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "INSERT INTO ARechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp, ID_Auftrag) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"', "+ id_Auftrag +" );";
+		String query = "INSERT INTO ARechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp, ID_Auftrag, ID_Topf) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"', "+ id_Auftrag +", " + id_Topf+" );";
 		System.out.println(query);
 		DataBase.executeQuery(query);
 		
@@ -176,6 +176,35 @@ public class Rechnungsabwicklung {
 		
 		
 	}
+	
+	
+	
+	public static void createARechnung(String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung, int id_Auftrag) {
+		// +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'"
+
+		
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
+		String query = "INSERT INTO ARechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp, ID_Auftrag, ID_Topf) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"', "+ id_Auftrag +",  -1 );";
+		System.out.println(query);
+		DataBase.executeQuery(query);
+		
+		
+		// im Auftrag Verankern
+		
+		int id = DataBase.getSpecificID("current", "SELECT max(ID_ARechnung) as current FROM ARechnung;");
+		
+		
+		
+		query = "UPDATE Auftrag SET ID_ARechnung = "+id+" WHERE ID_Auftrag = "+id_Auftrag+";"; 
+		System.out.println(query);
+		DataBase.executeQuery(query);
+	
+		
+		
+		
+	}
+	
+	
 
 	public static void alterARechnung(int id_Bill, String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung) {
 	

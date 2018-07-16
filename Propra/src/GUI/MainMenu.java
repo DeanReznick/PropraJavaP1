@@ -1931,7 +1931,7 @@ public class MainMenu extends JFrame {
 					try {
 						
 						stmtRechnung = DataBase.c.createStatement();
-						System.out.println("Statement");
+						System.out.println("Statement Done");
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -1939,12 +1939,19 @@ public class MainMenu extends JFrame {
 				
 				
 				//String sqlRechnung = "SELECT ARechnung.* FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+";";
-				    String sqlTest = "SELECT ARechnung.* FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf = 10";
-					String sqlRechnung = "SELECT BRechnung.ID_BRechnung AS ID_Rechnung, BRechnung.Name AS Name, BRechnung.Betrag As Betrag FROM BRechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on BRechnung.ID_BRechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf = 10 UNION SELECT ARechnung.ID_ARechnung AS ID_Rechnung, ARechnung.Name as Name, ARechnung.Betrag AS Betrag FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf = 10";
+				   // String sqlTest = "SELECT ARechnung.*  FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+";";
+					String sqlRechnung = "SELECT ARechnung.ID_ARechnung AS ID_Rechnung, ARechnung.Name AS Name, ARechnung.Betrag AS Betrag "
+							+ "FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung'"
+							+ " on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung "
+							+ "where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+" "
+							+ "UNION SELECT BRechnung.ID_BRechnung AS ID_Rechnung, BRechnung.Name AS Name, BRechnung.Betrag AS Betrag "
+							+ "FROM BRechnung INNER JOIN 'Mischtabelle-Topf-Rechnung'  "
+							+ "on BRechnung.ID_BRechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung "
+							+ "where 'Mischtabelle-Topf-Rechnung'.ID_Topf =10 ";
 				ResultSet rsRechnung = null;
 				
 					try {
-						rsRechnung = stmtRechnung.executeQuery(sqlTest);
+						rsRechnung = stmtRechnung.executeQuery(sqlRechnung);
 						System.out.println("Query executed");
 						System.out.println(rsRechnung);
 					} catch (SQLException e1) {
@@ -1955,26 +1962,37 @@ public class MainMenu extends JFrame {
 				
 				
 				
-				
-				
-					
-					try {
-						while(rsRechnung.next())
-						{
-							String a1 = rsRechnung.getString("ARechnung.ID_ARechnung");
-						    String b1 = rsRechnung.getString("ARechnung.Name");
+						try {
+							
+							int i = 0;
+							while (rsRechnung.next()) {
+								 i++;
+								}
+							System.out.println(i);
+							
+							while(rsRechnung.next())
+							{
+								String a1 = rsRechnung.getString("ID_Rechnung");
+								
+								 System.out.println(a1);
+							    String b1 = rsRechnung.getString("Name");
 
-						    String e1 = rsRechnung.getString("ARechnung.Betrag");
+							    String e1 = rsRechnung.getString("Betrag");
 
-						  
-						    
-						    modelRechnung.addRow(new Object[]{a1, b1, e1});
-						    System.out.println("WHILE DONE !!!");
+							  
+							    
+							    modelRechnung.addRow(new Object[]{a1, b1, e1});
+							    System.out.println("WHILE DONE !!!");
+							}
+							
+							 System.out.println("Leaving TRY");
+						} catch (SQLException e1) {
+							
+							 System.out.println("FAILLLLL");
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
 						}
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+				
 					
 					tblRechn.setModel(modelRechnung);
 					

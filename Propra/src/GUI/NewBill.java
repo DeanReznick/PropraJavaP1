@@ -287,8 +287,21 @@ public class NewBill extends JFrame {
 		lblAuftrag.setBounds(10, 230, 46, 14);
 		contentPane.add(lblAuftrag);
 		
+		JLabel lblTopf = new JLabel("Topf:");
+		lblTopf.setBounds(10, 261, 46, 14);
+		contentPane.add(lblTopf);
+		
+		JComboBox CBTopf = new JComboBox();
+		CBTopf.setBounds(124, 258, 86, 20);
+		contentPane.add(CBTopf);
+		
+		CBTopf.add("", temporaryLostComponent); 
 		
 		
+		// .. SELECT Alee toöpfe 
+		// in die CB 
+		
+		// Wenn Default -> Dann Funktion aufrufen 
 		
 	}
 }
