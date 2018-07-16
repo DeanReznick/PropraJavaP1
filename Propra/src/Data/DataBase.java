@@ -2036,7 +2036,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 	   try {
 	    
 		   //Query 
-		   String query = "SELECT * FROM Bauteil WHERE ID_Bauteil = " + id_bauteil + ";"; 
+		   String query = "SELECT * FROM TBauteil WHERE ID_TBauteil = " + id_bauteil + ";"; 
 		   
 		   // Getting Data from Database
 	      stmt = c.createStatement();

@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class Mengenverwaltung extends JFrame {
 
@@ -48,7 +49,7 @@ public class Mengenverwaltung extends JFrame {
 		System.out.println(bauteil_id);
 		
 		
-		setBounds(100, 100, 235, 300);
+		setBounds(100, 100, 235, 215);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -57,31 +58,46 @@ public class Mengenverwaltung extends JFrame {
 		JButton btnAutomatischeBestellung = new JButton("Automatische Bestellung");
 		btnAutomatischeBestellung.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				BauteileAuftragsabwicklung.calculateMengeBestellt(bauteil_id);
+				int fehlbetrag = BauteileAuftragsabwicklung.calculateMengeBestellt(bauteil_id);
+				
+				
+				if (fehlbetrag != 0) {
+					
+			
+					JOptionPane.showMessageDialog(null, "Fehlbetrag. Bitte " + fehlbetrag + " abbestellen. Vermerk (-). " , "Fehlbetrag", JOptionPane.INFORMATION_MESSAGE);
+					
+					
+				}
+				
 				DataBase.refreshComponent();
+				
+				dispose(); 
 			}
 		});
-		btnAutomatischeBestellung.setBounds(26, 150, 167, 23);
+		btnAutomatischeBestellung.setBounds(26, 101, 167, 23);
 		contentPane.add(btnAutomatischeBestellung);
 		
 		JButton btnBestaetigung = new JButton("Lieferung angekommen");
 		btnBestaetigung.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				
 				BauteileAuftragsabwicklung.calculateMengeLagernd(bauteil_id);
 				DataBase.refreshComponent();
+				
+				dispose(); 
 			}
 		});
-		btnBestaetigung.setBounds(26, 195, 167, 23);
+		btnBestaetigung.setBounds(26, 135, 167, 23);
 		contentPane.add(btnBestaetigung);
 		
 		txtMenge = new JTextField();
-		txtMenge.setBounds(107, 57, 86, 20);
+		txtMenge.setBounds(75, 36, 118, 20);
 		contentPane.add(txtMenge);
 		txtMenge.setColumns(10);
 		
 		JLabel lblMenge = new JLabel("Menge:");
-		lblMenge.setBounds(26, 60, 60, 14);
+		lblMenge.setBounds(26, 39, 60, 14);
 		contentPane.add(lblMenge);
 		
 		JButton btnBestellen = new JButton("Bestellen");
@@ -94,9 +110,12 @@ public class Mengenverwaltung extends JFrame {
 				BauteileAuftragsabwicklung.manualOrderingOfComponents(bauteil_id, menge);
 				DataBase.refreshComponent();
 				
+				
+				dispose();
+				
 			}
 		});
-		btnBestellen.setBounds(26, 88, 167, 23);
+		btnBestellen.setBounds(26, 67, 167, 23);
 		contentPane.add(btnBestellen);
 	}
 }

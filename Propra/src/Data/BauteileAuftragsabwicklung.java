@@ -69,7 +69,7 @@ public class BauteileAuftragsabwicklung {
 		
 	}
 	
-	public static void calculateMengeBestellt(int id_bauteil) {
+	public static int calculateMengeBestellt(int id_bauteil) {
 		
 		int [] mengen = null; 
 		
@@ -79,9 +79,15 @@ public class BauteileAuftragsabwicklung {
 		
 		try {
 			int change = mengen[2] - mengen[0]; 
+			
+			if (change < 0) {
+				return change; 
+			}
+			
+			
 			System.out.println(change);
 			
-			String query = "UPDATE Bauteil SET MengeBestellt = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
+			String query = "UPDATE TBauteil SET MengeBestellt = "+ change +" WHERE ID_TBauteil =" + id_bauteil +";";
 			
 			
 			DataBase.executeQuery(query);
@@ -91,6 +97,7 @@ public class BauteileAuftragsabwicklung {
 			System.out.println(e.getStackTrace());
 		}
 		
+		return 0;
 	}
 	
 	public static void calculateMengeLagernd(int id_bauteil) {
@@ -104,12 +111,12 @@ public class BauteileAuftragsabwicklung {
 		try {
 			
 			int change = mengen[0] + mengen[1]; 
-			String query = "UPDATE Bauteil SET MengeBestellt = 0 WHERE ID_Bauteil =" + id_bauteil +";";
+			String query = "UPDATE TBauteil SET MengeBestellt = 0 WHERE ID_TBauteil =" + id_bauteil +";";
 			
 			DataBase.executeQuery(query);
 			
 			
-			query = "UPDATE Bauteil SET MengeLagernd = "+ change +" WHERE ID_Bauteil =" + id_bauteil +";";
+			query = "UPDATE TBauteil SET MengeLagernd = "+ change +" WHERE ID_TBauteil =" + id_bauteil +";";
 			
 			DataBase.executeQuery(query);
 			
@@ -288,7 +295,11 @@ public class BauteileAuftragsabwicklung {
 		
 		int [] mengen = DataBase.getMengenBauteile(id_Bauteil); 
 		quantum_ordering += mengen[1]; 
-		String query = "UPDATE Bauteil SET MengeBestellt = " + quantum_ordering + " WHERE ID_Bauteil =" + id_Bauteil +";";
+		
+		
+		
+		
+		String query = "UPDATE TBauteil SET MengeBestellt = " + quantum_ordering + " WHERE ID_TBauteil =" + id_Bauteil +";";
 		DataBase.executeQuery(query);
 	
 		
