@@ -1898,22 +1898,12 @@ public class MainMenu extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				int colnr  = MainMenu.tblTopf.getSelectedRow();
 				
 				
-				int colnr = MainMenu.tblTopf.getSelectedRow();
+				String idString = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
 				
-				String idTopf = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
-				String oldIdKasse = MainMenu.tblTopf.getModel().getValueAt(colnr, 1).toString();
-				
-				System.out.println("old id kasse:" +oldIdKasse);
-				String oldSoll = MainMenu.tblTopf.getModel().getValueAt(colnr, 2).toString();
-				String oldIst = MainMenu.tblTopf.getModel().getValueAt(colnr, 3).toString();
-				
-				
-				txtTopfSoll.setText(oldSoll);
-				txtTopfIst.setText(oldIst);
-				comboBoxKasse.setSelectedItem(oldIdKasse);
-				
+				int id = Integer.parseInt(idString);
 				
 				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag"}, 0) {
 					
@@ -1922,38 +1912,29 @@ public class MainMenu extends JFrame {
 							return false;
 						}
 					};
-				int id = Integer.parseInt(MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString());
 				
-			 System.out.println("THE TOPF ID IS:" + id + "!");
 				
-				Statement stmtRechnung = null;
+			
+				
+				Statement stmtRechn = null;
 				
 					try {
 						
-						stmtRechnung = DataBase.c.createStatement();
-						System.out.println("Statement Done");
+						stmtRechn = DataBase.c.createStatement();
+						System.out.println("Statement");
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				
 				
-				//String sqlRechnung = "SELECT ARechnung.* FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+";";
-				   // String sqlTest = "SELECT ARechnung.*  FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung' on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+";";
-					String sqlRechnung = "SELECT ARechnung.ID_ARechnung AS ID_Rechnung, ARechnung.Name AS Name, ARechnung.Betrag AS Betrag "
-							+ "FROM ARechnung INNER JOIN 'Mischtabelle-Topf-Rechnung'"
-							+ " on ARechnung.ID_ARechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung "
-							+ "where 'Mischtabelle-Topf-Rechnung'.ID_Topf ="+id+" "
-							+ "UNION SELECT BRechnung.ID_BRechnung AS ID_Rechnung, BRechnung.Name AS Name, BRechnung.Betrag AS Betrag "
-							+ "FROM BRechnung INNER JOIN 'Mischtabelle-Topf-Rechnung'  "
-							+ "on BRechnung.ID_BRechnung = 'Mischtabelle-Topf-Rechnung'.ID_Rechnung "
-							+ "where 'Mischtabelle-Topf-Rechnung'.ID_Topf =10 ";
-				ResultSet rsRechnung = null;
+				String sqlRechn = " SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag FROM ARechnung WHERE ID_Topf ="+id+" UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag FROM BRechnung WHERE ID_Topf ="+id+";";
+				ResultSet rsRechn = null;
 				
 					try {
-						rsRechnung = stmtRechnung.executeQuery(sqlRechnung);
+						rsRechn = stmtRechn.executeQuery(sqlRechn);
 						System.out.println("Query executed");
-						System.out.println(rsRechnung);
+						System.out.println(rsRechn);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -1962,46 +1943,38 @@ public class MainMenu extends JFrame {
 				
 				
 				
-						try {
-							
-							int i = 0;
-							while (rsRechnung.next()) {
-								 i++;
-								}
-							System.out.println(i);
-							
-							while(rsRechnung.next())
-							{
-								String a1 = rsRechnung.getString("ID_Rechnung");
-								
-								 System.out.println(a1);
-							    String b1 = rsRechnung.getString("Name");
-
-							    String e1 = rsRechnung.getString("Betrag");
-
-							  
-							    
-							    modelRechnung.addRow(new Object[]{a1, b1, e1});
-							    System.out.println("WHILE DONE !!!");
-							}
-							
-							 System.out.println("Leaving TRY");
-						} catch (SQLException e1) {
-							
-							 System.out.println("FAILLLLL");
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+				
+				
+					try {
+						while(rsRechn.next())
+						{
+							String a1 = rsRechn.getString("ID_Rechnung");
+							String b1 = rsRechn.getString("Name");
+						    String c1 = rsRechn.getString("Betrag");
+						    
+						    
+						    
+						 
+						  
+						    
+						    modelRechnung.addRow(new Object[]{a1,b1,c1});
+						    
+						    System.out.println("While done");
+						    
 						}
-				
-					
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					tblRechn.setModel(modelRechnung);
-					
+				
+					;
 				
 				
 				
 				
 				
-				
+			
 				
 				
 			}
