@@ -1653,9 +1653,9 @@ public class MainMenu extends JFrame {
 		JPanel panelTopf = new JPanel();
 		tabbedPaneFinanz.addTab("T\u00F6pfe & Kassen", null, panelTopf, null);
 		GridBagLayout gbl_panelTopf = new GridBagLayout();
-		gbl_panelTopf.columnWidths = new int[]{0, 11, 130, 230, 0, 176, 207, 0, 440, 180, 0};
+		gbl_panelTopf.columnWidths = new int[]{0, 11, 130, 230, 0, 176, 207, 0, 179, 182, 180, 0};
 		gbl_panelTopf.rowHeights = new int[]{67, 500, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panelTopf.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelTopf.columnWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panelTopf.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelTopf.setLayout(gbl_panelTopf);
 		
@@ -1681,6 +1681,7 @@ public class MainMenu extends JFrame {
 		JLabel lblRechnungen = new JLabel("Rechnungen:");
 		lblRechnungen.setFont(new Font("Tahoma", Font.BOLD, 16));
 		GridBagConstraints gbc_lblRechnungen = new GridBagConstraints();
+		gbc_lblRechnungen.gridwidth = 2;
 		gbc_lblRechnungen.anchor = GridBagConstraints.WEST;
 		gbc_lblRechnungen.insets = new Insets(0, 0, 5, 5);
 		gbc_lblRechnungen.gridx = 8;
@@ -1690,7 +1691,7 @@ public class MainMenu extends JFrame {
 		JButton btnAktualisieren = new JButton("Aktualisieren");
 		GridBagConstraints gbc_btnAktualisieren = new GridBagConstraints();
 		gbc_btnAktualisieren.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAktualisieren.gridx = 9;
+		gbc_btnAktualisieren.gridx = 10;
 		gbc_btnAktualisieren.gridy = 0;
 		panelTopf.add(btnAktualisieren, gbc_btnAktualisieren);
 		
@@ -1750,6 +1751,16 @@ public class MainMenu extends JFrame {
 		gbc_lblDetails_1.gridx = 5;
 		gbc_lblDetails_1.gridy = 3;
 		panelTopf.add(lblDetails_1, gbc_lblDetails_1);
+		
+		JLabel lblTopf = new JLabel("Topf:");
+		GridBagConstraints gbc_lblTopf = new GridBagConstraints();
+		gbc_lblTopf.insets = new Insets(0, 0, 5, 5);
+		gbc_lblTopf.anchor = GridBagConstraints.EAST;
+		gbc_lblTopf.gridx = 8;
+		gbc_lblTopf.gridy = 4;
+		panelTopf.add(lblTopf, gbc_lblTopf);
+		
+		
 		JComboBox comboBoxArt = new JComboBox(comboBoxValues);
 		
 		GridBagConstraints gbc_comboBoxArt = new GridBagConstraints();
@@ -1865,7 +1876,7 @@ public class MainMenu extends JFrame {
 		tcmKasse.removeColumn( tcmKasse.getColumn(0) );
 		tcmKasse.removeColumn( tcmKasse.getColumn(1) );
 		
-		
+	
 		
 		int count = MainMenu.tblKasse.getRowCount();
 		String[] idList = new String[count];
@@ -2009,6 +2020,7 @@ public class MainMenu extends JFrame {
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_2 = new GridBagConstraints();
+		gbc_scrollPane_2.gridwidth = 2;
 		gbc_scrollPane_2.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_2.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane_2.gridx = 8;
@@ -2117,7 +2129,20 @@ public class MainMenu extends JFrame {
 		panelTopf.add(lblKasse, gbc_lblKasse);
 		
 		
-		
+		int countTopf = tblTopf.getRowCount();
+		String[] idListTopf = new String[countTopf];
+				
+		for(int row=0; row < tblTopf.getRowCount(); row++) {
+		 String idTopf = tblTopf.getModel().getValueAt(row, 0).toString();
+		 idListTopf[row] = idTopf;
+		}
+		JComboBox comboBoxTopf = new JComboBox(idListTopf);
+		GridBagConstraints gbc_comboBoxTopf = new GridBagConstraints();
+		gbc_comboBoxTopf.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxTopf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxTopf.gridx = 9;
+		gbc_comboBoxTopf.gridy = 4;
+		panelTopf.add(comboBoxTopf, gbc_comboBoxTopf);
 		
 		
 		
@@ -2255,6 +2280,13 @@ public class MainMenu extends JFrame {
 		gbc_btnSpeichern.gridx = 6;
 		gbc_btnSpeichern.gridy = 9;
 		panelTopf.add(btnSpeichern, gbc_btnSpeichern);
+		
+		JButton btnSpeichern_3 = new JButton("Speichern");
+		GridBagConstraints gbc_btnSpeichern_3 = new GridBagConstraints();
+		gbc_btnSpeichern_3.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSpeichern_3.gridx = 9;
+		gbc_btnSpeichern_3.gridy = 9;
+		panelTopf.add(btnSpeichern_3, gbc_btnSpeichern_3);
 		//tcmKasse.removeColumn( tcmKasse.getColumn(0) );
 		
 		

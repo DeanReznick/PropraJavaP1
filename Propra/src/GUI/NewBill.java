@@ -209,6 +209,22 @@ public class NewBill extends JFrame {
 		contentPane.add(txtBeschreibung);
 		txtBeschreibung.setColumns(10);
 		
+		
+		
+		
+		
+		int countTopf = MainMenu.tblTopf.getRowCount();
+		String[] idListTopf = new String[countTopf];
+				
+		for(int row=0; row < MainMenu.tblTopf.getRowCount(); row++) {
+		 String idTopf = MainMenu.tblTopf.getModel().getValueAt(row, 0).toString();
+		 idListTopf[row] = idTopf;
+		}
+		
+		 JComboBox CBTopf = new JComboBox(idListTopf);
+			CBTopf.setBounds(124, 258, 86, 20);
+			contentPane.add(CBTopf);
+			
 		JLabel lblRechnungsname = new JLabel("Rechnungsname:");
 		lblRechnungsname.setBounds(10, 44, 104, 14);
 		contentPane.add(lblRechnungsname);
@@ -270,7 +286,9 @@ public class NewBill extends JFrame {
 				String beschreibung = txtBeschreibung.getText();
 				
 				int id_Auftrag = Integer.parseInt(comboBoxAuftraege.getSelectedItem().toString());
-				Rechnungsabwicklung.createARechnung(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung, id_Auftrag);
+				
+				int id_topf = Integer.parseInt(CBTopf.getSelectedItem().toString());
+				Rechnungsabwicklung.createARechnung(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung, id_Auftrag, id_topf);
 				DataBase.refreshRechnungA();
 				
 			
@@ -291,17 +309,14 @@ public class NewBill extends JFrame {
 		lblTopf.setBounds(10, 261, 46, 14);
 		contentPane.add(lblTopf);
 		
-		JComboBox CBTopf = new JComboBox();
-		CBTopf.setBounds(124, 258, 86, 20);
-		contentPane.add(CBTopf);
-		
-		CBTopf.add("", temporaryLostComponent); 
+
+
+	
 		
 		
-		// .. SELECT Alee toöpfe 
-		// in die CB 
-		
-		// Wenn Default -> Dann Funktion aufrufen 
+
+
 		
 	}
 }
+
