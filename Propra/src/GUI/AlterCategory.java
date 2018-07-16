@@ -14,6 +14,7 @@ import Data.TreeBauteile;
 import Data.TreeErstellen;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.JComboBox;
@@ -122,7 +123,18 @@ public class AlterCategory extends JFrame {
 					}
 				}
 				
-				TreeBauteile.alterTKat(id, parentId, txtName.getText());
+				
+				
+				if (id == parentId) {
+					JOptionPane.showMessageDialog(null, "Illeagle Aktion", "Illegale Aktion", JOptionPane.ERROR_MESSAGE);
+					
+				}else {
+					TreeBauteile.alterTKat(id, parentId, txtName.getText());
+				}
+				
+				
+				
+				
 
 					actualTreeCategory = new JTree(TreeErstellen.createTree());
 					MainMenu.treeCategory = actualTreeCategory;
