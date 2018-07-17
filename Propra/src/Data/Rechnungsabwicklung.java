@@ -56,7 +56,7 @@ public class Rechnungsabwicklung {
 
 			
 			String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-			String query = "INSERT INTO BRechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"');";
+			String query = "INSERT INTO BRechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp, Typ) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"', 'Bauteilrechnung');";
 			System.out.println(query);
 			DataBase.executeQuery(query);
 			
@@ -157,7 +157,7 @@ public class Rechnungsabwicklung {
 
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "INSERT INTO ARechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp, ID_Auftrag, ID_Topf) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"', "+ id_Auftrag +", " + id_Topf+" );";
+		String query = "INSERT INTO ARechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp, ID_Auftrag, ID_Topf, Typ) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"', "+ id_Auftrag +", " + id_Topf+", 'Auftrags-Rechnung' );";
 		System.out.println(query);
 		DataBase.executeQuery(query);
 		
@@ -184,7 +184,7 @@ public class Rechnungsabwicklung {
 
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "INSERT INTO ARechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp, ID_Auftrag, ID_Topf) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"', "+ id_Auftrag +",  -1 );";
+		String query = "INSERT INTO ARechnung (Name, Id_Auftraggeber, Id_Ansprechpartner, Art_Bezahlung, Betrag, Beschreibung, Timestamp, ID_Auftrag, ID_Topf, Typ) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', " + betrag +",'"  + beschreibung +"', '" + timeStamp +"', "+ id_Auftrag +",  -1 , 'Auftrags-Rechnung');";
 		System.out.println(query);
 		DataBase.executeQuery(query);
 		

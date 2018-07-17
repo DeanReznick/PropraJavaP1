@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
+import Data.TreeBauteile;
 
 public class AddComponent extends JFrame {
 
@@ -89,8 +90,12 @@ public class AddComponent extends JFrame {
 				try{
 				
 				//Test
-				BauteileAuftragsabwicklung.addPrice((BauteileAuftragsabwicklung.newBauteil(txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText())), txtPrice.getText());
-				//DataBase.refreshChange();
+				//BauteileAuftragsabwicklung.addPrice((BauteileAuftragsabwicklung.newBauteil(txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText())), txtPrice.getText());
+				
+				TreeBauteile.addTBauteil(txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()),Integer.parseInt(txtOrdered.getText()),  Integer.parseInt(txtPlanned.getText()), txtStorage.getText(), Float.parseFloat(txtPrice.getText()));
+				
+				
+				DataBase.refreshChange();
 				dispose();
 				}
 				catch (Exception ex){

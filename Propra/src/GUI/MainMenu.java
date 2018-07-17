@@ -1393,15 +1393,16 @@ public class MainMenu extends JFrame {
 				JButton btnKategorieLoeschen = new JButton("Kategorie loeschen");
 				btnKategorieLoeschen.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						DefaultTableModel model = (DefaultTableModel) tblComponents.getModel();
-						//get selected row index
-						int selectedRowIndex = tblComponents.getSelectedRow();
-						if (selectedRowIndex >= 0) {
-						DeleteCategory x = new DeleteCategory();
-						x.setVisible(true);
-						} else {
-							JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kategorie aus!");
-						}
+						try {
+							DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+									MainMenu.treeCategory.getLastSelectedPathComponent();
+							if(!node.toString().equals("")) {
+							DeleteCategory x = new DeleteCategory();
+							x.setVisible(true);
+							}
+							} catch (NullPointerException ex) {
+								JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kategorie aus!");
+							}
 					}
 				});
 				GridBagConstraints gbc_btnKategorieLoeschen = new GridBagConstraints();
@@ -2041,6 +2042,14 @@ public class MainMenu extends JFrame {
 		String sqlRechnung = "SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Timestamp FROM ARechnung UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Timestamp FROM BRechnung";
 		ResultSet rsRechnung = stmt.executeQuery(sqlRechnung);
 		
+		
+		// 2x 
+		
+		// Liste = A + B 
+		
+		// Neue SPalte 
+		// Wenn a in liste dann eintrag 'A'
+		// Dann B in Liste eintrag B 
 		while(rsRechnung.next())
 		{
 			String a1 = rsRechnung.getString("ID_Rechnung");
