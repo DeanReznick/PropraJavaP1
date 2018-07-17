@@ -1881,13 +1881,19 @@ public class MainMenu extends JFrame {
 		
 		int count = MainMenu.tblKasse.getRowCount();
 		String[] idList = new String[count];
+		String[] kasseName = new String[count];
 				
 		for(int row=0; row < MainMenu.tblKasse.getRowCount(); row++) {
 		 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
+		 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
 		 idList[row] = id;
-		 		
+		 kasseName[row] = name;
 		}
-		JComboBox comboBoxKasse = new JComboBox(idList);
+			
+		
+		 		
+		
+		JComboBox comboBoxKasse = new JComboBox(kasseName);
 		GridBagConstraints gbc_comboBoxKasse = new GridBagConstraints();
 		gbc_comboBoxKasse.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxKasse.fill = GridBagConstraints.HORIZONTAL;
@@ -1913,11 +1919,38 @@ public class MainMenu extends JFrame {
 				int colnr  = MainMenu.tblTopf.getSelectedRow();
 				
 				
+
+				String idTopf = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
+				String oldIdKasse = MainMenu.tblTopf.getModel().getValueAt(colnr, 1).toString();
+				
+				System.out.println("old id kasse:" +oldIdKasse);
+				String oldSoll = MainMenu.tblTopf.getModel().getValueAt(colnr, 2).toString();
+				String oldIst = MainMenu.tblTopf.getModel().getValueAt(colnr, 3).toString();
+				
+				int count = MainMenu.tblKasse.getRowCount();
+				String[] idList = new String[count];
+				String[] kasseName = new String[count];
+						
+				for(int row=0; row < MainMenu.tblKasse.getRowCount(); row++) {
+				 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
+				 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
+				 idList[row] = id;
+				 kasseName[row] = name;
+				}
+				
+				
+			
+				
+				txtTopfSoll.setText(oldSoll);
+				txtTopfIst.setText(oldIst);
+				
+				
+				
 				String idString = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
 				
 				int id = Integer.parseInt(idString);
 				
-				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag"}, 0) {
+				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ"}, 0) {
 					
 					@Override
 					public boolean isCellEditable(int row, int column) {
@@ -1940,7 +1973,7 @@ public class MainMenu extends JFrame {
 					}
 				
 				
-				String sqlRechn = " SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag FROM ARechnung WHERE ID_Topf ="+id+" UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag FROM BRechnung WHERE ID_Topf ="+id+";";
+				String sqlRechn = " SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Typ FROM ARechnung WHERE ID_Topf ="+id+" UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Typ FROM BRechnung WHERE ID_Topf ="+id+";";
 				ResultSet rsRechn = null;
 				
 					try {
@@ -1963,13 +1996,14 @@ public class MainMenu extends JFrame {
 							String a1 = rsRechn.getString("ID_Rechnung");
 							String b1 = rsRechn.getString("Name");
 						    String c1 = rsRechn.getString("Betrag");
+						    String d1 = rsRechn.getString("Typ");
 						    
 						    
 						    
 						 
 						  
 						    
-						    modelRechnung.addRow(new Object[]{a1,b1,c1});
+						    modelRechnung.addRow(new Object[]{a1,b1,c1, d1});
 						    
 						    System.out.println("While done");
 						    
@@ -2008,6 +2042,7 @@ public class MainMenu extends JFrame {
 		    String c1 = rsTopf.getString("Soll");
 		    String d1 = rsTopf.getString("Ist");
 		    
+		    
 		    modelTopf.addRow(new Object[]{a1,b1,c1,d1});
 		}
 		
@@ -2029,17 +2064,17 @@ public class MainMenu extends JFrame {
 		panelTopf.add(scrollPane_2, gbc_scrollPane_2);
 		
 		
-		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname",  "Betrag"};
+		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ"};
 		String[][] data_rechnung = new String[1000][11];
-		tblRechn = new JTable(data_rechnung, column_headers_topf);
-		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag"}, 0) {
+		tblRechn = new JTable(data_rechnung, column_headers_rechnung);
+		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
 			};
-		String sqlRechnung = "SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Timestamp FROM ARechnung UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Timestamp FROM BRechnung";
+		String sqlRechnung = "SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Typ, Timestamp FROM ARechnung UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Typ, Timestamp FROM BRechnung";
 		ResultSet rsRechnung = stmt.executeQuery(sqlRechnung);
 		
 		
@@ -2054,12 +2089,13 @@ public class MainMenu extends JFrame {
 		{
 			String a1 = rsRechnung.getString("ID_Rechnung");
 		    String b1 = rsRechnung.getString("Name");
-
+		    String c1 = rsRechnung.getString("Typ");
 		    String e1 = rsRechnung.getString("Betrag");
+		    
 
 		   
 		    
-		    modelRechnung.addRow(new Object[]{a1, b1, e1});
+		    modelRechnung.addRow(new Object[]{a1, b1, e1,  c1});
 		    
 		    
 		    System.out.println("WHILE RECHNUNG LOADING DONE!");
