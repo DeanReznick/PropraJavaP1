@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
 import java.awt.Font;
+import java.awt.Window.Type;
 
 public class GUILogin extends JFrame {
 	public static String name_signedIn;
@@ -90,47 +91,63 @@ public class GUILogin extends JFrame {
 				MainMenu x;
 				try {
 					
+					
+					
+					
 						String mail = txt_mail.getText(); 
 						String password = txt_password.getText();  
-					 
 						
-						String[] namen = new String[2]; 
-						namen = DataBase.getNameVornameByMail(mail); 
-						
-						
-						
-						int id = DataBase.getIdPersonByNameSurname(namen[1], namen[0]); 
-						
-						System.out.println(id);
-						
-						String vorname = namen[0]; 
-						String name = namen[1]; 
-						
-						
-						System.out.println("Session: " + vorname  + ", " + name);
-												//Aus der Datenbank! 
-						name_signedIn = name; 
-						vorname_signedIn = vorname; 
-						id_signedIn = id; 
-						
-						
-						
-					if(Authentication.checkCredentials(name, vorname, password)) {
-						x = new MainMenu();
-						x.setVisible(true);
-						dispose(); 
-					}else {
-						if(++ counter_try < 4) {
-						
+						if (mail.equals("") | password.equals("")){
+			
 							JOptionPane.showMessageDialog(null, 
-		                              "Eingaben stimmen nicht! Versuch: " + counter_try + " von 3", 
-		                              "Fehler", 
+		                              "Bitte vollständige Eingaben tätigen." ,"Fehler", 
 		                              JOptionPane.WARNING_MESSAGE);
+						
 						}else {
-							setVisible(false); 
-							dispose();
+							
+							
+							String[] namen = new String[2]; 
+							namen = DataBase.getNameVornameByMail(mail); 
+							
+							
+							
+							int id = DataBase.getIdPersonByNameSurname(namen[1], namen[0]); 
+							
+						
+							
+							String vorname = namen[0]; 
+							String name = namen[1]; 
+							
+							
+							
+												
+							name_signedIn = name; 
+							vorname_signedIn = vorname; 
+							id_signedIn = id; 
+							
+							
+							
+						if(Authentication.checkCredentials(name, vorname, password)) {
+							x = new MainMenu();
+							x.setVisible(true);
+							dispose(); 
+						}else {
+							if(++ counter_try < 4) {
+							
+								JOptionPane.showMessageDialog(null, 
+			                              "Eingaben stimmen nicht! Versuch: " + counter_try + " von 3", 
+			                              "Fehler", 
+			                              JOptionPane.WARNING_MESSAGE);
+							}else {
+								setVisible(false); 
+								dispose();
+							}
+			
+							
 						}
-		
+						
+						
+						
 					} 
 				
 				} catch (SQLException e) {
@@ -157,10 +174,6 @@ public class GUILogin extends JFrame {
 		txt_mail.setColumns(10);
 		txt_mail.setBounds(10, 75, 214, 20);
 		contentPane.add(txt_mail);
-		
-		JLabel lblNewLabel = new JLabel("anna@gmx.de");
-		lblNewLabel.setBounds(55, 50, 115, 14);
-		contentPane.add(lblNewLabel);
 		
 		SwingUtilities.getRootPane(btnLogin).setDefaultButton(btnLogin);
 	}

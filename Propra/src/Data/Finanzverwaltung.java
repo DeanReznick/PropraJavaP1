@@ -113,9 +113,6 @@ public class Finanzverwaltung {
 		
 		
 		
-		
-		
-		
 	}
 	public static void addTopf(int id_Kasse, int soll, int ist) {
 		
