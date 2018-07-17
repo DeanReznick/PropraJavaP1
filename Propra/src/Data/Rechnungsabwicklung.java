@@ -15,8 +15,7 @@ public class Rechnungsabwicklung {
 		
 		
 		
-	}
-	
+
 	//BRechnung
 	
 	public static void sumKosten(){
