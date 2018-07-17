@@ -90,7 +90,7 @@ public class AddComponent extends JFrame {
 				
 				//Test
 				BauteileAuftragsabwicklung.addPrice((BauteileAuftragsabwicklung.newBauteil(txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()), Integer.parseInt(txtOrdered.getText()), Integer.parseInt(txtPlanned.getText()), txtStorage.getText())), txtPrice.getText());
-				DataBase.refreshChange();
+				//DataBase.refreshChange();
 				dispose();
 				}
 				catch (Exception ex){

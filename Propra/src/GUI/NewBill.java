@@ -218,7 +218,12 @@ public class NewBill extends JFrame {
 				
 		for(int row=0; row < MainMenu.tblTopf.getRowCount(); row++) {
 		 String idTopf = MainMenu.tblTopf.getModel().getValueAt(row, 0).toString();
-		 idListTopf[row] = idTopf;
+		 if( idTopf.equals("-1")){ 
+			 idListTopf[row] = "Default";
+		 }
+		 else {
+			 idListTopf[row] = idTopf;
+		 }
 		}
 		
 		 JComboBox CBTopf = new JComboBox(idListTopf);
@@ -287,7 +292,17 @@ public class NewBill extends JFrame {
 				
 				int id_Auftrag = Integer.parseInt(comboBoxAuftraege.getSelectedItem().toString());
 				
-				int id_topf = Integer.parseInt(CBTopf.getSelectedItem().toString());
+				String id_topf_String = CBTopf.getSelectedItem().toString();
+				int id_topf;
+				if(id_topf_String.equals("Default")){
+					id_topf = -1;
+					}
+				
+				else {
+					id_topf =Integer.parseInt(id_topf_String);
+				}
+				
+				
 				Rechnungsabwicklung.createARechnung(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung, id_Auftrag, id_topf);
 				DataBase.refreshRechnungA();
 				
