@@ -1882,18 +1882,20 @@ public class MainMenu extends JFrame {
 		int count = MainMenu.tblKasse.getRowCount();
 		String[] idList = new String[count];
 		String[] kasseName = new String[count];
+		String[] idUndName = new String[count];
 				
 		for(int row=0; row < MainMenu.tblKasse.getRowCount(); row++) {
 		 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
 		 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
 		 idList[row] = id;
 		 kasseName[row] = name;
+		 idUndName[row] = id +" " + name;
 		}
 			
 		
 		 		
 		
-		JComboBox comboBoxKasse = new JComboBox(kasseName);
+		JComboBox comboBoxKasse = new JComboBox(idUndName);
 		GridBagConstraints gbc_comboBoxKasse = new GridBagConstraints();
 		gbc_comboBoxKasse.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxKasse.fill = GridBagConstraints.HORIZONTAL;
@@ -1936,10 +1938,23 @@ public class MainMenu extends JFrame {
 				 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
 				 idList[row] = id;
 				 kasseName[row] = name;
+				 idUndName[row] = id +" " + name;
 				}
 				
 				
-			
+			for(String idName: idUndName) {
+				
+				String[] parts = idName.split(" ");
+				String part1 = parts[0]; 
+				String part2 = parts[1]; 
+				
+				
+				if(part1.equals(oldIdKasse)) {
+					
+					comboBoxKasse.setSelectedItem(idName);
+					
+				}
+			}
 				
 				txtTopfSoll.setText(oldSoll);
 				txtTopfIst.setText(oldIst);
@@ -2308,11 +2323,38 @@ public class MainMenu extends JFrame {
 		btnSpeichern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				
+				int colnr  = MainMenu.tblTopf.getSelectedRow();
+				
+				String idTopf = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
+				String oldIdKasse = MainMenu.tblTopf.getModel().getValueAt(colnr, 1).toString();
+				
+				System.out.println("old id kasse:" +oldIdKasse);
+				String oldSoll = MainMenu.tblTopf.getModel().getValueAt(colnr, 2).toString();
+				String oldIst = MainMenu.tblTopf.getModel().getValueAt(colnr, 3).toString();
+				
+				int count = MainMenu.tblKasse.getRowCount();
+				String[] idList = new String[count];
+				String[] kasseName = new String[count];
+						
+				for(int row=0; row < MainMenu.tblKasse.getRowCount(); row++) {
+				 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
+				 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
+				 idList[row] = id;
+				 kasseName[row] = name;
+				 
+				 
+				}
+				
+				
+				String[] idKasse = comboBoxKasse.getSelectedItem().toString().split(" ");
+				String id = idKasse[0];
+				
 				try {
 				String idTopf2 = MainMenu.tblTopf.getModel().getValueAt(MainMenu.tblTopf.getSelectedRow(), 0).toString();
 		
 				System.out.println(idTopf2);
-				Finanzverwaltung.alterTopf(Integer.parseInt(idTopf2), Integer.parseInt(comboBoxKasse.getSelectedItem().toString()), Integer.parseInt(txtTopfSoll.getText()), Integer.parseInt(txtTopfIst.getText()));
+				Finanzverwaltung.alterTopf(Integer.parseInt(idTopf2), Integer.parseInt(id), Integer.parseInt(txtTopfSoll.getText()), Integer.parseInt(txtTopfIst.getText()));
 				DataBase.refreshTopf();
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus!");
