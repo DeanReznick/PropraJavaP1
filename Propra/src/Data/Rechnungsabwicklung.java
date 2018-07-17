@@ -11,11 +11,6 @@ import GUI.GUILogin;
 public class Rechnungsabwicklung {
 
 	
-		
-		
-		
-		
-
 	//BRechnung
 	
 	public static void sumKosten(){

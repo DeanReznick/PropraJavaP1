@@ -9,56 +9,6 @@ public class Finanzverwaltung {
 
 	// Rechnung 
 	
-	public static void addBill(String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, String betrag, String beschreibung) {
-		
-		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "INSERT INTO Rechnung (Rechnungsname, Auftraggeber, Ansprechpartner, Bezahlung_Art, Betrag, Beschreibung, Bearbeiter, TimeStamp) VALUES ('"+ rechnungsname +"', " +  id_Auftraggeber + ", " + id_Ansprechpartner + ", '" + artBezahlung + "', '" + betrag +"','"  + beschreibung +"', " +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'" + timeStamp +"');";
-		DataBase.executeQuery(query);
-	
-		int id_Bill = DataBase.getSpecificID("current", "SELECT max(ID_Rechnung) as current FROM 'Rechnung';"); 
-		
-		
-		
-	
-		
-		changeStatusBill(id_Bill, "Rechnung wurde erstellt."); 
-				
-		
-		
-		// Könnte der Teil hin, dass die Aufträge dann gelöscht werden. 
-		
-	}
-	
-	public static void alterBill(int id_Bill, String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, String betrag, String beschreibung) {
-		
-		
-		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "UPDATE Rechnung SET Rechnungsname='"  + rechnungsname + "' , Auftraggeber= "+ id_Auftraggeber + ", Ansprechpartner = " + id_Ansprechpartner + ", Bezahlung_Art='" + artBezahlung + "', Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"' WHERE ID_Rechnung = " + id_Bill + ";";  
-		System.out.println(query);
-		
-		DataBase.executeQuery(query); 
-		
-		
-	}
-
-	public static void deleteBill(int id_Rechnung) {
-		
-		
-		String query = "DELETE FROM Rechnung WHERE ID_Rechnung = "+ id_Rechnung +";"; 
-		DataBase.executeQuery(query);
-		
-		// Status löschen 
-		int id_Status = DataBase.getSpecificID("ID_Status", "SELECT ID_Status FROM 'Mischtabelle-Rechnung-Status' WHERE ID_Rechnung = " + id_Rechnung +";"); 
-
-		query = "DELETE FROM 'Mischtabelle-Rechnung-Status' WHERE ID_Rechnung = "+ id_Rechnung +";"; 
-		DataBase.executeQuery(query);
-		
-		query = "DELETE FROM 'Status_Rechnung' WHERE ID_Status = "+ id_Status +";"; 
-		DataBase.executeQuery(query);
-		
-		
-		
-	}
 	
 	
 	public static void changeStatusBill(int id_Bill, String statusBill) {
@@ -150,17 +100,20 @@ public class Finanzverwaltung {
 		DataBase.executeQuery(query);
 		
 		
+		
 	}
 	public static void deleteKasse(int id_Kasse) {
 		
 		
 		String query = "DELETE FROM Kasse WHERE ID_Kasse = "+ id_Kasse +";"; 
 		
-		// mischtabelle ->
-		// Topf löschen P.2
-		
-		
 		DataBase.executeQuery(query);
+		
+		
+		
+		
+		
+		
 		
 		
 	}
@@ -199,15 +152,20 @@ public class Finanzverwaltung {
 		
 	}
 	public static void deleteTopf(int id_Topf) {
-		
-		// Mischtabelle löschen!
-				
-		
+			
 		
 		String query = "DELETE FROM Topf WHERE ID_Topf = " + id_Topf + ";";  
 		DataBase.executeQuery(query);
-		query = "DELETE FROM 'Mischtabelle-Kasse-Topf' WHERE ID_Topf = "+ id_Topf +";"; 
+		
+		
+		query = "UPDATE ARechnung SET ID_Topf = -1 WHERE ID_Topf = " + id_Topf + ";"; 
+		
 		DataBase.executeQuery(query);
+		
+		query = "UPDATE BRechnung SET ID_Topf = -1 WHERE ID_Topf = " + id_Topf + ";"; 
+		
+		DataBase.executeQuery(query);
+		
 		
 		
 	}
