@@ -10,35 +10,7 @@ import GUI.GUILogin;
 
 public class Rechnungsabwicklung {
 
-	public static void main(String[] args) throws SQLException {
-
-		
-		createBRechnung("test", 1, 1, "Bar", 11.0, "Kredit"); 
-		//alterBRechnung(1, "test", 1, 1, "Bar", 11.0, "Kredit A"); 
-		//AddTBauteilToBRechnung(1,1); 
-		//delteTBauteilFromBRechnung(1,1); 
 	
-		//createARechnung("test", 1, 1, "Bar", 11.0, "Kredit",77); 
-		//alterARechnung(5,"test", 1, 1, "Bar", 1.0, "Kredit"); 
-		
-		//delteARechnung(5); 
-		//delteBRechnung(13); 
-		
-		
-		
-		try {
-			System.out.println(Authentication.checkCredentials("Klein", "Anna", "123"));
-	
-			
-			System.out.println(Authentication.sha256("123"));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		
-		
-		
 		
 		
 		
