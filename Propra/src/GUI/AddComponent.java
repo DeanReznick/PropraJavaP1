@@ -98,6 +98,9 @@ public class AddComponent extends JFrame {
 				DataBase.refreshChange();
 				dispose();
 				}
+				catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Die Mengen und der Preis müssen Zahlen sein.");
+				}
 				catch (Exception ex){
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {

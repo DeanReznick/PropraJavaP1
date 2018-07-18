@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import Data.CategoryObjektRAM;
@@ -22,6 +23,8 @@ import javax.swing.JTree;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.awt.event.ActionEvent;
 
@@ -88,7 +91,32 @@ public class AddCategory extends JFrame {
 				
 				TreeBauteile.addTKat(id, txtName.getText());
 				
+				
 				actualTreeCategory = new JTree(TreeErstellen.createTree());
+				actualTreeCategory.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+								actualTreeCategory.getLastSelectedPathComponent();
+						
+						String[] categoryNames = new String[DataBase.categories.size()];
+						int[] categoryIds = new int[DataBase.categories.size()];
+						
+						for (int i = 0; i < DataBase.categories.size(); i++) {
+							categoryNames[i] = DataBase.categories.get(i).getName();
+							categoryIds[i] = DataBase.categories.get(i).getIdCategory();
+						}
+						
+						for (int i = 0; i< categoryNames.length; i++) {
+							if (categoryNames[i].equals(node.toString())) {
+								System.out.println(categoryNames[i]);
+								DataBase.showComponentsOfCategory(categoryIds[i]);
+							}
+						}
+						
+
+					}
+				});
 				MainMenu.treeCategory = actualTreeCategory;
 //				treeCategory.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 //				treeCategory.addTreeSelectionListener(this);
@@ -97,6 +125,17 @@ public class AddCategory extends JFrame {
 				dispose();
 				} catch (InvalidArgumentsException ex) {
 					JOptionPane.showMessageDialog(null, ex);
+				} finally {
+					MainMenu.comboBoxCategory.removeAllItems();
+					DataBase.loadCategoriesToRAM();
+					String[] categoryName = new String[DataBase.categories.size()];
+					int index = 0;
+					
+					for (CategoryObjektRAM c : DataBase.categories) {
+						MainMenu.comboBoxCategory.addItem(c.getName());
+						index++;
+					}
+					
 				}
 				
 				

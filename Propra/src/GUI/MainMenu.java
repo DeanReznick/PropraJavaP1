@@ -140,6 +140,9 @@ public class MainMenu extends JFrame {
 	private JTextField txtRaBetrag;
 	private JTextField txtRaBeschreibung;
 	private JTextField txtRaAuftrag;
+	public static JComboBox comboBoxCategory;
+	public static JPanel panelBauteil;
+	public static GridBagConstraints gbc_comboBoxCategory;
 	
 
 	
@@ -497,7 +500,7 @@ public class MainMenu extends JFrame {
 		
 		tblAuftraege.setModel(modelAuftrag);
 		TableColumnModel tcm2 = tblAuftraege.getColumnModel();
-		tcm.removeColumn( tcm2.getColumn(0) );
+		tcm2.removeColumn( tcm2.getColumn(0) );
 				
 		scrollPaneOrder.setViewportView(tblAuftraege);
 		
@@ -1082,6 +1085,8 @@ public class MainMenu extends JFrame {
 					
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Person aus.");
+				}catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "PLZ muss eine Zahl sein.");
 				} finally {
 					
 				}
@@ -1093,7 +1098,7 @@ public class MainMenu extends JFrame {
 		gbc_btnSavePerson.gridy = 24;
 		panelPerson.add(btnSavePerson, gbc_btnSavePerson);
 		
-		JPanel panelBauteil = new JPanel();
+		panelBauteil = new JPanel();
 		tabbedPane.addTab("Bauteileverwaltung", null, panelBauteil, null);
 		GridBagLayout gbl_panelBauteil = new GridBagLayout();
 		gbl_panelBauteil.columnWidths = new int[]{10, 300, 10, 150, 150, 150, 100, 100, 100, 300, 100, 50, 10};
@@ -1172,8 +1177,8 @@ public class MainMenu extends JFrame {
 					index++;
 				}
 				
-				JComboBox comboBoxCategory = new JComboBox(categoryName);
-				GridBagConstraints gbc_comboBoxCategory = new GridBagConstraints();
+				comboBoxCategory = new JComboBox(categoryName);
+				gbc_comboBoxCategory = new GridBagConstraints();
 				gbc_comboBoxCategory.insets = new Insets(0, 0, 5, 5);
 				gbc_comboBoxCategory.fill = GridBagConstraints.HORIZONTAL;
 				gbc_comboBoxCategory.gridx = 8;
@@ -1613,6 +1618,8 @@ public class MainMenu extends JFrame {
 							
 						} catch (ArrayIndexOutOfBoundsException ex) {
 							JOptionPane.showMessageDialog(null, "Bitte wählen Sie ein Bauteil aus.");							
+						} catch (NumberFormatException ex) {
+							JOptionPane.showMessageDialog(null, "Die Mengen und der Preis müssen Zahlen sein.");
 						}
 					}
 				});

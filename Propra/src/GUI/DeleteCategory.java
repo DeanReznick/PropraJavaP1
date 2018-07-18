@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -64,6 +66,30 @@ public class DeleteCategory extends JFrame {
 				}
 
 				actualTreeCategory = new JTree(TreeErstellen.createTree());
+				actualTreeCategory.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+								actualTreeCategory.getLastSelectedPathComponent();
+						
+						String[] categoryNames = new String[DataBase.categories.size()];
+						int[] categoryIds = new int[DataBase.categories.size()];
+						
+						for (int i = 0; i < DataBase.categories.size(); i++) {
+							categoryNames[i] = DataBase.categories.get(i).getName();
+							categoryIds[i] = DataBase.categories.get(i).getIdCategory();
+						}
+						
+						for (int i = 0; i< categoryNames.length; i++) {
+							if (categoryNames[i].equals(node.toString())) {
+								System.out.println(categoryNames[i]);
+								DataBase.showComponentsOfCategory(categoryIds[i]);
+							}
+						}
+						
+
+					}
+				});
 				MainMenu.treeCategory = actualTreeCategory;
 //				treeCategory.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 //				treeCategory.addTreeSelectionListener(this);
