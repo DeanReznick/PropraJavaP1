@@ -1925,6 +1925,31 @@ public class MainMenu extends JFrame {
 		 		
 		
 		JComboBox comboBoxKasse = new JComboBox(idUndName);
+		comboBoxKasse.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				comboBoxKasse.removeAllItems();
+				
+				int count = MainMenu.tblKasse.getRowCount();
+				String[] idList = new String[count];
+				String[] kasseName = new String[count];
+				String[] idUndName = new String[count];
+						
+				for(int row=0; row < MainMenu.tblKasse.getRowCount(); row++) {
+					 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
+					 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
+					 idList[row] = id;
+					 kasseName[row] = name;
+					 idUndName[row] = id +" " + name;
+					}
+				
+				for(int i = 0; i<idUndName.length; i++) {
+					String compo = idUndName[i].toString();
+					comboBoxKasse.addItem(compo);
+				}
+			}
+		});
 		GridBagConstraints gbc_comboBoxKasse = new GridBagConstraints();
 		gbc_comboBoxKasse.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxKasse.fill = GridBagConstraints.HORIZONTAL;
@@ -1962,7 +1987,7 @@ public class MainMenu extends JFrame {
 				String[] idList = new String[count];
 				String[] kasseName = new String[count];
 						
-				for(int row=0; row < MainMenu.tblKasse.getRowCount(); row++) {
+				for(int row=0; row < count; row++) {
 				 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
 				 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
 				 idList[row] = id;
@@ -2147,6 +2172,26 @@ public class MainMenu extends JFrame {
 		 idListTopf[row] = idTopf;
 		}
 		JComboBox comboBoxTopf = new JComboBox(idListTopf);
+		comboBoxTopf.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				comboBoxTopf.removeAllItems();
+				
+				int countTopf = tblTopf.getRowCount();
+				String[] idListTopf = new String[countTopf];
+						
+				for(int row=0; row < tblTopf.getRowCount(); row++) {
+				 String idTopf = tblTopf.getModel().getValueAt(row, 0).toString();
+				 idListTopf[row] = idTopf;
+				}
+				
+				for(int i = 0; i<idListTopf.length; i++) {
+					String compo = idListTopf[i].toString();
+					comboBoxTopf.addItem(compo);
+				}
+			}
+		});
 		GridBagConstraints gbc_comboBoxTopf = new GridBagConstraints();
 		gbc_comboBoxTopf.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxTopf.fill = GridBagConstraints.HORIZONTAL;
@@ -2609,6 +2654,38 @@ public class MainMenu extends JFrame {
 		panelRechnung.add(lblRechnungenbauteile, gbc_lblRechnungenbauteile);
 		
 		JComboBox ComboBoxRbAg = new JComboBox(personName);
+		ComboBoxRbAg.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				
+				ComboBoxRbAg.removeAllItems();
+				DataBase.loadPeopleToRAM();
+				
+				ArrayList<Integer> count1 = new ArrayList<Integer>();
+				for (PersonObjektRAM p : DataBase.people) {
+					count1.add(p.getID_Person());
+				}
+				
+			
+				
+				String[] personName = new String[count1.size()];
+				int[] idList1 = new int[count1.size()];
+				int i = 0;
+				
+				for (PersonObjektRAM p : DataBase.people) {
+					personName[i] = p.getVorname() + " " + p.getName();
+					idList1[i] = p.getID_Person();
+					i++;
+				}
+				
+				
+				for(int j = 0; j<personName.length; j++) {
+					String compo = personName[j].toString();
+					ComboBoxRbAg.addItem(compo);
+				}
+			}
+		});
 		GridBagConstraints gbc_ComboBoxRbAg = new GridBagConstraints();
 		gbc_ComboBoxRbAg.insets = new Insets(0, 0, 5, 5);
 		gbc_ComboBoxRbAg.fill = GridBagConstraints.HORIZONTAL;
@@ -2625,6 +2702,36 @@ public class MainMenu extends JFrame {
 		panelRechnung.add(lblAnsprechspartner, gbc_lblAnsprechspartner);
 		
 		JComboBox comboBoxRbAp = new JComboBox(personName);
+		comboBoxRbAp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				comboBoxRbAp.removeAllItems();
+				DataBase.loadPeopleToRAM();
+				
+				ArrayList<Integer> count1 = new ArrayList<Integer>();
+				for (PersonObjektRAM p : DataBase.people) {
+					count1.add(p.getID_Person());
+				}
+				
+			
+				
+				String[] personName = new String[count1.size()];
+				int[] idList1 = new int[count1.size()];
+				int i = 0;
+				
+				for (PersonObjektRAM p : DataBase.people) {
+					personName[i] = p.getVorname() + " " + p.getName();
+					idList1[i] = p.getID_Person();
+					i++;
+				}
+				
+				
+				for(int j = 0; j<personName.length; j++) {
+					String compo = personName[j].toString();
+					comboBoxRbAp.addItem(compo);
+				}
+			}
+		});
 		GridBagConstraints gbc_comboBoxRbAp = new GridBagConstraints();
 		gbc_comboBoxRbAp.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxRbAp.fill = GridBagConstraints.HORIZONTAL;
@@ -2633,6 +2740,37 @@ public class MainMenu extends JFrame {
 		panelRechnung.add(comboBoxRbAp, gbc_comboBoxRbAp);
 		
 		JComboBox comboBoxRaAg = new JComboBox(personName);
+		comboBoxRaAg.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				comboBoxRaAg.removeAllItems();
+				DataBase.loadPeopleToRAM();
+				
+				ArrayList<Integer> count1 = new ArrayList<Integer>();
+				for (PersonObjektRAM p : DataBase.people) {
+					count1.add(p.getID_Person());
+				}
+				
+			
+				
+				String[] personName = new String[count1.size()];
+				int[] idList1 = new int[count1.size()];
+				int i = 0;
+				
+				for (PersonObjektRAM p : DataBase.people) {
+					personName[i] = p.getVorname() + " " + p.getName();
+					idList1[i] = p.getID_Person();
+					i++;
+				}
+				
+				
+				for(int j = 0; j<personName.length; j++) {
+					String compo = personName[j].toString();
+					comboBoxRaAg.addItem(compo);
+				}
+				
+			}
+		});
 		GridBagConstraints gbc_comboBoxRaAg = new GridBagConstraints();
 		gbc_comboBoxRaAg.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxRaAg.fill = GridBagConstraints.HORIZONTAL;
@@ -2641,6 +2779,36 @@ public class MainMenu extends JFrame {
 		panelRechnung.add(comboBoxRaAg, gbc_comboBoxRaAg);
 		
 		JComboBox comboBoxRaAp = new JComboBox(personName);
+		comboBoxRaAp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				comboBoxRaAp.removeAllItems();
+				DataBase.loadPeopleToRAM();
+				
+				ArrayList<Integer> count1 = new ArrayList<Integer>();
+				for (PersonObjektRAM p : DataBase.people) {
+					count1.add(p.getID_Person());
+				}
+				
+			
+				
+				String[] personName = new String[count1.size()];
+				int[] idList1 = new int[count1.size()];
+				int i = 0;
+				
+				for (PersonObjektRAM p : DataBase.people) {
+					personName[i] = p.getVorname() + " " + p.getName();
+					idList1[i] = p.getID_Person();
+					i++;
+				}
+				
+				
+				for(int j = 0; j<personName.length; j++) {
+					String compo = personName[j].toString();
+					comboBoxRaAp.addItem(compo);
+				}
+			}
+		});
 		GridBagConstraints gbc_comboBoxRaAp = new GridBagConstraints();
 		gbc_comboBoxRaAp.insets = new Insets(0, 0, 5, 0);
 		gbc_comboBoxRaAp.fill = GridBagConstraints.HORIZONTAL;
