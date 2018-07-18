@@ -1478,6 +1478,9 @@ public static void refreshBill2() {
 		tcmKasse.removeColumn( tcmKasse.getColumn(0) );
 		tcmKasse.removeColumn( tcmKasse.getColumn(1) );
 		
+		
+		System.out.println("tblKasseRefreshed");
+		
 	}
 
 	public static void refreshTopf() {
@@ -1530,6 +1533,8 @@ public static void refreshBill2() {
 		
 		TableColumnModel tcmTopf = MainMenu.tblTopf.getColumnModel();
 		tcmTopf.removeColumn( tcmTopf.getColumn(1) );
+		
+		System.out.println("tblTopfRefreshed");
 	
 		
 	}
@@ -1665,58 +1670,71 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 	public static void refreshRechn () {
 		
 		
-		DefaultTableModel modelBill = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname", "Auftraggeber", "Betrag", "Beschreibung", "TimeStamp"}, 0) {
+		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ", "ID_Topf"}, 0) {
 			
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
-			};	
-		
-		Statement stmt = null;
+			};
+			
+			Statement stmt = null;
+			
+			try {
+				stmt = DataBase.c.createStatement();
+			} catch (SQLException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+		String sqlRechnung = "SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Typ, ID_Topf, Timestamp FROM ARechnung UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Typ, ID_Topf, Timestamp FROM BRechnung";
+		ResultSet rsRechnung = null;
 		try {
-			stmt = DataBase.c.createStatement();
+			rsRechnung = stmt.executeQuery(sqlRechnung);
 		} catch (SQLException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-
-		String sql = "SELECT * FROM Rechnung";
-		ResultSet rs = null;
-		try {
-			rs = stmt.executeQuery(sql);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		
+		
+		// 2x 
+		
+		// Liste = A + B 
+		
+		// Neue SPalte 
+		// Wenn a in liste dann eintrag 'A'
+		// Dann B in Liste eintrag B 
 		try {
-			while(rs.next())
+			while(rsRechnung.next())
 			{
-				String a1 = rs.getString("ID_Rechnung");
-			    String b1 = rs.getString("Rechnungsname");
-			    String c1 = rs.getString("Auftraggeber");
-			   // String d1 = rsBill.getString("Ansprechpartner");
-			   // String e1 = rsBill.getString("Bezahlung_Art");
-			    String f1 = rs.getString("Betrag");
-			    String g1 = rs.getString("Beschreibung");
-			   // String h1 = rsBill.getString("Bearbeiter");
-			    String j1 = rs.getString("TimeStamp");
-			   
-			  
+				String a1 = rsRechnung.getString("ID_Rechnung");
+			    String b1 = rsRechnung.getString("Name");
+			    String c1 = rsRechnung.getString("Typ");
+			    String e1 = rsRechnung.getString("Betrag");
+			    String d1 = rsRechnung.getString("ID_Topf");
 			    
-			    modelBill.addRow(new Object[]{a1, b1,c1,f1,g1, j1});
-			}
-			
 
+			   
+			    
+			    modelRechnung.addRow(new Object[]{a1, b1, e1,  c1, d1});
+			    
+			    
+			    System.out.println("WHILE RECHNUNG LOADING DONE!");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		MainMenu.tblRechn.setModel(modelRechnung);
 		
-		MainMenu.tblRechn.setModel(modelBill);
+		
+		
+		TableColumnModel tcmRechn = MainMenu.tblRechn.getColumnModel();
+		tcmRechn.removeColumn( tcmRechn.getColumn(4) );
 	
+		
+		System.out.println("tblRechn Refreshed");
 		
 		
 		

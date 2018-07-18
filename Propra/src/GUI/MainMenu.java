@@ -51,6 +51,7 @@ import java.awt.Component;
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JTree;
+import javax.swing.ListSelectionModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 
@@ -1695,6 +1696,14 @@ public class MainMenu extends JFrame {
 		panelTopf.add(lblRechnungen, gbc_lblRechnungen);
 		
 		JButton btnAktualisieren = new JButton("Aktualisieren");
+		btnAktualisieren.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				DataBase.refreshKasse();
+				DataBase.refreshTopf();
+				DataBase.refreshRechn();
+			}
+		});
 		GridBagConstraints gbc_btnAktualisieren = new GridBagConstraints();
 		gbc_btnAktualisieren.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAktualisieren.gridx = 10;
@@ -1970,6 +1979,10 @@ public class MainMenu extends JFrame {
 				
 				int id = Integer.parseInt(idString);
 				
+				
+				
+				
+				
 				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ", "ID_Topf"}, 0) {
 					
 					@Override
@@ -2035,13 +2048,37 @@ public class MainMenu extends JFrame {
 					}
 					tblRechn.setModel(modelRechnung);
 				
-					;
+					
+					TableColumnModel tcmRechn = tblRechn.getColumnModel();
+					tcmRechn.removeColumn( tcmRechn.getColumn(4) );
+					
+				String rowKasseId;	
+				String row;
+				String kassenId = MainMenu.tblTopf.getModel().getValueAt(colnr, 1).toString();
+				
+				int rowCountKasse = tblKasse.getRowCount();
+				
+				System.out.println("anzahl zeilen:"+rowCountKasse);
+				
+				for(int i = 0; i<rowCountKasse; i++) {
 					
 					
 				
+					rowKasseId = MainMenu.tblKasse.getModel().getValueAt(i, 0).toString();
+					
+					if(oldIdKasse.equals(rowKasseId)) {
+						
+						ListSelectionModel selectionModel = 
+								  tblKasse.getSelectionModel();
+								selectionModel.setSelectionInterval(i, i);
+								System.out.println("gewählte zeile" +rowKasseId);
+						
+					}
+					
+					
+				}
 				
-				
-				
+					
 				
 			
 				
@@ -2116,6 +2153,34 @@ public class MainMenu extends JFrame {
 				comboBoxTopf.setSelectedItem(idTopf);
 				
 				
+				
+				String rowTopfId;	
+				String row;
+				String topfId = MainMenu.tblRechn.getModel().getValueAt(colnr, 4).toString();
+				
+				int rowCountTopf = tblTopf.getRowCount();
+				
+				System.out.println("anzahl zeilen:"+rowCountTopf);
+				
+				for(int i = 0; i<rowCountTopf; i++) {
+					
+					
+				
+					rowTopfId = MainMenu.tblTopf.getModel().getValueAt(i, 0).toString();
+					
+					if(rowTopfId.equals(topfId)) {
+						
+						ListSelectionModel selectionModel = 
+								  tblTopf.getSelectionModel();
+								selectionModel.setSelectionInterval(i, i);
+								System.out.println("gewählte zeile" +rowTopfId);
+						
+					}
+					
+					
+				}
+				
+				
 			}
 		});
 		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ", "ID_Topf"}, 0) {
@@ -2154,6 +2219,11 @@ public class MainMenu extends JFrame {
 		}
 		
 		tblRechn.setModel(modelRechnung);
+		
+		
+		
+		TableColumnModel tcmRechn = tblRechn.getColumnModel();
+		tcmRechn.removeColumn( tcmRechn.getColumn(4) );
 		
 		
 	

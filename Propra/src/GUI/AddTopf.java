@@ -57,14 +57,18 @@ public class AddTopf extends JFrame {
 		
 		int count = MainMenu.tblKasse.getRowCount();
 		String[] idList = new String[count];
+		String[] kasseName = new String[count];
+		String[] idUndName = new String[count];
 				
 		for(int row=0; row < MainMenu.tblKasse.getRowCount(); row++) {
 		 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
+		 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
 		 idList[row] = id;
-		 		
+		 kasseName[row] = name;
+		 idUndName[row] = id +" " + name;
 		}
 		
-		JComboBox comboBoxArt = new JComboBox(idList);
+		JComboBox comboBoxArt = new JComboBox(idUndName);
 		comboBoxArt.setBounds(124, 8, 100, 20);
 		contentPane.add(comboBoxArt);
 		
@@ -90,9 +94,12 @@ public class AddTopf extends JFrame {
 		btnHinzufuegen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				
+				String[] idKasse = comboBoxArt.getSelectedItem().toString().split(" ");
+				String id = idKasse[0];
 				try{
 				
-				Finanzverwaltung.addTopf(Integer.parseInt(comboBoxArt.getSelectedItem().toString()), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
+				Finanzverwaltung.addTopf(Integer.parseInt(id), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
 				dispose();
 				}catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Soll und Ist müssen Zahlen sein!");
