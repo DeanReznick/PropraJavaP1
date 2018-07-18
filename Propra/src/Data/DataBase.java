@@ -1,12 +1,15 @@
 package Data;
+import java.awt.Component;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -71,6 +74,9 @@ public class DataBase {
 	      System.out.println("The task was processed successfully.");
 		
 	}
+	
+	 
+	
 	
 	
 	public static String getRolleByOrderId(String id_auftrag) {

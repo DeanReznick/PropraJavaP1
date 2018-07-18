@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
@@ -45,10 +46,14 @@ import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.JTree;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
@@ -1965,7 +1970,7 @@ public class MainMenu extends JFrame {
 				
 				int id = Integer.parseInt(idString);
 				
-				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ"}, 0) {
+				DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ", "ID_Topf"}, 0) {
 					
 					@Override
 					public boolean isCellEditable(int row, int column) {
@@ -1988,7 +1993,7 @@ public class MainMenu extends JFrame {
 					}
 				
 				
-				String sqlRechn = " SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Typ FROM ARechnung WHERE ID_Topf ="+id+" UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Typ FROM BRechnung WHERE ID_Topf ="+id+";";
+				String sqlRechn = " SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Typ, ID_Topf FROM ARechnung WHERE ID_Topf ="+id+" UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Typ, ID_Topf FROM BRechnung WHERE ID_Topf ="+id+";";
 				ResultSet rsRechn = null;
 				
 					try {
@@ -2012,13 +2017,14 @@ public class MainMenu extends JFrame {
 							String b1 = rsRechn.getString("Name");
 						    String c1 = rsRechn.getString("Betrag");
 						    String d1 = rsRechn.getString("Typ");
+						    String e1 = rsRechn.getString("ID_Topf");
 						    
 						    
 						    
 						 
 						  
 						    
-						    modelRechnung.addRow(new Object[]{a1,b1,c1, d1});
+						    modelRechnung.addRow(new Object[]{a1,b1,c1, d1, e1});
 						    
 						    System.out.println("While done");
 						    
@@ -2030,6 +2036,8 @@ public class MainMenu extends JFrame {
 					tblRechn.setModel(modelRechnung);
 				
 					;
+					
+					
 				
 				
 				
@@ -2079,17 +2087,45 @@ public class MainMenu extends JFrame {
 		panelTopf.add(scrollPane_2, gbc_scrollPane_2);
 		
 		
-		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ"};
+		int countTopf = tblTopf.getRowCount();
+		String[] idListTopf = new String[countTopf];
+				
+		for(int row=0; row < tblTopf.getRowCount(); row++) {
+		 String idTopf = tblTopf.getModel().getValueAt(row, 0).toString();
+		 idListTopf[row] = idTopf;
+		}
+		JComboBox comboBoxTopf = new JComboBox(idListTopf);
+		GridBagConstraints gbc_comboBoxTopf = new GridBagConstraints();
+		gbc_comboBoxTopf.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxTopf.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxTopf.gridx = 9;
+		gbc_comboBoxTopf.gridy = 4;
+		panelTopf.add(comboBoxTopf, gbc_comboBoxTopf);
+		
+		
+		String[] column_headers_rechnung = {"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ", "ID_Topf"};
 		String[][] data_rechnung = new String[1000][11];
 		tblRechn = new JTable(data_rechnung, column_headers_rechnung);
-		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ"}, 0) {
+		tblRechn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				
+				int colnr = tblRechn.getSelectedRow();
+				String idTopf = MainMenu.tblRechn.getModel().getValueAt(colnr, 4).toString();
+				
+				comboBoxTopf.setSelectedItem(idTopf);
+				
+				
+			}
+		});
+		DefaultTableModel modelRechnung = new DefaultTableModel(new String[]{"ID_Rechnung", "Rechnungsname",  "Betrag", "Typ", "ID_Topf"}, 0) {
 			
 			@Override
 			public boolean isCellEditable(int row, int column) {
 					return false;
 				}
 			};
-		String sqlRechnung = "SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Typ, Timestamp FROM ARechnung UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Typ, Timestamp FROM BRechnung";
+		String sqlRechnung = "SELECT ID_ARechnung AS ID_Rechnung, Name, Betrag, Typ, ID_Topf, Timestamp FROM ARechnung UNION SELECT ID_BRechnung AS ID_Rechnung, Name, Betrag, Typ, ID_Topf, Timestamp FROM BRechnung";
 		ResultSet rsRechnung = stmt.executeQuery(sqlRechnung);
 		
 		
@@ -2106,11 +2142,12 @@ public class MainMenu extends JFrame {
 		    String b1 = rsRechnung.getString("Name");
 		    String c1 = rsRechnung.getString("Typ");
 		    String e1 = rsRechnung.getString("Betrag");
+		    String d1 = rsRechnung.getString("ID_Topf");
 		    
 
 		   
 		    
-		    modelRechnung.addRow(new Object[]{a1, b1, e1,  c1});
+		    modelRechnung.addRow(new Object[]{a1, b1, e1,  c1, d1});
 		    
 		    
 		    System.out.println("WHILE RECHNUNG LOADING DONE!");
@@ -2119,8 +2156,7 @@ public class MainMenu extends JFrame {
 		tblRechn.setModel(modelRechnung);
 		
 		
-		
-		
+	
 		
 		
 
@@ -2189,20 +2225,7 @@ public class MainMenu extends JFrame {
 		panelTopf.add(lblKasse, gbc_lblKasse);
 		
 		
-		int countTopf = tblTopf.getRowCount();
-		String[] idListTopf = new String[countTopf];
-				
-		for(int row=0; row < tblTopf.getRowCount(); row++) {
-		 String idTopf = tblTopf.getModel().getValueAt(row, 0).toString();
-		 idListTopf[row] = idTopf;
-		}
-		JComboBox comboBoxTopf = new JComboBox(idListTopf);
-		GridBagConstraints gbc_comboBoxTopf = new GridBagConstraints();
-		gbc_comboBoxTopf.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBoxTopf.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBoxTopf.gridx = 9;
-		gbc_comboBoxTopf.gridy = 4;
-		panelTopf.add(comboBoxTopf, gbc_comboBoxTopf);
+	
 		
 		
 		
@@ -2369,6 +2392,27 @@ public class MainMenu extends JFrame {
 		panelTopf.add(btnSpeichern, gbc_btnSpeichern);
 		
 		JButton btnSpeichern_3 = new JButton("Speichern");
+		btnSpeichern_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				int colnr  = MainMenu.tblRechn.getSelectedRow();
+				
+				String id_Bill = MainMenu.tblRechn.getModel().getValueAt(colnr, 0).toString();
+				String rechnTyp = MainMenu.tblRechn.getModel().getValueAt(colnr, 3).toString();
+				String id_Topf = comboBoxTopf.getSelectedItem().toString();
+				
+				
+				
+				
+				if(rechnTyp.equals("Auftrags-Rechnung")) {
+				Rechnungsabwicklung.alterARechnungTopf(Integer.parseInt(id_Bill), Integer.parseInt(id_Topf));
+				}
+				
+				else
+				{Rechnungsabwicklung.alterBRechnungTopf(Integer.parseInt(id_Bill), Integer.parseInt(id_Topf));}
+			}
+		});
 		GridBagConstraints gbc_btnSpeichern_3 = new GridBagConstraints();
 		gbc_btnSpeichern_3.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSpeichern_3.gridx = 9;

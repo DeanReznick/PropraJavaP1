@@ -49,10 +49,10 @@ public class Rechnungsabwicklung {
 		
 	}
 	
-	public static void alterBRechnung(int id_Bill, String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung, int id_Topf) {
+	public static void alterBRechnung(int id_Bill, String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung) {
 		
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "UPDATE BRechnung SET Name='"  + rechnungsname + "' , Id_Auftraggeber= "+ id_Auftraggeber + ", Id_Ansprechpartner = " + id_Ansprechpartner + ", Art_Bezahlung='" + artBezahlung + "', Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"', ID_Topf = "+ id_Topf +" WHERE ID_BRechnung = " + id_Bill + ";";  
+		String query = "UPDATE BRechnung SET Name='"  + rechnungsname + "' , Id_Auftraggeber= "+ id_Auftraggeber + ", Id_Ansprechpartner = " + id_Ansprechpartner + ", Art_Bezahlung='" + artBezahlung + "', Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"' WHERE ID_BRechnung = " + id_Bill + ";";  
 		System.out.println(query);
 		
 		DataBase.executeQuery(query); 
@@ -170,12 +170,33 @@ public class Rechnungsabwicklung {
 		
 	}
 	
+	public static void alterARechnungTopf(int id_Bill,  int id_Topf) {
+		
+		
+		String query = "UPDATE ARechnung SET ID_Topf = "+ id_Topf + " WHERE ID_ARechnung = " + id_Bill + ";";  
+		System.out.println(query);
+		
+		DataBase.executeQuery(query); 
+		
+	}
+	
+	
+public static void alterBRechnungTopf(int id_Bill,  int id_Topf) {
+		
+		
+		String query = "UPDATE BRechnung SET ID_Topf = "+ id_Topf + " WHERE ID_BRechnung = " + id_Bill + ";";  
+		System.out.println(query);
+		
+		DataBase.executeQuery(query); 
+		
+	}
+	
 	
 
-	public static void alterARechnung(int id_Bill, String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung, int id_Topf) {
+	public static void alterARechnung(int id_Bill, String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung) {
 	
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss").format(Calendar.getInstance().getTime());
-		String query = "UPDATE ARechnung SET Name='"  + rechnungsname + "' , Id_Auftraggeber= "+ id_Auftraggeber + ", Id_Ansprechpartner = " + id_Ansprechpartner + ", Art_Bezahlung='" + artBezahlung + "', Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"', ID_Topf = "+ id_Topf + " WHERE ID_ARechnung = " + id_Bill + ";";  
+		String query = "UPDATE ARechnung SET Name='"  + rechnungsname + "' , Id_Auftraggeber= "+ id_Auftraggeber + ", Id_Ansprechpartner = " + id_Ansprechpartner + ", Art_Bezahlung='" + artBezahlung + "', Betrag = '" + betrag +"' , Beschreibung = '" + beschreibung +"', Timestamp = '" + timeStamp +"' WHERE ID_ARechnung = " + id_Bill + ";";  
 		System.out.println(query);
 		
 		DataBase.executeQuery(query); 
