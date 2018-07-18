@@ -1,6 +1,7 @@
 package Data;
 import java.awt.Color;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -39,28 +40,28 @@ public class CreatePdfBRechnung {
 
 	
 	
-	public static void main (String[] args) throws SQLException {
-		DataBase.getConnection();
-		DefaultTableModel modelRechnung = DataBase.loadToBRechnungObjektRAM(39); 
-		DefaultTableModel modelAuftrag = DataBase.loadToBauteileObjektRAM(39);
+//	public static void main (String[] args) throws SQLException {
+//		DataBase.getConnection();
+//		DefaultTableModel modelRechnung = DataBase.loadToBRechnungObjektRAM(39); 
+//		DefaultTableModel modelAuftrag = DataBase.loadToBauteileObjektRAM(39);
+//	
+//		DataBase.closeConnection();
+//		
+//		System.out.println(System.getProperty("user.dir"));
+//		CreatePdfBRechnung ps = new CreatePdfBRechnung();
+//      ps.createPdf(modelRechnung, modelAuftrag);
+//	}
 	
-		DataBase.closeConnection();
-		
-		System.out.println(System.getProperty("user.dir"));
-		CreatePdfBRechnung ps = new CreatePdfBRechnung();
-      ps.createPdf(modelRechnung, modelAuftrag);
-	}
-	
-	public void createPdf(DefaultTableModel model, DefaultTableModel modelAuftrag) {
+	public void createPdf(DefaultTableModel model, DefaultTableModel modelAuftrag, int id) throws DocumentException, FileNotFoundException {
 		String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 	Document document = new Document(PageSize.A4);
-    try{
-        PdfWriter.getInstance(document, new FileOutputStream("BRechnung_+ " + timeStamp + ".pdf"));
+
+        PdfWriter.getInstance(document, new FileOutputStream("Rechnungen/BauteilRechnung_ " + id + "_" + timeStamp + ".pdf"));
         document.open();
         Paragraph p1 = new Paragraph("Rechnung", FontFactory.getFont(FontFactory.TIMES_BOLD,20,Font.BOLD,BaseColor.BLACK));
         Paragraph leerzeile = new Paragraph("\n");
         Paragraph p2 = new Paragraph("vielen Dank für Ihr Vertrauen in unsere Produkte. Wir hoffen Sie sind zufrieden und würden uns \r\n" + 
-        		"freuen wieder von ihnen zu hören.");
+        		"freuen wieder von Ihnen zu hören.");
 			document.add(p1);
 			document.add(leerzeile);
         document.add(p2);
@@ -151,7 +152,7 @@ public class CreatePdfBRechnung {
     			
     			document.add(leerzeile);
     			
-    			document.add( new Paragraph("FakeStreet 123, 57076 Siegen "));
+    			document.add( new Paragraph("info@elab-siegen.de, oder per Telefon an: 0271 / 740-4367."));
             
             
     
@@ -165,18 +166,9 @@ public class CreatePdfBRechnung {
 //        over.addImage(image);
 //        stamper.close();
         
-    }
-    catch(Exception e){
-        System.out.println(e);
-    }
+
     document.close();
 }
 	
-	private static void setImage(PdfContentByte cb, String imgPath, float scalePercent)
-            throws MalformedURLException, IOException, DocumentException {
-        Image img = Image.getInstance(imgPath);
-        img.scalePercent(scalePercent);
-        img.setAbsolutePosition(cb.getXTLM(), cb.getYTLM());
-        cb.addImage(img);
-    }
+	
 }

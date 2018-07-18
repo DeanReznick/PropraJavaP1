@@ -2511,11 +2511,11 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				  
 	  }
 	  
-	  public static DefaultTableModel loadToAuftragObjektRAM(int id_Auftrag) throws SQLException {
+	  public static DefaultTableModel loadToAuftragObjektRAM(int id_ARechnung) throws SQLException {
 		  
 		  
 		  DefaultTableModel model = new DefaultTableModel(new String[]{"Titel","Art der Fertigung"}, 0);
-		    	String query = "Select * FROM Auftrag WHERE ID_Auftrag = " + id_Auftrag + ";"; 
+		    	String query = "SELECT * FROM Auftrag WHERE ID_ARechnung = " + id_ARechnung + ";"; 
 			
 		
 		       Statement  stmt = c.createStatement();

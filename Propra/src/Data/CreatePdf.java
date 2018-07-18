@@ -1,6 +1,7 @@
 package Data;
 import java.awt.Color;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -8,8 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -35,30 +39,30 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class CreatePdf {
 
-	public static final String DEST = "/Users/timw9/Desktop/Rechnung8.pdf";
-	public static final String PDF = "HelloWorld.pdf";
+
 	
-	public static void main (String[] args) throws SQLException {
-		DataBase.getConnection();
-		DefaultTableModel modelRechnung = DataBase.loadToARechnungObjektRAM(7); 
-		DefaultTableModel modelAuftrag = DataBase.loadToAuftragObjektRAM(77);
+//	public static void main (String[] args) throws SQLException {
+//		DataBase.getConnection();
+//		DefaultTableModel modelRechnung = DataBase.loadToARechnungObjektRAM(7);
+//		DefaultTableModel modelAuftrag = DataBase.loadToAuftragObjektRAM(77);
+//	
+//		DataBase.closeConnection();
+//		
+//		System.out.println(System.getProperty("user.dir"));
+//		CreatePdf ps = new CreatePdf();
+//      ps.createPdf( modelRechnung, modelAuftrag);
+//	}
 	
-		DataBase.closeConnection();
-		
-		System.out.println(System.getProperty("user.dir"));
-		CreatePdf ps = new CreatePdf();
-      ps.createPdf(PDF, modelRechnung, modelAuftrag);
-	}
-	
-	public void createPdf(String filename, DefaultTableModel model, DefaultTableModel modelAuftrag) {
+	public void createPdf( DefaultTableModel model, DefaultTableModel modelAuftrag, int id) throws FileNotFoundException, DocumentException {
+		String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 	Document document = new Document(PageSize.A4);
-    try{
-        PdfWriter.getInstance(document, new FileOutputStream("HelloWorld.pdf"));
+
+        PdfWriter.getInstance(document, new FileOutputStream("Rechnungen/AuftragRechnung_" + id + "_" + timeStamp + ".pdf"));
         document.open();
         Paragraph p1 = new Paragraph("Rechnung", FontFactory.getFont(FontFactory.TIMES_BOLD,20,Font.BOLD,BaseColor.BLACK));
         Paragraph leerzeile = new Paragraph("\n");
         Paragraph p2 = new Paragraph("vielen Dank für Ihr Vertrauen in unsere Produkte. Wir hoffen Sie sind zufrieden und würden uns \r\n" + 
-        		"freuen wieder von ihnen zu hören.");
+        		"freuen wieder von Ihnen zu hören.");
 			document.add(p1);
 			document.add(leerzeile);
         document.add(p2);
@@ -149,7 +153,7 @@ public class CreatePdf {
     			
     			document.add(leerzeile);
     			
-    			document.add( new Paragraph("FakeStreet 123, 57076 Siegen "));
+    			document.add( new Paragraph("info@elab-siegen.de, oder per Telefon an: 0271 / 740-4367."));
             
             
     
@@ -163,18 +167,9 @@ public class CreatePdf {
 //        over.addImage(image);
 //        stamper.close();
         
-    }
-    catch(Exception e){
-        System.out.println(e);
-    }
+ 
     document.close();
 }
 	
-	private static void setImage(PdfContentByte cb, String imgPath, float scalePercent)
-            throws MalformedURLException, IOException, DocumentException {
-        Image img = Image.getInstance(imgPath);
-        img.scalePercent(scalePercent);
-        img.setAbsolutePosition(cb.getXTLM(), cb.getYTLM());
-        cb.addImage(img);
-    }
+
 }

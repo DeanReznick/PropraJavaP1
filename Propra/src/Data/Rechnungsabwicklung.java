@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import javax.swing.JOptionPane;
+
 import GUI.GUILogin;
 
 public class Rechnungsabwicklung {
@@ -132,11 +134,25 @@ public class Rechnungsabwicklung {
 		
 		int id = DataBase.getSpecificID("current", "SELECT max(ID_ARechnung) as current FROM ARechnung;");
 		
+
+		
+		try {
+			
+			int test = id / 1;
+			query = "UPDATE Auftrag SET ID_ARechnung = "+id+" WHERE ID_Auftrag = "+id_Auftrag+";"; 
+			System.out.println(query);
+			DataBase.executeQuery(query);
+		} catch (Exception e) {
+			
+			
+			
+			JOptionPane.showMessageDialog(null, "Fehlerhafte Datenbank.");
+		}
 		
 		
-		query = "UPDATE Auftrag SET ID_ARechnung = "+id+" WHERE ID_Auftrag = "+id_Auftrag+";"; 
-		System.out.println(query);
-		DataBase.executeQuery(query);
+		
+		
+		
 	
 		
 		

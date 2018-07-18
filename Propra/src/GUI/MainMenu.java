@@ -13,10 +13,14 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import com.itextpdf.text.DocumentException;
+
 import Data.BauteileAuftragsabwicklung;
 import Data.Calculations;
 import Data.CategoryObjektRAM;
 import Data.ComponentObjektRAM;
+import Data.CreatePdf;
+import Data.CreatePdfBRechnung;
 import Data.DataBase;
 import Data.Finanzverwaltung;
 import Data.OffenerAuftragObjektRAM;
@@ -61,6 +65,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 
 public class MainMenu extends JFrame {
 
@@ -2647,7 +2652,7 @@ public class MainMenu extends JFrame {
 		gbc_btnRefresh.gridy = 0;
 		panelRechnung.add(btnRefresh, gbc_btnRefresh);
 		
-		JLabel lblRechnungenbauteile = new JLabel("Rechnungen:Bauteile");
+		JLabel lblRechnungenbauteile = new JLabel("Rechnungen: Bauteile");
 		lblRechnungenbauteile.setFont(new Font("Tahoma", Font.BOLD, 14));
 		GridBagConstraints gbc_lblRechnungenbauteile = new GridBagConstraints();
 		gbc_lblRechnungenbauteile.insets = new Insets(0, 0, 5, 5);
@@ -3483,15 +3488,56 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		gbc_btnSpeichern_2.gridy = 8;
 		panelRechnung.add(btnSpeichern_2, gbc_btnSpeichern_2);
 		
-		JButton btnPdfErstellen = new JButton("PDF erstellen");
-		btnPdfErstellen.addActionListener(new ActionListener() {
+		JButton btnPdfBRechnung = new JButton("PDF erstellen");
+		btnPdfBRechnung.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				DefaultTableModel modelRechnung = null;
+				DefaultTableModel modelBauteil = null;
 				
-				 JFileChooser chooser = new JFileChooser();
-				    FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				        "PDF Dokumente", "pdf");
-				    chooser.setFileFilter(filter);
+				int colnr = MainMenu.tblRechnB.getSelectedRow();
+				String id = MainMenu.tblRechnB.getModel().getValueAt(colnr, 0).toString();
+				
+				try {
+					modelRechnung = DataBase.loadToBRechnungObjektRAM(Integer.parseInt(id));
+					modelBauteil = DataBase.loadToBauteileObjektRAM(Integer.parseInt(id));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			
+				
+				CreatePdfBRechnung ps = new CreatePdfBRechnung();
+				
+				
+		      try {
+				ps.createPdf(modelRechnung, modelBauteil, Integer.parseInt(id));
+				
+				
+				
+				
+				  JOptionPane.showMessageDialog(null, 
+	                      "PDF erfolgreich erstellt." ,"PDF",
+	                      JOptionPane.INFORMATION_MESSAGE);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				  JOptionPane.showMessageDialog(null, 
+	                      "PDF locked." ,"PDF", 
+	                      JOptionPane.ERROR_MESSAGE);				
+			} catch (DocumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		      
+		      
+		    
+				
+//				 JFileChooser chooser = new JFileChooser();
+//				    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+//				        "PDF Dokumente", "pdf");
+//				    chooser.setFileFilter(filter);
 				    //int returnVal = chooser.showOpenDialog(parent);
 //				    if(returnVal == JFileChooser.APPROVE_OPTION) {
 //				       System.out.println("You chose to open this file: " +
@@ -3501,12 +3547,68 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				
 			}
 		});
-		GridBagConstraints gbc_btnPdfErstellen = new GridBagConstraints();
-		gbc_btnPdfErstellen.anchor = GridBagConstraints.WEST;
-		gbc_btnPdfErstellen.insets = new Insets(0, 0, 0, 5);
-		gbc_btnPdfErstellen.gridx = 4;
-		gbc_btnPdfErstellen.gridy = 9;
-		panelRechnung.add(btnPdfErstellen, gbc_btnPdfErstellen);
+		GridBagConstraints gbc_btnPdfBRechnung = new GridBagConstraints();
+		gbc_btnPdfBRechnung.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPdfBRechnung.gridwidth = 2;
+		gbc_btnPdfBRechnung.gridx = 3;
+		gbc_btnPdfBRechnung.gridy = 9;
+		panelRechnung.add(btnPdfBRechnung, gbc_btnPdfBRechnung);
+		
+		JButton btnPdfARechnung = new JButton("PDF erstellen");
+		btnPdfARechnung.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				DefaultTableModel modelRechnung = null;
+				DefaultTableModel modelAuftrag = null;
+				
+				int colnr = MainMenu.tblRechnA.getSelectedRow();
+				String id = MainMenu.tblRechnA.getModel().getValueAt(colnr, 0).toString();
+				
+				try {
+					modelRechnung = DataBase.loadToARechnungObjektRAM(Integer.parseInt(id));
+					modelAuftrag = DataBase.loadToAuftragObjektRAM(Integer.parseInt(id));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
+			
+				try {
+					
+					
+					
+					
+				CreatePdf ps = new CreatePdf();
+				
+				
+				
+		      ps.createPdf(modelRechnung, modelAuftrag, Integer.parseInt(id));
+		      
+		      JOptionPane.showMessageDialog(null, 
+                      "PDF erfolgreich erstellt." ,"PDF", 
+                      JOptionPane.INFORMATION_MESSAGE);
+		      
+				} catch (FileNotFoundException ex) {
+					  JOptionPane.showMessageDialog(null, 
+		                      "PDF locked." ,"PDF", 
+		                      JOptionPane.ERROR_MESSAGE);
+					} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (DocumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		      
+		      
+		      
+			}
+		});
+		GridBagConstraints gbc_btnPdfARechnung = new GridBagConstraints();
+		gbc_btnPdfARechnung.gridwidth = 2;
+		gbc_btnPdfARechnung.gridx = 8;
+		gbc_btnPdfARechnung.gridy = 9;
+		panelRechnung.add(btnPdfARechnung, gbc_btnPdfARechnung);
 		
 //		String[] column_headers_orders = {"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"};
 		
