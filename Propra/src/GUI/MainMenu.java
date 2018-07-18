@@ -1767,6 +1767,14 @@ public class MainMenu extends JFrame {
 		gbc_lblDetails_1.gridy = 3;
 		panelTopf.add(lblDetails_1, gbc_lblDetails_1);
 		
+		JLabel label = new JLabel("Details:");
+		label.setFont(new Font("Tahoma", Font.BOLD, 13));
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.insets = new Insets(0, 0, 5, 5);
+		gbc_label.gridx = 8;
+		gbc_label.gridy = 3;
+		panelTopf.add(label, gbc_label);
+		
 		JLabel lblTopf = new JLabel("Topf:");
 		GridBagConstraints gbc_lblTopf = new GridBagConstraints();
 		gbc_lblTopf.insets = new Insets(0, 0, 5, 5);
@@ -2404,6 +2412,9 @@ public class MainMenu extends JFrame {
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus!");
 				}
+			 catch (NumberFormatException ex) {
+			JOptionPane.showMessageDialog(null, "Soll und Ist müssen Zahlen sein!");
+		}
 			}
 		});
 		GridBagConstraints gbc_btnKasseSpeichern = new GridBagConstraints();
@@ -2417,14 +2428,18 @@ public class MainMenu extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				
-				int colnr  = MainMenu.tblTopf.getSelectedRow();
-				
-				String idTopf = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
-				String oldIdKasse = MainMenu.tblTopf.getModel().getValueAt(colnr, 1).toString();
-				
-				System.out.println("old id kasse:" +oldIdKasse);
-				String oldSoll = MainMenu.tblTopf.getModel().getValueAt(colnr, 2).toString();
-				String oldIst = MainMenu.tblTopf.getModel().getValueAt(colnr, 3).toString();
+				try {
+					int colnr  = MainMenu.tblTopf.getSelectedRow();
+					
+					String idTopf = MainMenu.tblTopf.getModel().getValueAt(colnr, 0).toString();
+					String oldIdKasse = MainMenu.tblTopf.getModel().getValueAt(colnr, 1).toString();
+					
+					
+					String oldSoll = MainMenu.tblTopf.getModel().getValueAt(colnr, 2).toString();
+					String oldIst = MainMenu.tblTopf.getModel().getValueAt(colnr, 3).toString();
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus!");
+				}
 				
 				int count = MainMenu.tblKasse.getRowCount();
 				String[] idList = new String[count];
@@ -2451,9 +2466,15 @@ public class MainMenu extends JFrame {
 				DataBase.refreshTopf();
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie einen Topf aus!");
-				}
+				} catch (NumberFormatException ex) {
+				JOptionPane.showMessageDialog(null, "Soll und Ist müssen Zahlen sein!");
+			} finally {
+				DataBase.refreshTopf();
 				
 			}
+				
+			}
+			
 		});
 		GridBagConstraints gbc_btnSpeichern = new GridBagConstraints();
 		gbc_btnSpeichern.insets = new Insets(0, 0, 5, 5);
@@ -2465,7 +2486,7 @@ public class MainMenu extends JFrame {
 		btnSpeichern_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+				try {
 				int colnr  = MainMenu.tblRechn.getSelectedRow();
 				
 				String id_Bill = MainMenu.tblRechn.getModel().getValueAt(colnr, 0).toString();
@@ -2475,12 +2496,20 @@ public class MainMenu extends JFrame {
 				
 				
 				
-				if(rechnTyp.equals("Auftrags-Rechnung")) {
-				Rechnungsabwicklung.alterARechnungTopf(Integer.parseInt(id_Bill), Integer.parseInt(id_Topf));
-				}
 				
-				else
-				{Rechnungsabwicklung.alterBRechnungTopf(Integer.parseInt(id_Bill), Integer.parseInt(id_Topf));}
+					if(rechnTyp.equals("Auftrags-Rechnung")) {
+					Rechnungsabwicklung.alterARechnungTopf(Integer.parseInt(id_Bill), Integer.parseInt(id_Topf));
+					}
+					
+					else
+					{Rechnungsabwicklung.alterBRechnungTopf(Integer.parseInt(id_Bill), Integer.parseInt(id_Topf));}
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus!");
+				}
+				finally {
+					DataBase.refreshTopf();
+					
+				}
 			}
 		});
 		GridBagConstraints gbc_btnSpeichern_3 = new GridBagConstraints();
@@ -2962,8 +2991,9 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		panelRechnung.add(txtRbBeschreibung, gbc_txtRbBeschreibung);
 		txtRbBeschreibung.setColumns(10);
 		
-		JLabel lblName_3 = new JLabel("Name");
+		JLabel lblName_3 = new JLabel("Name:");
 		GridBagConstraints gbc_lblName_3 = new GridBagConstraints();
+		gbc_lblName_3.anchor = GridBagConstraints.EAST;
 		gbc_lblName_3.insets = new Insets(0, 0, 5, 5);
 		gbc_lblName_3.gridx = 6;
 		gbc_lblName_3.gridy = 4;
@@ -3141,7 +3171,12 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				String artBezahlung = txtRbBezahlungsart.getText();
 				//txtRbBearbeiter.setText(oldIdB);
 				String beschreibung = txtRbBeschreibung.getText();
-				double betrag = Double.parseDouble(txtRbBetrag.getText());
+				double betrag =  Double.parseDouble(MainMenu.tblRechnB.getModel().getValueAt(colnr, 4).toString());
+				try {
+					betrag = Double.parseDouble(txtRbBetrag.getText());
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Betrag muss eine Zahl sein!");
+				} 
 				String Ansprechpartner = comboBoxRbAp.getSelectedItem().toString();
 				String[] partsB = Ansprechpartner.split(" ");
 				String name1 = partsB[0]; 
@@ -3169,7 +3204,11 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				
 				
 				
-				Rechnungsabwicklung.alterBRechnung(id, rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
+				try {
+					Rechnungsabwicklung.alterBRechnung(id, rechnungsname, id_Auftraggeber, id_Ansprechpartner, artBezahlung, betrag, beschreibung);
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Betrag muss eine Zahl sein!");
+				} 
 				DataBase.refreshRechnungB();
 				} else {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus!");
@@ -3218,7 +3257,12 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				String artBezahlung = txtRaBezahlung.getText();
 				//txtRbBearbeiter.setText(oldIdB);
 				String beschreibung = txtRaBeschreibung.getText();
-				double betrag = Double.parseDouble(txtRaBetrag.getText());
+				double betrag = Double.parseDouble(MainMenu.tblRechnA.getModel().getValueAt(colnr, 4).toString());
+				try {
+					betrag = Double.parseDouble(txtRaBetrag.getText());
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Betrag muss eine Zahl sein!");
+				}
 				String Ansprechpartner = comboBoxRaAp.getSelectedItem().toString();
 				String[] partsB = Ansprechpartner.split(" ");
 				String name1 = partsB[0]; 
