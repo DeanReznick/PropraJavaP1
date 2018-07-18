@@ -2480,5 +2480,106 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 	  }
 	  
 	  
+	  //---
+	  
+	  
+	  
+	  public static DefaultTableModel loadToARechnungObjektRAM(int id_ARechnung) throws SQLException {
+	  
+	  
+		  DefaultTableModel model = new DefaultTableModel(new String[]{"Name","Art der Bezahlung", "Betrag", "Beschreibung", "Timestamp", "Typ"}, 0);
+		    	String query = "Select * FROM ARechnung WHERE ID_ARechnung = " + id_ARechnung + ";"; 
+			
+		
+		       Statement  stmt = c.createStatement();
+		        stmt = c.createStatement();
+			      ResultSet rs = stmt.executeQuery( query );			      
+			      
+				
+				ARechnungObjektRAM tmp = null; 
+					
+				
+				while (rs.next()) {
+
+					
+					 tmp = new ARechnungObjektRAM (rs.getInt("ID_ARechnung"), rs.getString("Name"), rs.getInt("ID_Auftraggeber"), rs.getInt("ID_Ansprechpartner"), rs.getString("Art_Bezahlung"), rs.getFloat("Betrag"),
+							rs.getString("Beschreibung"), rs.getInt("ID_Bearbeiter"), rs.getString("Timestamp"), rs.getInt("ID_Auftrag"), rs.getInt("ID_Topf"), rs.getString("Typ")); 
+					model.addRow(new Object[]{tmp.getName(), tmp.getArt_Bezahlung(), tmp.getBetrag(), tmp.getBeschreibung(), tmp.getTimestamp(), tmp.getTyp()});		
+				}
+	  	  
+		return model;
+				  
+	  }
+	  
+	  public static DefaultTableModel loadToAuftragObjektRAM(int id_Auftrag) throws SQLException {
+		  
+		  
+		  DefaultTableModel model = new DefaultTableModel(new String[]{"Titel","Art der Fertigung"}, 0);
+		    	String query = "Select * FROM Auftrag WHERE ID_Auftrag = " + id_Auftrag + ";"; 
+			
+		
+		       Statement  stmt = c.createStatement();
+		        stmt = c.createStatement();
+			      ResultSet rs = stmt.executeQuery( query );			      
+			      
+				
+				ARechnungObjektRAM tmp = null; 
+					
+				
+				while (rs.next()) {
+
+					model.addRow(new Object[]{rs.getString("Titel"), rs.getString("AF")});		
+				}
+	  	  
+		return model;
+				  
+	  }
+	  
+	  public static DefaultTableModel loadToBRechnungObjektRAM(int id_BRechnung) throws SQLException {
+		  
+		  
+		  DefaultTableModel model = new DefaultTableModel(new String[]{"Name","Art der Bezahlung", "Betrag", "Beschreibung", "Timestamp", "Typ"}, 0);
+		    	String query = "Select * FROM BRechnung WHERE ID_BRechnung = " + id_BRechnung + ";"; 
+			
+		
+		       Statement  stmt = c.createStatement();
+		        stmt = c.createStatement();
+			      ResultSet rs = stmt.executeQuery( query );			      
+			      
+			
+					
+				
+				while (rs.next()) {
+
+					model.addRow(new Object[]{rs.getString("Name"), rs.getString("Art_Bezahlung"), rs.getFloat("Betrag"), rs.getString("Beschreibung"), rs.getString("Timestamp"), rs.getString("Typ")});		
+				}
+	  	  
+		return model;
+				  
+	  }
+	  
+	  public static DefaultTableModel loadToBauteileObjektRAM(int id_BRechnung) throws SQLException {
+		  
+		  
+		  DefaultTableModel model = new DefaultTableModel(new String[]{"Name","Menge", "Einzelpreis"}, 0);
+		    	String query = "Select TBauteil.Name as name, 'Mischtabelle-TBauteil-BRechnung'.Menge as menge , TBauteil.Preis as preis FROM TBauteil LEFT JOIN 'Mischtabelle-TBauteil-BRechnung' ON TBauteil.ID_TBauteil = 'Mischtabelle-TBauteil-BRechnung'.ID_TBauteil WHERE ID_BRechnung = " + id_BRechnung + ";"; 
+			
+		
+		       Statement  stmt = c.createStatement();
+		        stmt = c.createStatement();
+			      ResultSet rs = stmt.executeQuery( query );			      
+			      
+			
+					
+				
+				while (rs.next()) {
+
+					model.addRow(new Object[]{rs.getString("name"), rs.getInt("menge"), rs.getFloat("preis")});		
+				}
+	  	  
+		return model;
+				  
+	  }
+		  
 	  
 }

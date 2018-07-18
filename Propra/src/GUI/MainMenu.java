@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -54,6 +55,7 @@ import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -2605,9 +2607,9 @@ public class MainMenu extends JFrame {
 		tabbedPaneFinanz.addTab("Rechnungen", null, panelRechnung, null);
 		GridBagLayout gbl_panelRechnung = new GridBagLayout();
 		gbl_panelRechnung.columnWidths = new int[]{130, 172, 0, 139, 177, 0, 171, 140, 134, 184, 0};
-		gbl_panelRechnung.rowHeights = new int[]{0, 599, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panelRechnung.rowHeights = new int[]{0, 599, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panelRechnung.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelRechnung.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelRechnung.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelRechnung.setLayout(gbl_panelRechnung);
 		
 		
@@ -3392,7 +3394,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		});
 		GridBagConstraints gbc_btnSpeichern_1 = new GridBagConstraints();
 		gbc_btnSpeichern_1.gridwidth = 2;
-		gbc_btnSpeichern_1.insets = new Insets(0, 0, 0, 5);
+		gbc_btnSpeichern_1.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSpeichern_1.gridx = 3;
 		gbc_btnSpeichern_1.gridy = 8;
 		panelRechnung.add(btnSpeichern_1, gbc_btnSpeichern_1);
@@ -3475,10 +3477,36 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 			}
 		});
 		GridBagConstraints gbc_btnSpeichern_2 = new GridBagConstraints();
+		gbc_btnSpeichern_2.insets = new Insets(0, 0, 5, 0);
 		gbc_btnSpeichern_2.gridwidth = 2;
 		gbc_btnSpeichern_2.gridx = 8;
 		gbc_btnSpeichern_2.gridy = 8;
 		panelRechnung.add(btnSpeichern_2, gbc_btnSpeichern_2);
+		
+		JButton btnPdfErstellen = new JButton("PDF erstellen");
+		btnPdfErstellen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				 JFileChooser chooser = new JFileChooser();
+				    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				        "PDF Dokumente", "pdf");
+				    chooser.setFileFilter(filter);
+				    //int returnVal = chooser.showOpenDialog(parent);
+//				    if(returnVal == JFileChooser.APPROVE_OPTION) {
+//				       System.out.println("You chose to open this file: " +
+//				            chooser.getSelectedFile().getName());
+//				    }
+				
+				
+			}
+		});
+		GridBagConstraints gbc_btnPdfErstellen = new GridBagConstraints();
+		gbc_btnPdfErstellen.anchor = GridBagConstraints.WEST;
+		gbc_btnPdfErstellen.insets = new Insets(0, 0, 0, 5);
+		gbc_btnPdfErstellen.gridx = 4;
+		gbc_btnPdfErstellen.gridy = 9;
+		panelRechnung.add(btnPdfErstellen, gbc_btnPdfErstellen);
 		
 //		String[] column_headers_orders = {"ID Änderung", "ID Bauteil","ID Person", "Vorname", "Name", "Timestamp", "Aenderung"};
 		

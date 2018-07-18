@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Data.ARechnungObjektRAM;
 import Data.Authentication;
 import Data.DataBase;
 import java.awt.FlowLayout;
@@ -37,8 +39,10 @@ public class GUILogin extends JFrame {
 	private JPasswordField txt_password;
 	/**
 	 * Launch the application.
+	 * @throws SQLException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
+		
 		
 		DataBase.getConnection();
 		
