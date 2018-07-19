@@ -94,6 +94,9 @@ public class AddKasse extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					
+					String kasseNr = txtNummer.getText();
+					int testNr = Integer.parseInt(kasseNr);
+					
 					Finanzverwaltung.addKasse(comboBoxArt.getSelectedItem().toString(), txtNummer.getText(), Integer.parseInt(txtSoll.getText()), Integer.parseInt(txtIst.getText()));
 					dispose();
 				} catch (NumberFormatException ex) {
