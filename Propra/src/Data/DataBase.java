@@ -40,7 +40,7 @@ public class DataBase {
 		      try {
 		    	 File desktopDir = new File(System.getProperty("user.home"), "Desktop");
 		         Class.forName("org.sqlite.JDBC");
-		         c = DriverManager.getConnection("jdbc:sqlite:"+ desktopDir.getPath() +"\\Projekt1-DB.db");
+		         c = DriverManager.getConnection("jdbc:sqlite:Projekt1-DB.db");
 		         c.setAutoCommit(false);
 		      } catch ( Exception e ) {
 		         System.err.println( e.getClass().getName() + ": " + e.getMessage() ); 
@@ -1595,6 +1595,7 @@ public static void refreshBill2() {
 		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(5) );
 		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(4) );
 		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(2) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(1 ) );
 	
 		
 		
@@ -1662,6 +1663,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(5) );
 		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(2) );
 		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(4) );
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(1 ) );
 		
 		
 	}

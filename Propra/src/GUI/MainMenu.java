@@ -2953,6 +2953,7 @@ DefaultTableModel modelRechnungB = new DefaultTableModel(new String[]{"ID_BRechn
 		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(5) );
 		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(4) );
 		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(2) );
+		tcmRechnungB.removeColumn( tcmRechnungB.getColumn(1 ) );
 		
 		
 		
@@ -3105,6 +3106,7 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(5) );
 		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(2) );
 		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(4) );
+		tcmRechnungA.removeColumn( tcmRechnungA.getColumn(1 ) );
 		
 		scrollPane_4.setViewportView(tblRechnA);
 		
