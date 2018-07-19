@@ -3546,25 +3546,24 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		btnPdfBRechnung.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
+				try {
 				DefaultTableModel modelRechnung = null;
 				DefaultTableModel modelBauteil = null;
 				
 				int colnr = MainMenu.tblRechnB.getSelectedRow();
 				String id = MainMenu.tblRechnB.getModel().getValueAt(colnr, 0).toString();
 				
-				try {
+				
+				
 					modelRechnung = DataBase.loadToBRechnungObjektRAM(Integer.parseInt(id));
 					modelBauteil = DataBase.loadToBauteileObjektRAM(Integer.parseInt(id));
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+				
 			
 				
 				CreatePdfBRechnung ps = new CreatePdfBRechnung();
 				
 				
-		      try {
+		      
 				ps.createPdf(modelRechnung, modelBauteil, Integer.parseInt(id));
 				
 				
@@ -3583,7 +3582,15 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 			} catch (DocumentException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ArrayIndexOutOfBoundsException ex) {
+				JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
 			}
+				
+					
+					
 		      
 		      
 		    
@@ -3611,22 +3618,19 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 		JButton btnPdfARechnung = new JButton("PDF erstellen");
 		btnPdfARechnung.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				try {
 				DefaultTableModel modelRechnung = null;
 				DefaultTableModel modelAuftrag = null;
 				
 				int colnr = MainMenu.tblRechnA.getSelectedRow();
 				String id = MainMenu.tblRechnA.getModel().getValueAt(colnr, 0).toString();
 				
-				try {
+				
 					modelRechnung = DataBase.loadToARechnungObjektRAM(Integer.parseInt(id));
 					modelAuftrag = DataBase.loadToAuftragObjektRAM(Integer.parseInt(id));
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+				
 			
-				try {
+				
 					
 					
 					
@@ -3651,7 +3655,12 @@ DefaultTableModel modelRechnungA = new DefaultTableModel(new String[]{"ID_ARechn
 				} catch (DocumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				} catch (ArrayIndexOutOfBoundsException ex) {
+					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Rechnung aus.");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} 
 				
 		      
 		      
