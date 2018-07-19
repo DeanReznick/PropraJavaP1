@@ -2459,21 +2459,20 @@ public class MainMenu extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					int colnr  = MainMenu.tblKasse.getSelectedRow();
-					int colnrKasse = MainMenu.tblKasse.getSelectedRow();
+					
 					String idKasse = MainMenu.tblKasse.getModel().getValueAt(colnr, 0).toString();
-					 String oldArt = MainMenu.tblKasse.getModel().getValueAt(colnr, 1).toString();
-					 int oldNumber = Integer.parseInt(MainMenu.tblKasse.getModel().getValueAt(colnr, 2).toString());
-					 String oldSoll = MainMenu.tblKasse.getModel().getValueAt(colnr, 3).toString();
-					 String oldIst = MainMenu.tblKasse.getModel().getValueAt(colnr, 4).toString();
-					 
-					Finanzverwaltung.alterKasse(Integer.parseInt(idKasse), comboBoxArt.getSelectedItem().toString(), txtKasseNr.getText(), Integer.parseInt(txtKasseSoll.getText()), Integer.parseInt(txtKasseIst.getText()));
+					String kasseNrString = txtKasseNr.getText();
+					int kasseNr = Integer.parseInt(txtKasseNr.getText());
+					
+					Finanzverwaltung.alterKasse(Integer.parseInt(idKasse), comboBoxArt.getSelectedItem().toString(),kasseNrString, Integer.parseInt(txtKasseSoll.getText()), Integer.parseInt(txtKasseIst.getText()));
 					DataBase.refreshKasse();
 				} catch (ArrayIndexOutOfBoundsException ex) {
 					JOptionPane.showMessageDialog(null, "Bitte wählen Sie eine Kasse aus!");
 				}
-			 catch (NumberFormatException ex) {
-			JOptionPane.showMessageDialog(null, "Soll und Ist müssen Zahlen sein!");
-		}
+				 catch (NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Nummer, Soll und Ist müssen Zahlen sein!");
+					}
+		
 			}
 		});
 		GridBagConstraints gbc_btnKasseSpeichern = new GridBagConstraints();
