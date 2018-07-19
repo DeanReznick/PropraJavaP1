@@ -101,19 +101,19 @@ public class NewBill extends JFrame {
 		System.out.println("idList länge" +idList.length);
 		System.out.println("personen länge:" +personName.length);
 		
-		setBounds(100, 100, 267, 381);
+		setBounds(100, 100, 365, 381);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		txtRechnungsName = new JTextField();
-		txtRechnungsName.setBounds(124, 41, 86, 20);
+		txtRechnungsName.setBounds(124, 41, 170, 20);
 		contentPane.add(txtRechnungsName);
 		txtRechnungsName.setColumns(10);
 		
 		JComboBox comboBoxAuftraege = new JComboBox();
-		comboBoxAuftraege.setBounds(124, 227, 86, 20);
+		comboBoxAuftraege.setBounds(124, 227, 170, 20);
 		contentPane.add(comboBoxAuftraege);
 		
 		comboBoxAuftraggeber = new JComboBox(personName);
@@ -139,8 +139,8 @@ public class NewBill extends JFrame {
 				//System.out.println(auftraggeber_name);
 				//System.out.println(auftraggeber_id);
 				Statement stmtOrderBills = null;
-//				String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag LEFT JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag WHERE Auftrag.ID_Auftrag =" + auftraggeber_id + ";";
-				String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = " + auftraggeber_id + ";";
+				String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag WHERE 'Mischtabelle-Person-Auftrag'.ID_Person =" + auftraggeber_id + ";";
+				//String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = " + auftraggeber_id + ";";
 				ResultSet rsOrdersBills = null;
 				
 				try {
@@ -153,27 +153,39 @@ public class NewBill extends JFrame {
 				
 				
 				  
-//				  ArrayList<String> orderNames = new ArrayList<String>();
+				  ArrayList<String> orderNames = new ArrayList<String>();
+				  
+				  ArrayList<String> orderIdsNames = new ArrayList<String>();
 			        try {
 						while(rsOrdersBills.next()){
 							int x = rsOrdersBills.getInt("ID_Auftrag");
-//							String y = rsOrdersBills.getString("Name");
+							String z = rsOrdersBills.getString("ID_Auftrag");
+							String y = rsOrdersBills.getString("Titel");
 						    ids.add(x);
-//						    orderNames.add(y);
+						    orderNames.add(y);
+						    
+						    orderIdsNames.add(z + " " + y);
+						    
+						    System.out.println(z + " " + y);
+						    
 						}
 					} catch (SQLException ex) {
 						// TODO Auto-generated catch block
 						ex.printStackTrace();
 					}
 			        
+			      
+			        
 			        comboBoxAuftraege.removeAllItems();
 			        
 			        System.out.println("size of the combobox after remove all" + comboBoxAuftraege.getComponentCount());
 			        System.out.println("size of ids" +ids.size());
-			        for (int i = 0; i < ids.size(); i++) {
+			        for (int i = 0; i < orderIdsNames.size(); i++) {
 			        	
 			        
-			        	comboBoxAuftraege.addItem(ids.get(i));
+			        	comboBoxAuftraege.addItem(orderIdsNames.get(i));
+			        	
+			        	System.out.println(orderIdsNames.get(i));
 			      
 			        }
 			        System.out.println("size of the combobox after adding" + comboBoxAuftraege.getComponentCount());
@@ -181,7 +193,7 @@ public class NewBill extends JFrame {
 			        
 			}
 		});
-		comboBoxAuftraggeber.setBounds(124, 72, 86, 20);
+		comboBoxAuftraggeber.setBounds(124, 72, 170, 20);
 		contentPane.add(comboBoxAuftraggeber);
 		
 		
@@ -191,21 +203,21 @@ public class NewBill extends JFrame {
 		comboBoxAnsprechpartner = new JComboBox(personName);
 		
 
-		comboBoxAnsprechpartner.setBounds(124, 103, 86, 20);
+		comboBoxAnsprechpartner.setBounds(124, 103, 170, 20);
 		contentPane.add(comboBoxAnsprechpartner);
 		
 		txtZahlungsArt = new JTextField();
-		txtZahlungsArt.setBounds(124, 134, 86, 20);
+		txtZahlungsArt.setBounds(124, 134, 170, 20);
 		contentPane.add(txtZahlungsArt);
 		txtZahlungsArt.setColumns(10);
 		
 		txtBetrag = new JTextField();
-		txtBetrag.setBounds(124, 165, 86, 20);
+		txtBetrag.setBounds(124, 165, 170, 20);
 		contentPane.add(txtBetrag);
 		txtBetrag.setColumns(10);
 		
 		txtBeschreibung = new JTextField();
-		txtBeschreibung.setBounds(124, 196, 86, 20);
+		txtBeschreibung.setBounds(124, 196, 170, 20);
 		contentPane.add(txtBeschreibung);
 		txtBeschreibung.setColumns(10);
 		
@@ -227,7 +239,7 @@ public class NewBill extends JFrame {
 		}
 		
 		 JComboBox CBTopf = new JComboBox(idListTopf);
-			CBTopf.setBounds(124, 258, 86, 20);
+			CBTopf.setBounds(124, 258, 170, 20);
 			contentPane.add(CBTopf);
 			
 		JLabel lblRechnungsname = new JLabel("Rechnungsname:");
@@ -290,7 +302,10 @@ public class NewBill extends JFrame {
 				double betrag = Double.parseDouble(txtBetrag.getText());
 				String beschreibung = txtBeschreibung.getText();
 				
-				int id_Auftrag = Integer.parseInt(comboBoxAuftraege.getSelectedItem().toString());
+				String idName_Auftrag = comboBoxAuftraege.getSelectedItem().toString();
+				String[] parts = idName_Auftrag.split(" ");
+				String id_Auftrag = parts[0]; // 004
+				String part2 = parts[1]; // 034556
 				
 				String id_topf_String = CBTopf.getSelectedItem().toString();
 				int id_topf;
@@ -303,7 +318,7 @@ public class NewBill extends JFrame {
 				}
 				
 				
-				Rechnungsabwicklung.createARechnung(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung, id_Auftrag, id_topf);
+				Rechnungsabwicklung.createARechnung(rechnungsname, auftraggeber_id, ansprechpartner_id, artBezahlung, betrag, beschreibung, Integer.parseInt(id_Auftrag), id_topf);
 				DataBase.refreshRechnungA();
 				
 			

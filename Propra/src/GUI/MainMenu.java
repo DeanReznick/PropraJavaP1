@@ -2693,6 +2693,9 @@ public class MainMenu extends JFrame {
 				}
 			}
 		});
+		
+		
+		ComboBoxRbAg.setEnabled(false);
 		GridBagConstraints gbc_ComboBoxRbAg = new GridBagConstraints();
 		gbc_ComboBoxRbAg.insets = new Insets(0, 0, 5, 5);
 		gbc_ComboBoxRbAg.fill = GridBagConstraints.HORIZONTAL;
@@ -2778,6 +2781,8 @@ public class MainMenu extends JFrame {
 				
 			}
 		});
+		
+		comboBoxRaAg.setEnabled(false);
 		GridBagConstraints gbc_comboBoxRaAg = new GridBagConstraints();
 		gbc_comboBoxRaAg.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxRaAg.fill = GridBagConstraints.HORIZONTAL;
@@ -3010,8 +3015,45 @@ DefaultTableModel modelRechnungB = new DefaultTableModel(new String[]{"ID_BRechn
 				}
 				
 				
+				
+				Statement stmtOrderBills = null;
+				String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag WHERE Auftrag.ID_Auftrag =" + oldIdAuftrag + ";";
+				//String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = " + auftraggeber_id + ";";
+				ResultSet rsOrdersBills = null;
+				
+				try {
+					stmtOrderBills = DataBase.c.createStatement();
+					rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
+				} catch (SQLException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
+				
+				
+				ArrayList<Integer> ids = new ArrayList<Integer>();
+				  ArrayList<String> orderNames = new ArrayList<String>();
+				  String idNameAuftrag = null;
+				  ArrayList<String> orderIdsNames = new ArrayList<String>();
+			        try {
+						while(rsOrdersBills.next()){
+							int x = rsOrdersBills.getInt("ID_Auftrag");
+							String z = rsOrdersBills.getString("ID_Auftrag");
+							String y = rsOrdersBills.getString("Titel");
+						    ids.add(x);
+						    orderNames.add(y);
+						    idNameAuftrag = z + " " + y;
+						    orderIdsNames.add(z + " " + y);
+						    
+						    System.out.println(z + " " + y);
+						    
+						}
+					} catch (SQLException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+				
 				comboBoxRaAp.setSelectedItem(oldAnsprechpartner);
-				txtRaAuftrag.setText(oldIdAuftrag);
+				txtRaAuftrag.setText(idNameAuftrag);
 			}
 		});
 		
