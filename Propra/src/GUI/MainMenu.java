@@ -2462,7 +2462,7 @@ public class MainMenu extends JFrame {
 					int colnrKasse = MainMenu.tblKasse.getSelectedRow();
 					String idKasse = MainMenu.tblKasse.getModel().getValueAt(colnr, 0).toString();
 					 String oldArt = MainMenu.tblKasse.getModel().getValueAt(colnr, 1).toString();
-					 String oldNumber = MainMenu.tblKasse.getModel().getValueAt(colnr, 2).toString();
+					 int oldNumber = Integer.parseInt(MainMenu.tblKasse.getModel().getValueAt(colnr, 2).toString());
 					 String oldSoll = MainMenu.tblKasse.getModel().getValueAt(colnr, 3).toString();
 					 String oldIst = MainMenu.tblKasse.getModel().getValueAt(colnr, 4).toString();
 					 

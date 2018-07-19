@@ -31,6 +31,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class NewBill extends JFrame {
 
@@ -112,7 +114,68 @@ public class NewBill extends JFrame {
 		contentPane.add(txtRechnungsName);
 		txtRechnungsName.setColumns(10);
 		
+		
+		txtBetrag = new JTextField();
+		txtBetrag.setBounds(124, 165, 170, 20);
+		contentPane.add(txtBetrag);
+		txtBetrag.setColumns(10);
+		
 		JComboBox comboBoxAuftraege = new JComboBox();
+		
+		comboBoxAuftraege.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				comboBoxAuftraege.addItem("0 Titel");
+				String idName_Auftrag = null;
+				try {
+					idName_Auftrag = comboBoxAuftraege.getSelectedItem().toString();
+				} catch (NullPointerException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String id_Auftrag = null;
+				Statement stmtOrderBills;
+				try {
+					String[] parts = idName_Auftrag.split(" ");
+					id_Auftrag = parts[0]; 
+					stmtOrderBills = null;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				String sqlOrdersBills = "SELECT PK FROM Auftrag WHERE ID_Auftrag = " + id_Auftrag + ";";
+				//String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = " + auftraggeber_id + ";";
+				ResultSet rsOrdersBills = null;
+				
+				try {
+					stmtOrderBills = DataBase.c.createStatement();
+					rsOrdersBills = stmtOrderBills.executeQuery(sqlOrdersBills);
+				} catch (SQLException ex) {
+					// TODO Auto-generated catch block
+					ex.printStackTrace();
+				}
+				
+				
+				  String pk = "0";
+				
+			        try {
+						while(rsOrdersBills.next()){
+							
+							pk = rsOrdersBills.getString("PK");
+						  
+						    
+						}
+					} catch (SQLException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+			        
+			        comboBoxAuftraege.removeItem("0 Titel");
+			        txtBetrag.setText(pk);
+			}
+		});
+		
+	
+		
 		comboBoxAuftraege.setBounds(124, 227, 170, 20);
 		contentPane.add(comboBoxAuftraege);
 		
@@ -161,6 +224,7 @@ public class NewBill extends JFrame {
 							int x = rsOrdersBills.getInt("ID_Auftrag");
 							String z = rsOrdersBills.getString("ID_Auftrag");
 							String y = rsOrdersBills.getString("Titel");
+							String pk = rsOrdersBills.getString("PK");
 						    ids.add(x);
 						    orderNames.add(y);
 						    
@@ -176,7 +240,12 @@ public class NewBill extends JFrame {
 			        
 			      
 			        
-			        comboBoxAuftraege.removeAllItems();
+			        try {
+						comboBoxAuftraege.removeAllItems();
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 			        
 			        System.out.println("size of the combobox after remove all" + comboBoxAuftraege.getComponentCount());
 			        System.out.println("size of ids" +ids.size());
@@ -211,10 +280,8 @@ public class NewBill extends JFrame {
 		contentPane.add(txtZahlungsArt);
 		txtZahlungsArt.setColumns(10);
 		
-		txtBetrag = new JTextField();
-		txtBetrag.setBounds(124, 165, 170, 20);
-		contentPane.add(txtBetrag);
-		txtBetrag.setColumns(10);
+		
+		
 		
 		txtBeschreibung = new JTextField();
 		txtBeschreibung.setBounds(124, 196, 170, 20);
