@@ -115,6 +115,8 @@ public class GUILogin extends JFrame {
 							
 							
 							
+							
+							
 							int id = DataBase.getIdPersonByNameSurname(namen[1], namen[0]); 
 							
 						
@@ -160,8 +162,13 @@ public class GUILogin extends JFrame {
                             "Fehler bei der Eingabe.", 
                             "Fehler", 
                             JOptionPane.WARNING_MESSAGE);
-					e.printStackTrace();
+			
 				
+				}catch (NullPointerException e) {
+					JOptionPane.showMessageDialog(null, 
+                            "Fehler bei der Eingabe.", 
+                            "Fehler", 
+                            JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		}

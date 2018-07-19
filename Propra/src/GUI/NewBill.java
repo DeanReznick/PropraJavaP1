@@ -202,7 +202,7 @@ public class NewBill extends JFrame {
 				//System.out.println(auftraggeber_name);
 				//System.out.println(auftraggeber_id);
 				Statement stmtOrderBills = null;
-				String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag WHERE 'Mischtabelle-Person-Auftrag'.ID_Person =" + auftraggeber_id + ";";
+				String sqlOrdersBills = "SELECT Auftrag.* FROM Auftrag INNER JOIN 'Mischtabelle-Person-Auftrag' ON Auftrag.ID_Auftrag = 'Mischtabelle-Person-Auftrag'.ID_Auftrag WHERE 'Mischtabelle-Person-Auftrag'.ID_Person =" + auftraggeber_id + " AND Auftrag.ID_ARechnung is null;";
 				//String sqlOrdersBills = "SELECT * FROM 'Mischtabelle-Person-Auftrag' where ID_Person = " + auftraggeber_id + ";";
 				ResultSet rsOrdersBills = null;
 				

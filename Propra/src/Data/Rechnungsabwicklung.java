@@ -19,6 +19,11 @@ public class Rechnungsabwicklung {
 		
 	}
 	
+	
+	
+	
+	
+	
 	public static void createBRechnung(String rechnungsname, int id_Auftraggeber, int id_Ansprechpartner, String artBezahlung, double betrag, String beschreibung) {
 			// +  DataBase.getIdPersonByNameSurname(GUILogin.name_signedIn, GUILogin.vorname_signedIn) + ",'"
 
