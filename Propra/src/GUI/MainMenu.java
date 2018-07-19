@@ -1975,10 +1975,13 @@ public class MainMenu extends JFrame {
 		String[] column_headers_topf = {"ID_Topf", "ID_Kasse", "Soll", "Ist"};
 		String[][] data_topf = new String[1000][11];
 		tblTopf = new JTable(data_topf, column_headers_topf);
+		
 		tblTopf.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				
+				MainMenu.tblKasse.clearSelection();
 				int colnr  = MainMenu.tblTopf.getSelectedRow();
 				
 				
@@ -1990,29 +1993,39 @@ public class MainMenu extends JFrame {
 				String oldSoll = MainMenu.tblTopf.getModel().getValueAt(colnr, 2).toString();
 				String oldIst = MainMenu.tblTopf.getModel().getValueAt(colnr, 3).toString();
 				
-				int count = MainMenu.tblKasse.getRowCount();
+				int count = MainMenu.tblKasse.getModel().getRowCount();
 				String[] idList = new String[count];
 				String[] kasseName = new String[count];
+				ArrayList<String> idName = new ArrayList<String>();
+				
+			
 						
-				for(int row=0; row < count; row++) {
-				 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
-				 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
-				 idList[row] = id;
-				 kasseName[row] = name;
-				 idUndName[row] = id +" " + name;
+				try {
+					for(int row=0; row < count; row++) {
+					 String id = MainMenu.tblKasse.getModel().getValueAt(row, 0).toString();
+					 String name = MainMenu.tblKasse.getModel().getValueAt(row, 1).toString();
+					 
+					 idName.add(id +" " + name);
+						System.out.println("Try:Anzahl kassen ist:" +count);
+					}
+				} catch (ArrayIndexOutOfBoundsException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					
+					System.out.println("Catch: Anzahl kassen ist:" +count);
 				}
 				
 				
-			for(String idName: idUndName) {
+			for(String idNameStr: idName) {
 				
-				String[] parts = idName.split(" ");
+				String[] parts = idNameStr.split(" ");
 				String part1 = parts[0]; 
 				String part2 = parts[1]; 
 				
 				
 				if(part1.equals(oldIdKasse)) {
 					
-					comboBoxKasse.setSelectedItem(idName);
+					comboBoxKasse.setSelectedItem(idNameStr);
 					
 				}
 			}
@@ -2227,7 +2240,7 @@ public class MainMenu extends JFrame {
 				
 				int rowCountTopf = tblTopf.getRowCount();
 				
-				System.out.println("anzahl zeilen:"+rowCountTopf);
+				System.out.println("anzahl zeilen int tblTopf : "+rowCountTopf);
 				
 				for(int i = 0; i<rowCountTopf; i++) {
 					
