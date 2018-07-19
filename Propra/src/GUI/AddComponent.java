@@ -95,8 +95,8 @@ public class AddComponent extends JFrame {
 				TreeBauteile.addTBauteil(txtName.getText(), txtLink.getText(), Integer.parseInt(txtStock.getText()),Integer.parseInt(txtOrdered.getText()),  Integer.parseInt(txtPlanned.getText()), txtStorage.getText(), Float.parseFloat(txtPrice.getText()));
 				
 				
-				DataBase.refreshChange();
-				dispose();
+				
+				
 				}
 				catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Die Mengen und der Preis müssen Zahlen sein.");
@@ -105,12 +105,12 @@ public class AddComponent extends JFrame {
 					JOptionPane.showMessageDialog(null, ex);
 				}finally {
 					DataBase.refreshComponent();
-					
+					dispose();
 					
 				}
 			}
 		});
-		btnBestaetigen.setBounds(100, 261, 89, 23);
+		btnBestaetigen.setBounds(96, 262, 116, 23);
 		contentPane.add(btnBestaetigen);
 		
 		txtLink = new JTextField();

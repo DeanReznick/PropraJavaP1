@@ -49,7 +49,7 @@ public class Mengenverwaltung extends JFrame {
 		System.out.println(bauteil_id);
 		
 		
-		setBounds(100, 100, 235, 215);
+		setBounds(100, 100, 400, 215);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -74,7 +74,7 @@ public class Mengenverwaltung extends JFrame {
 				dispose(); 
 			}
 		});
-		btnAutomatischeBestellung.setBounds(26, 101, 167, 23);
+		btnAutomatischeBestellung.setBounds(159, 101, 215, 23);
 		contentPane.add(btnAutomatischeBestellung);
 		
 		JButton btnBestaetigung = new JButton("Lieferung angekommen");
@@ -88,16 +88,16 @@ public class Mengenverwaltung extends JFrame {
 				dispose(); 
 			}
 		});
-		btnBestaetigung.setBounds(26, 135, 167, 23);
+		btnBestaetigung.setBounds(159, 135, 215, 23);
 		contentPane.add(btnBestaetigung);
 		
 		txtMenge = new JTextField();
-		txtMenge.setBounds(75, 36, 118, 20);
+		txtMenge.setBounds(159, 36, 215, 20);
 		contentPane.add(txtMenge);
 		txtMenge.setColumns(10);
 		
 		JLabel lblMenge = new JLabel("Menge:");
-		lblMenge.setBounds(26, 39, 60, 14);
+		lblMenge.setBounds(26, 39, 123, 14);
 		contentPane.add(lblMenge);
 		
 		JButton btnBestellen = new JButton("Bestellen");
@@ -115,7 +115,7 @@ public class Mengenverwaltung extends JFrame {
 				
 			}
 		});
-		btnBestellen.setBounds(26, 67, 167, 23);
+		btnBestellen.setBounds(159, 67, 215, 23);
 		contentPane.add(btnBestellen);
 	}
 }

@@ -215,7 +215,7 @@ public class NewBill extends JFrame {
 				}
 				
 				
-				  
+			
 				  ArrayList<String> orderNames = new ArrayList<String>();
 				  
 				  ArrayList<String> orderIdsNames = new ArrayList<String>();
