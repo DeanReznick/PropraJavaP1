@@ -143,7 +143,7 @@ public class AlterCategory extends JFrame {
 					dispose();
 			}
 		});
-		btnSpeichern.setBounds(335, 64, 89, 23);
+		btnSpeichern.setBounds(303, 64, 121, 23);
 		contentPane.add(btnSpeichern);
 	}
 }

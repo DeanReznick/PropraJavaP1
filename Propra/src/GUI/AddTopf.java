@@ -45,7 +45,7 @@ public class AddTopf extends JFrame {
 	 */
 	public AddTopf() {
 		setTitle("Topf hinzufuegen");
-		setBounds(100, 100, 250, 200);
+		setBounds(100, 100, 362, 164);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -69,7 +69,7 @@ public class AddTopf extends JFrame {
 		}
 		
 		JComboBox comboBoxArt = new JComboBox(idUndName);
-		comboBoxArt.setBounds(124, 8, 100, 20);
+		comboBoxArt.setBounds(124, 8, 212, 20);
 		contentPane.add(comboBoxArt);
 		
 		JLabel lblSoll = new JLabel("Soll:");
@@ -81,12 +81,12 @@ public class AddTopf extends JFrame {
 		contentPane.add(lblIst);
 		
 		txtSoll = new JTextField();
-		txtSoll.setBounds(124, 33, 100, 20);
+		txtSoll.setBounds(124, 33, 212, 20);
 		contentPane.add(txtSoll);
 		txtSoll.setColumns(10);
 		
 		txtIst = new JTextField();
-		txtIst.setBounds(124, 58, 100, 20);
+		txtIst.setBounds(124, 58, 212, 20);
 		contentPane.add(txtIst);
 		txtIst.setColumns(10);
 		
@@ -111,7 +111,7 @@ public class AddTopf extends JFrame {
 				
 			}
 		});
-		btnHinzufuegen.setBounds(63, 118, 100, 23);
+		btnHinzufuegen.setBounds(181, 89, 155, 23);
 		contentPane.add(btnHinzufuegen);
 	}
 }

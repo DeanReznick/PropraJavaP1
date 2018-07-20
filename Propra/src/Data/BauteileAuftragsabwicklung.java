@@ -153,7 +153,7 @@ public class BauteileAuftragsabwicklung {
 	}
 	public static void deleteBauteil(int id_bauteil) {
 		
-		String query = "DELETE FROM Bauteil WHERE ID_Bauteil = "+ id_bauteil +";"; 
+		String query = "DELETE FROM TBauteil WHERE ID_TBauteil = "+ id_bauteil +";"; 
 		DataBase.executeQuery(query);
 		
 		

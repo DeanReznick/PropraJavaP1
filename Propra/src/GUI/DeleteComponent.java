@@ -15,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 import Data.BauteileAuftragsabwicklung;
 import Data.DataBase;
 import Data.PersonenFertigungsverwaltung;
+import Data.TreeBauteile;
 
 public class DeleteComponent extends JFrame {
 
@@ -62,7 +63,8 @@ public class DeleteComponent extends JFrame {
 				String tableClick = MainMenu.tblComponents.getModel().getValueAt(selectedRowIndex, 0).toString();
 				int id = Integer.parseInt(tableClick);
 				System.out.println(id);
-				BauteileAuftragsabwicklung.deleteBauteil(id);
+//				BauteileAuftragsabwicklung.deleteBauteil(id);
+				TreeBauteile.delteTBauteil(id);
 				
 				model.removeRow(selectedRowIndex);
 				

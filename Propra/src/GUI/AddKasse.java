@@ -46,7 +46,7 @@ public class AddKasse extends JFrame {
 	 */
 	public AddKasse() {
 		setTitle("Kasse hinzufuegen");
-		setBounds(100, 100, 250, 200);
+		setBounds(100, 100, 331, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -59,7 +59,7 @@ public class AddKasse extends JFrame {
 		String[] comboBoxValues = {"Barkasse", "Konto", "Kostenstelle"};
 		
 		JComboBox comboBoxArt = new JComboBox(comboBoxValues);
-		comboBoxArt.setBounds(124, 8, 100, 20);
+		comboBoxArt.setBounds(124, 8, 181, 20);
 		contentPane.add(comboBoxArt);
 		
 		JLabel lblNummer = new JLabel("Nummer:");
@@ -67,7 +67,7 @@ public class AddKasse extends JFrame {
 		contentPane.add(lblNummer);
 		
 		txtNummer = new JTextField();
-		txtNummer.setBounds(124, 36, 100, 20);
+		txtNummer.setBounds(124, 36, 181, 20);
 		contentPane.add(txtNummer);
 		txtNummer.setColumns(10);
 		
@@ -80,12 +80,12 @@ public class AddKasse extends JFrame {
 		contentPane.add(lblIst);
 		
 		txtSoll = new JTextField();
-		txtSoll.setBounds(124, 62, 100, 20);
+		txtSoll.setBounds(124, 62, 181, 20);
 		contentPane.add(txtSoll);
 		txtSoll.setColumns(10);
 		
 		txtIst = new JTextField();
-		txtIst.setBounds(124, 87, 100, 20);
+		txtIst.setBounds(124, 87, 181, 20);
 		contentPane.add(txtIst);
 		txtIst.setColumns(10);
 		
@@ -107,7 +107,7 @@ public class AddKasse extends JFrame {
 			}
 			}
 		});
-		btnHinzufuegen.setBounds(63, 118, 100, 23);
+		btnHinzufuegen.setBounds(171, 118, 134, 23);
 		contentPane.add(btnHinzufuegen);
 	}
 }

@@ -246,13 +246,15 @@ public class MainMenu extends JFrame {
 		
 		JLabel lblPersonen = new JLabel("Personen:");
 		GridBagConstraints gbc_lblPersonen = new GridBagConstraints();
+		gbc_lblPersonen.anchor = GridBagConstraints.WEST;
 		gbc_lblPersonen.insets = new Insets(0, 0, 5, 5);
 		gbc_lblPersonen.gridx = 1;
 		gbc_lblPersonen.gridy = 1;
 		panelPerson.add(lblPersonen, gbc_lblPersonen);
 		
-		JLabel lblAuftrge = new JLabel("Auftäge:");
+		JLabel lblAuftrge = new JLabel("Auftr\u00E4ge:");
 		GridBagConstraints gbc_lblAuftrge = new GridBagConstraints();
+		gbc_lblAuftrge.anchor = GridBagConstraints.WEST;
 		gbc_lblAuftrge.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAuftrge.gridx = 6;
 		gbc_lblAuftrge.gridy = 1;

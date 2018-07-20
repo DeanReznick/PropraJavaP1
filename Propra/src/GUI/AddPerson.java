@@ -107,51 +107,51 @@ public class AddPerson extends JFrame {
 		contentPane.add(lblRolle);
 		
 		txtName = new JTextField();
-		txtName.setBounds(96, 33, 86, 20);
+		txtName.setBounds(96, 33, 203, 20);
 		contentPane.add(txtName);
 		txtName.setColumns(10);
 		
 		txtVorname = new JTextField();
-		txtVorname.setBounds(96, 58, 86, 20);
+		txtVorname.setBounds(96, 58, 203, 20);
 		contentPane.add(txtVorname);
 		txtVorname.setColumns(10);
 		
 		txtTel = new JTextField();
-		txtTel.setBounds(96, 83, 86, 20);
+		txtTel.setBounds(96, 83, 203, 20);
 		contentPane.add(txtTel);
 		txtTel.setColumns(10);
 		
 		txtMail = new JTextField();
-		txtMail.setBounds(96, 108, 86, 20);
+		txtMail.setBounds(96, 108, 203, 20);
 		contentPane.add(txtMail);
 		txtMail.setColumns(10);
 		
 		txtLand = new JTextField();
-		txtLand.setBounds(96, 133, 86, 20);
+		txtLand.setBounds(96, 133, 203, 20);
 		contentPane.add(txtLand);
 		txtLand.setColumns(10);
 		
 		txtPlz = new JTextField();
-		txtPlz.setBounds(96, 158, 86, 20);
+		txtPlz.setBounds(96, 158, 203, 20);
 		contentPane.add(txtPlz);
 		txtPlz.setColumns(10);
 		
 		txtStr = new JTextField();
-		txtStr.setBounds(96, 210, 86, 20);
+		txtStr.setBounds(96, 210, 203, 20);
 		contentPane.add(txtStr);
 		txtStr.setColumns(10);
 		
 		txtHaus = new JTextField();
-		txtHaus.setBounds(96, 235, 86, 20);
+		txtHaus.setBounds(96, 235, 203, 20);
 		contentPane.add(txtHaus);
 		txtHaus.setColumns(10);
 		
 		JComboBox combo_job = new JComboBox();
-		combo_job.setBounds(96, 278, 86, 20);
+		combo_job.setBounds(96, 278, 203, 20);
 		contentPane.add(combo_job);
 		
 		txtOrt = new JTextField();
-		txtOrt.setBounds(96, 184, 86, 20);
+		txtOrt.setBounds(96, 184, 203, 20);
 		contentPane.add(txtOrt);
 		txtOrt.setColumns(10);
 		
@@ -165,7 +165,7 @@ public class AddPerson extends JFrame {
 		
 		txt_Password = new JTextField();
 		txt_Password.setColumns(10);
-		txt_Password.setBounds(96, 309, 86, 20);
+		txt_Password.setBounds(96, 309, 203, 20);
 		contentPane.add(txt_Password);
 		
 		combo_job.addItem("Kunde");
@@ -218,7 +218,7 @@ public class AddPerson extends JFrame {
 			 
 			}
 		});
-		btnHinzufuegen.setBounds(96, 343, 89, 23);
+		btnHinzufuegen.setBounds(157, 343, 142, 23);
 		contentPane.add(btnHinzufuegen);
 		
 		
